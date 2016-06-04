@@ -1,0 +1,232 @@
+﻿@model IEnumerable<ic_ef.rediscovery>
+@{
+    ViewBag.Title = "index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<head>
+    <script src="~/Scripts/jquery-1.10.2.min.js"></script>
+   
+    <script scr="@Url.Content("~/Scripts/jquery.cascadingDropDown.js")"></script>
+    <script src="http://www.labelwriter.com/software/dls/sdk/js/DYMO.Label.Framework.2.0.2.js"></script>
+    <script src="~/js/PrintLabel.js"></script>
+    <style>
+        .form-control {
+            margin: 10px;
+
+        }
+    </style>
+</head>
+<h2>Dymo Label Printing</h2>
+
+<br />
+<a href="@Url.Action("Retail_Dymo", "Dymo")">
+    <span>Retail Label Printing Page</span>
+</a>
+<hr />
+
+
+
+
+
+            <body>
+    <div class="container"> 
+        <div class="row">
+            <div class="col-sm-5">
+                <div class="panel panel-info">
+                    <div class="panel-heading">Start Here</div>
+                    <div class="panel-body">
+
+
+                        @using (Html.BeginForm("index", "Dymo", FormMethod.Post))
+                        {
+
+
+                            <div class="form-group">
+
+                                <div>@Html.TextBox("asset", null, new { placeholder = "Scan Asset Tag Here", @class = "form-control", data_ng_model = "name", required = "required" })</div>
+                                <div>@Html.TextBox("pre_coa", null, new { placeholder = "Scan Pre-COA Here", @class = "form-control", data_ng_model = "name" })</div>
+
+
+
+                            </div>
+
+
+
+                            <div>
+                                @Html.DropDownList("myList", ViewBag.myList as SelectList, "-- Select Channel --", new { id = "Channel2", @class = "form-control" })
+                            </div>
+                            <div>Select Product:</div>
+                            <div>
+                                <select id="product_list" name="product" disabled="disabled" class="form-control"></select>
+                            </div>
+                            <input type="submit" value="Submit" class="form-control" />
+                            <p>Select Printer : </p>
+                            <p><select id="printersSelect" class="form-control"></select></p>
+                          
+                        }
+                        <input type="submit" value="Print" class="form-control" id="printButton" />
+
+                        
+
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-7">
+                <div class="container">
+                    <img src="~/video/source.jpeg" alt="label" width="600" height="300">
+                    <div id="channel" style="position: absolute;
+    font-size: 20px;
+    top: 10px;
+    left: 125px;">@ViewBag.channel</div>
+                    <div id="model" style="position: absolute;
+    font-size: 15px;
+    top: 67px;
+    left: 115px;">@ViewBag.Model</div>
+                    <div id="cpu" style="position: absolute;
+    font-size: 15px;
+    top: 115px;
+    left: 115px;">@ViewBag.CPU</div>
+                    <div id="ram" style="position: absolute;
+    font-size: 15px;
+    top: 160px;
+    left: 115px;">@ViewBag.Ram</div>
+                    <div id="serial" style="position: absolute;
+    font-size: 15px;
+    top: 160px;
+    left: 230px;">@ViewBag.Serial</div>
+                    <div id="hdd" style="position: absolute;
+    font-size: 15px;
+    top: 205px;
+    left: 115px;">@ViewBag.HDD</div>
+                    <div id="time" style="position: absolute;
+    font-size: 15px;
+    top: 260px;
+    left: 115px;">@ViewBag.time</div>
+                    <div id="product" style="position: absolute;
+    font-size: 15px;
+    top: 55px;
+    right: 170px;">@ViewBag.pallet</div>
+                    <div id="asset_tag" style="position: absolute;
+    font-size: 15px;
+    bottom: 5px;
+    right: 85px;">@ViewBag.asset</div>
+                    <div id="user" style="position: absolute;
+    font-size: 15px;
+    bottom: 5px;
+    right: 230px;">@ViewBag.user</div>
+                </div>
+            </div>
+            
+
+        </div>
+
+        </div>
+                @*<div id="last 5 table">
+                    <hr />
+                    <h3>Last 5 Machine Refurbished by @ViewBag.refurb_user</h3>
+
+                    <table class="table">
+                        <tr>
+                            <th>
+                                @Html.DisplayNameFor(model => model.ictag)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.time)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.serial)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.pallet)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.refurbisher)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.bbrand)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.Model)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.pre_coa)
+                            </th>
+                            <th></th>
+                        </tr>
+
+                        @foreach (var item in Model)
+            {
+                            <tr>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.ictag)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.time)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.serial)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.pallet)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.refurbisher)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Manu)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Model)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.pre_coa)
+                                </td>
+                            </tr>
+                        }
+
+                    </table>
+                </div>*@
+</body>
+
+            @section scripts
+{
+                <script type="text/javascript">
+              
+                    $(function () {
+                        $('#Channel2').on('change', function () {
+                            var stateDropdown = $('#product_list');
+                            //disable state drop down
+                            stateDropdown.prop('disabled', 'disabled');
+                            //clear drop down of old states
+                            stateDropdown.empty();
+
+                            //retrieve selected country
+                            var product = $(this).val();
+                            if (product.length > 0) {
+                                // retrieve data using a Url.Action() to construct url
+                                $.getJSON('@Url.Action("GetProduct")', {
+                                    product: product
+                                })
+                                .done(function (data) {
+                                    //re-enable state drop down
+                                    stateDropdown.removeProp('disabled');
+                                    //for each returned state
+                                    $.each(data, function (i, p_list) {
+                                        //Create new option
+                                        var option = $('<option />').html(p_list);
+                                        //append state states drop down
+                                        stateDropdown.append(option);
+                                    });
+                                })
+                                .fail(function (jqxhr, textStatus, error) {
+                                    var err = textStatus + ", " + error;
+                                    console.log("Request Failed: " + err);
+                                });
+                            }
+                        });
+                    })
+
+                </script>
+
+            }

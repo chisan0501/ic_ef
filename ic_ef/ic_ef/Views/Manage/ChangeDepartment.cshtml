@@ -1,0 +1,30 @@
+﻿@model ic_ef.Models.ChangeDepartmentViewModel
+
+@{
+    ViewBag.Title = "Change Department";
+}
+
+<h2>Change Department</h2>
+
+@using (Html.BeginForm("ChangeDepartment", "Manage", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+
+{
+    @Html.AntiForgeryToken()
+    <hr />
+    <div class="form-group">
+        @Html.LabelFor(m => m.NewDepartment, new { @class = "col-md-2 control-label" })
+        <div class="col-md-10">
+            @Html.DropDownListFor(m => m.NewDepartment, new SelectList(ViewBag.department_list, "value", "Text "), "----Select ----", new { @class = "form-control" })
+
+
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="col-md-offset-2 col-md-10">
+            <input type="submit" value="Change Department" class="btn btn-default" />
+        </div>
+    </div>
+}
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

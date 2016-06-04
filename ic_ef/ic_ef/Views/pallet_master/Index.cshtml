@@ -1,0 +1,47 @@
+﻿@model IEnumerable<ic_ef.pallet_master>
+
+@{
+    ViewBag.Title = "Manage Pallet";
+}
+
+<br /><br />
+<h2><i class="fa fa-bars"></i>Manage Pallet</h2> 
+<br />
+<p>
+ 
+    <a class="btn btn-primary" style="margin:10px;" href="@Url.Action("Create", "pallet_master")"><i class="fa fa-plus"></i> Create Pallet</a>
+        <a class="btn btn-primary" style="margin:10px;" href="@Url.Action("inventoryManage", "Manage")"><i class="fa fa-undo"></i> Back</a>
+
+</p>
+<br />
+<div class="table-responsive">
+    <table class="table table-bordered ">
+        <thead class="thead-inverse">
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.pallet_id)
+
+
+                </th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        @foreach (var item in Model)
+            {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.pallet_id)
+
+                </td>
+                <td>
+                    @Html.ActionLink("View", "View_pallet", new { id = item.pallet_id }, new { @class = "btn btn-info" })
+                    @Html.ActionLink("Delete", "Delete", new { id = item.pallet_id }, new { @class = "btn btn-danger" })
+                    @*@Html.ActionLink("Export as CSV", "export_csv", new { id = item.pallet_id }, new { @class = "btn btn-success" })*@
+                    @Html.ActionLink("Export Report as CSV", "export_detail_csv", new { id = item.pallet_id }, new { @class = "btn btn-success" })
+                </td>
+            </tr>
+        }
+
+    </table>
+
+    </div>

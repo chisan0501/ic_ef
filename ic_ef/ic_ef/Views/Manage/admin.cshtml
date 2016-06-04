@@ -1,0 +1,268 @@
+﻿@model IEnumerable<Microsoft.AspNet.Identity.EntityFramework.IdentityRole>
+@{
+    ViewBag.Title = "Admin Setting";
+}
+<head>
+    <style>
+        .form-control {
+            margin: 10px;
+        }
+    </style>
+</head>
+<body>
+    @if (TempData["message"] != null)
+    {
+        <script type="text/javascript">
+        var message = @Html.Raw(Json.Encode(TempData["message"]));
+        alert(message);
+        </script>
+    }
+    <h2><i class="fa fa-cog"></i>  Admin Settings</h2>
+
+    @using (Html.BeginForm("admin", "Manage", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+
+    {
+        @Html.AntiForgeryToken()
+        <hr />
+        <div class="panel panel-primary">
+            <div class="panel-heading">Manage</div>
+            <div class="panel-body">
+                <p>@Html.ActionLink("Manage User", "Index", "AspNetUsers")</p>
+                <p>@Html.ActionLink("Manage Channel", "Index", "settings")</p>
+                <p>@Html.ActionLink("Manage Product", "Index", "label_menu")</p>
+                <p>@Html.ActionLink("Manage Refurbishers", "Index", "users")</p>
+                
+            </div>
+        </div>
+
+
+    }
+
+    <div class="row">
+        <div class="col-sm-4">
+            <div class="panel panel-danger">
+                <div class=" panel-heading">Manage Asset Tags Counter</div>
+                <div class="panel-body">
+                    @Html.DropDownList("myList", ViewBag.myList as SelectList, "-- Select Company --", new { id = "company_list", @class = "form-control" })
+                    <select id="counter_number" name="counter_list_number" disabled="disabled" class="form-control"></select>
+                    @using (Html.BeginForm("admin", "Manage", FormMethod.Post))
+                    {
+
+                @Html.TextBox("counter_value", null, new { placeholder = "Enter a Reset Value", @class = "form-control", data_ng_model = "name", required = "required" })
+
+                <input type="submit" value="Submit" class="form-control" />
+
+                    }
+                </div>
+            </div>
+        </div>
+
+
+        <div class="col-sm-4">
+            <div class="panel panel-info">
+                <div class="panel-heading">Current User Role</div>
+                <div class="panel-body">
+
+                    @using (Html.BeginForm("RoleAddToUser", "Manage", FormMethod.Post))
+                    {
+                @Html.DropDownList("RoleName", (IEnumerable<SelectListItem>
+     )ViewBag.Roles, "Select Role", new { @class = "form-control" })
+                @Html.DropDownList("UserName", new SelectList(ViewBag.Users), "Select User", new { @class = "form-control" })
+                <input type="submit" value="Submit" class="form-control" />
+
+                    }
+
+
+
+                    <h4>   @Html.ActionLink("Click to Create New Role", "Create", "Manage") </h4>
+
+
+
+
+                </div>
+            </div>
+        </div>
+
+        <div class="col-sm-4">
+            <div class="panel panel-info">
+                <div class="panel-heading">Reprint Barcode</div>
+                <div class="panel-body">
+                    <form action="/Manage/single_barcode" method="POST">
+
+
+
+
+
+                        <input type="text" id="txtcode" name="txtcode" class="form-control" />
+                        <input type="submit" value="Get barcode" class="form-control" />
+
+                        <p>Image : </p>
+                        <div style="clear: both" id="div_print">
+                            <img id="img" src="/Barcode.ashx?m=1&h=60&vCode=@ViewBag.vCode" alt="@ViewBag.vCode" />
+                        </div>
+                        <input type="button" onclick="PrintPartOfPage('div_print')" value="Print Barcode" class="form-control" />
+                    </form>
+
+
+                    <script language="javascript">
+                            function PrintPartOfPage(dvprintid) {
+                                var prtContent = document.getElementById(div_print);
+                                var WinPrint = window.open('', '', 'letf=100,top=100,width=700,height=500,menubar=yes');
+                                WinPrint.document.write(div_print.innerHTML);
+                                WinPrint.document.close();
+                                WinPrint.onload = function () { WinPrint.print(); WinPrint.close(); }
+
+                                // WinPrint.print();
+
+                            }
+                    </script>
+                </div>
+            </div>
+        </div>
+
+    </div>
+    <div class=" row">
+        <div class="col-lg-4">
+            <div class="panel panel-info">
+                <div class="panel-heading">Import COAs</div>
+                <div class="panel-body">
+                 @using (Html.BeginForm("csv", "Manage", FormMethod.Post, new { enctype = "multipart/form-data" }))
+                 {
+                    <input type="file" name="FileUpload"/>
+                    @Html.DropDownList("station", ViewBag.stationList as SelectList, "-- Select Station --", new { id = "company_list", @class = "form-control" })
+                    
+                    <input type="submit" name="Submit" id="Submit" value="Upload" class="form-control"/>
+                    <p>@Html.ActionLink("Manage Station Settings", "Index", "station_setting")</p>
+
+                 }
+                   <p style="color:red;">@TempData["Feedback"]</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-8">
+            <div class="panel panel-info">
+                <div class="panel-heading">Manage COAs</div>
+                <div class="panel-body">
+@using (Html.BeginForm("Search_COA", "Manage", FormMethod.Post))
+{
+    <div style="float:left;margin:20px">
+        <input type="text" id="coa" name="coa" class="form-control" placeholder="Enter COA Product ID Here" />
+        <label>
+            <input type="checkbox" id="Authorized" name="dash_used" />
+            With Dash
+        </label>
+        <input type="submit" value="Mark As Used" class="form-control" />
+    </div>
+}
+                        @using (Html.BeginForm("reuse_COA", "Manage", FormMethod.Post))
+                        {
+                            <div style="float:left;margin:20px">
+                                <input type="text" id="coa" name="new_coa" class="form-control" placeholder="Enter COA Product ID Here" />
+                                <label>
+                                    <input type="checkbox" id="Authorized" name="dash" />
+                                    With Dash
+                                </label>
+                                <input type="submit" value="Mark As NOT Used" class="form-control" />
+                            </div>
+
+                        }
+
+</div>
+                </div>
+                </div>
+            </div>
+    <div class="row">
+
+    <div class="col-lg-6">
+        <div class="panel panel-info">
+            <div class="panel-heading">Search Windows COA</div>
+            <div class="panel-body">
+             @using (Html.BeginForm("admin", "Manage", FormMethod.Get, new { @class = "form-horizontal", role = "form" }))
+             {
+                <input type="text" id="coa" name="windows_coa" class="form-control" placeholder="Enter Windows COA Here" />
+                <input type="submit" value="Search" class="form-control" />
+
+             }
+                <hr />
+                <p>   Time : @ViewBag.time</p>
+                <p>  Windows COA : @ViewBag.wcoa </p>
+                <p>    Office COA : @ViewBag.ocoa</p>
+                
+                <p>Channel : @ViewBag.channel</p>
+                <p>Asset : @ViewBag.asset</p>
+</div>
+        </div>
+    </div>
+
+       
+        <div class="col-lg-6">
+            <div class="panel panel-info">
+                <div class="panel-heading">Search Office COA</div>
+                <div class="panel-body">
+                    @using (Html.BeginForm("admin", "Manage", FormMethod.Get, new { @class = "form-horizontal", role = "form" }))
+                    {
+                        <input type="text" id="coa" name="office_coa" class="form-control" placeholder="Enter Office COA Here" />
+                        <input type="submit" value="Search" class="form-control" />
+
+                    }
+                    <hr />
+                    <p>   Time : @ViewBag.time</p>
+                    <p>  Windows COA : @ViewBag.wcoa </p>
+                    <p>    Office COA : @ViewBag.ocoa</p>
+
+                    <p>Channel : @ViewBag.channel</p>
+                    <p>Asset : @ViewBag.asset</p>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+
+
+
+
+
+
+
+            @section scripts
+            {
+                <script type="text/javascript">
+
+                    $(function () {
+                        $('#company_list').on('change', function () {
+                            var stateDropdown = $('#counter_number');
+                            //disable state drop down
+                            stateDropdown.prop('disabled', 'disabled');
+                            //clear drop down of old states
+                            stateDropdown.empty();
+
+                            //retrieve selected country
+                            var product = $(this).val();
+                            if (product.length > 0) {
+                                // retrieve data using a Url.Action() to construct url
+                                $.getJSON('@Url.Action("GET_counter")', {
+                                    product: product
+                                })
+                                .done(function (data) {
+                                    //re-enable state drop down
+                                    stateDropdown.removeProp('disabled');
+                                    //for each returned state
+                                    $.each(data, function (i, p_list) {
+                                        //Create new option
+                                        var option = $('<option />').html(p_list);
+                                        //append state states drop down
+                                        stateDropdown.append(option);
+                                    });
+                                })
+                                .fail(function (jqxhr, textStatus, error) {
+                                    var err = textStatus + ", " + error;
+                                    console.log("Request Failed: " + err);
+                                });
+                            }
+                        });
+                    })
+
+                </script>
+            }
+</body>

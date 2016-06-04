@@ -1,0 +1,387 @@
+﻿@model ic_ef.Models.magentoViewModel
+<head>
+    <script src="~/Scripts/jput.min.js"></script>
+    <script src="https://use.fontawesome.com/bbd0418749.js"></script>
+</head>
+<style>
+    .nav-tabs > li, .nav-pills > li {
+    float:none;
+    display:inline-block;
+}
+
+.nav-tabs {
+    text-align:center;
+}
+
+</style>
+
+
+
+
+   
+
+        <input type="submit" value="Export" class="form-control" id="export" />
+    
+  
+
+<div class="nav-center">
+
+    <ul class="nav nav-tabs">
+        <li class="active"><a data-toggle="tab" href="#hardware">Hardware Spec</a></li>
+        <li><a data-toggle="tab" href="#menu1">General</a></li>
+         <li><a data-toggle="tab" href="#menu4">Description</a></li>
+        <li><a data-toggle="tab" href="#menu2">Meta Information</a></li>
+        <li><a data-toggle="tab" href="#menu5">Price</a></li>
+        <li><a data-toggle="tab" href="#menu3">Inventory</a></li>
+        <li><a data-toggle="tab" href="#menu6">Image</a></li>
+    </ul>
+
+    <div class="tab-content">
+        <div id="hardware" class="tab-pane fade in active">
+            @if (ViewBag.spec != null)
+            {
+                <label for="brand">Manufacturer:</label>
+                <input type="text" class="form-control" id="brand" name="brand" value="@Html.DisplayFor(model => model.brand)" />
+                <label for="cpu">CPU:</label>
+                <input type="text" class="form-control" id="cpu" name="cpu" value="  @Html.DisplayFor(model => model.cpu)" />
+                foreach (var item in ViewBag.spec)
+                {
+                    <label for="pallet">SKU Family:</label>
+                    <input type="text" class="form-control" id="pallet" name="pallet" value="@item.pallet_name">     
+                    <label for="hdd">Hard Drive:</label>
+                    <input type="text" class="form-control" id="hdd" name="hdd" value="@item.hdd" />
+                    <label for="ram">Memory:</label>
+                    <input type="text" class="form-control" id="ram" name="ram" value="@item.ram" />
+                    <label for="model">Model:</label>
+                    <input type="text" class="form-control" id="model" name="model" value="@item.model" />
+                    <label for="serial">Serial:</label>
+                        <input type="text" class="form-control" id="serial" name="serial" value="@item.serial" />
+                        <label for="screen">Screen Size:</label>
+                        <input type="text" class="form-control" id="screen" name="screen" value="@item.screen_size" />
+                        <label for="video">Video Card:</label>
+                        <input type="text" class="form-control" id="video" name="video" value="@item.video_card" />
+                        <label for="optical">Optical Drive:</label>
+                        <input type="text" class="form-control" id="optical" name="optical" value="@item.optical" />
+                }
+                <label for="sku">SKU:</label>
+                <input type="text" class="form-control" id="sku" name="sku" value="  @Html.DisplayFor(model => model.sku)" />
+
+            }
+        </div>
+        <div id="menu1" class="tab-pane fade">
+            <label for="include">Includes :</label>
+            <input type="text" class="form-control" id="include" name="include" value="  @Html.DisplayFor(model => model.accessory_include)" />
+            <label for="type">Computer Type :</label>
+          @Html.DropDownListFor(m => m.selectedId, Model.type, "--Select One--" , new { @class = "form-control", name = "type", id = "type" })
+            <label for="Wireless">Wireless Connectivity :</label>
+            @Html.DropDownListFor(m => m.wireless_selectedId, Model.wireless, "--Select One--", new { @class = "form-control",name = "Wireless", id= "Wireless" })
+            <label for="create_date">Creation Date:</label>
+            <input type="text" class="form-control" id="create_date" name="create_date" value="  @Html.DisplayFor(model => model.creat_date)" />
+            <label for="name">Name:</label>
+            <input type="text" class="form-control" id="name" name="name" value="  @Html.DisplayFor(model => model.name)" />
+            <label for="software">Software:</label>
+            <input type="text" class="form-control" id="software" name="software" value="@Html.DisplayFor(model => model.software)" />
+        </div>
+        <div id="menu2" class="tab-pane fade">
+
+
+            <label for="meta_des">Meta Description:</label>
+           @Html.TextAreaFor(model => model.meta_description, new { @class = "form-control", name = "meta_des", id = "meta_des" })
+        </div>
+        <div id="menu3" class="tab-pane fade">
+            <h3>Inventory</h3>
+            <div class="row">
+                <div class=" = col-lg-4">
+                    <label for="qty">QTY:</label>
+                    <input type="text" class="form-control" id="qty" name="qty" value="  @Html.DisplayFor(model => model.qty)" />
+                    <label for="cat">Category:</label>
+                    @Html.DropDownListFor(m => m.cat_selectedId, Model.cat, "--Select One--", new { @class = "form-control", name = "cat", id = "cat" })
+                    <label for="laptop_listing">Current Laptop Listing:</label>
+                    @Html.DropDownListFor(m => m.laptop_listing_selectedId, Model.laptop_listing, "--Select One--", new { @class = "form-control", name = "laptop_listing", id = "laptop_listing" })
+                    <input type="submit" value="Update" class="form-control" id="update_latpop" />
+                    <label for="laptop_listing">Current Desktop Listing:</label>
+                    @Html.DropDownListFor(m => m.desktop_listing_selectedId, Model.desktop_listing, "--Select One--", new { @class = "form-control", name = "desktop_listing", id = "desktop_listing" })
+                    <input type="submit" value="Update" class="form-control" id="update_desktop" />
+                    </div>
+                <div class=" = col-lg-8">
+
+                    <p> <i class="fa fa-question-circle fa-2x" aria-hidden="true"></i> How to Use the Inventory tool ?</p>
+                    <h3>Update Qty to Pre-existing Listing</h3>
+                    <ul class="list-group">
+                        <li class="list-group-item">1.Select the Listing from Current Laptop/Desktop Listing Dropdown Menu</li>
+                        <li class="list-group-item">2.Enter Total Qty After Insert (ex: if 5 item is to be inserted into Listing 1 which has Qty of 2 already, enter 7 )</li>
+                        <li class="list-group-item">3.Click Update and a Messagebox will Prompt when Update is Completed</li>
+                    </ul>
+                    <h3>Insert new Listing</h3>
+                    <ul class="list-group">
+                       
+                        <li class="list-group-item">1.Enter Total Qty</li>
+                        <li class="list-group-item">2.Make sure all fields are filled </li>
+                        <li class="list-group-item">3.Click Export Button Above </li>
+                    </ul>
+                    </div>
+                </div>
+               
+                <table class="table" id="table2">
+                    <thead>
+                        <tr>
+                            <th>Listing Name</th>
+                            <th>QTY</th>
+                            <th>Listing ID</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </div>
+        <div id="menu4" class="tab-pane fade">
+            <label for="short_des">Short Description:</label>
+            @Html.TextAreaFor(model => model.short_description, new { @class = "form-control", name = "short_des", id = "short_des" })
+            <label for="soft_des">Software Description:</label>
+            @Html.TextAreaFor(model => model.software_description, new { @class = "form-control", name = "soft_des", id = "soft_des" })
+            <label for="des">Description:</label>
+            @Html.TextAreaFor(model => model.description, new { @class = "form-control", name = "des", id = "des" })
+            
+        </div>
+        <div id="menu5" class="tab-pane fade">
+            <label for="price">Price :</label>
+            <input type="text" class="form-control" id="price" name="price" value="  @Html.DisplayFor(model => model.price)" />
+            <label for="tax_class">Tax Class:</label>
+            @Html.DropDownListFor(m => m.tax_selectedId, Model.tax_class, "--Select One--", new { @class = "form-control", name = "tax_class", id = "tax_class" })
+            </div>
+        <div id="menu6" class="tab-pane fade">
+            <label for="image">Upload Image :</label>
+           
+        </div>
+        </div>
+</div>
+<script type="text/javascript">
+    $(document).ready(
+        function() {
+            $('#loading').hide();
+                                             
+                        }
+     
+        
+    );
+</script>
+<script>
+    $(document).ready(function () {
+      
+        $("#laptop_listing").change(function () {
+            if ($("#laptop_listing").val() != "--Select One--") {
+                var product = $(this).val();
+                $.getJSON('@Url.Action("getstatus")', {
+                    id: product
+                })
+                .done(function (data) {
+                   
+                   
+                        var tr;
+                        for (var i = 0; i < data.length; i++) {
+                            tr = $('<tr/>');
+                            tr.append("<td>" + data[i].name + "</td>");
+                            tr.append("<td>" + data[i].qty + "</td>");
+                            tr.append("<td>" + data[i].entity_id + "</td>");
+                            $("#table2").append(tr);
+                        }
+                })
+
+                .fail(function (jqxhr, textStatus, error) {
+                    var err = textStatus + ", " + error;
+                    console.log("Request Failed: " + err);
+                });
+            }
+            else {
+              
+            }
+        });
+    });
+</script>
+<script>
+    $(document).ready(function () {
+
+        $("#desktop_listing").change(function () {
+            if ($("#desktop_listing").val() != "--Select One--") {
+                var product = $(this).val();
+                $.getJSON('@Url.Action("get_desktop_status")', {
+                    id: product
+                })
+                .done(function (data) {
+
+
+                        var tr;
+                        for (var i = 0; i < data.length; i++) {
+                            tr = $('<tr/>');
+                            tr.append("<td>" + data[i].name + "</td>");
+                            tr.append("<td>" + data[i].qty + "</td>");
+                            tr.append("<td>" + data[i].entity_id + "</td>");
+                            $("#table2").append(tr);
+                        }
+                })
+
+                .fail(function (jqxhr, textStatus, error) {
+                    var err = textStatus + ", " + error;
+                    console.log("Request Failed: " + err);
+                });
+            }
+            else {
+
+            }
+        });
+    });
+</script>
+<script>
+    $(document).ready(function () {
+       
+        $("#export").click(function () {
+            $('#loading').show();
+            var qty = $("#qty").val();
+            var listingid = $("#laptop_listing").val();
+            var price = $("#price").val();
+            var tax_class = $("#tax_class").val();
+            var soft_des = $("#soft_des").val();
+            var des = $("#des").val();
+            var short_des = $("#short_des").val();
+            var meta_des = $("#meta_des").val();
+            var software = $("#software").val();
+            var name = $("#name").val();
+            var create_date = $("#create_date").val();
+            var Wireless = $("#Wireless").val();
+            var type = $("#type").val();
+            var include = $("#include").val();
+            var sku = $("#sku").val();
+            var optical = $("#optical").val();
+            var video = $("#video").val();
+            var screen = $("#screen").val();
+            var serial = $("#serial").val();
+            var model = $("#model").val();
+            var ram = $("#ram").val();
+            var hdd = $("#hdd").val();
+            var pallet = $("#pallet").val();
+            var cpu = $("#cpu").val();
+            var brand = $("#brand").val();
+            var asset = $("#asset").val();
+            var grade = $("#grade").val();
+            var computerType = $("#computerType").val();
+            var laptop_listing = $("#laptop_listing").val();
+            var desktop_listing = $("#desktop_listing").val();
+          
+            var jsonObject = {
+                "qty": qty,
+                "listingid": listingid,
+                "price": price,
+                "tax_class": tax_class,
+                "soft_des": soft_des,
+                "des": des,
+                "short_des": short_des,
+                "meta_des": meta_des,
+                "software": software,
+                "name": name,
+                "create_date": create_date,
+                "Wireless": Wireless,
+                "type": type,
+                "include": include,
+                "sku": sku,
+                "optical": optical,
+                "video": video,
+                "screen": screen,
+                "serial": serial,
+                "model": model,
+                "ram": ram,
+                "hdd": hdd,
+                "pallet": pallet,
+                "cpu": cpu,
+                "brand": brand,
+                "asset": asset,
+                "grade": grade,
+                "computerType": computerType,
+                "desktop_listing": desktop_listing,
+                "laptop_listing": laptop_listing
+            };
+            $.ajax({
+                url: "@Url.Action("export")",
+                type: "POST",
+            data: JSON.stringify(jsonObject),
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            error: function (response) {
+                alert(response.result);
+                $('#loading').hide();
+            },
+            success: function (response) {
+                
+                alert(response.result);
+                $('#loading').hide();
+            }
+
+        });
+        
+        });
+    });
+</script>
+<script>
+    $(document).ready(function () {
+       
+        $("#update_latpop").click(function () {
+            $('#loading').show();
+            var qty = $("#qty").val();
+            var laptop_listing = $("#laptop_listing").val();
+          
+            var jsonObject = {
+                "qty": qty,
+                "laptop_listing": laptop_listing
+            };
+            $.ajax({
+                url: "@Url.Action("laptop_inv_update")",
+                type: "POST",
+            data: JSON.stringify(jsonObject),
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            error: function (response) {
+                alert(response.result);
+                $('#loading').hide();
+            },
+            success: function (response) {
+                
+                alert(response.result);
+                $('#loading').hide();
+            }
+
+        });
+        
+    });
+    });
+</script>
+<script>
+    $(document).ready(function () {
+
+        $("#update_desktop").click(function () {
+            $('#loading').show();
+            var qty = $("#qty").val();
+            var desktop_listing = $("#desktop_listing").val();
+
+            var jsonObject = {
+                "qty": qty,
+                "desktop_listing": desktop_listing
+            };
+            $.ajax({
+                url: "@Url.Action("desktop_inv_update")",
+                type: "POST",
+            data: JSON.stringify(jsonObject),
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            error: function (response) {
+                alert(response.result);
+                $('#loading').hide();
+            },
+            success: function (response) {
+
+                alert(response.result);
+                $('#loading').hide();
+            }
+
+        });
+
+    });
+    });
+</script>

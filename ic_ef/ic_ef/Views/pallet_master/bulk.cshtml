@@ -1,0 +1,79 @@
+﻿@model ic_ef.pallet_master
+@{
+    ViewBag.Title = "bulk";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<style>
+    h1 {
+        font-family: Arial,sans-serif font-size-80px;
+    }
+
+    .container-full a {
+        color: #efefef;
+        text-decoration: none;
+    }
+
+    .v-center {
+        margin-top: 7%;
+    }
+</style>
+
+@if (TempData["message"] != null)
+{
+    <script type="text/javascript">
+        var message = @Html.Raw(Json.Encode(TempData["message"]));
+        alert(message);
+    </script>
+}
+<div class="container-full">
+
+    <div class="row">
+
+    
+
+            <div class="form-horizontal text-center v-center">
+              
+
+                <div class="col-md-6">
+                    <h4>Sample CSV Format : </h4>
+                    <div>
+                        <img src="~/Content/simple_csv.jpg" alt="desktop_img" style="">
+                    </div>
+
+                    </div>
+
+                
+
+                        <div class="col-md-6">
+                            <br /><br />
+                            <h1 style="text-align:left">Bulk Insert</h1>
+                            <br />
+
+                            @using (Html.BeginForm("bulk", "pallet_master", FormMethod.Post, new { enctype = "multipart/form-data" }))
+                            {
+                                <input type="text" class="form-control" name="pallet_name" placeholder="Enter Pallet Name here" required="required">
+                                <input type="file" name="FileUpload" class="form-control" />
+                                <input type="submit" name="Submit" id="Submit" value="Upload" class="form-control" />
+                            }
+
+
+                        </div>
+         
+
+                    @*<div class="form-group" style="width:340px;text-align:center;margin:0 auto;">
+
+                <input type="submit" value="Create" class="btn btn-lg btn-primary" />
+
+                <a class="btn btn-lg btn-primary" style="margin:10px;" href="@Url.Action("inventoryManage", "Manage")"><i class="fa fa-undo"></i>Back</a>
+            </div>*@
+                </div>
+        
+
+
+
+
+
+    </div>
+</div>
+

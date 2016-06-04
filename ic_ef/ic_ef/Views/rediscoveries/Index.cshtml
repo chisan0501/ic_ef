@@ -1,0 +1,94 @@
+﻿@model PagedList.IPagedList<ic_ef.rediscovery>
+@using PagedList.Mvc;
+<link href="~/Content/PagedList.css" rel="stylesheet" type="text/css" />
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<br /><br />
+<h2>Refurbish</h2>
+<p>
+  @using (Html.BeginForm("Index", "rediscoveries", FormMethod.Get))
+  {
+    <p>
+        Search by Asset Tag: @Html.TextBox("SearchString", ViewBag.CurrentFilter as string)
+        <input type="submit" value="Search" />
+    </p>
+    }
+
+</p>
+
+<table class="table">
+    <tr>
+        <th>
+            @Html.ActionLink("Time", "Index", new { sortOrder = ViewBag.DateSortParm, currentFilter=ViewBag.CurrentFilter })
+        </th>
+        <th>
+            @Html.ActionLink("Asset Tag", "Index", new { sortOrder = ViewBag.NameSortParm, currentFilter=ViewBag.CurrentFilter })
+        </th>
+        <th>
+            Serial 
+        </th>
+        <th>
+            Manufacturer
+        </th>
+        <th>
+            @Html.ActionLink("Model", "Index", new { sortOrder = ViewBag.ModelSortParm, currentFilter = ViewBag.CurrentFilter })
+           
+        </th>
+        <th>
+            @Html.ActionLink("Channel", "Index", new { sortOrder = ViewBag.ChannelSortParm, currentFilter = ViewBag.CurrentFilter })
+          
+        </th>
+        <th>
+            @Html.ActionLink("Pallet", "Index", new { sortOrder = ViewBag.PalletSortParm, currentFilter = ViewBag.CurrentFilter })
+          
+        </th>
+        <th>
+            Refurbisher
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.time)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.ictag)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.serial)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.brand)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.model)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.location)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.pallet)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.refurbisher)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { id=item.ictag }) |
+            
+            @Html.ActionLink("Delete", "Delete", new { id=item.ictag })
+        </td>
+    </tr>
+}
+
+</table>
+<br />
+Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
+
+@Html.PagedListPager(Model, page => Url.Action("Index",
+    new { page, sortOrder = ViewBag.CurrentSort, currentFilter = ViewBag.CurrentFilter }))
+
+

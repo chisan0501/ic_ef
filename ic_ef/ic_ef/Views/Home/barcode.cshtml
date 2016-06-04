@@ -1,0 +1,76 @@
+﻿@model ic_ef.Models.DymoViewModel
+@{
+    ViewBag.Title = "barcode";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<head>
+    <style>
+        .form-control {
+            margin: 10px;
+
+        }
+
+      p {
+page-break-after : always;
+}
+
+    </style>
+</head>
+
+<body>
+    <h3>Asset Tags</h3>
+    <hr />
+      
+            <div class="panel panel-info">
+                <div class="panel-heading">
+                    Print Barcode
+                </div>
+                <div class="panel-body">
+                    <div class="alert alert-danger">
+                        <strong>Please Contact Admin For Reprinting Asset Tag!</strong> 
+                    </div>
+
+                    @using (Html.BeginForm("barcode", "Home", FormMethod.Post))
+                    {
+                        <input type="text" id="multiple_txtcode" name="txtcode_num" class="form-control" data_ng_model = "name", required = "required" placeholder="Enter # of Barcode Desired" />
+                        <input type="submit" value="Get barcode" class="form-control" />
+                        }
+                        <div id="multiple_sku">
+                            @if (ViewBag.test != null)
+                            {
+                                foreach (string image in ViewBag.test)
+                                {
+                                    @Html.Raw(image)
+                                }
+
+                            }
+                        </div>
+                        <input type="button" onclick="PrintPartOfPage2('multiple_sku')" value="Print Barcode" class="form-control" />
+                        
+                 
+                </div>
+              
+               
+
+                    <script language="javascript">
+                        function PrintPartOfPage2(dvprintidu) {
+                            var prtContent = document.getElementById(multiple_sku);
+                            var WinPrint = window.open('', '', 'letf=100,top=100,width=700,height=500');
+                            WinPrint.document.write(multiple_sku.innerHTML);
+                            WinPrint.document.close();
+                            WinPrint.onload = function () { WinPrint.print(); WinPrint.close(); }
+                           
+                            // WinPrint.print();
+
+                        }
+                    </script>
+                
+            </div>
+
+    <div class="row">
+        <div class="col-md-12">
+        </div>
+    </div>
+</body>

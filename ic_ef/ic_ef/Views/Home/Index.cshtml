@@ -1,0 +1,208 @@
+﻿@model ic_ef.Controllers.HomeController.ChartsModel
+@{
+    ViewBag.Title = "Home Page";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<head>
+ 
+    @Styles.Render("~Content/style.css")
+    @Scripts.Render("~/bundles/jqueryui")
+  
+    @Styles.Render("~/Content/css")
+    @Styles.Render("~/Content/themes/base/css")
+    @Scripts.Render("~/bundles/modernizr")
+    <style>
+       input {
+           margin : 10px ;
+       } 
+
+
+    </style>
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.0/jquery.min.js"></script>
+    <script src="@Url.Content("~/Scripts/jquery-ui-1.11.4.min.js")"></script>
+    <script type="text/javascript" src="@Url.Content("/Scripts/smoothie.js")"></script>
+    <script src="~/Scripts/Highcharts-4.0.1/js/highcharts-all.js"></script>
+    <script src="~/js/app.js"></script>
+</head>
+
+<body>
+
+    <h2><i class="fa fa-home"></i>Home</h2>
+
+    <hr />
+
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-3">
+                <div class="panel panel-primary">
+                    <div class="panel-heading">Search</div>
+                    <div class="panel-body">
+                        <div class="form-group input-group-sm">
+
+                            @{
+                        var fromDate = (string)ViewBag.fromDate;
+                        var toDate = (string)ViewBag.toDate;
+                            }
+
+
+                            @using (Html.BeginForm("Index", "Home", FormMethod.Get))
+                    {
+                                <div>From Date: @Html.TextBox("fromDate", fromDate, new { @class= "datepicker" ,data_ng_model ="name" , required="required"}  )</div>
+
+                                <div>To Date: @Html.TextBox("toDate",toDate, new { @class = "datepicker"})</div>
+
+                                <input type="submit" value="Search" class="btn btn-primary" ng-disabled="userForm.$invalid" />
+
+                    }
+
+
+                        </div>
+                    </div>
+                </div>
+              
+
+               
+                </div>
+            <div class="col-sm-9" >
+                <div class="panel panel-primary">
+                    <div class="panel-heading">COA Level</div>
+                    <div class="panel-body">
+                        <h4>Station 1</h4>
+                        <p>
+                            @Html.ActionLink("Export Windows COA CSV File", "export_coa_csv", "home", new { id = "wcoa_s1" }, new { @class = "btn btn-success" })
+                        </p>
+                        <p>
+                            @Html.ActionLink("Export Office COA CSV File", "export_coa_csv", "home", new { id = "ocoa_s1" }, new { @class = "btn btn-success" })
+                        </p>
+                        <table class="table table-striped">
+                            <thead>
+                                <tr>
+                                    <th></th>
+                                    <td>Windows </td>
+                                    <td>Office</td>
+                                   
+                                </tr>
+
+                            </thead>
+                            <tr>
+                                <th>Good360</th>
+                                <td>@ViewBag.w_g360_count_s1</td>
+                                <td>@ViewBag.o_g360_count_s1</td>
+                            </tr>
+                                <tr>
+                                <th>TechSoup</th>
+                                <td>@ViewBag.w_ts_count_s1</td>
+                                <td>@ViewBag.o_ts_count_s1</td>
+                            </tr>
+                            <tr>
+                                <th>InterConnection</th>
+                                <td>@ViewBag.w_mar_count_s1</td>
+                                <td>@ViewBag.o_mar_count_s1</td>
+                            </tr>
+                        </table>
+                        <h4>Station 2</h4>
+                        <p>
+                            @Html.ActionLink("Export Windows COA CSV File", "export_coa_csv", "home", new { id = "wcoa_s2" }, new { @class = "btn btn-success" })
+                        </p>
+                        <p>
+                            @Html.ActionLink("Export Office COA CSV File", "export_coa_csv", "home", new { id = "ocoa_s2" }, new { @class = "btn btn-success" })
+                        </p>
+                        <table class="table table-striped">
+                            <thead>
+                                <tr>
+                                    <th></th>
+                                    <td>Windows </td>
+                                    <td>Office</td>
+
+                                </tr>
+
+                            </thead>
+                            <tr>
+                                <th>Good360</th>
+                                <td>@ViewBag.w_g360_count_s2</td>
+                                <td>@ViewBag.o_g360_count_s2</td>
+                            </tr>
+                            <tr>
+                                <th>TechSoup</th>
+                                <td>@ViewBag.w_ts_count_s2</td>
+                                <td>@ViewBag.o_ts_count_s2</td>
+                            </tr>
+                            <tr>
+                                <th>InterConnection</th>
+                                <td>@ViewBag.w_mar_count_s2</td>
+                                <td>@ViewBag.o_mar_count_s2</td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+              <div class="panel panel-info">
+                <div class="panel-heading">
+
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th></th>
+                                <th>Station 1</th>
+                                <th>Station 2</th>
+                                <th>Total</th>
+                            </tr>
+
+                        </thead>
+                        <tr>
+                            <td># of Machines</td>
+                            <td>@ViewBag.station1</td>
+                            <td>@ViewBag.station2</td>
+                            <td>@ViewBag.total</td>
+                        </tr>
+                    </table>
+
+
+
+
+                </div>
+                  <div class="panel-body">
+                      <div id="container" style="min-width : 200px; height : 300px;">
+
+                          @((DotNet.Highcharts.Highcharts)ViewBag.Model)
+                      </div>
+                  </div>
+                </div>
+                
+                </div>
+         
+
+
+        <div class="row">
+            <div class="col-sm-6">
+                <div class="panel panel-info">
+                    <div class="panel-body">
+                        <div>@Model.Chart2</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-6">
+                    <div class="panel panel-info">
+                        <div class="panel-body">
+
+
+                            <div>@Model.Chart3</div>
+
+                        </div>
+                    </div>
+
+
+
+                </div>
+            
+            </div>
+
+        </div>
+        </div>
+        
+                <br />
+</body>
+
+
+
+
+

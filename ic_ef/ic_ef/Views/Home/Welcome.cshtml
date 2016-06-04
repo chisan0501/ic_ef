@@ -1,0 +1,49 @@
+﻿
+@{
+    
+    Layout = "~/Views/Shared/_welcomeLayout.cshtml";
+}
+<head>
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.0/jquery.min.js"></script>
+    @*<script src="@Url.Content("~/js/vidbg.min.js")"></script>
+    <link href="@Url.Content("~/css/fullscreenDemo.css")" rel="stylesheet" type="text/css" />*@
+
+</head>
+<body>
+
+   
+    <div><img src="/Content/des.jpg" alt="desktop_img" style="">
+        <img src="~/Content/lap.jpg" alt="laptop_img" style=""></div>
+    <div><p><h2>ICDB</h2></p>
+<p><h4>InterConnection’s Computer Hardware Discovery Tool and Database</h4></p>
+@Html.ActionLink("Register", "Register", "Account", routeValues: null, htmlAttributes: new { id = "registerLink"}) | @Html.ActionLink("Login", "Index", "Home", routeValues: null, htmlAttributes: new { id = "loginLink" })</div>
+
+    @*<section class="section-first" data-vidbg-bg="mp4: /video/ic.mp4, poster: /video/background.jpg" data-vidbg-options="loop: false, muted: true, overlay: true" style="position: fixed; z-index: -1;">
+        <div class="vidbg-container" style="position: fixed; z-index: -1; top: 0px; left: 0px; bottom: 0px; right: 0px; overflow: hidden; background-image: none; background-size: cover; background-position: 50% 50%; background-repeat: no-repeat;"><video autoplay="" loop="" muted="" style="margin: auto; position: fixed; z-index: -1; top: 50%; left: 50%; transform: translate(-50%, -50%); visibility: visible; opacity: 1; width: 1600px; height: auto;"><source src="~/video/ic.mp4" type="video/mp4"></video></div>
+    
+    </section>*@
+    
+    
+    @*<div class="inner cover text-center" style="position:relative; margin-top:50%;z-index: 1;">
+        <a> @Html.ActionLink("Learn More", "Index", "Home", routeValues: null, htmlAttributes: new { @class = "btn btn-success btn-lg" })</a>
+       
+       
+    </div>*@
+
+   
+    
+    
+    
+ 
+    <div class="mastfoot" style="z-index: 1;">
+        <br/>
+        <footer style="color: black" >
+            <p>To learn more contact</p>
+            <p><a href="info@interconnection.org">info@interconnection.org</a></p>
+            <p>(206) 633-1517</p>
+            <p>3415 Stone Way N </p>
+            <p>Seattle WA 98103</p>
+        </footer>
+    </div>
+</body>
+

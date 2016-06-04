@@ -1,0 +1,42 @@
+﻿@model ic_ef.users
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>users</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.work_status)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.work_status)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.pw)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.pw)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.role)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.role)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.user_name }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

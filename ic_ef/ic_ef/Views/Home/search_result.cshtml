@@ -1,0 +1,143 @@
+﻿
+@{
+    ViewBag.Title = "search_result";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<br /><br /><br />
+<div class="panel panel-default">
+    <div class="panel-body">Search Result for Asset : @ViewBag.id</div>
+    <h2 style="color:red">@ViewBag.Status</h2>
+</div>
+
+
+<hr />
+<h4>Discovery</h4>
+
+
+<h2 style="color:red">@ViewBag.Status</h2>
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Asset</th>
+            <th>Time</th>
+            <th>Serial</th>
+            <th>Brand</th>
+            <th>Model</th>
+            <th>CPU</th>
+            <th>HDD</th>
+            <th>RAM</th>
+            <th>Optical Drive</th>
+        </tr>
+    </thead>
+    <tbody>
+@if (ViewBag.discovery != null)
+{
+    foreach (var item in ViewBag.discovery)
+    {
+        <tr>
+            <td>@item.ictag</td>
+            <td>@item.time</td>
+            <td>@item.serial</td>
+            <td>@item.brand</td>
+            <td>@item.model</td>
+            <td>@item.cpu</td>
+            <td>@item.hdd</td>
+            <td>@item.ram</td>
+            <td>@item.optical_drive</td>
+        </tr>
+    }
+}
+
+
+     
+
+    </tbody>
+</table>
+<h4>Refurbish</h4>
+
+<h2 style="color:red">@ViewBag.redisco_Status</h2>
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Asset</th>
+            <th>Time</th>
+            <th>Serial</th>
+            <th>Brand</th>
+            <th>Model</th>
+            <th>CPU</th>
+            <th>HDD</th>
+            <th>RAM</th>
+            <th>Optical Drive</th>
+            <th>Channel</th>
+            <th>Product SKU</th>
+            <th>Pre-Exisiting COA</th>
+            <th>Refurbisher</th>
+        </tr>
+    </thead>
+    <tbody>
+@if (ViewBag.refrubish != null)
+{
+    foreach (var item in ViewBag.refrubish)
+    {
+            <tr>
+                <td>@item.ictag</td>
+                <td>@item.time</td>
+                <td>@item.serial</td>
+                <td>@item.brand</td>
+                <td>@item.model</td>
+                <td>@item.cpu</td>
+                <td>@item.hdd</td>
+                <td>@item.ram</td>
+                <td>@item.optical_drive</td>
+                <td>@item.location</td>
+                <td>@item.pallet</td>
+                <td>@item.pre_coa</td>
+                <td>@item.refurbisher</td>
+            </tr>
+    }
+}
+
+    </tbody>
+</table>
+<h4>Imaging</h4>
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Asset</th>
+            <th>Time</th>
+            <th>Serial</th>
+            <th>Brand</th>
+            <th>Model</th>
+            <th>CPU</th>
+            <th>HDD</th>
+            <th>RAM</th>   
+            <th>Station</th>
+            <th>Windows COA</th>
+            <th>Office COA</th>
+        </tr>
+    </thead>
+    <tbody>
+@if (ViewBag.imaging != null)
+{
+    foreach (var item in ViewBag.imaging)
+    {
+            <tr>
+                <td>@item.ictags</td>
+                <td>@item.time</td>
+                <td>@item.serial</td>
+                <td>@item.Manufacture</td>
+                <td>@item.Model</td>
+                <td>@item.CPU</td>
+                <td>@item.HDD</td>
+                <td>@item.RAM</td>
+                <td>@item.location</td>
+                <td>@item.wcoa</td>
+                <td>@item.ocoa</td>
+            </tr>
+    }
+}
+
+    </tbody>
+</table>

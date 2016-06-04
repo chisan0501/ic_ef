@@ -1,0 +1,47 @@
+﻿@model IEnumerable<ic_ef.station_setting>
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Manage Station Settings</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table">
+    <tr>
+        
+        <th>
+            @Html.DisplayNameFor(model => model.station_dropdown_value)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.station_name)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.description)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.station_dropdown_value)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.station_name)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.description)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { id=item.station_dropdown_value }) |
+            @Html.ActionLink("Details", "Details", new { id=item.station_dropdown_value }) |
+            @Html.ActionLink("Delete", "Delete", new { id=item.station_dropdown_value })
+        </td>
+    </tr>
+}
+
+</table>

@@ -1,0 +1,29 @@
+﻿
+@{
+    ViewBag.Title = "customer_support";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>customer_support</h2>
+
+<div id="container">
+    <input type="hidden" id="nickname" />
+    <div id="chatlog"></div>
+    <div id="onlineusers">
+        <b>Online Users</b>
+    </div>
+    <div id="chatarea">
+        <div class="messagelog">
+            <textarea spellcheck="true" id="message" class="messagebox"></textarea>
+        </div>
+       <div class="actionpane">
+           <input type="button" id="btnsend" value="Send" />
+       </div>
+        <div class="actionpane">
+            <select id="users"><option value="All">All</option></select>
+        </div>
+        </div>
+    <div id="dialog" title="Enter Your name to start a chat.">
+        <input type="text" id="nick" />
+    </div>
+</div>

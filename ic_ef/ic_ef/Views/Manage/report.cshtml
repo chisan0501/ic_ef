@@ -1,0 +1,118 @@
+﻿
+@{
+    ViewBag.Title = "report";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<head>
+    @Styles.Render("~Content/style.css")
+</head>
+@Styles.Render("~/Content/css")
+@Styles.Render("~/Content/themes/base/css")
+@Scripts.Render("~/bundles/modernizr")
+
+<h2><i class="fa fa-book"></i>Report</h2>
+
+<hr />
+<div class="container">
+    <div class="row">
+        <div class="col-sm-4">
+            <div class="panel panel-primary">
+                <div class="panel-heading"></div>
+                <div class="panel-body">
+                    <div class="form-group input-group-sm">
+
+                        @{
+                            var fromDate = (string)ViewBag.fromDate;
+                            var toDate = (string)ViewBag.toDate;
+                        }
+
+
+                        @using (Html.BeginForm("report", "Manage", FormMethod.Get))
+                        {               <p>
+                            <div>@Html.TextBox("fromDate", fromDate, new { @class = "datepicker", required = "required", placeholder = "From" })</div>
+                        </p>
+                        <p>
+                            <div>@Html.TextBox("toDate", toDate, new { @class = "datepicker", placeholder = "To" })</div>
+                        </p>
+                        <input type="submit" value="Search" class="btn btn-primary"/>
+                        <p>Download As CSV</p>
+                        <p><input type="checkbox" name="imaging_csv" value="SomeValue" />Imaging</p>
+                        <p> <input type="checkbox" name="discover_csv" value="SomeValue" />Discovery</p>
+                        <p><input type="checkbox" name="refrub_csv" value="SomeValue" />Refrubish</p>
+                        }
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-sm-4">
+            <div class="panel panel-primary">
+                <div class="panel-heading">Assets Discovered : <div>
+</div></div>
+               
+                <div class="panel-body">
+                    <h3><i class="fa fa-desktop"></i> @ViewBag.discover_Count</h3>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-4">
+            <div class="panel panel-primary">
+                <div class="panel-heading">Assets Refrubished : <div>
+    
+      
+      
+</div></div>
+                <div class="panel-body">
+                    <h3><i class="fa fa-desktop"></i> @ViewBag.refrub_count</h3>
+
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+
+
+
+    <div class="row">
+
+
+        <div class="col-sm-12">
+            <div class="panel panel-primary">
+                <div class="panel-heading">Machines Imaged :     </div>
+                <div class="panel-body">
+                    <div class="col-sm-4">
+                        <div class="panel panel-primary">
+                            <div class="panel-body">
+                                Total Machines<h3><i class="fa fa-desktop"></i> @ViewBag.imaging_count</h3>
+                                </div>
+                            </div>
+                        </div>
+
+                            <div class="col-sm-4">
+                                <div class="panel panel-primary">
+                                    <div class="panel-body">
+                                        Station 1 : <h3><i class="fa fa-laptop"></i> @ViewBag.s1</h3>
+
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-4">
+                                <div class="panel panel-primary">
+                                    <div class="panel-body">
+                                        Station 2 :  <h3><i class="fa fa-desktop"></i> @ViewBag.s2</h3>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+</div>
+    </div>
+
+<hr />
+                       
+<h3>Details</h3>
+ 

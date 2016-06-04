@@ -1,0 +1,50 @@
+﻿@model IEnumerable<ic_ef.pallet>
+
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Search For Pallet</h2>
+
+@*index is the action name
+ hom is name of controller*@
+
+
+@using (Html.BeginForm("Index")){
+    <h4>Pallet @Html.DropDownList("searchString", ViewBag.Roles as SelectList,"---Select---")</h4>
+
+    <p>
+        <input type="submit" value="Filter" />
+    </p>
+        } 
+
+
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.ictags)
+        </th>
+
+        <th>
+            @Html.DisplayNameFor(model => model.pallet_name)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.ictags)
+        </td>
+
+        <td>
+            @Html.DisplayFor(modelItem => item.pallet_name)
+        </td>
+        <td>
+            @Html.ActionLink("Delete", "Delete", new { id=item.ictags })
+        </td>
+    </tr>
+}
+
+</table>

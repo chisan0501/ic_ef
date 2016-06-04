@@ -1,0 +1,161 @@
+﻿@model ic_ef.Models.inventoryManageViewModel
+@{
+    ViewBag.Title = "Manage Inventory";
+}
+
+
+
+<h2><i class="fa fa-barcode"></i>Manage Inventory</h2>
+
+
+<a class="btn btn-primary" style="margin:10px;" href="@Url.Action("create", "pallet_master")">Create Pallet<i class="fa fa-plus pull-left"></i></a>
+<a class="btn btn-primary" style="margin:10px;" href="@Url.Action("bulk", "pallet_master")">Bulk Insert<i class="fa fa-truck pull-left"></i></a>
+
+
+
+
+<ul class="nav nav-tabs">
+    <li class="active"><a data-toggle="tab" href="#home">Assign Multiple Assets to a Pallet</a></li>
+    <li><a data-toggle="tab" href="#menu1">Manage Pallet</a></li>
+   
+</ul>
+
+<div class="tab-content">
+    <div id="home" class="tab-pane fade in active">
+        @using (Html.BeginForm())
+        {
+            @Html.ValidationSummary(true)
+
+            <fieldset>
+                <legend>Assign Multiple Assets to a Pallet</legend>
+
+
+
+
+                <table id="clientTable" class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <td>Asset</td>
+                            <td>Pallet @Html.DropDownList("MultipleTables", ViewBag.Roles as SelectList)</td>
+                            <td>Note</td>
+                            <td>Action</td>
+                        </tr>
+                    </thead>
+
+                    <tr id="tablerow0">
+                        <td>
+                            <div class="editor-field">
+                                <input class="text-box single-line" id="ictag_input" name="ictag[0]" type="text" value="" required="required" />
+                            </div>
+                        </td>
+                        <td>
+                            <div class="editor-field">
+                                <input type="text" id="email_input" class="text-box single-line" name="pallet_name[0]" value="" required="required" />
+                            </div>
+                        </td>
+                        <td>
+                            <div class="editor-field">
+                                <input type="text" id="note_input" class="text-box single-line" name="note[0]" value="" />
+                            </div>
+                        </td>
+                        <td>
+                            <button type="button" class="btn btn-primary" onclick="removeTr(0);"><i class="fa fa-trash"></i>Delete</button>
+                        </td>
+                    </tr>
+
+                </table>
+                <p>
+                    <button id="addButton" type="submit" class="btn btn-primary">New Asset</button>
+                </p>
+                <hr />
+
+                <p>
+                    <button type="submit" class="btn btn-primary">Submit</button>
+                </p>
+            </fieldset>
+        }
+
+    </div>
+    <div id="menu1" class="tab-pane fade">
+        <h3>@Html.ActionLink("Manage Pallet", "Index", "pallet_master")</h3>
+        <table class="table table-bordered ">
+            <thead class="thead-inverse">
+                <tr>
+                    <th>
+                        @Html.DisplayNameFor(model => model.pallet)
+
+
+                    </th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            @foreach (var item in ViewBag.data)
+            {
+                <tr>
+                    <td>
+                        @item.pallet
+
+                    </td>
+                    <td>
+                        @Html.ActionLink("View", "View_pallet", "pallet_master",new { id = item.pallet }, new { @class = "btn btn-info" })
+                        @Html.ActionLink("Delete", "Delete", "pallet_master", new { id = item.pallet }, new { @class = "btn btn-danger" })
+                        @*@Html.ActionLink("Export as CSV", "export_csv", new { id = item.pallet_id }, new { @class = "btn btn-success" })*@
+                        @Html.ActionLink("Export Report as CSV", "export_detail_csv", "pallet_master", new { id = item.pallet }, new { @class = "btn btn-success" })
+                    </td>
+                </tr>
+            }
+
+        </table>
+    </div>
+    <div id="menu2" class="tab-pane fade">
+        <h3>@Html.ActionLink("Pallet Detail", "Index", "pallets")</h3>
+
+    </div>
+</div>
+
+
+
+
+
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+
+    <script type="text/javascript">
+        var counter = 1;
+        $(function () {
+            
+            $('#addButton').click(function () 
+            {
+                $("input[Name='pallet_name[0]'").val($("#MultipleTables :selected").text())
+
+                $('<tr id="tablerow' + counter + '"><td>' +
+                    '<input class="text-box single-line" name="ictag[' + counter + ']" type="text" value="" required="required" />' +
+                    '</td>' +
+                    '<td>' +
+                    '<input type="text" class="text-box single-line" name="pallet_name[' + counter + ']" value="' + $("#MultipleTables :selected").text() + '" required="required" />' +
+                    '</td>' +
+                   '<td>' +
+                '<input class="text-box single-line" name="note[' + counter + ']" type="text" value="" />' +
+                '</td>' +
+                    '<td>' +
+                    '<button type="button" class="btn btn-primary" onclick="removeTr(' + counter + ');">Delete</button>' +
+                    '</td>' +
+                    '</tr>').appendTo('#clientTable');
+                $("input[Name='ictag[" + counter + "]']").focus()
+ 
+                counter++;
+                return false;
+            });
+        });
+
+        function removeTr(index) {
+            if (counter > 1) {
+                $('#tablerow' + index).remove();
+                counter--;
+            }
+            return false;
+        }
+    </script>
+}
+

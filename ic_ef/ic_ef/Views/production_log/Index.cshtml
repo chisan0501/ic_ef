@@ -1,0 +1,92 @@
+﻿@model PagedList.IPagedList<ic_ef.production_log>
+@using PagedList.Mvc;
+<link href="~/Content/PagedList.css" rel="stylesheet" type="text/css" />
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Index</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.ActionLink("Time", "Index", new { sortOrder = ViewBag.DateSortParm, currentFilter = ViewBag.CurrentFilter })
+        </th>
+        <th>
+            @Html.ActionLink("Asset Tag", "Index", new { sortOrder = ViewBag.NameSortParm, currentFilter = ViewBag.CurrentFilter })
+        </th>
+        <th>
+            Windows COA
+        </th>
+        <th>
+            Offic COA
+        </th>
+       
+        <th>
+            Serial
+        </th>
+        <th>
+            Manufacturer
+        </th>
+        <th>
+            @Html.ActionLink("Model", "Index", new { sortOrder = ViewBag.ModelSortParm, currentFilter = ViewBag.CurrentFilter })
+
+        </th>
+        <th>
+            @Html.ActionLink("Channel", "Index", new { sortOrder = ViewBag.ChannelSortParm, currentFilter = ViewBag.CurrentFilter })
+
+        </th>
+        <th>
+           Stations
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.time)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.ictags)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.wcoa)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.ocoa)
+        </td>
+ 
+        <td>
+            @Html.DisplayFor(modelItem => item.serial)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Manufacture)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Model)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.channel)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.location)
+        </td>
+       
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { id=item.wcoa }) |
+            @Html.ActionLink("Delete", "Delete", new { id=item.wcoa })
+        </td>
+    </tr>
+}
+
+</table>
+<br />
+Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
+
+@Html.PagedListPager(Model, page => Url.Action("Index",
+    new { page, sortOrder = ViewBag.CurrentSort, currentFilter = ViewBag.CurrentFilter }))
+
