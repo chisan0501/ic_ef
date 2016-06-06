@@ -68,6 +68,24 @@ namespace ic_ef.Controllers
           
             return RedirectToAction("index");
         }
+        [HttpPost]
+        public JsonResult create_dymo (int asset,string model, string cpu, string ram, string hdd, double price)
+        {
+            var create_dymo = new retail();
+            create_dymo.time = DateTime.Today;
+            create_dymo.custom_label = "YES";
+            create_dymo.asset_tag = asset;
+            create_dymo.model = model;
+            create_dymo.cpu = cpu;
+            create_dymo.ram = ram;
+            create_dymo.hdd = hdd;
+            create_dymo.price = price;
+            db.retail.Add(create_dymo);
+            db.SaveChanges();
+            db.Dispose();
+            return Json(JsonRequestBehavior.AllowGet);
+        }
+
         public ActionResult Retail_Dymo()
         {
             return View();
@@ -82,7 +100,7 @@ namespace ic_ef.Controllers
             int ictag = int.Parse(asset);
 
             var result = (from m in db.rediscovery where m.ictag == ictag select m);
-
+           
 
             return Json(result,JsonRequestBehavior.AllowGet);
         }

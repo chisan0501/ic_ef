@@ -214,6 +214,19 @@ warning 6013: The table/view 'def.ic_database.misc_setting' does not have a prim
           <Property Name="pre_coa" Type="varchar" MaxLength="75" />
           <Property Name="refurbisher" Type="char" MaxLength="100" />
         </EntityType>
+        <EntityType Name="retail">
+          <Key>
+            <PropertyRef Name="asset_tag" />
+          </Key>
+          <Property Name="time" Type="datetime" Precision="0" />
+          <Property Name="asset_tag" Type="int" Nullable="false" />
+          <Property Name="price" Type="double" Nullable="false" />
+          <Property Name="custom_label" Type="char" MaxLength="50" Nullable="false" />
+          <Property Name="cpu" Type="char" MaxLength="120" Nullable="false" />
+          <Property Name="ram" Type="char" MaxLength="50" Nullable="false" />
+          <Property Name="hdd" Type="char" MaxLength="50" Nullable="false" />
+          <Property Name="model" Type="char" MaxLength="50" Nullable="false" />
+        </EntityType>
         <EntityType Name="setting">
           <Key>
             <PropertyRef Name="channel_name" />
@@ -335,6 +348,7 @@ warning 6013: The table/view 'def.ic_database.misc_setting' does not have a prim
           <EntitySet Name="pallet_master" EntityType="Self.pallet_master" Schema="ic_database" store:Type="Tables" />
           <EntitySet Name="production_log" EntityType="Self.production_log" Schema="ic_database" store:Type="Tables" />
           <EntitySet Name="rediscovery" EntityType="Self.rediscovery" Schema="ic_database" store:Type="Tables" />
+          <EntitySet Name="retail" EntityType="Self.retail" Schema="ic_database" store:Type="Tables" />
           <EntitySet Name="setting" EntityType="Self.setting" Schema="ic_database" store:Type="Tables" />
           <EntitySet Name="setting_bol" EntityType="Self.setting_bol" Schema="ic_database" store:Type="Tables" />
           <EntitySet Name="station_setting" EntityType="Self.station_setting" Schema="ic_database" store:Type="Tables" />
@@ -643,6 +657,7 @@ warning 6013: The table/view 'def.ic_database.misc_setting' does not have a prim
           </AssociationSet>
           <EntitySet Name="coas_history" EntityType="ic_databaseModel.coas_history" />
           <EntitySet Name="temp_label" EntityType="ic_databaseModel.temp_label" />
+          <EntitySet Name="retail" EntityType="ic_databaseModel.retail" />
         </EntityContainer>
         <EntityType Name="coas_history">
           <Key>
@@ -675,6 +690,19 @@ warning 6013: The table/view 'def.ic_database.misc_setting' does not have a prim
           <Property Name="Manu" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="Model" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="pre_coa" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="retail">
+          <Key>
+            <PropertyRef Name="asset_tag" />
+          </Key>
+          <Property Name="time" Type="DateTime" />
+          <Property Name="asset_tag" Type="Int32" Nullable="false" />
+          <Property Name="price" Type="Double" Nullable="false" />
+          <Property Name="custom_label" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="cpu" Type="String" Nullable="false" MaxLength="120" FixedLength="false" Unicode="false" />
+          <Property Name="ram" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="hdd" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="model" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
         </EntityType>
       </Schema>
     </edmx:ConceptualModels>
@@ -948,6 +976,20 @@ warning 6013: The table/view 'def.ic_database.misc_setting' does not have a prim
                 <ScalarProperty Name="serial" ColumnName="serial" />
                 <ScalarProperty Name="row_id" ColumnName="row_id" />
                 <ScalarProperty Name="Time" ColumnName="Time" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="retail">
+            <EntityTypeMapping TypeName="ic_databaseModel.retail">
+              <MappingFragment StoreEntitySet="retail">
+                <ScalarProperty Name="model" ColumnName="model" />
+                <ScalarProperty Name="hdd" ColumnName="hdd" />
+                <ScalarProperty Name="ram" ColumnName="ram" />
+                <ScalarProperty Name="cpu" ColumnName="cpu" />
+                <ScalarProperty Name="custom_label" ColumnName="custom_label" />
+                <ScalarProperty Name="price" ColumnName="price" />
+                <ScalarProperty Name="asset_tag" ColumnName="asset_tag" />
+                <ScalarProperty Name="time" ColumnName="time" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
