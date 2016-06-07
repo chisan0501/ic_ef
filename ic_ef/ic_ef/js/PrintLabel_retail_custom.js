@@ -1,14 +1,14 @@
-
-
+(function()
+{
     // called when the document completly loaded
-    $(document).ready(function () 
+    function onload()
     {
              
-        var left_printButton = document.getElementById('non_custom_printButton');
-        var printername = document.getElementById('non_custom_printersSelect');
+        var printButton = document.getElementById('printButton');
+        var printername = document.getElementById('printersSelect');
 
         function loadPrinters() {
-            var non_custom_printersSelect = document.getElementById('non_custom_printersSelect');
+            var printersSelect = document.getElementById('printersSelect');
 
             var printers = dymo.label.framework.getPrinters();
             if (printers.length == 0) {
@@ -17,12 +17,12 @@
             }
 
             for (var i = 0; i < printers.length; i++) {
-                var non_custom_printerName = printers[i].name;
+                var printerName = printers[i].name;
 
                 var option = document.createElement('option');
-                option.value = non_custom_printerName;
-                option.appendChild(document.createTextNode(non_custom_printerName));
-                non_custom_printersSelect.appendChild(option);
+                option.value = printerName;
+                option.appendChild(document.createTextNode(printerName));
+                printersSelect.appendChild(option);
 
             }
         }
@@ -30,9 +30,8 @@
 
         loadPrinters();
         // prints the label
-        $('body').on('click', '#non_custom_printButton', function () {
-          
-
+        printButton.onclick = function()
+        {
             try
             {
                 // open label
@@ -376,17 +375,16 @@
 	</ObjectInfo>\
 </DieCutLabel>';
                 var label = dymo.label.framework.openLabelXml(labelXml);
-                var x = $(this).closest('tr').index();
-                
+
                 //set label text
-                var time = document.getElementById("table2").rows[x+1].cells[0].innerHTML;
-                var price = document.getElementById("table2").rows[x+1].cells[6].innerHTML;
-                var manu = document.getElementById("table2").rows[x + 1].cells[2].innerHTML;
-                var cpu = document.getElementById("table2").rows[x + 1].cells[3].innerHTML;
-                var ram = document.getElementById("table2").rows[x+1].cells[4].innerHTML;
-                var hdd = document.getElementById("table2").rows[x+1].cells[5].innerHTML;
-                var asset_tag = document.getElementById("table2").rows[x+1].cells[1].innerHTML;
-                
+                var time = document.getElementById('time_text').value;
+                var price = document.getElementById('creat_price').value;
+                var manu = document.getElementById('creat_model').value;
+                var cpu = document.getElementById('creat_cpu').value;
+                var ram = document.getElementById('creat_ram').value;
+                var hdd = document.getElementById('creat_hdd').value;
+                var asset_tag = document.getElementById('creat_asset_tag').value;
+             
 
                 label.setObjectText("time", time);
                 label.setObjectText("price", price);
@@ -402,7 +400,7 @@
 
 
 				
-                selectedNode = printername.options[printername.selectedIndex];
+				selectedNode = printername.options[printername.selectedIndex];
 				label.print(selectedNode.value);
             }
             catch(e)
@@ -410,7 +408,7 @@
                 alert(e.message || e);
             }
         }
-    )});
+    };
 
     // register onload event
     if (window.addEventListener)
@@ -419,4 +417,5 @@
         window.attachEvent("onload", onload);
     else
         window.onload = onload;
- 
+
+} ());

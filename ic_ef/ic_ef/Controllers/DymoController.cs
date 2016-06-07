@@ -91,18 +91,19 @@ namespace ic_ef.Controllers
             return View();
         }
         
-        public JsonResult RetailDymo (string asset)
+        public JsonResult RetailDymo (string asset, string price, string channel)
         {
+            
             if (String.IsNullOrEmpty(asset))
             {
                 asset = "0";
             }
             int ictag = int.Parse(asset);
-
+            
             var result = (from m in db.rediscovery where m.ictag == ictag select m);
-           
-
-            return Json(result,JsonRequestBehavior.AllowGet);
+            
+            var multiple = new { price = price , result = result,channel = channel };
+            return Json(multiple, JsonRequestBehavior.AllowGet);
         }
 
         public ActionResult Index()
@@ -115,8 +116,9 @@ namespace ic_ef.Controllers
             ViewBag.myList = list;
             
             
-          
+            
             var last_five = user_info();
+
             return View(last_five.ToList());
         }
 

@@ -135,7 +135,7 @@ namespace WebApplication1
                 int count = test_allText.Count();
 
 
-                if (true_following - count <= 5)
+                if (true_following - count <= 10)
                 {
                     break;
                 }
@@ -158,35 +158,36 @@ namespace WebApplication1
                     ArrayList valid_usr = new ArrayList();
             foreach (string result in temp)
             {
-               
+                driver.Navigate().GoToUrl("https://www.instagram.com/" + result);
+                Thread.Sleep(1000);
+                try
+                {
+                   
 
-                    driver.Navigate().GoToUrl("https://www.instagram.com/" + result);
-                    Thread.Sleep(1000);
-              
                     string filter_followers = driver.FindElement(By.ClassName("_pr3wx")).GetAttribute("title");
-                if (String.IsNullOrEmpty(filter_followers))
-                {
-                    filter_followers = "0";
-                }
-                string filter_media_total = driver.FindElement(By.ClassName("_e8fkl")).Text;
-                if (String.IsNullOrEmpty(filter_media_total))
-                {
-                    filter_media_total = "0";
-                }
-                string bio = driver.FindElement(By.CssSelector("#react-root > section > main > article > header > div._de9bg > div._bugdy")).Text;
-                bio = bio.Replace("'", "");
-                string filter_followings = driver.FindElement(By.ClassName("_bgvpv")).Text;
-                if (String.IsNullOrEmpty(filter_followings))
-                {
-                    filter_followings = "0";
-                }
-                filter_followers = filter_followers.Replace(",", "");
+                    if (String.IsNullOrEmpty(filter_followers))
+                    {
+                        filter_followers = "0";
+                    }
+                    string filter_media_total = driver.FindElement(By.ClassName("_e8fkl")).Text;
+                    if (String.IsNullOrEmpty(filter_media_total))
+                    {
+                        filter_media_total = "0";
+                    }
+                    string bio = driver.FindElement(By.CssSelector("#react-root > section > main > article > header > div._de9bg > div._bugdy")).Text;
+                    bio = bio.Replace("'", "");
+                    string filter_followings = driver.FindElement(By.ClassName("_bgvpv")).Text;
+                    if (String.IsNullOrEmpty(filter_followings))
+                    {
+                        filter_followings = "0";
+                    }
+                    filter_followers = filter_followers.Replace(",", "");
                     int true_filter_followers = int.Parse(filter_followers);
                     if (true_filter_followers > 120000)
                     {
 
                         dbHost = "mysql.us.cloudlogin.co";
-                         dbUser = "one007hk_ig";
+                        dbUser = "one007hk_ig";
                         dbPass = "chisan0501";
                         dbName = "one007hk_ig";
 
@@ -194,10 +195,16 @@ namespace WebApplication1
                         conn = new MySqlConnection(connStr);
                         command = conn.CreateCommand();
                         conn.Open();
-                        command.CommandText = "Insert into ig(user_id,master_id,follower,bio,username,media_total,following) values('" + "https://www.instagram.com/" + result + "','"+ master_id+"','" + filter_followers + "','" + bio + "','" + result + "','" + filter_media_total + "','" + filter_followings + "') ON DUPLICATE KEY UPDATE follower= '" + filter_followers + "'";
+                        command.CommandText = "Insert into ig(user_id,master_id,follower,bio,username,media_total,following) values('" + "https://www.instagram.com/" + result + "','" + master_id + "','" + filter_followers + "','" + bio + "','" + result + "','" + filter_media_total + "','" + filter_followings + "') ON DUPLICATE KEY UPDATE follower= '" + filter_followers + "'";
                         command.ExecuteNonQuery();
                         conn.Close();
                     }
+                }
+                catch 
+                {
+                    continue;
+                }
+                   
                 }
 
             

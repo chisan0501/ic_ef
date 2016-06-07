@@ -468,7 +468,9 @@
     <Content Include="js\app.js" />
     <Content Include="js\gen_validatorv4.js" />
     <Content Include="js\jquery.vide.min.js" />
+    <Content Include="js\moment.js" />
     <Content Include="js\PrintLabel.js" />
+    <Content Include="js\PrintLabel_retail_custom.js" />
     <Content Include="js\PrintLabel_retail.js" />
     <Content Include="js\sliiide.min.js" />
     <Content Include="js\tileJs.js" />
