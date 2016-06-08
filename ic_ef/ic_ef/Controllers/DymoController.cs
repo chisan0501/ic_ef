@@ -71,26 +71,95 @@ namespace ic_ef.Controllers
         [HttpPost]
         public JsonResult create_dymo (int asset,string model, string cpu, string ram, string hdd, double price)
         {
-            var create_dymo = new retail();
-            create_dymo.time = DateTime.Today;
-            create_dymo.custom_label = "YES";
-            create_dymo.asset_tag = asset;
-            create_dymo.model = model;
-            create_dymo.cpu = cpu;
-            create_dymo.ram = ram;
-            create_dymo.hdd = hdd;
-            create_dymo.price = price;
-            db.retail.Add(create_dymo);
-            db.SaveChanges();
-            db.Dispose();
+            string message = "";
+            try
+            {
+                var existing = (from im in db.retail
+                                where im.asset_tag.Equals(asset)
+                                select im).SingleOrDefault();
+                if (existing != null)
+                {
+                    
+                    existing.time = DateTime.Today;
+                    existing.price = price;
+                    db.SaveChanges();
+                }
+
+                else
+                {
+
+                    var create_dymo = new retail();
+                    create_dymo.time = DateTime.Today;
+                    create_dymo.custom_label = "YES";
+                    create_dymo.asset_tag = asset;
+                    create_dymo.model = model;
+                    create_dymo.cpu = cpu;
+                    create_dymo.ram = ram;
+                    create_dymo.hdd = hdd;
+                    create_dymo.price = price;
+                    db.retail.Add(create_dymo);
+                    db.SaveChanges();
+                    db.Dispose();
+                }
+                }
+           catch (Exception e )
+            {
+                message = e.Message.ToString();
+            }
+            return Json(message ,JsonRequestBehavior.AllowGet);
+        }
+
+        public JsonResult Retail_Dymo()
+        {
+            DateTime startDateTime = DateTime.Today; //Today at 00:00:00
+            DateTime endDateTime = DateTime.Today.AddDays(-30).AddTicks(-1);
+            var exisit = (from t in db.retail
+                          where (t.time >= endDateTime && t.time <= startDateTime)
+                          select t.time).ToList();
+
+            var result = new { };
+            return Json(result, JsonRequestBehavior.AllowGet);
+        }
+
+        [HttpPost]
+        public JsonResult write_RetailDymo(int asset_tag, double price, string manu, string cpu, string ram, string hdd)
+        {
+            try
+            {
+                var existing = (from im in db.retail
+                                where im.asset_tag.Equals(asset_tag)
+                                select im).SingleOrDefault();
+                if (existing != null)
+                {
+
+                    existing.time = DateTime.Today;
+                    existing.price = price;
+                    db.SaveChanges();
+                }
+                else
+                {
+                    var create_dymo = new retail();
+                    create_dymo.time = DateTime.Today;
+                    create_dymo.custom_label = "NO";
+                    create_dymo.asset_tag = asset_tag;
+                    create_dymo.model = manu;
+                    create_dymo.cpu = cpu;
+                    create_dymo.ram = ram;
+                    create_dymo.hdd = hdd;
+                    create_dymo.price = price;
+                    db.retail.Add(create_dymo);
+                    db.SaveChanges();
+                    db.Dispose();
+                }
+            }
+            catch (Exception e)
+            {
+
+            }
+        
             return Json(JsonRequestBehavior.AllowGet);
         }
 
-        public ActionResult Retail_Dymo()
-        {
-            return View();
-        }
-        
         public JsonResult RetailDymo (string asset, string price, string channel)
         {
             

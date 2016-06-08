@@ -30,6 +30,7 @@
 
         loadPrinters();
         // prints the label
+
         printButton.onclick = function()
         {
             try
@@ -402,6 +403,7 @@
 				
 				selectedNode = printername.options[printername.selectedIndex];
 				label.print(selectedNode.value);
+				$('#printButton').attr('disabled', 'disabled');
             }
             catch(e)
             {

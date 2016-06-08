@@ -403,12 +403,39 @@
 
 				
                 selectedNode = printername.options[printername.selectedIndex];
-				label.print(selectedNode.value);
+               label.print(selectedNode.value);
+                
+
+                var jsonObject2 = {
+                    "asset_tag": asset_tag,
+                    "manu": manu,
+                    "cpu": cpu,
+                    "ram": ram,
+                    "hdd": hdd,
+                    "price": price
+                };
+                $.ajax({
+                    url: 'write_RetailDymo',
+                    type: "POST",
+                    data: JSON.stringify(jsonObject2),
+                    contentType: "application/json; charset=utf-8",
+                    dataType: "json",
+                    success: function (data) {
+                        
+                        //write code here manage "data"
+                    },
+                    error: function () {
+                      
+                    }
+                });
+
             }
             catch(e)
             {
                 alert(e.message || e);
             }
+
+      
         }
     )});
 

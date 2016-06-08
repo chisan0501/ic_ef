@@ -218,14 +218,14 @@ warning 6013: The table/view 'def.ic_database.misc_setting' does not have a prim
           <Key>
             <PropertyRef Name="asset_tag" />
           </Key>
-          <Property Name="time" Type="datetime" Precision="0" />
+          <Property Name="time" Type="date" />
           <Property Name="asset_tag" Type="int" Nullable="false" />
           <Property Name="price" Type="double" Nullable="false" />
-          <Property Name="custom_label" Type="char" MaxLength="50" Nullable="false" />
-          <Property Name="cpu" Type="char" MaxLength="120" Nullable="false" />
-          <Property Name="ram" Type="char" MaxLength="50" Nullable="false" />
-          <Property Name="hdd" Type="char" MaxLength="50" Nullable="false" />
-          <Property Name="model" Type="char" MaxLength="50" Nullable="false" />
+          <Property Name="custom_label" Type="char" MaxLength="50" />
+          <Property Name="cpu" Type="char" MaxLength="120" />
+          <Property Name="ram" Type="char" MaxLength="50" />
+          <Property Name="hdd" Type="char" MaxLength="50" />
+          <Property Name="model" Type="char" MaxLength="50" />
         </EntityType>
         <EntityType Name="setting">
           <Key>

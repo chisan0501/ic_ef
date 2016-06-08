@@ -5,6 +5,7 @@
 
 }
 <head>
+ 
     <script src="~/js/PrintLabel_retail.js"></script>
     <script src="~/js/PrintLabel_retail_custom.js"></script>
     <script src="~/js/moment.js"></script>
@@ -59,7 +60,7 @@
                             <label for="time_text">Time:</label>
                             <input type="text" class="form-control" id="time_text">
                             <button type="submit" class="btn btn-default" id="submit_asset">Submit</button>
-                            <button type="submit" class="btn btn-default" id="show_sample">Sample Label</button>
+                           
                           <p><label for="non_custom_printersSelect">Select Printer:</label></p>
                             <p><select id="non_custom_printersSelect" class="form-control"></select></p>
                            
@@ -100,14 +101,27 @@
                            
 
                         </form>
-                        <input type="button" value="Print" class="form-control" id="printButton" />
+                        <input type="button" value="Print" class="form-control" disabled="disabled" id="printButton" />
                     </div>
                 </div>
 
 
             </div>
             <div class="col-lg-4">
-                <img id="sampel_pic" src="~/Content/retail_sample.png" alt="sample" style="display: none;max-width:100%; max-height:100%;" />
+                <table class="table" id="table_reminder">
+                    <thead>
+                        <tr>
+                           
+                            <th>Asset #</th>
+                            <th>Model</th>
+                            <th>$</th>
+                            <th>Days</th>
+
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+                
             </div>
         </div>
 
@@ -117,11 +131,45 @@
 
     <script>
         $(document).ready(function () {
+            
+            $.ajax({
+                url: '@Url.Action("Retail_Dymo", "Dymo")',
+                type: "GET",
+                success: function (result) {
+                    var tr;
+
+                    for (var i = 0; i < data.result.length; i++) {
+                        tr = $('<tr/>');
+                        tr.append("<td>" + responseDate + "</td>");
+                        tr.append("<td>" + data.result[i].ictag + "</td>");
+                        tr.append("<td>" + data.result[i].model + "</td>");
+                        tr.append("<td>" + data.result[i].cpu + "</td>");
+                     
+                        $("#table_reminder").append(tr);
+
+                    }
+                }
+            });
+
             var d = new Date();
             var n = d.getTime();
             var responseDate = moment(n).format('YYYY-MM-DD');
             $("#time_text").val(responseDate);
             
+            $('body').on('click', '#editbtn', function () {
+                var currentTD = $(this).parents('tr').find('td');
+                
+                if ($(this).html() == 'Edit') {
+                    $.each(currentTD, function () {
+                        $(this).prop('contenteditable', true)
+                    });
+                } else {
+                    $.each(currentTD, function () {
+                        $(this).prop('contenteditable', false)
+                    });
+                }
+                $(this).html($(this).html() == 'Edit' ? 'Save' : 'Edit')
+              })
             $("#show_sample").click(function () {
                 $('#sampel_pic').toggle();
             })
@@ -153,17 +201,19 @@
                     dataType: "json",
                     success: function (data) {
                         $('#loading').hide();
-
+                        $('#printButton').removeAttr('disabled');
                         //write code here manage "data"
                     },
                     error: function () {
                         $('#loading').hide();
+                        $('#printButton').attr('disabled', 'disabled');
                         alert("Please Make Sure all 'Create New Label' Fields are fill in");
 
                         $("#result").html('there is error while submit');
                     }
 
                 });
+                
             });
             $("#submit_asset").click(function () {
                 $('#loading').show();
@@ -193,10 +243,13 @@
                         tr.append("<td>" + data.result[i].hdd + "</td>");
                         tr.append("<td>" + price + "</td>");
                         tr.append("<td>" + channel + "</td>");
-                        tr.append("<td> <input type='button' value='Print' class='form-control' id='non_custom_printButton'/> </button></td>");
+                        tr.append("<td><button class='form-control' id='editbtn'>Edit</button></td>");
+                        tr.append("<td><input type='button' value='Print' class='form-control' id='non_custom_printButton'/> </button></td>");
+                        
                         $("#table2").append(tr);
+                       
                     }
-
+                    
                 })
 
                .fail(function (jqxhr, textStatus, error) {
@@ -205,7 +258,11 @@
                });
 
             });
+
+
+
         });
+
     </script>
 
 
