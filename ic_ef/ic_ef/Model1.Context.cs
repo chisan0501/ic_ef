@@ -47,5 +47,6 @@ namespace ic_ef
         public virtual DbSet<coas_history> coas_history { get; set; }
         public virtual DbSet<temp_label> temp_label { get; set; }
         public virtual DbSet<retail> retail { get; set; }
+        public virtual DbSet<ebay> ebay { get; set; }
     }
 }

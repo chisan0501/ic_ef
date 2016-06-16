@@ -115,6 +115,18 @@
           <Property Name="optical_drive" Type="varchar" MaxLength="100" />
           <Property Name="location" Type="varchar" MaxLength="45" />
         </EntityType>
+        <EntityType Name="ebay">
+          <Key>
+            <PropertyRef Name="listID" />
+          </Key>
+          <Property Name="listID" Type="int" Nullable="false" />
+          <Property Name="title" Type="int" />
+          <Property Name="time" Type="datetime" Precision="0" />
+          <Property Name="start_price" Type="double" />
+          <Property Name="end_price" Type="double" />
+          <Property Name="end_time" Type="datetime" Precision="0" />
+          <Property Name="start_time" Type="datetime" Precision="0" />
+        </EntityType>
         <EntityType Name="label_menu">
           <Key>
             <PropertyRef Name="product" />
@@ -226,6 +238,7 @@ warning 6013: The table/view 'def.ic_database.misc_setting' does not have a prim
           <Property Name="ram" Type="char" MaxLength="50" />
           <Property Name="hdd" Type="char" MaxLength="50" />
           <Property Name="model" Type="char" MaxLength="50" />
+          <Property Name="sold" Type="char" MaxLength="50" />
         </EntityType>
         <EntityType Name="setting">
           <Key>
@@ -340,6 +353,7 @@ warning 6013: The table/view 'def.ic_database.misc_setting' does not have a prim
           <EntitySet Name="coas" EntityType="Self.coas" Schema="ic_database" store:Type="Tables" />
           <EntitySet Name="coas_history" EntityType="Self.coas_history" Schema="ic_database" store:Type="Tables" />
           <EntitySet Name="discovery" EntityType="Self.discovery" Schema="ic_database" store:Type="Tables" />
+          <EntitySet Name="ebay" EntityType="Self.ebay" Schema="ic_database" store:Type="Tables" />
           <EntitySet Name="label_menu" EntityType="Self.label_menu" Schema="ic_database" store:Type="Tables" />
           <EntitySet Name="mac_log" EntityType="Self.mac_log" Schema="ic_database" store:Type="Tables" />
           <EntitySet Name="monitor_log" EntityType="Self.monitor_log" Schema="ic_database" store:Type="Tables" />
@@ -658,6 +672,7 @@ warning 6013: The table/view 'def.ic_database.misc_setting' does not have a prim
           <EntitySet Name="coas_history" EntityType="ic_databaseModel.coas_history" />
           <EntitySet Name="temp_label" EntityType="ic_databaseModel.temp_label" />
           <EntitySet Name="retail" EntityType="ic_databaseModel.retail" />
+          <EntitySet Name="ebay" EntityType="ic_databaseModel.ebay" />
         </EntityContainer>
         <EntityType Name="coas_history">
           <Key>
@@ -703,6 +718,19 @@ warning 6013: The table/view 'def.ic_database.misc_setting' does not have a prim
           <Property Name="ram" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="hdd" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="model" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="sold" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="ebay">
+          <Key>
+            <PropertyRef Name="listID" />
+          </Key>
+          <Property Name="listID" Type="Int32" Nullable="false" />
+          <Property Name="title" Type="Int32" />
+          <Property Name="time" Type="DateTime" />
+          <Property Name="start_price" Type="Double" />
+          <Property Name="end_price" Type="Double" />
+          <Property Name="end_time" Type="DateTime" />
+          <Property Name="start_time" Type="DateTime" />
         </EntityType>
       </Schema>
     </edmx:ConceptualModels>
@@ -982,6 +1010,7 @@ warning 6013: The table/view 'def.ic_database.misc_setting' does not have a prim
           <EntitySetMapping Name="retail">
             <EntityTypeMapping TypeName="ic_databaseModel.retail">
               <MappingFragment StoreEntitySet="retail">
+                <ScalarProperty Name="sold" ColumnName="sold" />
                 <ScalarProperty Name="model" ColumnName="model" />
                 <ScalarProperty Name="hdd" ColumnName="hdd" />
                 <ScalarProperty Name="ram" ColumnName="ram" />
@@ -990,6 +1019,19 @@ warning 6013: The table/view 'def.ic_database.misc_setting' does not have a prim
                 <ScalarProperty Name="price" ColumnName="price" />
                 <ScalarProperty Name="asset_tag" ColumnName="asset_tag" />
                 <ScalarProperty Name="time" ColumnName="time" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ebay">
+            <EntityTypeMapping TypeName="ic_databaseModel.ebay">
+              <MappingFragment StoreEntitySet="ebay">
+                <ScalarProperty Name="start_time" ColumnName="start_time" />
+                <ScalarProperty Name="end_time" ColumnName="end_time" />
+                <ScalarProperty Name="end_price" ColumnName="end_price" />
+                <ScalarProperty Name="start_price" ColumnName="start_price" />
+                <ScalarProperty Name="time" ColumnName="time" />
+                <ScalarProperty Name="title" ColumnName="title" />
+                <ScalarProperty Name="listID" ColumnName="listID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

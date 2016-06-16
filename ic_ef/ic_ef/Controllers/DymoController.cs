@@ -2,6 +2,7 @@
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -80,8 +81,9 @@ namespace ic_ef.Controllers
                 if (existing != null)
                 {
                     
-                    existing.time = DateTime.Today;
+                   
                     existing.price = price;
+                    existing.sold = "NO";
                     db.SaveChanges();
                 }
 
@@ -95,6 +97,7 @@ namespace ic_ef.Controllers
                     create_dymo.model = model;
                     create_dymo.cpu = cpu;
                     create_dymo.ram = ram;
+                    create_dymo.sold = "NO";
                     create_dymo.hdd = hdd;
                     create_dymo.price = price;
                     db.retail.Add(create_dymo);
@@ -108,16 +111,41 @@ namespace ic_ef.Controllers
             }
             return Json(message ,JsonRequestBehavior.AllowGet);
         }
+        public ActionResult Retail_Dymo ()
+        {
+            return View();
+        }
 
-        public JsonResult Retail_Dymo()
+        public JsonResult mark_sold (string asset, string isSold)
+        {
+            int db_asset = int.Parse(asset);
+            var sold = (from im in db.retail
+                            where im.asset_tag.Equals(db_asset)
+                            select im).SingleOrDefault();
+            sold.sold = isSold;
+            db.SaveChanges();
+
+            return Json( JsonRequestBehavior.AllowGet);
+        }
+
+        //generate the list for inventroy 
+        public JsonResult json_Retail_Dymo()
         {
             DateTime startDateTime = DateTime.Today; //Today at 00:00:00
             DateTime endDateTime = DateTime.Today.AddDays(-30).AddTicks(-1);
-            var exisit = (from t in db.retail
-                          where (t.time >= endDateTime && t.time <= startDateTime)
-                          select t.time).ToList();
 
-            var result = new { };
+            var exisit = (from t in db.retail
+                          where (t.time >= endDateTime && t.time <= startDateTime && t.sold == "NO")
+                          orderby t.time ascending
+                          select t).ToList();
+            ArrayList days = new ArrayList();
+            foreach(var date in exisit)
+            {
+                TimeSpan difference = (startDateTime - date.time).Value;
+                double diff_days = difference.TotalDays;
+                days.Add(diff_days);
+            }
+            var result = new { item = exisit , days = days};
             return Json(result, JsonRequestBehavior.AllowGet);
         }
 
@@ -131,8 +159,8 @@ namespace ic_ef.Controllers
                                 select im).SingleOrDefault();
                 if (existing != null)
                 {
-
-                    existing.time = DateTime.Today;
+                    existing.sold = "NO";
+                    
                     existing.price = price;
                     db.SaveChanges();
                 }
@@ -141,6 +169,7 @@ namespace ic_ef.Controllers
                     var create_dymo = new retail();
                     create_dymo.time = DateTime.Today;
                     create_dymo.custom_label = "NO";
+                    create_dymo.sold = "NO";
                     create_dymo.asset_tag = asset_tag;
                     create_dymo.model = manu;
                     create_dymo.cpu = cpu;
@@ -168,10 +197,23 @@ namespace ic_ef.Controllers
                 asset = "0";
             }
             int ictag = int.Parse(asset);
-            
-            var result = (from m in db.rediscovery where m.ictag == ictag select m);
-            
-            var multiple = new { price = price , result = result,channel = channel };
+            string real_memory = "";
+            var result = (from m in db.rediscovery where m.ictag == ictag select m).SingleOrDefault();
+            // var memory = (from m in db.rediscovery where m.ictag == ictag select m.ram).SingleOrDefault();
+            string real_hdd = result.hdd + " GB";
+            int temp_memory = int.Parse(result.ram);
+            if (temp_memory < 20)
+            {
+                real_memory = temp_memory + " GB";
+            }
+            else
+            {
+                temp_memory = temp_memory / 1000;
+                real_memory = temp_memory + " GB";
+            }
+
+
+            var multiple = new { ram = real_memory ,hdd= real_hdd, price = price , result = result,channel = channel };
             return Json(multiple, JsonRequestBehavior.AllowGet);
         }
 

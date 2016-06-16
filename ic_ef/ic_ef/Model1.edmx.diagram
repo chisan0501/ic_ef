@@ -30,6 +30,7 @@
         <EntityTypeShape EntityType="ic_databaseModel.coas_history" Width="1.5" PointX="11.375" PointY="13.75" />
         <EntityTypeShape EntityType="ic_databaseModel.temp_label" Width="1.5" PointX="13.375" PointY="13.75" />
         <EntityTypeShape EntityType="ic_databaseModel.retail" Width="1.5" PointX="3.375" PointY="9.75" />
+        <EntityTypeShape EntityType="ic_databaseModel.ebay" Width="1.5" PointX="3.375" PointY="13.75" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

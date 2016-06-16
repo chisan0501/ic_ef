@@ -5,11 +5,12 @@
 
 }
 <head>
- 
+  
+    <script src="~/js/DYMO.Label.Framework_2.0.js"></script>
     <script src="~/js/PrintLabel_retail.js"></script>
     <script src="~/js/PrintLabel_retail_custom.js"></script>
     <script src="~/js/moment.js"></script>
-    <script src="http://www.labelwriter.com/software/dls/sdk/js/DYMO.Label.Framework.2.0.2.js"></script>
+
 </head>
 <body>
 
@@ -40,12 +41,13 @@
                         </tr>
                     </thead>
                     <tbody></tbody>
+                   
                 </table>
 
             </div>
         </div>
         <div class="row">
-            <div class="col-lg-4">
+            <div class="col-xs-3">
 
                 <div class="panel panel-default">
                     <div class="panel-heading">Search By Asset Tag</div>
@@ -73,7 +75,7 @@
 
             </div>
 
-            <div class="col-lg-4">
+            <div class="col-xs-4">
 
                 <div class="panel panel-default">
                     <div class="panel-heading">Create New Label</div>
@@ -107,58 +109,117 @@
 
 
             </div>
-            <div class="col-lg-4">
-                <table class="table" id="table_reminder">
-                    <thead>
-                        <tr>
-                           
-                            <th>Asset #</th>
-                            <th>Model</th>
-                            <th>$</th>
-                            <th>Days</th>
-
-                        </tr>
-                    </thead>
-                    <tbody></tbody>
-                </table>
+            <div class="col-xs-5">
+                <div class="panel panel-default">
+                    <div class="panel-heading">History 
+                        <button type="button" id="refresh_btn" class="btn btn-default">Refresh</button>
                 
-            </div>
-        </div>
+                    <ul>
+                     
+                      
+                     
+                        <li>
+                            <svg width="80" height="20">
+                                <rect width="80" height="20" style="fill:rgb(76, 255, 0);stroke-width:3;stroke:rgb(0,0,0)">
+                                    Sorry, your browser does not support inline SVG.
+                            </svg> < 14 Days
+                        </li>
 
-        
-    </div>
+                        <li>
+                            <svg width="80" height="20">
+                                <rect width="80" height="20" style="fill:rgb(255,255,0);stroke-width:3;stroke:rgb(0,0,0)">
+                                    Sorry, your browser does not support inline SVG.
+                            </svg> 15 to 22 Days
+                        </li>
+                        <li>
+                            <svg width="80" height="20">
+                                <rect width="80" height="20" style="fill:rgb(255,0,0);stroke-width:3;stroke:rgb(0,0,0)">
+                                    Sorry, your browser does not support inline SVG.
+                            </svg> > 23 Days +
+                        </li>
+                    </ul>
+                     
+                   
+                    </div>
+                    <div class="panel-body">
+                        <table class="table" id="table_reminder">
+                            <thead>
+                                <tr>
+
+                                    <th>Asset #</th>
+                                    <th>Model</th>
+                                    <th>$</th>
+                                    <th>Days</th>
+
+                                </tr>
+                            </thead>
+                            <tbody></tbody>
+                            <tfoot class="hide-if-no-paging">
+                                <tr>
+                                    <td colspan="5">
+                                        <div class="pagination pagination-centered"></div>
+                                    </td>
+                                </tr>
+                            </tfoot>
+                        </table>
+                        </div>
+                    </div>
+                
+                    </div>
+                </div>
+
+
+            </div>
 
 
     <script>
         $(document).ready(function () {
-            
-            $.ajax({
-                url: '@Url.Action("Retail_Dymo", "Dymo")',
-                type: "GET",
-                success: function (result) {
-                    var tr;
+           
+            function fetch_histroy_list() {
+                $.ajax({
+                    url: '@Url.Action("json_Retail_Dymo", "Dymo")',
+                    type: "GET",
+                    success: function (result) {
+                        var tr;
 
-                    for (var i = 0; i < data.result.length; i++) {
-                        tr = $('<tr/>');
-                        tr.append("<td>" + responseDate + "</td>");
-                        tr.append("<td>" + data.result[i].ictag + "</td>");
-                        tr.append("<td>" + data.result[i].model + "</td>");
-                        tr.append("<td>" + data.result[i].cpu + "</td>");
-                     
-                        $("#table_reminder").append(tr);
+                        for (var i = 0; i < result.item.length; i++) {
+                            tr = $('<tr/>');
+                            tr.append("<td>" + result.item[i].asset_tag + "</td>");
+                            tr.append("<td>" + result.item[i].model + "</td>");
+                            tr.append("<td>" + result.item[i].price + "</td>");
+                            var days = result.days[i];
+                            if (days < 14) {
+                                tr.append("<td bgcolor='#40FF00'>" + days + "</td>");
+                            }
+                            else if (days > 15 && days < 22) {
+                                tr.append("<td bgcolor='#FFFF00'>" + days + "</td>");
+                            }
+                            else if (days > 23 && days < 31) {
+                                tr.append("<td bgcolor='#FF0000'>" + days + "</td>");
+                            }
+                            else {
+                                tr.append("<td>" + days + "</td>");
+                            }
+                                 
+                            
 
+                            $("#table_reminder").append(tr);
+                            tr.append("<td><button class='form-control' id='sold'>Sold</button></td>");
+                        }
+                      
                     }
-                }
-            });
-
+           
+                });
+            }
+            fetch_histroy_list();
             var d = new Date();
             var n = d.getTime();
             var responseDate = moment(n).format('YYYY-MM-DD');
             $("#time_text").val(responseDate);
-            
+
             $('body').on('click', '#editbtn', function () {
                 var currentTD = $(this).parents('tr').find('td');
-                
+
                 if ($(this).html() == 'Edit') {
                     $.each(currentTD, function () {
                         $(this).prop('contenteditable', true)
@@ -174,7 +235,35 @@
                 $('#sampel_pic').toggle();
             })
 
+            $("#refresh_btn").click(function () {
+                $("#table_reminder tr:gt(0)").remove();
+                fetch_histroy_list();
+            })
 
+            $('body').on('click', '#sold', function () {
+                var x = $(this).closest('tr').index();
+                var asset_tag = document.getElementById("table_reminder").rows[x+1].cells[0].innerHTML;
+                var isSold = "YES";
+                var jsonObject = { "asset": asset_tag, isSold : isSold }
+                $.ajax({
+                    url: "@Url.Action("mark_sold")",
+                    type: "POST",
+                data: JSON.stringify(jsonObject),
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: function (data) {
+
+
+                    //write code here manage "data"
+                },
+                error: function () {
+
+                    $("#result").html('there is error while submit');
+                }
+
+                });
+                document.getElementById("table_reminder").deleteRow(x+1);
+            });
 
             $("#submit_create").click(function () {
                 $('#loading').show();
@@ -213,7 +302,7 @@
                     }
 
                 });
-                
+
             });
             $("#submit_asset").click(function () {
                 $('#loading').show();
@@ -230,26 +319,27 @@
 
                     $('#loading').hide();
 
-                   
+
                     var tr;
-                  
-                    for (var i = 0; i < data.result.length; i++) {
+
+
                         tr = $('<tr/>');
                         tr.append("<td>" + responseDate + "</td>");
-                        tr.append("<td>" + data.result[i].ictag + "</td>");
-                        tr.append("<td>" + data.result[i].model + "</td>");
-                        tr.append("<td>" + data.result[i].cpu + "</td>");
-                        tr.append("<td>" + data.result[i].ram + "</td>");
-                        tr.append("<td>" + data.result[i].hdd + "</td>");
+                        tr.append("<td>" + data.result.ictag + "</td>");
+                        tr.append("<td>" + data.result.model + "</td>");
+                        tr.append("<td>" + data.result.cpu + "</td>");
+                        tr.append("<td>" + data.ram + "</td>");
+                        tr.append("<td>" + data.hdd + "</td>");
+
                         tr.append("<td>" + price + "</td>");
                         tr.append("<td>" + channel + "</td>");
                         tr.append("<td><button class='form-control' id='editbtn'>Edit</button></td>");
                         tr.append("<td><input type='button' value='Print' class='form-control' id='non_custom_printButton'/> </button></td>");
-                        
+
                         $("#table2").append(tr);
-                       
-                    }
-                    
+
+
+
                 })
 
                .fail(function (jqxhr, textStatus, error) {

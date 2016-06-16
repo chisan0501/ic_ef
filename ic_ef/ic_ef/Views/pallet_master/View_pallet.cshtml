@@ -4,10 +4,11 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
+
 <h2>Pallet Detail</h2>
 <br />
 
-<h4>Number of Asset : @ViewBag.pallet_count</h4>
+<h4>Number of Assets : @ViewBag.palletCount</h4>
 
 <a class="btn btn-primary" style="margin:10px;" href="@Url.Action("index", "pallet_master")"><i class="fa fa-undo"></i>Back</a>
 @Html.ActionLink("Export Report as CSV", "export_detail_csv", new { id = ViewBag.currentid }, new { @class = "btn btn-success" })
@@ -45,3 +46,34 @@
 
 
     </table>
+
+<table class="table" id="data_table">
+    <thead>
+        <tr>
+
+            <th>Asset Tag</th>
+            <th>Pallet Number</th>
+            <th>Note</th>
+            <th>Brand</th>
+            <th>Model</th>
+            <th>CPU</th>
+            <th>RAM</th>
+            <th>HDD</th>
+
+        </tr>
+    </thead>
+    <tbody>
+    </tbody>
+   
+</table>
+
+<script>
+    $(document).ready(function () {
+
+      
+
+
+    });
+
+
+</script>

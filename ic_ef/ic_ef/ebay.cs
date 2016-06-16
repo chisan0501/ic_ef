@@ -12,16 +12,14 @@ namespace ic_ef
     using System;
     using System.Collections.Generic;
     
-    public partial class retail
+    public partial class ebay
     {
+        public int listID { get; set; }
+        public Nullable<int> title { get; set; }
         public Nullable<System.DateTime> time { get; set; }
-        public int asset_tag { get; set; }
-        public double price { get; set; }
-        public string custom_label { get; set; }
-        public string cpu { get; set; }
-        public string ram { get; set; }
-        public string hdd { get; set; }
-        public string model { get; set; }
-        public string sold { get; set; }
+        public Nullable<double> start_price { get; set; }
+        public Nullable<double> end_price { get; set; }
+        public Nullable<System.DateTime> end_time { get; set; }
+        public Nullable<System.DateTime> start_time { get; set; }
     }
 }

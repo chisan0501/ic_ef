@@ -198,6 +198,7 @@ namespace ic_ef.Controllers
 
             var innerjoin = (from o in db.pallet where o.pallet_name == id from h in db.discovery where h.ictag == o.ictags select new Models.detailViewModel  {ictags = o.ictags  , pallet_name = o.pallet_name, note = o.note, brand = h.brand,model= h.model, cpu =h.cpu,ram= h.ram,hdd= h.hdd }).ToList();
 
+            ViewBag.palletCount = innerjoin.Count();
             ViewBag.data = innerjoin;
 
             ViewBag.currentid = id;

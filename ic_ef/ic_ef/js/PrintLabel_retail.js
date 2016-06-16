@@ -392,8 +392,8 @@
                 label.setObjectText("price", price);
                 label.setObjectText("manu", manu);
                 label.setObjectText("cpu", cpu);
-                label.setObjectText("ram", ram);
-                label.setObjectText("hdd", hdd);
+                label.setObjectText("ram", ram );
+                label.setObjectText("hdd", hdd );
                 label.setObjectText("asset_tag", asset_tag);
               
               //  label.setObjectText("channel", channel_name.innerText);
@@ -419,7 +419,7 @@
                     type: "POST",
                     data: JSON.stringify(jsonObject2),
                     contentType: "application/json; charset=utf-8",
-                    dataType: "json",
+                    dataType: "json",           
                     success: function (data) {
                         
                         //write code here manage "data"
