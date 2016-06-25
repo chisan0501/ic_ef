@@ -317,6 +317,7 @@
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\label_menuController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
+    <Compile Include="Controllers\monitor_logController.cs" />
     <Compile Include="Controllers\palletsController.cs" />
     <Compile Include="Controllers\pallet_masterController.cs" />
     <Compile Include="Controllers\production_logController.cs" />
@@ -465,6 +466,11 @@
     <Content Include="Content\themes\base\tabs.css" />
     <Content Include="Content\themes\base\theme.css" />
     <Content Include="Content\themes\base\tooltip.css" />
+    <Content Include="css\bootstrap-theme.css" />
+    <Content Include="css\bootstrap-theme.min.css" />
+    <Content Include="css\bootstrap.css" />
+    <Content Include="css\bootstrap.min.css" />
+    <Content Include="css\font-awesome.css" />
     <Content Include="css\fullscreenDemo.css" />
     <Content Include="css\cover.css" />
     <Content Include="css\reset.css" />
@@ -474,11 +480,16 @@
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
     <Content Include="js\app.js" />
+    <Content Include="js\bootstrap.js" />
+    <Content Include="js\bootstrap.min.js" />
     <Content Include="js\DYMO.Label.Framework.2.0.2.js" />
     <Content Include="js\DYMO.Label.Framework_2.0.js" />
     <Content Include="js\footable.js" />
     <Content Include="js\footable.paginate.js" />
     <Content Include="js\gen_validatorv4.js" />
+    <Content Include="js\jquery-1.12.3.js" />
+    <Content Include="js\jquery.dataTables.min.css" />
+    <Content Include="js\jquery.dataTables.min.js" />
     <Content Include="js\jquery.vide.min.js" />
     <Content Include="js\moment.js" />
     <Content Include="js\PrintLabel.js" />
@@ -517,6 +528,11 @@
     <Content Include="Content\fonts\fontawesome-webfont.ttf" />
     <Content Include="Content\fonts\fontawesome-webfont.eot" />
     <Content Include="App_Browsers\qt.browser" />
+    <Content Include="fonts\fontawesome-webfont.eot" />
+    <Content Include="fonts\fontawesome-webfont.svg" />
+    <Content Include="fonts\fontawesome-webfont.ttf" />
+    <Content Include="fonts\fontawesome-webfont.woff" />
+    <Content Include="fonts\FontAwesome.otf" />
     <None Include="Properties\PublishProfiles\icdb.pubxml" />
     <None Include="Properties\PublishProfiles\icmvc.pubxml" />
     <None Include="Properties\PublishProfiles\ic_ef.pubxml" />
@@ -818,6 +834,11 @@
     <Content Include="Views\ebays\Details.cshtml" />
     <Content Include="Views\ebays\Edit.cshtml" />
     <Content Include="Views\ebays\Index.cshtml" />
+    <Content Include="Views\monitor_log\Create.cshtml" />
+    <Content Include="Views\monitor_log\Delete.cshtml" />
+    <Content Include="Views\monitor_log\Details.cshtml" />
+    <Content Include="Views\monitor_log\Edit.cshtml" />
+    <Content Include="Views\monitor_log\Index.cshtml" />
     <None Include="Web References\org.connectall\item.xsd">
       <SubType>Designer</SubType>
     </None>

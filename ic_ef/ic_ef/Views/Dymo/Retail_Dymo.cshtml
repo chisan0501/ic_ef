@@ -188,13 +188,13 @@
                             tr.append("<td>" + result.item[i].model + "</td>");
                             tr.append("<td>" + result.item[i].price + "</td>");
                             var days = result.days[i];
-                            if (days < 14) {
+                            if (days <= 14) {
                                 tr.append("<td bgcolor='#40FF00'>" + days + "</td>");
                             }
-                            else if (days > 15 && days < 22) {
+                            else if (days >= 15 && days <= 22) {
                                 tr.append("<td bgcolor='#FFFF00'>" + days + "</td>");
                             }
-                            else if (days > 23 && days < 31) {
+                            else if (days >= 23 && days <= 31) {
                                 tr.append("<td bgcolor='#FF0000'>" + days + "</td>");
                             }
                             else {
@@ -321,8 +321,8 @@
 
 
                     var tr;
-
-
+                        
+                
                         tr = $('<tr/>');
                         tr.append("<td>" + responseDate + "</td>");
                         tr.append("<td>" + data.result.ictag + "</td>");
