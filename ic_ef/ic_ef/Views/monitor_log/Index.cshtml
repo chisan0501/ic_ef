@@ -21,17 +21,16 @@
                 <button  id="search_asset" href="#fakelink" class="btn btn-block btn-lg btn-info btn-simple ">Search</button>
             </div>
             <div class="col-lg-3">
-                <input  id="manu" type="text" value="" placeholder="Search By Manufacturer" class="form-control">
-                <button  id="search_manu" href="#fakelink" class="btn btn-block btn-lg btn-info btn-simple ">Search</button>
-            </div>
-            <div class="col-lg-3">
-                <input id="screen" type="text" value="" placeholder="Search By Screen Size" class="form-control">
-                <button id="search_screen" href="#fakelink" class="btn btn-block btn-lg btn-info btn-simple ">Search</button>
-            </div>
-            <div class="col-lg-3">
-                <input  type="text" value="" placeholder="Search By Grade" class="form-control">
+                <input type="text" value="" placeholder="Search By Grade" class="form-control">
                 <button id="search_grade" href="#fakelink" class="btn btn-block btn-lg btn-info btn-simple ">Search</button>
             </div>
+            <div class="col-lg-6">
+                <input  id="manu" type="text" value="" placeholder="Search By Manufacturer" class="form-control">
+                <input id="screen" type="text" value="" placeholder="And/OR Screen Size" class="form-control">
+                <button  id="search_manu" href="#fakelink" class="btn btn-block btn-lg btn-info btn-simple ">Search</button>
+            </div>
+        
+            
             </div>
         <br />
         <table class="table hover" id="table">
@@ -71,7 +70,6 @@
 
                 </tr>
             </thead>
-            <tbody></tbody>
 
         </table>
     </div>
@@ -115,7 +113,7 @@
 </script>
 <script>
     $("#search_months").click(function () {
-
+        
         var date_post = $('#start_month').val();
         var date_end = $('#end_month').val();
         var jsonObject = {
@@ -129,27 +127,29 @@
             contentType: "application/json; charset=utf-8",
             dataType: "json",
             success: function (data) {
-
                 $("#count").html("<i class='fa fa-info-circle' aria-hidden='true'></i> Count : " + data.length)
-                var tr = '';
-                for (var i = 0 ; i < data.length; i++) {
-                    tr += '<tr>';
-                    tr += '<td>' + data[i].ictag + '</td>';
-                    tr += '<td>' + data[i].manu + '</td>';
-                    tr += '<td>' + data[i].monitor_ID + '</td>';
-                    tr += '<td>' + data[i].serial + '</td>';
-                    tr += '<td>' + data[i].size + '</td>';
-                    tr += '<td>' + data[i].resou + '</td>';
-                    tr += '<td>' + data[i].model + '</td>';
-                    tr += '</tr>';
 
-                }
+                $('#table3').DataTable({
+                    destroy: true,
+                    data: data,
+                    columns: [
+                        { data: "ictag" },
+                         { data: "manu" },
+                          { data: "monitor_ID" },
+                           { data: "serial" },
+                            { data: "size" },
+                             { data: "resou" },
+                              { data: "model" }
 
-                $('#table3 tbody').html(tr);
-                $('#table3').DataTable();
+                    ]
+
+
+                });
+               
+                
             },
             error: function () {
-                $('#loading').hide();
+               
                 $("<div>" + data.responseText + "</div>").dialog();
             }
 
@@ -175,27 +175,29 @@
         dataType: "json",
         success: function (data) {
 
-            var tr = '';
-            
-            for (var i = 0 ; i < data.length; i++) {
-                tr += '<tr>';
-                tr += '<td>' + data[i].ictag + '</td>';
-                tr += '<td>' + data[i].manu + '</td>';
-                tr += '<td>' + data[i].monitor_ID + '</td>';
-                tr += '<td>' + data[i].serial + '</td>';
-                tr += '<td>' + data[i].size + '</td>';
-                tr += '<td>' + data[i].resou + '</td>';
-                tr += '<td>' + data[i].model + '</td>';
-                tr += '</tr>';
+            $('#table').DataTable({
+                destroy: true,
+                data: data,
+                columns: [
+                    { data: "ictag" },
+                     { data: "manu" },
+                      { data: "monitor_ID" },
+                       { data: "serial" },
+                        { data: "size" },
+                         { data: "resou" },
+                          { data: "model" }
 
-            }
-            
+                ]
+
+
+            });
+
             if (data.responseText != null) {
                 $("<div>" + data.responseText + "</div>").dialog();
             }
           
-            $('#table tbody').html(tr);
-            $('#table').DataTable();
+
+         
 
         },
         error: function () {
@@ -219,17 +221,22 @@
         dataType: "json",
         success: function (data) {
 
-            var tr = '';
-            
-            tr += '<tr>';
-            tr += '<td>' + data.ictag + '</td>';
-            tr += '<td>' + data.manu + '</td>';
-            tr += '<td>' + data.monitor_ID + '</td>';
-            tr += '<td>' + data.serial + '</td>';
-            tr += '<td>' + data.size + '</td>';
-            tr += '<td>' + data.resou + '</td>';
-            tr += '<td>' + data.model + '</td>';
-            tr += '</tr>';
+            $('#table').DataTable({
+                destroy: true,
+                data: data,
+                columns: [
+                    { data: "ictag" },
+                     { data: "manu" },
+                      { data: "monitor_ID" },
+                       { data: "serial" },
+                        { data: "size" },
+                         { data: "resou" },
+                          { data: "model" }
+
+                ]
+
+
+            });
 
            
 
@@ -237,9 +244,6 @@
             if (data.responseText != null) {
                 $("<div>" + data.responseText + "</div>").dialog();
             }
-          
-            $('#table tbody').html(tr);
-            $('#table').DataTable();
 
         },
         error: function () {
@@ -250,8 +254,10 @@
     });
     $("#search_manu").click(function () {
         var manu = $("#manu").val();
+        var screen = $("#screen").val();
         var jsonObject = {
-            manu : manu 
+            manu: manu,
+            screen : screen
         };
         $.ajax({
             url: "@Url.Action("manu")",
@@ -261,26 +267,27 @@
         dataType: "json",
         success: function (data) {
 
-            var tr = '';
-            for (var i = 0 ; i < data.length; i++) {
-                tr += '<tr>';
-                tr += '<td>' + data[i].ictag + '</td>';
-                tr += '<td>' + data[i].manu + '</td>';
-                tr += '<td>' + data[i].monitor_ID + '</td>';
-                tr += '<td>' + data[i].serial + '</td>';
-                tr += '<td>' + data[i].size + '</td>';
-                tr += '<td>' + data[i].resou + '</td>';
-                tr += '<td>' + data[i].model + '</td>';
-                tr += '</tr>';
-               
-            }
+            $('#table').DataTable({
+                destroy: true,
+                data: data,
+                columns: [
+                    { data: "ictag" },
+                     { data: "manu" },
+                      { data: "monitor_ID" },
+                       { data: "serial" },
+                        { data: "size" },
+                         { data: "resou" },
+                          { data: "model" }
+
+                ]
+
+
+            });
 
             if (data.responseText != null) {
                 $("<div>" + data.responseText + "</div>").dialog();
             }
 
-            $('#table tbody').html(tr);
-            $('#table').DataTable();
 
         },
         error: function () {
@@ -308,32 +315,50 @@
               contentType: "application/json; charset=utf-8",
               dataType: "json",
               success: function (data) {
-
                   $("#count").html("<i class='fa fa-info-circle' aria-hidden='true'></i> Count : " + data.length)
-                  var tr = '';
-                  for (var i = 0 ; i < data.length; i++) {
-                      tr += '<tr>';
-                      tr += '<td>' + data[i].ictag + '</td>';
-                      tr += '<td>' + data[i].manu + '</td>';
-                      tr += '<td>' + data[i].monitor_ID + '</td>';
-                      tr += '<td>' + data[i].serial + '</td>';
-                      tr += '<td>' + data[i].size + '</td>';
-                      tr += '<td>' + data[i].resou + '</td>';
-                      tr += '<td>' + data[i].model + '</td>';
-                      tr += '</tr>';
+                  $('#table2').DataTable({
+                      destroy: true,
+                      data: data,
+                      columns: [
+                          {data :"ictag"},
+                           { data: "manu" },
+                            { data: "monitor_ID" },
+                             { data: "serial" },
+                              { data: "size" },
+                               { data: "resou" },
+                                { data: "model" }
 
-                  }
+                      ]
 
-                  $('#table2 tbody').html(tr);
+
+                  });
                   $('#loading').hide();
-                  $('#table2').DataTable();
+                  //var tr = '';
+                  
+                  //for (var i = 0 ; i < data.length; i++) {
+                  //    tr += '<tr>';
+                  //    tr += '<td>' + data[i].ictag + '</td>';
+                  //    tr += '<td>' + data[i].manu + '</td>';
+                  //    tr += '<td>' + data[i].monitor_ID + '</td>';
+                  //    tr += '<td>' + data[i].serial + '</td>';
+                  //    tr += '<td>' + data[i].size + '</td>';
+                  //    tr += '<td>' + data[i].resou + '</td>';
+                  //    tr += '<td>' + data[i].model + '</td>';
+                  //    tr += '</tr>';
+
+                  //}
+                 
+                  //$('#table2 tbody').html(tr);
+                  //$('#loading').hide();
+                  
               },
               error: function () {
                   $('#loading').hide();
                   $("<div>" + data.responseText +"</div>").dialog();
               }
 
-          });
+              });
+              
           },
           selectWeek: true,
           inline: true,

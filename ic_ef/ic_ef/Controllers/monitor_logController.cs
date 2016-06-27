@@ -59,16 +59,29 @@ namespace ic_ef.Controllers
             }
         }
         [HttpPost]
-        public JsonResult manu(string manu)
+        public JsonResult manu(string manu, string screen)
         {
             try
             {
-                var manu_result = db.monitor_log.Where(monitor => monitor.manu == manu).ToList();
-                if (manu_result == null)
+                if(String.IsNullOrEmpty(screen))
                 {
-                    return Json(new { success = false, responseText = "Manufacturer not found" }, JsonRequestBehavior.AllowGet);
+                    var manu_result = db.monitor_log.Where(monitor => monitor.manu == manu).ToList();
+                    if (manu_result == null)
+                    {
+                        return Json(new { success = false, responseText = "Manufacturer not found" }, JsonRequestBehavior.AllowGet);
+                    }
+                    return Json(manu_result, JsonRequestBehavior.AllowGet);
                 }
-                return Json(manu_result, JsonRequestBehavior.AllowGet);
+                else
+                {
+                    int int_screen = int.Parse(screen);
+                    var manu_result = db.monitor_log.Where(monitor => monitor.manu == manu && monitor.size == int_screen).ToList();
+                    if (manu_result == null)
+                    {
+                        return Json(new { success = false, responseText = "Manufacturer not found" }, JsonRequestBehavior.AllowGet);
+                    }
+                    return Json(manu_result, JsonRequestBehavior.AllowGet);
+                }
             }
             catch
             {
@@ -105,15 +118,16 @@ namespace ic_ef.Controllers
             {
                 
                 DateTime start_date = DateTime.Parse(date);
-                DateTime format_start_date = start_date.AddDays(1).AddTicks(-1);
+                
                 DateTime end_date = DateTime.Parse(dateend);
                 DateTime format_end_date = end_date.AddDays(1).AddTicks(-1);
-
-
+                var endOfMonth = new DateTime(format_end_date.Year, format_end_date.Month,
+                              DateTime.DaysInMonth(format_end_date.Year, format_end_date.Month));
+                endOfMonth = endOfMonth.AddDays(1).AddTicks(-1);
                 //var existing = (from im in db.monitor_log
                 //                where im.time >= start_date && im.time <= end_date
                 //                select im).ToList();
-                var existing = db.monitor_log.Where(im => im.time >= format_start_date && im.time <= format_end_date).ToList();
+                var existing = db.monitor_log.Where(im => im.time >= start_date && im.time <= endOfMonth).ToList();
 
                 return Json(existing, JsonRequestBehavior.AllowGet);
             }

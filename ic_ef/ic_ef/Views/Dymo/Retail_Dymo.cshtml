@@ -4,15 +4,16 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 
 }
-<head>
-  
+
+    <link href="https://cdn.datatables.net/1.10.12/css/jquery.dataTables.min.css" rel="stylesheet" />
+    <script src="~/Scripts/DataTables/jquery.dataTables.min.js"></script>
     <script src="~/js/DYMO.Label.Framework_2.0.js"></script>
     <script src="~/js/PrintLabel_retail.js"></script>
     <script src="~/js/PrintLabel_retail_custom.js"></script>
     <script src="~/js/moment.js"></script>
 
-</head>
-<body>
+
+
 
 
     <h2><i class="fa fa-building" aria-hidden="true"></i> Retail Label</h2>
@@ -139,6 +140,7 @@
                         </li>
                     </ul>
                      
+                    <input type="text"  placeholder="Enter Asset # for Removal" class="form-control" id="remove_input"><button class='form-control' id='sold'>Sold</button>
                    
                     </div>
                     <div class="panel-body">
@@ -154,13 +156,7 @@
                                 </tr>
                             </thead>
                             <tbody></tbody>
-                            <tfoot class="hide-if-no-paging">
-                                <tr>
-                                    <td colspan="5">
-                                        <div class="pagination pagination-centered"></div>
-                                    </td>
-                                </tr>
-                            </tfoot>
+                            
                         </table>
                         </div>
                     </div>
@@ -183,35 +179,42 @@
                         var tr;
 
                         for (var i = 0; i < result.item.length; i++) {
-                            tr = $('<tr/>');
-                            tr.append("<td>" + result.item[i].asset_tag + "</td>");
-                            tr.append("<td>" + result.item[i].model + "</td>");
-                            tr.append("<td>" + result.item[i].price + "</td>");
+                            tr += '<tr>';
+                            tr += '<td>' + result.item[i].asset_tag + '</td>';
+                            tr += '<td>' + result.item[i].model + '</td>';
+                            tr += '<td>' + result.item[i].price + '</td>';
+                            
                             var days = result.days[i];
                             if (days <= 14) {
-                                tr.append("<td bgcolor='#40FF00'>" + days + "</td>");
+                                tr += "<td bgcolor='#40FF00'>" + days + "</td>";
                             }
                             else if (days >= 15 && days <= 22) {
-                                tr.append("<td bgcolor='#FFFF00'>" + days + "</td>");
+                                tr += "<td bgcolor='#FFFF00'>" + days + "</td>";                                
                             }
                             else if (days >= 23 && days <= 31) {
-                                tr.append("<td bgcolor='#FF0000'>" + days + "</td>");
+                                tr += "<td bgcolor='#FF0000'>" + days + "</td>";                             
                             }
                             else {
-                                tr.append("<td>" + days + "</td>");
+                                tr += "<td>" + days + "</td>";
                             }
-                                 
+                           
+                            tr += '</tr>';
                             
+                            
+                            //tr += "<td><button class='form-control'  id='sold'>Sold</button> </td>";
 
-                            $("#table_reminder").append(tr);
-                            tr.append("<td><button class='form-control' id='sold'>Sold</button></td>");
+                          
                         }
-                      
+
+                        $('#table_reminder tbody').html(tr);
+                        $('#table_reminder').DataTable();
                     }
            
                 });
             }
+            
             fetch_histroy_list();
+            
             var d = new Date();
             var n = d.getTime();
             var responseDate = moment(n).format('YYYY-MM-DD');
@@ -241,8 +244,9 @@
             })
 
             $('body').on('click', '#sold', function () {
-                var x = $(this).closest('tr').index();
-                var asset_tag = document.getElementById("table_reminder").rows[x+1].cells[0].innerHTML;
+                //var x = $(this).closest('tr').index();
+                //var asset_tag = document.getElementById("table_reminder").rows[x+1].cells[0].innerHTML;
+                var asset_tag = $('#remove_input').val();
                 var isSold = "YES";
                 var jsonObject = { "asset": asset_tag, isSold : isSold }
                 $.ajax({
@@ -337,7 +341,7 @@
                         tr.append("<td><input type='button' value='Print' class='form-control' id='non_custom_printButton'/> </button></td>");
 
                         $("#table2").append(tr);
-
+                        
 
 
                 })
@@ -356,4 +360,3 @@
     </script>
 
 
-</body>
