@@ -46,9 +46,10 @@ namespace ic_ef.Controllers
             {
                 DateTime start_date = DateTime.Parse(date);
                 DateTime end_date = start_date.AddDays(1).AddTicks(-1);
-                var existing = (from im in db.monitor_log
-                                where im.time >= start_date && im.time <= end_date
-                                select im).ToList();
+                //var existing = (from im in db.monitor_log
+                //                where im.time >= start_date && im.time <= end_date
+                //                select im).ToList();
+                var existing = db.monitor_log.Where(im => im.time >= start_date && im.time <= end_date).ToList();
 
                 return Json(existing, JsonRequestBehavior.AllowGet);
             }
