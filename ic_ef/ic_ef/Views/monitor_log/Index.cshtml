@@ -4,9 +4,10 @@
     ViewBag.Title = "Index";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-
-<link href="~/js/jquery.dataTables.min.css" rel="stylesheet" />
-<script src="~/js/jquery.dataTables.min.js"></script>
+<link href="https://cdn.datatables.net/1.10.12/css/jquery.dataTables.min.css" rel="stylesheet" />
+<link href="~/css/monthpicker.css" rel="stylesheet" />
+<script src="~/Scripts/DataTables/jquery.dataTables.min.js"></script>
+<script src="~/js/monthpicker.js"></script>
 
 <h2><i class="fa fa-search" aria-hidden="true"></i>Monitor Discovery Log</h2>
 
@@ -24,7 +25,7 @@
                 <button  id="search_manu" href="#fakelink" class="btn btn-block btn-lg btn-info btn-simple ">Search</button>
             </div>
             <div class="col-lg-3">
-                <input  type="text" value="" placeholder="Search By Screen Size" class="form-control">
+                <input id="screen" type="text" value="" placeholder="Search By Screen Size" class="form-control">
                 <button id="search_screen" href="#fakelink" class="btn btn-block btn-lg btn-info btn-simple ">Search</button>
             </div>
             <div class="col-lg-3">
@@ -32,7 +33,8 @@
                 <button id="search_grade" href="#fakelink" class="btn btn-block btn-lg btn-info btn-simple ">Search</button>
             </div>
             </div>
-        <table class="table" id="table">
+        <br />
+        <table class="table hover" id="table">
             <thead>
                 <tr>
                     <th>Asset Tag</th>
@@ -55,7 +57,8 @@
         <p>Select a Date: <input type="text" id="datepicker"></p>
         <img id="loading" src="~/Content/spinner.gif" alt="Updating ..." style="display: none;" />
         <h4 id="count"><i class="fa fa-info-circle" aria-hidden="true"></i> Count : </h4>
-        <table class="table" id="table2">
+        <br />
+        <table class="table hover" id="table2">
             <thead>
                 <tr>
                     <th>Asset Tag</th>
@@ -72,20 +75,136 @@
 
         </table>
     </div>
-  
-  
+    <h3>Search by Month</h3>
+    <div>
+        <p>Start Month: <input id="start_month" type="text"></p>
+        <p>End Month: <input id="end_month" type="text"></p>
+        <button id="search_months" href="#fakelink" class="btn btn-block btn-lg btn-info btn-simple ">Search</button>
+        <img id="loading" src="~/Content/spinner.gif" alt="Updating ..." style="display: none;" />
+        <h4 id="count"><i class="fa fa-info-circle" aria-hidden="true"></i> Count : </h4>
+        <br />
+        <table class="table hover" id="table3">
+            <thead>
+                <tr>
+                    <th>Asset Tag</th>
+                    <th>Manufacturer</th>
+                    <th>Monitor ID</th>
+                    <th>Serial #</th>
+                    <th>Screen Size</th>
+                    <th>Resolution</th>
+                    <th>Model</th>
+
+                </tr>
+            </thead>
+            <tbody></tbody>
+
+        </table>
+    </div> 
     
 </div>
+
 <script>
     $(function () {
+        
+        $('#end_month').Monthpicker({});
+        $('#start_month').Monthpicker({});
         $("#accordion").accordion({
             heightStyle: "content"
         });
     });
 </script>
-
 <script>
-    $("#search_asset").click(function(){
+    $("#search_months").click(function () {
+
+        var date_post = $('#start_month').val();
+        var date_end = $('#end_month').val();
+        var jsonObject = {
+            date: date_post,
+            dateend: date_end
+        };
+        $.ajax({
+            url: "@Url.Action("monitor_month")",
+            type: "POST",
+            data: JSON.stringify(jsonObject),
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            success: function (data) {
+
+                $("#count").html("<i class='fa fa-info-circle' aria-hidden='true'></i> Count : " + data.length)
+                var tr = '';
+                for (var i = 0 ; i < data.length; i++) {
+                    tr += '<tr>';
+                    tr += '<td>' + data[i].ictag + '</td>';
+                    tr += '<td>' + data[i].manu + '</td>';
+                    tr += '<td>' + data[i].monitor_ID + '</td>';
+                    tr += '<td>' + data[i].serial + '</td>';
+                    tr += '<td>' + data[i].size + '</td>';
+                    tr += '<td>' + data[i].resou + '</td>';
+                    tr += '<td>' + data[i].model + '</td>';
+                    tr += '</tr>';
+
+                }
+
+                $('#table3 tbody').html(tr);
+                $('#table3').DataTable();
+            },
+            error: function () {
+                $('#loading').hide();
+                $("<div>" + data.responseText + "</div>").dialog();
+            }
+
+        });
+    });
+</script>
+<script>
+    
+
+
+    $("#search_screen").click(function () {
+        
+        var screen = $("#screen").val();
+
+        var jsonObject = {
+            screen : screen
+        };
+        $.ajax({
+            url: "@Url.Action("get_screen")",
+            type: "POST",
+        data: JSON.stringify(jsonObject),
+        contentType: "application/json; charset=utf-8",
+        dataType: "json",
+        success: function (data) {
+
+            var tr = '';
+            
+            for (var i = 0 ; i < data.length; i++) {
+                tr += '<tr>';
+                tr += '<td>' + data[i].ictag + '</td>';
+                tr += '<td>' + data[i].manu + '</td>';
+                tr += '<td>' + data[i].monitor_ID + '</td>';
+                tr += '<td>' + data[i].serial + '</td>';
+                tr += '<td>' + data[i].size + '</td>';
+                tr += '<td>' + data[i].resou + '</td>';
+                tr += '<td>' + data[i].model + '</td>';
+                tr += '</tr>';
+
+            }
+            
+            if (data.responseText != null) {
+                $("<div>" + data.responseText + "</div>").dialog();
+            }
+          
+            $('#table tbody').html(tr);
+            $('#table').DataTable();
+
+        },
+        error: function () {
+            
+            $("<div>" + data.responseText + "</div>").dialog();
+        }
+        });
+    });
+     $("#search_asset").click(function(){
         
         var asset = $("#asset").val();
 
@@ -102,15 +221,17 @@
 
             var tr = '';
             
-                tr += '<tr>';
-                tr += '<td>' + data.ictag + '</td>';
-                tr += '<td>' + data.manu + '</td>';
-                tr += '<td>' + data.monitor_ID + '</td>';
-                tr += '<td>' + data.serial + '</td>';
-                tr += '<td>' + data.size + '</td>';
-                tr += '<td>' + data.resou + '</td>';
-                tr += '<td>' + data.model + '</td>';
-                tr += '</tr>';
+            tr += '<tr>';
+            tr += '<td>' + data.ictag + '</td>';
+            tr += '<td>' + data.manu + '</td>';
+            tr += '<td>' + data.monitor_ID + '</td>';
+            tr += '<td>' + data.serial + '</td>';
+            tr += '<td>' + data.size + '</td>';
+            tr += '<td>' + data.resou + '</td>';
+            tr += '<td>' + data.model + '</td>';
+            tr += '</tr>';
+
+           
 
             
             if (data.responseText != null) {
@@ -118,7 +239,7 @@
             }
           
             $('#table tbody').html(tr);
-            
+            $('#table').DataTable();
 
         },
         error: function () {
@@ -127,18 +248,58 @@
         }
         });
     });
-</script>
+    $("#search_manu").click(function () {
+        var manu = $("#manu").val();
+        var jsonObject = {
+            manu : manu 
+        };
+        $.ajax({
+            url: "@Url.Action("manu")",
+            type: "POST",
+        data: JSON.stringify(jsonObject),
+        contentType: "application/json; charset=utf-8",
+        dataType: "json",
+        success: function (data) {
 
+            var tr = '';
+            for (var i = 0 ; i < data.length; i++) {
+                tr += '<tr>';
+                tr += '<td>' + data[i].ictag + '</td>';
+                tr += '<td>' + data[i].manu + '</td>';
+                tr += '<td>' + data[i].monitor_ID + '</td>';
+                tr += '<td>' + data[i].serial + '</td>';
+                tr += '<td>' + data[i].size + '</td>';
+                tr += '<td>' + data[i].resou + '</td>';
+                tr += '<td>' + data[i].model + '</td>';
+                tr += '</tr>';
+               
+            }
+
+            if (data.responseText != null) {
+                $("<div>" + data.responseText + "</div>").dialog();
+            }
+
+            $('#table tbody').html(tr);
+            $('#table').DataTable();
+
+        },
+        error: function () {
+
+            $("<div>" + data.responseText + "</div>").dialog();
+        }
+        });
+    });
+</script>
 <script>
   $(function() {
       $( "#datepicker" ).datepicker({
           onSelect: function (date) {
-              
+
               $('#loading').show();
-              
+
               var date_post = date;
               var jsonObject = {
-                 date : date_post 
+                 date : date_post
               };
               $.ajax({
                   url: "@Url.Action("monitor_date")",
@@ -147,7 +308,7 @@
               contentType: "application/json; charset=utf-8",
               dataType: "json",
               success: function (data) {
-                 
+
                   $("#count").html("<i class='fa fa-info-circle' aria-hidden='true'></i> Count : " + data.length)
                   var tr = '';
                   for (var i = 0 ; i < data.length; i++) {
@@ -160,12 +321,12 @@
                       tr += '<td>' + data[i].resou + '</td>';
                       tr += '<td>' + data[i].model + '</td>';
                       tr += '</tr>';
-                     
+
                   }
 
                   $('#table2 tbody').html(tr);
                   $('#loading').hide();
-                 
+                  $('#table2').DataTable();
               },
               error: function () {
                   $('#loading').hide();
@@ -181,6 +342,13 @@
       });
   });
 </script>
+
+  
+
+   
+
+
+
 
 
 

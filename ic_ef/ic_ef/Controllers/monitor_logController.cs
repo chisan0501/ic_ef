@@ -40,6 +40,43 @@ namespace ic_ef.Controllers
         }
 
         [HttpPost]
+        public JsonResult get_screen(string screen)
+        {
+          
+            try
+            {
+                int int_screen = int.Parse(screen);
+                var screen_result = db.monitor_log.Where(screens => screens.size == int_screen).ToList();
+                if (screen_result == null)
+                {
+                    return Json(new { success = false, responseText = "Asset Not Found" }, JsonRequestBehavior.AllowGet);
+                }
+                return Json(screen_result, JsonRequestBehavior.AllowGet);
+            }
+            catch
+            {
+                return Json(new { success = false, responseText = "Search Field Contains illegal Character" }, JsonRequestBehavior.AllowGet);
+            }
+        }
+        [HttpPost]
+        public JsonResult manu(string manu)
+        {
+            try
+            {
+                var manu_result = db.monitor_log.Where(monitor => monitor.manu == manu).ToList();
+                if (manu_result == null)
+                {
+                    return Json(new { success = false, responseText = "Manufacturer not found" }, JsonRequestBehavior.AllowGet);
+                }
+                return Json(manu_result, JsonRequestBehavior.AllowGet);
+            }
+            catch
+            {
+                return Json(new { success = false, responseText = "Search Field Contains illegal Character" }, JsonRequestBehavior.AllowGet);
+            }
+        }
+
+        [HttpPost]
         public JsonResult monitor_date(string date)
         {
             try
@@ -59,6 +96,33 @@ namespace ic_ef.Controllers
                 return Json(new { success = false, responseText = "There seem to be an error" }, JsonRequestBehavior.AllowGet);
             }
             
+
+        }
+        [HttpPost]
+        public JsonResult monitor_month(string date,string dateend)
+        {
+            try
+            {
+                
+                DateTime start_date = DateTime.Parse(date);
+                DateTime format_start_date = start_date.AddDays(1).AddTicks(-1);
+                DateTime end_date = DateTime.Parse(dateend);
+                DateTime format_end_date = end_date.AddDays(1).AddTicks(-1);
+
+
+                //var existing = (from im in db.monitor_log
+                //                where im.time >= start_date && im.time <= end_date
+                //                select im).ToList();
+                var existing = db.monitor_log.Where(im => im.time >= format_start_date && im.time <= format_end_date).ToList();
+
+                return Json(existing, JsonRequestBehavior.AllowGet);
+            }
+
+            catch
+            {
+                return Json(new { success = false, responseText = "There seem to be an error" }, JsonRequestBehavior.AllowGet);
+            }
+
 
         }
         // GET: monitor_log/Details/5

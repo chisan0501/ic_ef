@@ -4,6 +4,8 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>@ViewBag.Title - My ASP.NET Application</title>
+    @Scripts.Render("~/bundles/jquery")
+
     <link href="@Url.Content("~/Content/Site.css")" rel="stylesheet" type="text/css" />
     <script src="@Url.Content("~/Scripts/modernizr-2.6.2.js")" type="text/javascript"></script>
     <script src="https://use.fontawesome.com/bbd0418749.js"></script>
@@ -11,12 +13,12 @@
     <script src="@Url.Content("~/Scripts/Highcharts-4.0.1/js/highcharts-all.js")" type="text/javascript"></script>
     <script src="@Url.Content("~/Scripts/Highcharts-4.0.1/js/modules/funnel.js")" type="text/javascript"></script>
     <script src="~/js/gen_validatorv4.js" type="text/javascript"></script>
-    @Styles.Render("~/font-awesome/css")
+
     @Styles.Render("~/css/css")
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
     @Styles.Render("~/Content/themes/base/css")
-    @Scripts.Render("~/bundles/jquery")
+
     @Scripts.Render("~/bundles/bootstrap")
     @Scripts.Render("~/bundles/jqueryui")
     
@@ -303,11 +305,12 @@
                             <li role="menuitem">@Html.ActionLink("Discovery", "Index", "discoveries")</li>
                             <li role="menuitem">@Html.ActionLink("Refurbish", "Index", "rediscoveries")</li>
                             <li role="menuitem">@Html.ActionLink("Imaging", "Index", "production_log")</li>
+                            <li role="menuitem">@Html.ActionLink("Monitor Log", "index", "monitor_log")</li>
                         </ul>
                     <li>@Html.ActionLink("Inventory", "inventoryManage", "Manage", null, new { @style = "color:white;" })</li>
 
                     <li>@Html.ActionLink("Report", "report", "Manage", null, new { @style = "color:white;" })</li>
-                    <li>@Html.ActionLink("Advanced Search", "AdvanceSearch", "Manage", null, new { @style = "color:white;" })</li>
+                 
                     @if (User.IsInRole("Admin"))
                     {
                         <li>@Html.ActionLink("Admin", "admin", "Manage", null, new { @style = "color:white;" })</li>
@@ -368,10 +371,11 @@
     </script>
 
 
- @Scripts.Render("~/bundles/jquery")
+
 @Scripts.Render("~/bundles/bootstrap")
 @Scripts.Render("~/bundles/jqueryui")
 @RenderSection("scripts", required: false)
+
 
 </body>
 </html>
