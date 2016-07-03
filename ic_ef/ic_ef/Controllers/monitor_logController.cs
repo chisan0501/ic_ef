@@ -25,7 +25,7 @@ namespace ic_ef.Controllers
         {
             try
             {
-                var result = (from im in db.monitor_log where im.ictag == asset select im).SingleOrDefault();
+                var result = (from im in db.monitor_log where im.ictag == asset select im).ToList();
                 if (result == null)
                 {
                     return Json(new { success = false, responseText = "Asset Not Found" }, JsonRequestBehavior.AllowGet);
@@ -63,9 +63,20 @@ namespace ic_ef.Controllers
         {
             try
             {
-                if(String.IsNullOrEmpty(screen))
+               
+                if (String.IsNullOrEmpty(screen))
                 {
                     var manu_result = db.monitor_log.Where(monitor => monitor.manu == manu).ToList();
+                    if (manu_result == null)
+                    {
+                        return Json(new { success = false, responseText = "Manufacturer not found" }, JsonRequestBehavior.AllowGet);
+                    }
+                    return Json(manu_result, JsonRequestBehavior.AllowGet);
+                }
+                else if (String.IsNullOrEmpty(manu))
+                {
+                    int int_screen = int.Parse(screen);
+                    var manu_result = db.monitor_log.Where(monitor => monitor.size == int_screen).ToList();
                     if (manu_result == null)
                     {
                         return Json(new { success = false, responseText = "Manufacturer not found" }, JsonRequestBehavior.AllowGet);

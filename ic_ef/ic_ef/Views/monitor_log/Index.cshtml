@@ -8,7 +8,7 @@
 <link href="~/css/monthpicker.css" rel="stylesheet" />
 <script src="~/Scripts/DataTables/jquery.dataTables.min.js"></script>
 <script src="~/js/monthpicker.js"></script>
-
+<script src="~/js/loadingoverlay.min.js"></script>
 <h2><i class="fa fa-search" aria-hidden="true"></i>Monitor Discovery Log</h2>
 
 <div id="accordion">
@@ -17,19 +17,20 @@
     <div>
         <div class="row">
             <div class="col-lg-3">
+             
                 <input id="asset" type="text" value="" placeholder="Search By AssetTag" class="form-control">
                 <button  id="search_asset" href="#fakelink" class="btn btn-block btn-lg btn-info btn-simple ">Search</button>
             </div>
+           
             <div class="col-lg-3">
-                <input type="text" value="" placeholder="Search By Grade" class="form-control">
-                <button id="search_grade" href="#fakelink" class="btn btn-block btn-lg btn-info btn-simple ">Search</button>
-            </div>
-            <div class="col-lg-6">
                 <input  id="manu" type="text" value="" placeholder="Search By Manufacturer" class="form-control">
                 <input id="screen" type="text" value="" placeholder="And/OR Screen Size" class="form-control">
+                <input type="text" value="" placeholder="And/OR Grade" class="form-control">
                 <button  id="search_manu" href="#fakelink" class="btn btn-block btn-lg btn-info btn-simple ">Search</button>
             </div>
-        
+            <div class="col-lg-3">
+
+            </div>
             
             </div>
         <br />
@@ -157,57 +158,11 @@
     });
 </script>
 <script>
-    
-
-
-    $("#search_screen").click(function () {
-        
-        var screen = $("#screen").val();
-
-        var jsonObject = {
-            screen : screen
-        };
-        $.ajax({
-            url: "@Url.Action("get_screen")",
-            type: "POST",
-        data: JSON.stringify(jsonObject),
-        contentType: "application/json; charset=utf-8",
-        dataType: "json",
-        success: function (data) {
-
-            $('#table').DataTable({
-                destroy: true,
-                data: data,
-                columns: [
-                    { data: "ictag" },
-                     { data: "manu" },
-                      { data: "monitor_ID" },
-                       { data: "serial" },
-                        { data: "size" },
-                         { data: "resou" },
-                          { data: "model" }
-
-                ]
-
-
-            });
-
-            if (data.responseText != null) {
-                $("<div>" + data.responseText + "</div>").dialog();
-            }
-          
-
-         
-
-        },
-        error: function () {
-            
-            $("<div>" + data.responseText + "</div>").dialog();
-        }
-        });
-    });
      $("#search_asset").click(function(){
-        
+         $.LoadingOverlay("show", {
+             image: "",
+             fontawesome: "fa fa-spinner fa-spin"
+         });
         var asset = $("#asset").val();
 
         var jsonObject = {
@@ -220,7 +175,7 @@
         contentType: "application/json; charset=utf-8",
         dataType: "json",
         success: function (data) {
-
+            $.LoadingOverlay("hide");
             $('#table').DataTable({
                 destroy: true,
                 data: data,
@@ -242,17 +197,22 @@
 
             
             if (data.responseText != null) {
+                $.LoadingOverlay("hide");
                 $("<div>" + data.responseText + "</div>").dialog();
             }
 
         },
         error: function () {
-            
+            $.LoadingOverlay("hide");
             $("<div>" + data.responseText + "</div>").dialog();
         }
         });
     });
     $("#search_manu").click(function () {
+        $.LoadingOverlay("show", {
+            image: "",
+            fontawesome: "fa fa-spinner fa-spin"
+        });
         var manu = $("#manu").val();
         var screen = $("#screen").val();
         var jsonObject = {
@@ -266,7 +226,7 @@
         contentType: "application/json; charset=utf-8",
         dataType: "json",
         success: function (data) {
-
+            $.LoadingOverlay("hide");
             $('#table').DataTable({
                 destroy: true,
                 data: data,
@@ -285,13 +245,14 @@
             });
 
             if (data.responseText != null) {
+                $.LoadingOverlay("hide");
                 $("<div>" + data.responseText + "</div>").dialog();
             }
 
 
         },
         error: function () {
-
+            $.LoadingOverlay("hide");
             $("<div>" + data.responseText + "</div>").dialog();
         }
         });

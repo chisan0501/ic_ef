@@ -53,7 +53,7 @@ namespace ic_ef.Controllers
         protected void fetch_latest_sku()
         {
 
-            HtmlDocument page = new HtmlWeb().Load("http://interconnection.org/nonprofit/example/amasty/");
+            HtmlDocument page = new HtmlWeb().Load("http://connectall.org/example/amasty/");
             var pageLinks = page.DocumentNode.SelectNodes("//h1");
             foreach (var link in pageLinks)
             {
@@ -554,10 +554,39 @@ mlogin, desktop_listing, qty_update);
         }
         //post method to generate magento post
        
+        [HttpPost] 
+        public JsonResult hardware_spec (string asset)
+        {
+
+            try
+            {
+                int int_asset = int.Parse(asset);
+                mage mage = new mage();
+                var result = mage.get_spec(int_asset);
+                if (result.Count == 0)
+                {
+                   var results = mage.rediscovery(int_asset);
+                    return Json(results, JsonRequestBehavior.AllowGet);
+                }
+                return Json(result, JsonRequestBehavior.AllowGet);
+            }
+
+            catch
+            {
+                return Json(new { success = false, responseText = "There seem to be an error" }, JsonRequestBehavior.AllowGet);
+            }
+        }
+
         [HttpPost]
         public ActionResult magento (string asset, int grade_selectedId,bool is_cat)
         {
-           if(is_cat == true)
+           int  int_asset = int.Parse(asset);
+            mage mage = new mage();
+            ViewBag.spec = mage.get_spec(int_asset);
+            
+
+
+            if (is_cat == true)
             {
                 get_catory_tree();
             }
@@ -587,7 +616,7 @@ mlogin, desktop_listing, qty_update);
             }
             magentoView.laptop_listing = new SelectList(laptop_listing, "Value", "Text");
            // get_catory_tree();
-            fetch_latest_sku();
+         //   fetch_latest_sku();
             List<SelectListItem> wireless_list = new List<SelectListItem>()
             {
                 new SelectListItem(){ Value="1", Text="Yes"},

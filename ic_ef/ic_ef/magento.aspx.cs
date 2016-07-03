@@ -34,7 +34,7 @@ namespace ic_ef.Views
         {
             //obtain the last SKU is being used in each channel
            
-            fetch_latest_sku();
+          //  fetch_latest_sku();
         }
 
         private static T _download_serialized_json_data<T>(string url) where T : new()

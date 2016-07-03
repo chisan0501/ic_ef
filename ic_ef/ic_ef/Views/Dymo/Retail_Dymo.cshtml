@@ -176,6 +176,7 @@
                     url: '@Url.Action("json_Retail_Dymo", "Dymo")',
                     type: "GET",
                     success: function (result) {
+
                         var tr;
 
                         for (var i = 0; i < result.item.length; i++) {
@@ -219,7 +220,7 @@
             var n = d.getTime();
             var responseDate = moment(n).format('YYYY-MM-DD');
             $("#time_text").val(responseDate);
-
+             
             $('body').on('click', '#editbtn', function () {
                 var currentTD = $(this).parents('tr').find('td');
 

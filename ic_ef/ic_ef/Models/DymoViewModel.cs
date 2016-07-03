@@ -29,6 +29,9 @@ namespace ic_ef.Models
         public string ram { get; set; }
         public string hdd { get; set; }
     }
+
+   
+
     public class magentoViewModel
     {
         public int ictags { get; set; }
