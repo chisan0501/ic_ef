@@ -4,8 +4,8 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<script src="~/Scripts/jquery.steps.min.js"></script>
 <link href="~/Content/jquery.steps.css" rel="stylesheet" />
+<script src="~/Scripts/jquery.steps.min.js"></script>
 
 @ViewBag.error
 
@@ -68,26 +68,36 @@
     <div class="row">
 
         <div class="col-lg-7">
-            <label for="asset_tag_input">Asset Tag : </label>
-            <input type="text" class="form-control" id="asset_tag_input" placeholder="Enter Asset Tag here"/>
-            <label for="profile">Listing Profile : </label>
-            <select id="profile" class="form-control">
-                <option value="1">Desktop</option>
-                <option value="2">Laptop</option>
-              
-            </select>
-            <label for="grade">Grade : </label>
-            <select id="grade" class="form-control">
-                <option value=1>A</option>
-                <option value=2>B</option>
-                <option value=3>C</option>
+           
+                <div class="ui left corner labeled input">
 
-            </select>
-            <input type="submit" value="Submit" class="form-control" id="submit_btn" />
-            
+                    <input type="text" id="asset_tag_input" placeholder="Enter Asset tags">
+                    <div class="ui left corner label">
+                        <i class="asterisk icon"></i>
+                    </div>
+                </div>
 
 
-            @*@using (Ajax.BeginForm("magento", new AjaxOptions()
+                <select id="profile" class="ui dropdown">
+                    <option value="">Listing Profile :</option>
+                    <option value="1">Desktop</option>
+                    <option value="2">Laptop</option>
+                </select>
+
+                <select id="grade" class="ui dropdown">
+                    <option value="">Grade :</option>
+                    <option value=1>A</option>
+                    <option value=2>B</option>
+                    <option value=3>C</option>
+                </select>
+            <button class="huge ui basic button" id="submit_btn" >
+                <i class="icon search"></i>
+               Search
+            </button>
+          
+        </div>
+
+                @*@using (Ajax.BeginForm("magento", new AjaxOptions()
             {
                 UpdateTargetId = "ajaxtarget",
                 InsertionMode = InsertionMode.Replace
@@ -114,13 +124,13 @@
 
                         </fieldset>
                         <input type="submit" value="Submit" class="form-control" id="submit_btn"/>
-                       
+
                        @Html.CheckBox("is_cat", false)                      <a>Load Category (Warning: Checking this Option Will Significantly Increases Load Time )</a>
             }*@
 
-        </div>
+            </div>
 
-        <div class=" = col-lg-5">
+        <div class="col-lg-5">
 
      
         </div>
@@ -131,11 +141,14 @@
 
         
 
-    </div>
+    
     <div class="row">
         <img id="loading" src="~/Content/spinner.gif" alt="Updating ..." style="display: none;" />   
         @*<div id="ajaxtarget"></div>*@
-        <div id="wizard"></div>
+        
+       
+            <div id="wizard">  </div>
+
         <div id="dialog" title="Description Text">
             <p>CPU Description</p>
             <button id="celeron_btn">Intel Celeron</button>
@@ -167,11 +180,13 @@
             <p>You Selected :</p>
             <p id="result"></p>
         </div>
-    </div>
+   </div>
 <script type="text/javascript">
+ 
     $(document).ready(
 
         function () {
+          
             var cpu;
             var ram;
             var hdd;
@@ -271,8 +286,9 @@
         cpu = ' <p><img src = "{{media url="wysiwyg/HDD1TB.png"}} " style = "PADDING-LEFT: 8px" align = "right" alt = "320GB HDD">This refurbished computer comes with a 1TB HDD. This is a large amount of storage capacity, and should be more than enough for most.If you need more space, we recommend using an external hard drive. <br><br> We hold our hard drives to a higher standard than our competition.All of our drives score 99 % or better on a SMART test.They are very reliable and are expected to perform well for years.</p><br><br><hr> '
         $('#result').append('<p>HDD Description Template: Hdd 1TB</p>');
     });
-            $('#submit_btn').click(
+                 $('#submit_btn').click(
                 function () {
+                    $('.segment').dimmer('show');
                     $("#wizard").empty();
 
                     var asset_tag = $('#asset_tag_input').val();

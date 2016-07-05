@@ -583,6 +583,7 @@
     <Content Include="css\fullscreenDemo.css" />
     <Content Include="css\cover.css" />
     <Content Include="css\reset.css" />
+    <Content Include="css\semantic.min.css" />
     <Content Include="css\style.css" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
@@ -599,6 +600,7 @@
     <Content Include="js\jquery-1.12.3.js" />
     <Content Include="js\jquery.dataTables.min.css" />
     <Content Include="js\jquery.dataTables.min.js" />
+    <Content Include="js\jquery.validate.min.js" />
     <Content Include="js\loadingoverlay.min.js" />
     <Content Include="js\moment.js" />
     <Content Include="css\monthpicker.css" />
@@ -606,6 +608,7 @@
     <Content Include="js\PrintLabel.js" />
     <Content Include="js\PrintLabel_retail_custom.js" />
     <Content Include="js\PrintLabel_retail.js" />
+    <Content Include="js\semantic.min.js" />
     <Content Include="js\sliiide.min.js" />
     <Content Include="js\tileJs.js" />
     <Content Include="js\tileJs.min.js" />
@@ -1067,6 +1070,7 @@
     <Folder Include="App_Data\App_LocalResources\" />
     <Folder Include="App_Data\uploads\" />
     <Folder Include="css\plugins\" />
+    <Folder Include="css\themes\" />
     <Folder Include="font-awesome\" />
   </ItemGroup>
   <ItemGroup>
