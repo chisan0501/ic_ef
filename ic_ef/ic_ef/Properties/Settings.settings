@@ -5,5 +5,8 @@
     <Setting Name="ic_ef_org_connectall_MagentoService" Type="(Web Service URL)" Scope="Application">
       <Value Profile="(Default)">http://connectall.org/index.php/api/v2_soap/index/</Value>
     </Setting>
+    <Setting Name="ic_ef_org_interconnection_dev_MagentoService" Type="(Web Service URL)" Scope="Application">
+      <Value Profile="(Default)">http://dev.interconnection.org/index.php/api/v2_soap/index/</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

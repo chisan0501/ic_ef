@@ -1,70 +1,233 @@
 ﻿@model ic_ef.Models.RegisterViewModel
 @{
-    ViewBag.Title = "Register";
+    Layout = null;
 }
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>ICDB Register</title>
+
+
+
+
+    <style>
+        /* NOTE: The styles were added inline because Prefixfree needs access to your styles and they must be inlined if they are on local disk! */
+        @@import url(http://fonts.googleapis.com/css?family=Exo:100,200,400);
+        @@import url(http://fonts.googleapis.com/css?family=Source+Sans+Pro:700,400,300);
+
+        body {
+            margin: 0;
+            padding: 0;
+            background: #fff;
+            color: #fff;
+            font-family: Arial;
+            font-size: 12px;
+        }
+
+        .body {
+            position: absolute;
+            top: -20px;
+            left: -20px;
+            right: -40px;
+            bottom: -40px;
+            width: auto;
+            height: auto;
+            background-image: url(../../Content/rack.jpg);
+            background-size: cover;
+            -webkit-filter: blur(5px);
+            z-index: 0;
+        }
+
+        .grad {
+            position: absolute;
+            top: -20px;
+            left: -20px;
+            right: -40px;
+            bottom: -40px;
+            width: auto;
+            height: auto;
+            background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(0,0,0,0)), color-stop(100%,rgba(0,0,0,0.65))); /* Chrome,Safari4+ */
+            z-index: 1;
+            opacity: 0.7;
+        }
+
+        .header {
+            position: absolute;
+            top: calc(50% - 35px);
+            left: calc(50% - 255px);
+            z-index: 2;
+        }
+
+            .header div {
+                float: left;
+                color: #fff;
+                font-family: 'Exo', sans-serif;
+                font-size: 35px;
+                font-weight: 200;
+            }
+
+                .header div span {
+                    color: lightgreen !important;
+                }
+
+        .login {
+            position: absolute;
+            top: calc(50% - 75px);
+            left: calc(50% - 50px);
+            height: 150px;
+            width: 350px;
+            padding: 10px;
+            z-index: 2;
+        }
+
+            .login input[type=text] {
+                width: 250px;
+                height: 30px;
+                background: transparent;
+                border: 1px solid rgba(255,255,255,0.6);
+                border-radius: 2px;
+                color: #fff;
+                font-family: 'Exo', sans-serif;
+                font-size: 16px;
+                font-weight: 400;
+                 margin-top: 10px;
+                padding: 4px;
+            }
+            .login select {
+                width: 250px;
+                height: 35px;
+                background: transparent;
+                border: 1px solid rgba(255,255,255,0.6);
+                border-radius: 2px;
+                color: #fff;
+                font-family: 'Exo', sans-serif;
+                font-size: 16px;
+                font-weight: 400;
+                padding: 4px;
+                 margin-top: 10px;
+            }
+            .login input[type=password] {
+                width: 250px;
+                height: 30px;
+                background: transparent;
+                border: 1px solid rgba(255,255,255,0.6);
+                border-radius: 2px;
+                color: #fff;
+                font-family: 'Exo', sans-serif;
+                font-size: 16px;
+                font-weight: 400;
+                padding: 4px;
+                margin-top: 10px;
+            }
+
+            .login input[type=submit] {
+                width: 260px;
+                height: 35px;
+                background: #fff;
+                border: 1px solid #fff;
+                cursor: pointer;
+                border-radius: 2px;
+                color: #a18d6c;
+                font-family: 'Exo', sans-serif;
+                font-size: 16px;
+                font-weight: 400;
+                padding: 6px;
+                margin-top: 10px;
+            }
+
+            .login input[type=button] {
+                width: 260px;
+                height: 35px;
+                background: #fff;
+                border: 1px solid #fff;
+                cursor: pointer;
+                border-radius: 2px;
+                color: #a18d6c;
+                font-family: 'Exo', sans-serif;
+                font-size: 16px;
+                font-weight: 400;
+                padding: 6px;
+                margin-top: 10px;
+            }
+
+                .login input[type=button]:hover {
+                    opacity: 0.8;
+                }
+
+                .login input[type=button]:active {
+                    opacity: 0.6;
+                }
+
+            .login input[type=text]:focus {
+                outline: none;
+                border: 1px solid rgba(255,255,255,0.9);
+            }
+
+            .login input[type=password]:focus {
+                outline: none;
+                border: 1px solid rgba(255,255,255,0.9);
+            }
+
+            .login input[type=button]:focus {
+                outline: none;
+            }
+
+        ::-webkit-input-placeholder {
+            color: rgba(255,255,255,0.6);
+        }
+
+        ::-moz-input-placeholder {
+            color: rgba(255,255,255,0.6);
+        }
+    </style>
+
+    <script src="~/js/prefixfree.min.js"></script>
+
+</head>
 <body>
-    <h2>@ViewBag.Title.</h2>
+   <div class="body"></div>
+    <div class="grad"></div>
+    
+    <div class="header">
+        <div>ICDB<span>Register</span></div>
+    </div>
+    <br>
 
-    @using (Html.BeginForm("Register", "Account", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
-    {
-        <div class="alert alert-info">
-            <strong>Please contact your System Administrator for Additional User Roles.</strong>
-        </div>
-        <div class="well" style="width: 500px; margin: 0 auto;">
-            @Html.AntiForgeryToken()
-            <h4>Create a new account.</h4>
-            <hr />
-            @Html.ValidationSummary("", new { @class = "text-danger" })
-            <div class="form-group">
-                @Html.LabelFor(m => m.Email, new { @class = "col-md-2 control-label" })
-                <div class="col-md-10">
-                    @Html.TextBoxFor(m => m.Email, new { @class = "form-control" })
-                </div>
-            </div>
-            <div class="form-group">
-                @Html.LabelFor(m => m.UserName, new { @class = "col-md-2 control-label" })
-                <div class="col-md-10">
-                    @Html.TextBoxFor(m => m.UserName, new { @class = "form-control" })
-                </div>
-            </div>
-            <div class="form-group">
-                @Html.LabelFor(m => m.Password, new { @class = "col-md-2 control-label" })
-                <div class="col-md-10">
-                    @Html.PasswordFor(m => m.Password, new { @class = "form-control" })
-                </div>
-            </div>
-            <div class="form-group">
-                @Html.LabelFor(m => m.ConfirmPassword, new { @class = "col-md-2 control-label" })
-                <div class="col-md-10">
-                    @Html.PasswordFor(m => m.ConfirmPassword, new { @class = "form-control" })
-                </div>
-            </div>
+    @using (Html.BeginForm("Register", "Account", FormMethod.Post, new { @class = "form-horizontal", role = "form" , @name="rform"}))
+{
+        @Html.AntiForgeryToken()
+        <section id="loginForm">
+            <div class="login">
+                @Html.ValidationSummary("", new { @class = "text-danger"    })
+                @Html.TextBoxFor(m => m.Email, new { @class = "form-control", @placeholder = "Email Address", @name = "email", @minlength = "2" , @required="true" })
+               
+                @Html.ValidationMessageFor(m => m.Email, "", new { @class = "text-danger" })
+                @Html.TextBoxFor(m => m.UserName, new { @class = "form-control", @placeholder = "User Name", @name = "user" , @minlength = "2", @required = "true" })
 
-            <div class="form-group">
-                @Html.Label("user Role", new { @class = "col-md-2 control-label" })
-                <div class="col-md-10">
-                    @*@Html.DropDownList("Name")*@
-                    @Html.DropDownList("UserRoles", (SelectList)ViewBag.Name, " ")
-                </div>
+                @Html.PasswordFor(m => m.Password, new { @class = "form-control", @placeholder = "Password", @name = "password" , @minlength = "2", @required = "true" })
+                @Html.ValidationMessageFor(m => m.Password, "", new { @class = "text-danger" })
+                @Html.PasswordFor(m => m.ConfirmPassword, new { @class = "form-control", @placeholder = "Confrim Password", @name = "cpassword" , @minlength = "2", @required = "true" })
+           
+                @Html.DropDownList("UserRoles", (SelectList)ViewBag.Name, new { @class = "form-control", @name = "userrole" })
+
+                <input type="submit" value="Register" class="btn btn-default" />
+               
+
+                <p>
+
+                </p>
             </div>
-
-            @*<div class="form-group">
-                    @Html.LabelFor(m => m.Department, new { @class = "col-md-2 control-label" })
-                    <div class="col-md-10">
-
-                        @Html.DropDownListFor(model => model.Department, new SelectList(ViewBag.department_list, "value", "Text "), "----Select ----", new { @class = "form-control" })
-                    </div>
-
-
-                </div>*@
-            <div class="form-group">
-                <div class="col-md-offset-2 col-md-10">
-                    <input type="submit" class="btn btn-default" value="Register" />
-                </div>
-            </div>
-        </div>
+        </section>
     }
+    <script src='http://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js'></script>
+    <script src="~/js/jquery.validate.min.js"></script>
+
+    <script>
+$("#rform").validate();
+    </script>
+
+
 </body>
-    @section Scripts {
-        @Scripts.Render("~/bundles/jqueryval")
-    }
+</html>
+

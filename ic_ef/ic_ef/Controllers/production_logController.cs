@@ -12,6 +12,7 @@ using HtmlAgilityPack;
 using Newtonsoft.Json;
 using ic_ef.org.connectall;
 using System.Collections;
+using System.Web.Script.Serialization;
 
 namespace ic_ef.Controllers
 {
@@ -30,7 +31,7 @@ namespace ic_ef.Controllers
         public string oem_lap_current = "";
         public string apple_current = "";
         
-        private ic_databaseEntities2 db = new ic_databaseEntities2();
+        private db_a094d4_icdbEntities db = new db_a094d4_icdbEntities();
         Models.magentoViewModel magentoView = new Models.magentoViewModel();
 
         //read json object from the web
@@ -147,96 +148,8 @@ namespace ic_ef.Controllers
             }
             return new_sku;
         }
-        protected void pc_type_selection(string sku_family)
-        {
-            try
-            {
-                if (sku_family.Contains("DK"))
-                {
-
-                    magentoView.selectedId = 1;
-                    magentoView.wireless_selectedId = 2;
-                    magentoView.accessory_include = "Power Cord, Keyboard, Mouse";
-                }
-                else if (sku_family.Contains("LP"))
-                {
-                    magentoView.selectedId = 2;
-                    magentoView.wireless_selectedId = 1;
-                    magentoView.accessory_include = "AC Adapter";
-                }
-                else
-                {
-                    magentoView.selectedId = 3;
-                    magentoView.wireless_selectedId = 1;
-                    magentoView.accessory_include = "No Accessories include";
-                }
-            }
-
-            catch (Exception e)
-            {
-                ViewBag.error = e.Message.ToString();
-            }
-        }
-        private void software_selection(string sku_family)
-        {
-            try
-            {
-                //title
-                magentoView.name = magentoView.brand + " " + magentoView.model + " (" + magentoView.cpu + ", " + magentoView.ram + " , " + magentoView.hdd + " )";
-
-
-                magentoView.meta_description = "US based nonprofits and low-income individuals can get a great deal on a refurbished laptop right here on the InterConnection Online Store. This is a Windows 7 machine that has been tested and IC Certified by our in-house technicians.";
-                if (sku_family.Contains("MAR"))
-                {
-
-                    magentoView.software_description = "<p>Windows 7 Professional, 64 bit</p><p>Microsoft Office 2010 Home and Business with Office, Excel, Word, Outlook and Power Point</p><p><strong>InterConnection exclusive:</strong>&nbsp;all of our computers come with a recovery partition, allowing users to restore the PCs operating system to like-new condition&nbsp;<em>without an installation disk.</em></p>";
-                    magentoView.software = "Windows 7 Professional & Microsoft Office Home and Business 2010";
-                    if (magentoView.selectedId == 1)
-                    {
-                        magentoView.short_description = "Get a great price on a great quality refurbished desktop right here at InterConnection. This desktop comes with a " + magentoView.cpu + " processor, " + magentoView.ram + " of Memory, " + magentoView.hdd + " Hard Drive, with Windows 7 Pro and Microsoft Office 2010 Home & Business.We back all of our products with a 1 year warranty.";
-                    }
-                    else if (magentoView.selectedId == 2)
-                    {
-                        magentoView.short_description = "Get a great price on a great quality refurbished laptop right here at InterConnection. This laptop comes with a " + magentoView.cpu + " processor, " + magentoView.ram + ", " + magentoView.hdd + ", with Windows 7 Pro and Microsoft Office 2010 Home & Business.We back all of our products with a 1 year warranty.";
-                    }
-
-                }
-                else if (sku_family.Contains("OEM"))
-                {
-
-                    magentoView.software_description = "<p>Windows 7 Home Premium, 64 bit</p><p><strong>InterConnection exclusive:</strong>&nbsp;all of our computers come with a recovery partition, allowing users to restore the PCs operating system to like-new condition&nbsp;<em>without an installation disk.</em></p>";
-                    magentoView.software = "Windows 7 Home Premium";
-                    if (magentoView.selectedId == 1)
-                    {
-                        magentoView.short_description = "Get a great price on a great quality refurbished desktop right here at InterConnection. This desktop comes with an " + magentoView.cpu + " processor, " + magentoView.ram + ", " + magentoView.hdd + " , with Windows 7 Home Premium.  We back all of our products with a 1 year warranty.";
-                    }
-                    else if (magentoView.selectedId == 2)
-                    {
-                        if (magentoView.brand.Contains("HP"))
-                        {
-                            magentoView.short_description = "Get a great price on a great quality refurbished HP laptop right here at InterConnection. This HP laptop comes with an " + magentoView.cpu + " processor, " + magentoView.ram + " of Memory, " + magentoView.hdd + " Hard Drive, with Windows 7 Home Premium. We back all of our products with a 1 year warranty.";
-                        }
-                        else if (magentoView.brand.Contains("Lenovo"))
-                        {
-                            magentoView.short_description = "Get a great price on a great quality refurbished Lenovo laptop right here at InterConnection. This Lenovo laptop comes with an " + magentoView.cpu + " processor, " + magentoView.ram + " , " + magentoView.hdd + " , with Windows 7 Home Premium.  We back all of our products with a 1 year warranty.";
-                        }
-                        else
-                        {
-                            magentoView.short_description = "Get a great price on a great quality refurbished laptop right here at InterConnection. This laptop comes with an " + magentoView.cpu + " processor, " + magentoView.ram + " , " + magentoView.hdd + " , with Windows 7 Home Premium. We back all of our products with a 1 year warranty.";
-                        }
-
-
-                    }
-
-                }
-            }
-            catch (Exception e)
-            {
-                ViewBag.error = e.Message.ToString();
-            }
-
-     
-        }
+        
+       
 
         [HttpPost]
         public ActionResult laptop_inv_update (string qty, string laptop_listing)
@@ -455,7 +368,33 @@ mlogin, desktop_listing, qty_update);
             //}
             magentoView.cat = new SelectList(cat_list, "Value", "Text");
         }
-        
+
+        public ActionResult magento_retail ()
+        {
+            return View();
+        }
+        public Models.sku_model latest (string url)
+        {
+            Models.sku_model sku = new Models.sku_model();
+            var w = new WebClient();
+            var json_data = w.DownloadString(url);
+            if (!string.IsNullOrEmpty(json_data))
+            {
+
+                JavaScriptSerializer oJS = new JavaScriptSerializer();
+                Models.latestsku.RootObject oRootObject = new Models.latestsku.RootObject();
+                oRootObject = oJS.Deserialize<Models.latestsku.RootObject>(json_data);
+                sku.ICD_sku = oRootObject.ICD[0].sku ;
+                 sku.ICL_sku = oRootObject.ICL[0].sku;
+                sku.ICMA_sku = oRootObject.ICMA[0].sku;
+                sku.ICRD_sku = oRootObject.ICRD[0].sku ;
+                 sku.ICRL_sku = oRootObject.ICRL[0].sku;
+                // laptop_inv = result;
+
+            }
+            return sku;
+        }
+
         public List<Models.laptop> json_to_list(string url) {
 
             List<Models.laptop> laptop_inv = new List<Models.laptop>() ;
@@ -554,6 +493,39 @@ mlogin, desktop_listing, qty_update);
         }
         //post method to generate magento post
        
+          
+            public JsonResult channel_list ()
+        {
+            mage mage = new mage();
+            var result = mage.pallet_list();
+            return Json(result, JsonRequestBehavior.AllowGet);
+        }
+
+        public JsonResult quick_import (string price, string name, string sku, string weight, string desc, string short_desc,string qty, string[] websites, string stock, string status, string visible, string attr, string type, string tax)
+        {
+            Models.retail_quick_import retail_model = new Models.retail_quick_import();
+            retail_model.price = price;
+            retail_model.name = name;
+            retail_model.sku = sku;
+            retail_model.weight = weight;
+            retail_model.desc = desc;
+            retail_model.short_desc = short_desc;
+            retail_model.qty = qty;
+            retail_model.webistes = websites;
+            retail_model.stock = stock;
+            retail_model.status = status;
+            retail_model.visible = visible;
+            retail_model.attr = attr;
+            retail_model.type = type;
+            retail_model.tax_id = tax;
+
+            mage mage = new mage();
+            mage.retail_quick_import(retail_model);
+            string message = "Product Imported";
+
+            return Json(new {message=message }, JsonRequestBehavior.AllowGet);
+        }
+
         [HttpPost] 
         public JsonResult hardware_spec (string asset)
         {
@@ -563,6 +535,13 @@ mlogin, desktop_listing, qty_update);
                 int int_asset = int.Parse(asset);
                 mage mage = new mage();
                 var result = mage.get_spec(int_asset);
+                result[0].ram = Levenshtein.ram_format(result[0].ram, false);
+              
+                result[0].brand = Levenshtein.compute_difference(result[0].brand,Levenshtein.brand_name());
+                if(result[0].brand == "Hewlett Packard")
+                {
+                    result[0].brand = "HP";
+                }
                 if (result.Count == 0)
                 {
                    var results = mage.rediscovery(int_asset);
@@ -570,7 +549,7 @@ mlogin, desktop_listing, qty_update);
                 }
                 return Json(result, JsonRequestBehavior.AllowGet);
             }
-
+            
             catch
             {
                 return Json(new { success = false, responseText = "There seem to be an error" }, JsonRequestBehavior.AllowGet);
@@ -692,40 +671,119 @@ mlogin, desktop_listing, qty_update);
             int real_size = Convert.ToInt32(temp_size);
             magentoView.screen_size = real_size.ToString();
             
-            pc_type_selection(temp_pallet);
-            software_selection(temp_pallet);
-            string grade = "";
-           if (grade_selectedId == 1)
-            {
-                grade = "Grade A";
-            }
-           else
-            {
-                grade = "Grade B";
-            }
-            magentoView.description = description.grade_filter(temp_pallet,grade) + description.cpu_filter(magentoView.cpu) + description.hdd_filter(magentoView.hdd) + description.ram_filter(magentoView.ram) + description.ic_filter();
-
-            magentoView.price = price.base_spec(temp_pallet, magentoView.ram, magentoView.hdd, magentoView.cpu, grade,magentoView.screen_size);
+            
+          
             return PartialView("_magentoTable", magentoView);
         }
 
-        public JsonResult get_desktop_status(string id)
+
+        public JsonResult get_sku_family_table (string sku_family , DateTime target)
         {
-            var url = "http://connectall.org/desktop.php";
-            //for all enabled latop product
+            DateTime startDatetime = target.AddDays(-3).AddTicks(-1);
+            DateTime endDateTime = target.AddDays(3).AddTicks(-1);
+
+            var result = (from t in db.rediscovery where t.pallet == sku_family && t.status != "shipped" && (t.time >= startDatetime && t.time <= endDateTime) select t).ToList();
+          
+            return Json(result , JsonRequestBehavior.AllowGet);
+        }
+
+        public ActionResult magento_main ()
+        {
+            return View();
+
+        }
+
+        public JsonResult get_latest_sku (string sku_family)
+        {
+            var url = "http://connectall.org/json_php/get_sku.php";
+            var sku = latest(url);
+
+            return Json(sku, JsonRequestBehavior.AllowGet);
+        }
+        public JsonResult get_status(string sku_family)
+        {
+            var url = "http://connectall.org/desktop.php";   
             var desktop = json_to_list(url);
-            var detail = from t in desktop where t.entity_id == id select t;
+            var detail = from t in desktop where t.sku_family == sku_family select t;
+            if(detail.Count() == 0)
+            {
+                url = "http://connectall.org/laptop.php";
+                //for all enabled latop product
+                var laptop = json_to_list(url);
+                 detail = from t in laptop where t.sku_family == sku_family select t;
+            }
+
 
             return Json(detail, JsonRequestBehavior.AllowGet);
         }
 
-        public JsonResult getstatus(string id)
+        public ActionResult magento_create()
         {
-            var url = "http://connectall.org/get_enable.php";
-            //for all enabled latop product
-            var laptop = json_to_list(url);
-            var detail = from t in laptop where t.entity_id == id select t;
-            
+
+            return View();
+        }
+        public JsonResult qty(string sku,string qty)
+        {
+            if (string.IsNullOrEmpty(qty))
+            {
+                qty = "0";
+            }
+            double qty32 = double.Parse(qty);
+            qty32 += 1.00;
+            qty = qty32.ToString();
+            MagentoService mservice = new MagentoService();
+            String mlogin = mservice.login("admin", "Interconnection123!");
+
+         
+
+           
+            string product = sku;
+            catalogInventoryStockItemUpdateEntity update_item = new catalogInventoryStockItemUpdateEntity();
+            update_item.qty = qty;
+            update_item.is_in_stock = 1;
+            var update = mservice.catalogInventoryStockItemUpdate(mlogin, product, update_item);
+
+            return Json(new { success = true, responseText = "Qty Updated" }, JsonRequestBehavior.AllowGet);
+        }
+
+        public JsonResult detail_status(string hdd, string ram, string cpu, string sku_family)
+        {
+            List<Models.laptop> result = new List<Models.laptop>();
+            if (sku_family.Contains("DK"))
+            {
+                var url = "http://connectall.org/desktop.php";
+                 result = json_to_list(url);
+              
+            }
+            else
+            {
+                var url = "http://connectall.org/laptop.php";
+                 result = json_to_list(url);
+            }
+
+            for (int i = 0; i < result.Count(); i++)
+            {
+                string temp_cpu = result[i].cpu;
+                string formatted_cpu = Levenshtein.comput_title(temp_cpu);
+                result[i].cpu = formatted_cpu;
+            }
+            for (int i = 0; i < result.Count(); i++)
+            {
+                string temp_hdd = result[i].hdd;
+                
+                result[i].hdd = Levenshtein.hdd_format(temp_hdd,true);
+            }
+            for (int i = 0; i < result.Count(); i++)
+            {
+                string temp_ram = result[i].ram;
+                result[i].ram = Levenshtein.ram_format(temp_ram, true);
+            }
+                //for all enabled latop product
+                cpu = Levenshtein.comput_title(cpu);
+            hdd = Levenshtein.hdd_format(hdd,false);
+            ram = Levenshtein.ram_format(ram, false);
+            var detail = from t in result where t.cpu == cpu && t.hdd == hdd && t.ram == ram select t;
+
             return Json(detail, JsonRequestBehavior.AllowGet);
         }
 

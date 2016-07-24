@@ -1,0 +1,517 @@
+﻿
+@{
+    ViewBag.Title = "magento_create";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<link href="https://cdn.datatables.net/1.10.12/css/jquery.dataTables.min.css" rel="stylesheet" />
+<link href="~/Content/jquery.steps.css" rel="stylesheet" />
+<script src="~/Scripts/jquery.steps.min.js"></script>
+<script src="~/Scripts/DataTables/jquery.dataTables.min.js"></script>
+
+
+<h2>Create New Listing</h2>
+<div class="ui massive breadcrumb">
+    <a class="section" href="@Url.Action("index", "home")">Home</a>
+    <div class="divider"> / </div>
+    <a class="section" href="@Url.Action("magento_main", "production_log")">Magento Import Tool</a>
+    <div class="divider"> / </div>
+    <div class="active section">Create New Listing</div>
+</div>
+<div class="row">
+
+    <div class="col-lg-12">
+      
+        <h2 class="ui header">
+            Search By Asset Tag
+
+            <div class="sub header">
+
+                <div class="ui action input">
+                    <input type="text" id="asset_tag_input" placeholder="Enter Asset tags">
+                    <select id="profile" class="ui dropdown">
+                        <option value="">Listing Profile :</option>
+                        <option value="1">Desktop</option>
+                        <option value="2">Laptop</option>
+                    </select>
+                    <select id="grade" class="ui dropdown">
+                        <option value="">Grade :</option>
+                        <option value=1>A</option>
+                        <option value=2>B</option>
+                        <option value=3>C</option>
+                    </select>
+                    <button class="huge ui basic button" id="submit_btn">
+                        <i class="search icon"></i>
+                        Search
+                    </button>
+                </div>
+
+            </div>
+        </h2>
+
+        <h4>FAQ</h4>
+        <div class="ui accordion">
+            <div class="title">
+                <i class="dropdown icon"></i>
+                Why am I Seeing "NA" / "Null" value ?
+            </div>
+            <div class="content">
+                <p class="transition hidden">"NA" / "Null" represent certain value are not being input during Discovery/Refrub Stage, By Default Import Tool Searchs Production Log table, when an asset is not found in Production Log table, the program will point to Rediscovery table as a Backup Process.</p>
+            </div>
+            <div class="title">
+                <i class="dropdown icon"></i>
+                The Search Returns a blank interface
+            </div>
+            <div class="content">
+                <p class="transition hidden">Please Contact Sam : <a href="mailto:Chisan@interconnection.org">Chisan@interconnection.org</a></p>
+            </div>
+
+        </div>
+
+
+
+    </div>
+
+    @*@using (Ajax.BeginForm("magento", new AjaxOptions()
+        {
+            UpdateTargetId = "ajaxtarget",
+            InsertionMode = InsertionMode.Replace
+        }))
+        {
+            @Html.TextBox("asset", null, new { placeholder = "Enter Asset Tag #", @class = "form-control", required = "required" , id="asset"})
+
+            <label for="grade">Grade :</label>
+                    @Html.DropDownListFor(m => m.grade_selectedId, Model.grade, "--Select One--", new { @class = "form-control", name = "grade", id = "grade", required = "required" })
+
+
+                    <fieldset>
+                        <label for="computerType">Is Computer?</label>
+
+                        <select id="computerType" name="computerType" class="form-control">
+
+                            <option value="Yes">Yes</option>
+
+                            <option value="No">No</option>
+
+                        </select>
+
+
+
+                    </fieldset>
+                    <input type="submit" value="Submit" class="form-control" id="submit_btn"/>
+
+                   @Html.CheckBox("is_cat", false)                      <a>Load Category (Warning: Checking this Option Will Significantly Increases Load Time )</a>
+        }*@
+
+</div>
+<div class="row">
+    <img id="loading" src="~/Content/spinner.gif" alt="Updating ..." style="display: none;" />
+    @*<div id="ajaxtarget"></div>*@
+
+
+    <div id="wizard">  </div>
+
+    <div id="dialog" title="">
+        <p>CPU Description</p>
+        <button id="celeron_btn">Intel Celeron</button>
+        <button id="c2d_btn">Intel Core 2 Duo</button>
+        <button id="c2q_btn">Intel Core 2 Quad</button>
+        <button id="i3_btn">Intel i3</button>
+        <button id="i5_btn">Intel i5</button>
+        <button id="i7_btn">Intel i7</button>
+        <p>Hard Drive  Description</p>
+        <button id="hdd60gb_btn">60GB</button>
+        <button id="hdd80gb_btn">80GB</button>
+        <button id="hdd100gb_btn">100GB</button>
+        <button id="hdd120gb_btn">120GB</button>
+        <button id="hdd160gb_btn">160GB</button>
+        <button id="hdd200gb_btn">200GB</button>
+        <button id="hdd250gb_btn">250GB</button>
+        <button id="hdd320gb_btn">320GB</button>
+        <button id="hdd500gb_btn">500GB</button>
+        <button id="hdd610gb_btn">610GB</button>
+        <button id="hdd640gb_btn">640GB</button>
+        <button id="hdd1tb_btn">1TB</button>
+        <p>Memory  Description</p>
+        <button id="ram1gb_btn">1GB</button>
+        <button id="ram2gb_btn">2GB</button>
+        <button id="ram3gb_btn">3GB</button>
+        <button id="ram4gb_btn">4GB</button>
+        <button id="ram6gb_btn">6GB</button>
+        <button id="ram8gb_btn">8GB</button>
+
+        <p>You Selected :</p>
+        <p id="result"></p>
+        <button id="submit_btn_desc">Submit</button>
+        <button id="clear_btn">Clear</button>
+    </div>
+    <div id="dialog2">
+        <select id="pallet_dropdown" class="ui dropdown">
+            <option value="">Select a Pallet:</option>
+        </select>
+    </div>
+    <div id="dialog3">
+        <select id="sku_dropdown" class="ui dropdown">
+            <option value="">Select a SKU:</option>
+        </select>
+    </div>
+</div>
+
+<div class="ui page dimmer" id="page_dimmer">
+    <div class="content">
+        <div class="center"><i class="fa fa-circle-o-notch fa-spin" style="font-size:24px"></i><div class="sub header"><h3>Loading...</h3></div></div>
+    </div>
+</div>
+
+<script>
+
+    function mar_desktop() {
+
+        $('#include').val('Power Cable, Windows-based keyboard and mouse');
+        $('#screen').val('N/A');
+        $('#short_desc').val('Get a great price on a great quality refurbished desktop right here at InterConnection. This desktop comes with a " + cpu.Text + " processor, " + ram.Text + " of Memory, " + hdd.Text + " Hard Drive, with Windows 7 Pro and Microsoft Office 2010 Home & Business.We back all of our products with a 1 year warranty.');
+        $('#soft_desc').val("<p>Windows 7 Professional, 64 bit</p><p>Microsoft Office 2010 Home and Business with Office, Excel, Word, Outlook and Power Point</p><p><strong>InterConnection exclusive:</strong>&nbsp;all of our computers come with a recovery partition, allowing users to restore the PCs operating system to like-new condition&nbsp;<em>without an installation disk.</em></p>");
+        $('#soft').val("Windows 7 Professional & Microsoft Office Home and Business 2010");
+    }
+    function mar_laptop() {
+        $('#include').val('AC Adapter');
+        $('#short_desc').val('Get a great price on a great quality refurbished laptop right here at InterConnection. This laptop comes with a " + cpu.Text + " processor, " + ram.Text + " of Memory, " + hdd.Text + " Hard Drive, with Windows 7 Pro and Microsoft Office 2010 Home & Business.We back all of our products with a 1 year warranty.');
+        $('#soft_desc').val("<p>Windows 7 Professional, 64 bit</p><p>Microsoft Office 2010 Home and Business with Office, Excel, Word, Outlook and Power Point</p><p><strong>InterConnection exclusive:</strong>&nbsp;all of our computers come with a recovery partition, allowing users to restore the PCs operating system to like-new condition&nbsp;<em>without an installation disk.</em></p>");
+        $('#soft').val("Windows 7 Professional & Microsoft Office Home and Business 2010");
+    }
+    function oem_desktop() {
+        $('#include').val('Power Cable, Windows-based keyboard and mouse');
+    }
+    function oem_laptop() {
+        $('#include').val('AC Adapter');
+    }
+    $("#wizard").steps({
+        onStepChanging: function (event, currentIndex, newIndex) {
+            var profile_value = $("#profile").val();
+            var pallet = $('#pallet_name').val();
+            if (currentIndex == 0) {
+                switch (profile_value) {
+                    case "1":
+                        if (pallet.indexOf('MAR') >= 0) {
+                            mar_desktop();
+
+                        }
+                        else if (pallet.indexOf('OEM') >= 0) {
+                            oem_desktop();
+                        }
+                        break;
+                    case "2":
+                        if (pallet.indexOf('MAR') >= 0) {
+                            mar_laptop();
+                        }
+                        else if (pallet.indexOf('OEM') >= 0) {
+                            oem_laptop();
+                        }
+                        break;
+                }
+            }
+        },
+
+        onStepChanged: function (event, currentIndex, priorIndex) {
+            var name_text;
+            var soft_text;
+            $.each($('[id=name]'), function (i, item) {
+                name_text = $(this).val();
+             
+                
+            });
+            $.each($('[id=soft]'), function (i, item) {
+                soft_text = $(this).val();
+              
+                
+            });
+            $('#meta_title').val(name_text + " with " + soft_text);
+           
+          
+        },
+        onFinished: function () {
+            bodyTag: "fieldset"
+            alert("Finish button was clicked");
+        }
+    });
+
+
+
+                var ic_certify = '<p><a href="http://interconnection.org/store/iccertified/"><img src="{{media url="wysiwyg/ICCertified.png"}}" style = "PADDING-LEFT: 8px" align = "right" alt = "IC Certified"/></a>InterConnection(IC) is a leading provider of quality refurbished laptops and computers to nonprofit organizations and low - income individuals in the U.S.and to schools and non - governmental organizations around the world. We have developed a computer refurbishing process that ensures all computers pass a series of refurbishment stages and meet the highest quality control standards. All computers that meet our standards are deemed <a href = "http://interconnection.org/store/iccertified/" >“IC Certified”</a>, which is our symbol for quality and reliability.</p><br><hr>';
+            $("#cpu_btn").buttonset();
+            $("#dialog").dialog({
+                autoOpen: false,
+                show: {
+                    effect: "blind",
+                    duration: 500
+                }
+            });
+            $("#dialog2").dialog({
+                autoOpen: false,
+                show: {
+                    effect: "blind",
+                    duration: 500
+                }
+            });
+            $("#dialog3").dialog({
+                autoOpen: false,
+                show: {
+                    effect: "blind",
+                    duration: 500
+                }
+            });
+            $('#wizard').on('click', '#sku', function () {
+                $("#sku_dropdown option").remove();
+                $.getJSON("@Url.Action("get_latest_sku")", function (data) {
+
+                    $('#sku_dropdown').append($('<option></option>').text("Select a SKU"));
+                    $('#sku_dropdown').append($('<option></option>').text(data.ICD_sku));
+                    $('#sku_dropdown').append($('<option></option>').text(data.ICL_sku));
+                    $('#sku_dropdown').append($('<option></option>').text(data.ICMA_sku));
+                    $('#sku_dropdown').append($('<option></option>').text(data.ICRD_sku));
+                    $('#sku_dropdown').append($('<option></option>').text(data.ICRL_sku));
+
+                });
+            $("#dialog3").dialog("open");
+            });
+
+            $('#wizard').on('click', '#pallet_helper', function () {
+                $.getJSON("@Url.Action("channel_list")", function (data) {
+                    for (var i = 0; i < data.length; i++) {
+                        var option = $('<option></option>').text(data[i]);
+                        $('#pallet_dropdown').append(option);
+                    }
+                });
+                $("#dialog2").dialog("open");
+            });
+
+
+                $('#wizard').on('click', '#desc', function () {
+
+
+                    $("#dialog").dialog("open");
+
+                });
+                $('#celeron_btn').click(
+                   function () {
+                       cpu = '<p><img src = "{{media url="wysiwyg/CeleronM.png"}} " style = "PADDING-LEFT: 8px" align = "right" alt = "CeleronM">This refurbished computer features a Celeron M processor.This processor delivers fast performance and steady processing power so you can remain productive.</p><br><hr>'
+                       $('#result').append('<p>CPU Description Template: Intel Celeron</p>');
+                   });
+                $('#c2d_btn').click(
+                    function () {
+                        cpu = '<p><img src = "{{media url="wysiwyg/Core2Duo.png"}} " style = "PADDING-LEFT: 8px" align = "right" alt = "Core2Duo">This refurbished computer features an Intel dual core processor. This processor delivers fast performance, great energy efficiency, and responsive multitasking, so you can be more productive.<br><br>Combining mainstream processing speeds with power - saving features, PCs with the Intel Core 2 processor family let you get more done in less time,reducing energy costs by an average of 50 percent.</p><br><hr>'
+                        $('#result').append('<p>CPU Description Template: Intel Core 2 Duo</p>');
+                    });
+                $('#i3_btn').click(
+                   function () {
+                       cpu = '<p><img src = "{{media url="wysiwyg/i3.png"}} " style = "PADDING-LEFT: 8px" align = "right" alt = "Inteili3">This refurbished computer features an Intel i3 processor.This processor delivers blindingly-fast performance, and multiple power states to ensure you are never wasting power.<br><br>Combining mainstream processing speeds with power - saving features, PCs with the Intel 3 processor family let you excel in whatever task you are working on in a fraction of the time, while managing energy levels automatically.</p><br><hr> '
+                       $('#result').append('<p>CPU Description Template: Intel i3</p>');
+                   });
+                $('#i5_btn').click(
+                  function () {
+                      cpu = '<p><img src = "{{media url="wysiwyg/i5.png"}} " style = "PADDING-LEFT: 8px" align = "right" alt = "Inteili5">This refurbished computer features an Intel i5 processor.This processor delivers blindingly-fast performance, multiple power states to ensure you are never wasting power , and a new platform that boosts graphics, battery life and security.<br><br>Combining mainstream processing speeds with power - saving features, PCs with the Intel i5 processor family let you excel in whatever task you are working on in a fraction of the time, while managing energy levels automatically.</p><br><hr> '
+                      $('#result').append('<p>CPU Description Template: Intel i5</p>');
+                  });
+                $('#i7_btn').click(
+                  function () {
+                      cpu = '<p><img src = "{{media url="wysiwyg/i7.png"}} " style = "PADDING-LEFT: 8px" align = "right" alt = "i7">This refurbished computer features an Intel i7 processor.This processor delivers blindingly-fast performance, multiple power states to ensure you are never wasting power , and a new platform that boosts graphics, battery life and security.<br><br>Combining mainstream processing speeds with power - saving features, PCs with the Intel i7 processor family let you excel in whatever task you are working on in a fraction of the time, while managing energy levels automatically.</p><br><hr> '
+                      $('#result').append('<p>CPU Description Template: Intel i7</p>');
+                  });
+                $('#hdd60gb_btn').click(
+               function () {
+                   hdd = ' <p><img src = "{{media url="wysiwyg/HDD60GB.png"}} " style = "PADDING-LEFT: 8px" align = "right" alt = "60GB HDD">This refurbished computer comes with a 60GB HDD. A smaller hard drive will save you money, but is not recommended for power users. Computers with smaller hard drives are great for computer labs, libraries, and public use.For power users, we recommend at least a 250GB HDD.<br><br>We hold our hard drives to a higher standard than our competition. All of our drives score 99% or better on a SMART test. They are very reliable and are expected to perform well for years.</p><br><hr>'
+                   $('#result').append('<p>HDD Description Template: Hdd 60GB</p>');
+               });
+                $('#hdd80gb_btn').click(
+               function () {
+                   hdd = '<p><img src = "{{media url="wysiwyg/HDD80GB.png"}} " style = "PADDING LEFT: 8px" align = "right" alt = "80GB HDD">This refurbished computer comes with a 80GB HDD. A smaller hard drive will save you money, but is not recommended for power users. Computers with smaller hard drives are great for computer labs, libraries, and public use.For power users, we recommend at least a 250GB HDD.<br><br>We hold our hard drives to a higher standard than our competition. All of our drives score 99% or better on a SMART test. They are very reliable and are expected to perform well for years.</p><br><hr>'
+                   $('#result').append('<p>HDD Description Template: Hdd 80GB</p>');
+               });
+                $('#hdd100gb_btn').click(
+            function () {
+                hdd = '<p><img src = "{{media url="wysiwyg/HDD100GB.png"}} " style = "PADDING-LEFT: 8px" align = "right" alt = "100GB HDD">This refurbished computer comes with a 100GB HDD. A smaller hard drive will save you money, but is not recommended for power users. Computers with smaller hard drives are great for computer labs, libraries, and public use.For power users, we recommend at least a 250GB HDD.<br><br>We hold our hard drives to a higher standard than our competition. All of our drives score 99% or better on a SMART test. They are very reliable and are expected to perform well for years.</p><br><hr>'
+                $('#result').append('<p>HDD Description Template: Hdd 100GB</p>');
+            });
+                $('#hdd120gb_btn').click(
+            function () {
+                hdd = '<p><img src = "{{media url="wysiwyg/HDD120GB.png"}} " style = "PADDING-LEFT: 8px" align = "right" alt = "120GB HDD">This refurbished computer comes with a 120GB HDD. A smaller hard drive will save you money, but is not recommended for power users. Computers with smaller hard drives are great for computer labs, libraries, and public use.For power users, we recommend at least a 250GB HDD.<br><br>We hold our hard drives to a higher standard than our competition. All of our drives score 99% or better on a SMART test. They are very reliable and are expected to perform well for years.</p><br><hr>'
+                $('#result').append('<p>HDD Description Template: Hdd 120GB</p>');
+            });
+                $('#hdd160gb_btn').click(
+            function () {
+                hdd = '<p><img src = "{{media url="wysiwyg/HDD160GB.png"}} " style = "PADDING-LEFT: 8px" align = "right" alt = "160GB HDD">This refurbished computer comes with a 160GB HDD. A smaller hard drive will save you money, but is not recommended for power users. Computers with smaller hard drives are great for computer labs, libraries, and public use.For power users, we recommend at least a 160GB HDD.<br><br>We hold our hard drives to a higher standard than our competition. All of our drives score 99% or better on a SMART test. They are very reliable and are expected to perform well for years.</p><br><hr>'
+                $('#result').append('<p>HDD Description Template: Hdd 160GB</p>');
+            });
+                $('#hdd200gb_btn').click(
+            function () {
+                hdd = '<p><img src = "{{media url="wysiwyg/HDD200GB.png"}} " style = "PADDING-LEFT: 8px" align = "right" alt = "200GB HDD">This refurbished computer comes with a 200GB HDD. A smaller hard drive will save you money, but is not recommended for power users. Computers with smaller hard drives are great for computer labs, libraries, and public use.For power users, we recommend at least a 250GB HDD.<br><br>We hold our hard drives to a higher standard than our competition. All of our drives score 99% or better on a SMART test. They are very reliable and are expected to perform well for years.</p><br><hr>'
+                $('#result').append('<p>HDD Description Template: Hdd 200GB</p>');
+            });
+                $('#hdd250gb_btn').click(
+            function () {
+                hdd = '<p><img src = "{{media url="wysiwyg/HDD250GB.png"}} " style = "PADDING-LEFT: 8px" align = "right" alt = "250GB HDD">This refurbished computer comes with a 250GB HDD. This is enough space for most users. If you need more space, we recommend using an external hard drive. <br><br> We hold our hard drives to a higher standard than our competition.All of our drives score 99 % or better on a SMART test.They are very reliable and are expected to perform well for years.</p><br><br><hr>'
+                $('#result').append('<p>HDD Description Template: Hdd 250GB</p>');
+            });
+                $('#hdd320gb_btn').click(
+            function () {
+                hdd = '<p><img src = "{{media url="wysiwyg/HDD320GB.png"}} " style = "PADDING-LEFT: 8px" align = "right" alt = "320GB HDD">This refurbished computer comes with a 320GB HDD. This is enough space for most users. If you need more space, we recommend using an external hard drive. <br><br> We hold our hard drives to a higher standard than our competition.All of our drives score 99 % or better on a SMART test.They are very reliable and are expected to perform well for years.</p><br><br><hr> '
+                $('#result').append('<p>HDD Description Template: Hdd 320GB</p>');
+            });
+                $('#hdd500gb_btn').click(
+            function () {
+                hdd = '<p><img src = "{{media url="wysiwyg/HDD500GB.png"}} " style = "PADDING-LEFT: 8px" align = "right" alt = "500GB HDD">This computer comes with a 500GB HDD. This is enough space for most users. If you need more space, we recommend using an external hard drive. <br><br> We hold our hard drives to a higher standard than our competition.All of our drives score 99 % or better on a SMART test.They are very reliable and should perform well for years.</p><br><br><hr> '
+                $('#result').append('<p>HDD Description Template: Hdd 500GB</p>');
+            });
+                $('#hdd610gb_btn').click(
+            function () {
+                hdd = '<p><img src = "{{media url="wysiwyg/HDD610GB.png"}} " style = "PADDING-LEFT: 8px" align = "right" alt = "610GB HDD">This computer comes with a 610GB HDD. This is enough space for most users. If you need more space, we recommend using an external hard drive. <br><br> We hold our hard drives to a higher standard than our competition.All of our drives score 99 % or better on a SMART test.They are very reliable and should perform well for years.</p><br><br><hr> '
+                $('#result').append('<p>HDD Description Template: Hdd 610GB</p>');
+            });
+                $('#hdd640gb_btn').click(
+            function () {
+                hdd = '<p><img src = "{{media url="wysiwyg/HDD640GB.png"}} " style = "PADDING-LEFT: 8px" align = "right" alt = "640GB HDD">This computer comes with a 640GB HDD. This is enough space for most users. If you need more space, we recommend using an external hard drive. <br><br> We hold our hard drives to a higher standard than our competition.All of our drives score 99 % or better on a SMART test.They are very reliable and should perform well for years.</p><br><br><hr>'
+                $('#result').append('<p>HDD Description Template: Hdd 640GB</p>');
+            });
+                $('#hdd1tb_btn').click(
+            function () {
+                hdd = ' <p><img src = "{{media url="wysiwyg/HDD1TB.png"}} " style = "PADDING-LEFT: 8px" align = "right" alt = "320GB HDD">This refurbished computer comes with a 1TB HDD. This is a large amount of storage capacity, and should be more than enough for most.If you need more space, we recommend using an external hard drive. <br><br> We hold our hard drives to a higher standard than our competition.All of our drives score 99 % or better on a SMART test.They are very reliable and are expected to perform well for years.</p><br><br><hr> '
+                $('#result').append('<p>HDD Description Template: Hdd 1TB</p>');
+            });
+                $('#ram1gb_btn').click(
+            function () {
+                ram = '<p><img src = "{{media url="wysiwyg/RAM1GB.png"}} " style = "PADDING-LEFT: 8px" align = "right" alt = "1GB RAM">This refurbished computer comes with 1GB of RAM.This is enough to run the Microsoft Office Suite, Internet browsers, and other basic programs. Power users would be better served by computers with 4GB of RAM or more.With only 1GB of RAM, switching between programs will be slower. <br><br>1GB of RAM is not recommended for photo or video editing.Please check the system requirements of any advanced software you plan on using.</p><br><hr> '
+                $('#result').append('<p>Memory Description Template: RAM 1GB</p>');
+            });
+                $('#ram2gb_btn').click(
+            function () {
+                ram = '<p><img src = "{{media url="wysiwyg/RAM2GB.png"}} " style = "PADDING-LEFT: 8px" align = "right" alt = "2GB RAM">This refurbished computer comes with 2GB of RAM.This is enough to run the Microsoft Office Suite, Internet browsers, and other basic programs. Power users would be better served by computers with 4GB of RAM or more.With only 2GB of RAM, switching between programs will be slightly slower, but working within programs will be exactly the same.<br><br>2GB of RAM is not recommended for photo or video editing.Please check the system requirements of any advanced software you plan on using.</p><br><hr>'
+                $('#result').append('<p>Memory Description Template: RAM 2GB</p>');
+            });
+                $('#ram3gb_btn').click(
+            function () {
+                ram = '<p><img src = "{{media url="wysiwyg/RAM3GB.png"}} " style = "PADDING-LEFT: 8px" align = "right" alt = "3GB RAM">This refurbished computer comes with 3GB of RAM.This is enough to run the Microsoft Office Suite, Internet browsers, and other basic programs. Power users would be better served by computers with 4GB of RAM or more.With only 3GB of RAM, switching between programs will be slightly slower, but working within programs will be exactly the same.<br><br>3GB of RAM is not recommended for photo or video editing.Please check the system requirements of any advanced software you plan on using.</p><br><hr>'
+                $('#result').append('<p>Memory Description Template: RAM 3GB</p>');
+            });
+                $('#ram4gb_btn').click(
+            function () {
+                ram = '<p><img src = "{{media url="wysiwyg/RAM4GB.png"}} " style = "PADDING-LEFT: 8px" align = "right" alt = "4GB RAM">This refurbished computer comes with 4GB of RAM.This is enough to run pretty much any program without issue. Users that are doing large photo editing jobs or video editing would benefit from additional RAM, but for most users 4GB is sufficient.<br><br>If you’re unsure, please check the system requirements of any software you intend on using with this computer.</p><br><br><hr>'
+                $('#result').append('<p>Memory Description Template: RAM 4GB</p>');
+            });
+                $('#ram6gb_btn').click(
+            function () {
+                ram = '<p><img src = "{{media url="wysiwyg/RAM6GB.png"}} " style = "PADDING-LEFT: 8px" align = "right" alt = "6GB RAM">This refurbished computer comes with 6GB of RAM.This is enough to run pretty much any program without issue, including photo editing programs.<br><br>If you’re unsure if it is enough, please check the system requirements of any software you intend on using with this computer.</p><br><br><hr> '
+                $('#result').append('<p>Memory Description Template: RAM 6GB</p>');
+            });
+                $('#ram8gb_btn').click(
+            function () {
+                ram = '<p><img src = "{{media url="wysiwyg/RAM8GB.png"}} " style = "PADDING-LEFT: 8px" align = "right" alt = "8GB RAM">This refurbished computer comes with 8GB of RAM.This is enough to run any program without issue, including photo editing programs.<br><br></p><br><br><br><br><br><hr> '
+                $('#result').append('<p>Memory Description Template: RAM 8GB</p>');
+            });
+
+                $('#submit_btn_desc').click(function () {
+
+                    $('#desc').val(grade_desc + cpu + hdd + ram + ic_certify);
+                    $("#dialog").dialog("close");
+                    $('#result').text('');
+                });
+                $('#clear_btn').click(function () {
+                    $('#result').text('');
+                });
+                $("#pallet_dropdown").change(function () {
+                    var selected_value = $("#pallet_dropdown option:selected").text();
+                    $('#pallet_name').val(selected_value);
+                    $("#dialog2").dialog("close");
+
+                });
+                $("#sku_dropdown").change(function () {
+                    var selected_value = $("#sku_dropdown option:selected").text();
+                    $('#sku').val(selected_value);
+                    $("#dialog3").dialog("close");
+
+                });
+                $('#submit_btn').click(
+               function () {
+
+                   $("#wizard").empty();
+
+                   var asset_tag = $('#asset_tag_input').val();
+                   var jsonObject = { asset: asset_tag };
+                   $('#page_dimmer').dimmer('show');
+                   $.ajax({
+                       url: "@Url.Action("hardware_spec")",
+                       type: "POST",
+
+                       data: JSON.stringify(jsonObject),
+                       contentType: "application/json; charset=utf-8",
+                       dataType: "json",
+                       success: function (data) {
+                           $('#page_dimmer').dimmer('hide');
+                           var wizard = $("#wizard").steps({
+                               contentMode: "async",
+                               transitionEffect: "fade",
+                               stepsOrientation: "vertical",
+                           });
+                           wizard.steps("add", {
+                               title: "Hardware Specs",
+                               content: "<div id='' style='overflow-y:scroll; overflow-x:hidden; height:400px;'><form> <fieldset>Asset Tag:<br><input type='text' id='asset' style='width:50%' value='" + data[0].ictags + "'><br>Manufacturer:<br><input type='text' id='manu' style='width:50%' value='" + data[0].brand + "'><br>CPU:<br><input type='text' style='width:100%' id='cpu' value='" + data[0].cpu + "' ><br>Memory:<br><input type='text' style='width:100%' id='ram' value='" + data[0].ram + "' ><br>HardDrive:<br><input type='text' style='width:100%' id='hdd' value='" + data[0].hdd + "' ><br>Model:<br><input type='text' style='width:100%' id='model' value='" + data[0].model + "' ><br>Optical Drive:<br><input type='text' style='width:100%' id='optical' value='" + data[0].optical + "' ><br>Pallet Assigned:<button type='button' id='pallet_helper' class='ui icon button'><i class='configure icon'></i></button><br><input type='text' style='width:100%' id='pallet_name' value='" + data[0].pallet_name + "' ><br>Screen Size:<br><input type='text' style='width:100%' id='screen' value='" + data[0].screen_size + "' ><br>Serial:<br><input type='text' style='width:100%' id='serial' value='" + data[0].serial + "' ><br></fieldset></form></div>"
+                           });
+                           var title = data[0].brand + " " + data[0].model + " (" + data[0].cpu + ", " + data[0].ram + ", " + data[0].hdd + ")";
+
+                           wizard.steps("add", {
+                               title: "General Info",
+                               content: "<div id='' style='overflow-y:scroll; overflow-x:hidden; height:400px;'><form>Status:<br><select id=status> <option value='0'>Enable</option><option value='1'>Disable</option></select><br> IS Computer:<br><select id=is_computer><option value='0'>Yes</option><option value='1'>No</option></select> <br>Name:<br><input type='text' style='width:100%' id='name' value='" + title + "' ><br>Brand:<br><input type='text' style='width:100%' id='brand' value='" + data[0].brand + "' ><br>Includes:<br><input type='text' style='width:100%' id='include' value='' ><br>Short Description:<br><input type='text' style='width:100%' id='short_desc' value='' ><br>Description:<br><input type='text' style='width:100%' id='desc' value=''><br>Software Description:<br><input type='text' style='width:100%' id='soft_desc' value='' ><br>Software:<br><input type='text' style='width:100%' id='soft' value='' ><br>SKU:<br><input type='text' style='width:100%' id='sku' value='' ><br>Weight:<br><input type='text' style='width:100%' id='weight' value='' ><br></form></div>"
+                           });
+
+
+
+                           wizard.steps("add", {
+                               title: "Misc Setting",
+                               content: "<div id='' style='overflow-y:scroll; overflow-x:hidden; height:400px;'><form>Meta Title:<br><input type='text' style='width:100%' id='meta_title' value='' ><br>Meta Description :<br><input type='text' style='width:100%' id='meta_desc' value='US based nonprofits and low-income individuals can get a great deal on a refurbished laptop right here on the InterConnection Online Store. This is a Windows 7 machine that has been tested and IC Certified by our in-house technicians.' ><br></form></div>"
+                           });
+                           wizard.steps("add", {
+                               title: "Price",
+                               content: "<div id='' style='overflow-y:scroll; overflow-x:hidden; height:400px;'><form>Price:<br><input type='text' style='width:100%' id='price' value='' ><br>Tax Class:<br><select id=tax_class> <option value='0'>None</option><option selected='true' value='1'>Texable Goods</option></select><br></form></div>"
+                           });
+                           wizard.steps("add", {
+                               title: "Inventory",
+                               content: "<div id='' style='overflow-y:scroll; overflow-x:hidden; height:400px;'><form>Qty:<br><input type='text' style='width:100%' id='qty' value=''><br>Stock Availability:<br><select id=stock> <option value='0'>In Stock</option><option selected='true' value='1'>Out of Stock</option></select><br></form></div>"
+                           });
+
+                           if (data.responseText != null) {
+
+                               $("<div>" + data.responseText + "</div>").dialog();
+                           }
+
+
+
+
+                           var grade = $('#grade').val();
+
+                           switch (grade) {
+                               case "1":
+
+                                   grade_desc = '<p><img src="{{media url="wysiwyg/GradeA.png"}}"style="PADDING - LEFT: 8px" align="right" alt="Grade A">This unit meets our highest cosmetic grade. It may have a few minor cosmetic defects including very faint scratches or scuffs. Some laptops may exhibit some shiny areas around the keyboard (space bar, touchpad and/or touchpad buttons), but the keyboard keys will always be in excellent condition. Any blemishes are purely cosmetic and will have no impact to the system’s overall functionality or performance.</p><br><br><hr>';
+
+                                   break;
+                               case "2":
+                                   grade_desc = '<p><img src="{{media url="wysiwyg/GradeB.png"}} " style="PADDING-LEFT: 8px" align="right" alt="Grade B">Grade B units are fully tested and functional, just like Grade A. They will have more visible blemishes and are discounted accordingly.  These could include slight scratches & scuffs, wear on the palm rest and slight dimples in the top plastic. Any blemishes are purely cosmetic and will have no impact to the system’s overall functionality or performance.</p><br><br><br><hr>';
+                                   break;
+
+
+                           }
+
+
+
+
+
+
+
+                       },
+                       error: function () {
+
+                           $("<div>" + data.responseText + "</div>").dialog();
+                       }
+                   });
+               }
+                          );
+
+</script>

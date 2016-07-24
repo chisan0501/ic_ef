@@ -1,49 +1,252 @@
 ﻿
 @{
-    
-    Layout = "~/Views/Shared/_welcomeLayout.cshtml";
+    Layout = null;
 }
-<head>
-    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.0/jquery.min.js"></script>
-    @*<script src="@Url.Content("~/js/vidbg.min.js")"></script>
-    <link href="@Url.Content("~/css/fullscreenDemo.css")" rel="stylesheet" type="text/css" />*@
 
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <title>Stylish Portfolio - Start Bootstrap Theme</title>
+    <!-- Bootstrap Core CSS -->
+    <link href="~/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Custom CSS -->
+    <link href="~/css/stylish-portfolio.css" rel="stylesheet">
+    <!-- Custom Fonts -->
+    <link href="~/css/font-awesome.css" rel="stylesheet" type="text/css">
+    <link href="http://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,700,300italic,400italic,700italic" rel="stylesheet" type="text/css">
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
 </head>
 <body>
-
-   
-    <div><img src="/Content/des.jpg" alt="desktop_img" style="">
-        <img src="~/Content/lap.jpg" alt="laptop_img" style=""></div>
-    <div><p><h2>ICDB</h2></p>
-<p><h4>InterConnection’s Computer Hardware Discovery Tool and Database</h4></p>
-@Html.ActionLink("Register", "Register", "Account", routeValues: null, htmlAttributes: new { id = "registerLink"}) | @Html.ActionLink("Login", "Index", "Home", routeValues: null, htmlAttributes: new { id = "loginLink" })</div>
-
-    @*<section class="section-first" data-vidbg-bg="mp4: /video/ic.mp4, poster: /video/background.jpg" data-vidbg-options="loop: false, muted: true, overlay: true" style="position: fixed; z-index: -1;">
-        <div class="vidbg-container" style="position: fixed; z-index: -1; top: 0px; left: 0px; bottom: 0px; right: 0px; overflow: hidden; background-image: none; background-size: cover; background-position: 50% 50%; background-repeat: no-repeat;"><video autoplay="" loop="" muted="" style="margin: auto; position: fixed; z-index: -1; top: 50%; left: 50%; transform: translate(-50%, -50%); visibility: visible; opacity: 1; width: 1600px; height: auto;"><source src="~/video/ic.mp4" type="video/mp4"></video></div>
+    <!-- Navigation -->
     
-    </section>*@
+    <!-- Header -->
+    <header id="top" class="header">
+        <div class="text-vertical-center">
+            <h1>ICDB</h1>
+            <h3>InterConnection’s Computer Hardware Discovery Tool and Database</h3>
+            <br>
+            
+            @Html.ActionLink("Login", "Index", "Home", routeValues: null, htmlAttributes: new { @class = "btn btn-dark btn-lg" })
+            <a href="#about" class="btn btn-dark btn-lg">Find Out More</a>
+        </div>
+    </header>
+    <!-- About -->
+    <section id="about" class="about">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12 text-center">
+                    <h2>ICDB Connects all of your Data to Different Platform</h2>
+                    <p class="lead">From Discover a Computer's Hardware Spec to Selling it on eCommerce</p>
+                </div>
+            </div>
+            <!-- /.row -->
+        </div>
+        <!-- /.container -->
+    </section>
+    <!-- Services -->
+    <!-- The circle icons use Font Awesome's stacked icon classes. For more information, visit http://fontawesome.io/examples/ -->
+    <section id="services" class="services bg-primary">
+        <div class="container">
+            <div class="row text-center">
+                <div class="col-lg-10 col-lg-offset-1">
+                    <h2>Features</h2>
+                    <hr class="small">
+                    <div class="row">
+                        <div class="col-md-3 col-sm-6">
+                            <div class="service-item">
+                                <span class="fa-stack fa-4x">
+                                    <i class="fa fa-circle fa-stack-2x"></i>
+                                    <i class="fa fa-search fa-stack-1x text-primary"></i>
+                                </span>
+                                <h4>
+                                    <strong>Discover Hardware</strong>
+                                </h4>
+                                <p>Discover any PC and Have Data Push to Database with one-click</p>
+                                <a href="#" class="btn btn-light">Learn More</a>
+                            </div>
+                        </div>
+                        <div class="col-md-3 col-sm-6">
+                            <div class="service-item">
+                                <span class="fa-stack fa-4x">
+                                    <i class="fa fa-circle fa-stack-2x"></i>
+                                    <i class="fa fa-tag fa-stack-1x text-primary"></i>
+                                </span>
+                                <h4>
+                                    <strong>Asset Tag</strong>
+                                </h4>
+                                <p>Easily Manage Your Asset with Asset Tag</p>
+                                <a href="#" class="btn btn-light">Learn More</a>
+                            </div>
+                        </div>
+                        <div class="col-md-3 col-sm-6">
+                            <div class="service-item">
+                                <span class="fa-stack fa-4x">
+                                    <i class="fa fa-circle fa-stack-2x"></i>
+                                    <i class="fa fa-print fa-stack-1x text-primary"></i>
+                                </span>
+                                <h4>
+                                    <strong>Hardware Spec Label</strong>
+                                </h4>
+                                <p>Customize and Print any Asset on DYMO Label</p>
+                                <a href="#" class="btn btn-light">Learn More</a>
+                            </div>
+                        </div>
+                        <div class="col-md-3 col-sm-6">
+                            <div class="service-item">
+                                <span class="fa-stack fa-4x">
+                                    <i class="fa fa-circle fa-stack-2x"></i>
+                                    <i class="fa fa-usd fa-stack-1x text-primary"></i>
+                                </span>
+                                <h4>
+                                    <strong>Post Item on eCommerce</strong>
+                                </h4>
+                                <p>Post and Sell Asset with one click to eCommerce</p>
+                                <a href="#" class="btn btn-light">Learn More</a>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- /.row (nested) -->
+                </div>
+                <!-- /.col-lg-10 -->
+            </div>
+            <!-- /.row -->
+        </div>
+        <!-- /.container -->
+    </section>
+    <!-- Callout -->x
+    <aside class="callout">
+        <div class="text-vertical-center">
+            <h2 style="color:black">Powered By</h2>
+            <p><img src="~/Content/main.jpg"/></p>
+        </div>
+    </aside>
+    <!-- Portfolio -->
     
+    <!-- Call to Action -->
     
-    @*<div class="inner cover text-center" style="position:relative; margin-top:50%;z-index: 1;">
-        <a> @Html.ActionLink("Learn More", "Index", "Home", routeValues: null, htmlAttributes: new { @class = "btn btn-success btn-lg" })</a>
-       
-       
-    </div>*@
-
-   
-    
-    
-    
- 
-    <div class="mastfoot" style="z-index: 1;">
-        <br/>
-        <footer style="color: black" >
-            <p>To learn more contact</p>
-            <p><a href="info@interconnection.org">info@interconnection.org</a></p>
-            <p>(206) 633-1517</p>
-            <p>3415 Stone Way N </p>
-            <p>Seattle WA 98103</p>
-        </footer>
-    </div>
+    <!-- Map -->
+    <section id="contact" class="map">
+        <iframe width="100%" height="100%" frameborder="0" scrolling="no" marginheight="0" marginwidth="0" src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2687.81443205516!2d-122.34514758461653!3d47.64917279302968!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x549014fc673e79db%3A0x90165f1af69549d1!2sInterConnection!5e0!3m2!1szh-TW!2sus!4v1468133103777"></iframe>
+        <br />
+        <small>
+            <a href="https://maps.google.com/maps?f=q&amp;source=embed&amp;hl=en&amp;geocode=&amp;q=Twitter,+Inc.,+Market+Street,+San+Francisco,+CA&amp;aq=0&amp;oq=twitter&amp;sll=28.659344,-81.187888&amp;sspn=0.128789,0.264187&amp;ie=UTF8&amp;hq=Twitter,+Inc.,+Market+Street,+San+Francisco,+CA&amp;t=m&amp;z=15&amp;iwloc=A"></a>
+        </small>
+        </iframe>
+    </section>
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-10 col-lg-offset-1 text-center">
+                    <h4>
+                        <strong>Interconnection</strong>
+                    </h4>
+                    <p>
+                        3415 Stone Way N
+                        <br>Seattle WA 98103
+                    </p>
+                    <ul class="list-unstyled">
+                        <li><i class="fa fa-phone fa-fw"></i> (206) 633-1517</li>
+                        <li>
+                            <i class="fa fa-envelope-o fa-fw"></i> <a href="mailto:info@interconnection.org">info@interconnection.org</a>
+                        </li>
+                    </ul>
+                    <br>
+                    
+                    <hr class="small">
+                    <p class="text-muted">Copyright &copy; Interconnection 2016</p>
+                </div>
+            </div>
+        </div>
+        <a id="to-top" href="#top" class="btn btn-dark btn-lg"><i class="fa fa-chevron-up fa-fw fa-1x"></i></a>
+    </footer>
+    <!-- jQuery -->
+    <script src="~/js/jquery-1.11.0.min.js"></script>
+    <!-- Bootstrap Core JavaScript -->
+    <script src="~/js/bootstrap.js"></script>
+    <!-- Custom Theme JavaScript -->
+    <script>
+    // Closes the sidebar menu
+    $("#menu-close").click(function(e) {
+        e.preventDefault();
+        $("#sidebar-wrapper").toggleClass("active");
+    });
+    // Opens the sidebar menu
+    $("#menu-toggle").click(function(e) {
+        e.preventDefault();
+        $("#sidebar-wrapper").toggleClass("active");
+    });
+    // Scrolls to the selected menu item on the page
+    $(function() {
+        $('a[href*=#]:not([href=#])').click(function() {
+            if (location.pathname.replace(/^\//, '') == this.pathname.replace(/^\//, '') || location.hostname == this.hostname) {
+                var target = $(this.hash);
+                target = target.length ? target : $('[name=' + this.hash.slice(1) + ']');
+                if (target.length) {
+                    $('html,body').animate({
+                        scrollTop: target.offset().top
+                    }, 1000);
+                    return false;
+                }
+            }
+        });
+    });
+    //#to-top button appears after scrolling
+    var fixed = false;
+    $(document).scroll(function() {
+        if ($(this).scrollTop() > 250) {
+            if (!fixed) {
+                fixed = true;
+                // $('#to-top').css({position:'fixed', display:'block'});
+                $('#to-top').show("slow", function() {
+                    $('#to-top').css({
+                        position: 'fixed',
+                        display: 'block'
+                    });
+                });
+            }
+        } else {
+            if (fixed) {
+                fixed = false;
+                $('#to-top').hide("slow", function() {
+                    $('#to-top').css({
+                        display: 'none'
+                    });
+                });
+            }
+        }
+    });
+    // Disable Google Maps scrolling
+    // See http://stackoverflow.com/a/25904582/1607849
+    // Disable scroll zooming and bind back the click event
+    var onMapMouseleaveHandler = function(event) {
+        var that = $(this);
+        that.on('click', onMapClickHandler);
+        that.off('mouseleave', onMapMouseleaveHandler);
+        that.find('iframe').css("pointer-events", "none");
+    }
+    var onMapClickHandler = function(event) {
+            var that = $(this);
+            // Disable the click handler until the user leaves the map area
+            that.off('click', onMapClickHandler);
+            // Enable scrolling zoom
+            that.find('iframe').css("pointer-events", "auto");
+            // Handle the mouse leave event
+            that.on('mouseleave', onMapMouseleaveHandler);
+        }
+        // Enable map zooming with mouse scroll when the user clicks the map
+    $('.map').on('click', onMapClickHandler);
+    </script>
 </body>
+</html>
 

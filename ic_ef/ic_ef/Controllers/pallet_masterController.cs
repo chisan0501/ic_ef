@@ -16,7 +16,7 @@ namespace ic_ef.Controllers
     [Authorize]
     public class pallet_masterController : Controller
     {
-        private ic_databaseEntities2 db = new ic_databaseEntities2();
+        private db_a094d4_icdbEntities db = new db_a094d4_icdbEntities();
 
         // GET: pallet_master
         public ActionResult Index()
@@ -96,6 +96,11 @@ namespace ic_ef.Controllers
             return new EmptyResult();
         }
 
+        public JsonResult check_asset ()
+        {
+
+            return Json(new { }, JsonRequestBehavior.AllowGet);
+        }
 
         public ActionResult bulk()
         {

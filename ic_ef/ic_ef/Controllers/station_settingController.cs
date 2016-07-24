@@ -13,7 +13,7 @@ namespace ic_ef.Controllers
     [Authorize(Roles ="Admin")]
     public class station_settingController : Controller
     {
-        private ic_databaseEntities2 db = new ic_databaseEntities2();
+        private db_a094d4_icdbEntities db = new db_a094d4_icdbEntities();
 
         // GET: station_setting
         public ActionResult Index()

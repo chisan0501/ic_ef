@@ -53,6 +53,7 @@
                             @using (Html.BeginForm("bulk", "pallet_master", FormMethod.Post, new { enctype = "multipart/form-data" }))
                             {
                                 <input type="text" class="form-control" name="pallet_name" placeholder="Enter Pallet Name here" required="required">
+                                <input type="button" class="form-control" name="check_file" />
                                 <input type="file" name="FileUpload" class="form-control" />
                                 <input type="submit" name="Submit" id="Submit" value="Upload" class="form-control" />
                             }
@@ -77,3 +78,8 @@
     </div>
 </div>
 
+<script>
+    $('#check_file').on('click', 'button', function () {
+
+    });
+</script>

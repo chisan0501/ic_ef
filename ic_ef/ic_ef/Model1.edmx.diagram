@@ -4,33 +4,33 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="6e07d1f102194acaba2661d43aec052e" Name="Diagram1">
-        <EntityTypeShape EntityType="ic_databaseModel.aspnetroles" Width="1.5" PointX="3" PointY="1.125" IsExpanded="true" />
-        <EntityTypeShape EntityType="ic_databaseModel.aspnetuserclaims" Width="1.5" PointX="3" PointY="3.5" IsExpanded="true" />
-        <EntityTypeShape EntityType="ic_databaseModel.aspnetuserlogins" Width="1.5" PointX="3" PointY="6.25" IsExpanded="true" />
-        <EntityTypeShape EntityType="ic_databaseModel.aspnetusers" Width="1.5" PointX="0.75" PointY="2.5" IsExpanded="true" />
-        <EntityTypeShape EntityType="ic_databaseModel.asset_tag_counter" Width="1.5" PointX="5.75" PointY="0.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="ic_databaseModel.coas" Width="1.5" PointX="5.75" PointY="3.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="ic_databaseModel.discovery" Width="1.5" PointX="7.75" PointY="0.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="ic_databaseModel.label_menu" Width="1.5" PointX="7.75" PointY="4.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="ic_databaseModel.mac_log" Width="1.5" PointX="7.75" PointY="7.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="ic_databaseModel.monitor_log" Width="1.5" PointX="9.75" PointY="0.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="ic_databaseModel.monitor_setting" Width="1.5" PointX="0.75" PointY="9.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="ic_databaseModel.pallet" Width="1.5" PointX="9.75" PointY="8.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="ic_databaseModel.pallet_master" Width="1.5" PointX="11.75" PointY="0.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="ic_databaseModel.production_log" Width="1.5" PointX="11.75" PointY="2.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="ic_databaseModel.rediscovery" Width="1.5" PointX="6.75" PointY="11.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="ic_databaseModel.setting" Width="1.5" PointX="11.75" PointY="7.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="ic_databaseModel.setting_bol" Width="1.5" PointX="8.75" PointY="11.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="ic_databaseModel.station_setting" Width="1.5" PointX="11.75" PointY="10.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="ic_databaseModel.users" Width="1.5" PointX="0.75" PointY="12.75" IsExpanded="true" />
-        <AssociationConnector Association="ic_databaseModel.ApplicationUser_Claims" ManuallyRouted="false" />
-        <AssociationConnector Association="ic_databaseModel.ApplicationUser_Logins" ManuallyRouted="false" />
-        <AssociationConnector Association="ic_databaseModel.aspnetuserroles" ManuallyRouted="false" />
-        <EntityTypeShape EntityType="ic_databaseModel.coas_history" Width="1.5" PointX="11.375" PointY="13.75" />
-        <EntityTypeShape EntityType="ic_databaseModel.temp_label" Width="1.5" PointX="13.375" PointY="13.75" />
-        <EntityTypeShape EntityType="ic_databaseModel.retail" Width="1.5" PointX="3.375" PointY="9.75" />
-        <EntityTypeShape EntityType="ic_databaseModel.ebay" Width="1.5" PointX="3.375" PointY="13.75" />
+      <Diagram DiagramId="f1d427bef0c04d9f83ec1bca28d32c62" Name="Diagram1">
+        <EntityTypeShape EntityType="db_a094d4_icdbModel.aspnetroles" Width="1.5" PointX="3" PointY="1.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="db_a094d4_icdbModel.aspnetuserclaims" Width="1.5" PointX="3" PointY="3.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="db_a094d4_icdbModel.aspnetuserlogins" Width="1.5" PointX="3" PointY="6.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="db_a094d4_icdbModel.aspnetusers" Width="1.5" PointX="0.75" PointY="2.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="db_a094d4_icdbModel.asset_tag_counter" Width="1.5" PointX="5.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="db_a094d4_icdbModel.coas" Width="1.5" PointX="5.75" PointY="3.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="db_a094d4_icdbModel.coas_history" Width="1.5" PointX="7.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="db_a094d4_icdbModel.discovery" Width="1.5" PointX="7.75" PointY="5.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="db_a094d4_icdbModel.ebay" Width="1.5" PointX="9.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="db_a094d4_icdbModel.label_menu" Width="1.5" PointX="0.75" PointY="9.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="db_a094d4_icdbModel.mac_log" Width="1.5" PointX="2.75" PointY="9.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="db_a094d4_icdbModel.monitor_log" Width="1.5" PointX="9.75" PointY="4.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="db_a094d4_icdbModel.monitor_setting" Width="1.5" PointX="4.75" PointY="9.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="db_a094d4_icdbModel.pallet" Width="1.5" PointX="6.75" PointY="9.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="db_a094d4_icdbModel.pallet_master" Width="1.5" PointX="9.75" PointY="8.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="db_a094d4_icdbModel.production_log" Width="1.5" PointX="8.75" PointY="10.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="db_a094d4_icdbModel.rediscovery" Width="1.5" PointX="10.75" PointY="10.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="db_a094d4_icdbModel.retail" Width="1.5" PointX="11.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="db_a094d4_icdbModel.setting" Width="1.5" PointX="11.75" PointY="4.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="db_a094d4_icdbModel.setting_bol" Width="1.5" PointX="11.75" PointY="7.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="db_a094d4_icdbModel.station_setting" Width="1.5" PointX="4.75" PointY="12.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="db_a094d4_icdbModel.temp_label" Width="1.5" PointX="12.75" PointY="10.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="db_a094d4_icdbModel.users" Width="1.5" PointX="13.75" PointY="0.75" IsExpanded="true" />
+        <AssociationConnector Association="db_a094d4_icdbModel.ApplicationUser_Claims" ManuallyRouted="false" />
+        <AssociationConnector Association="db_a094d4_icdbModel.ApplicationUser_Logins" ManuallyRouted="false" />
+        <AssociationConnector Association="db_a094d4_icdbModel.aspnetuserroles" ManuallyRouted="false" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

@@ -83,11 +83,14 @@ namespace ic_ef.Models
 
     public class laptop
     {
+
         public string entity_id { get; set; }
         public string entity_type_id { get; set; }
         public string attribute_set_id { get; set; }
         public string type_id { get; set; }
         public string sku { get; set; }
+        public string sku_family { get; set; }
+        public string grade { get; set; }
         public string has_options { get; set; }
         public string required_options { get; set; }
         public string created_at { get; set; }

@@ -21,6 +21,11 @@ using iTextSharp.text.html.simpleparser;
 using System.Collections;
 using System.Reflection;
 using Magento.RestApi;
+using Newtonsoft.Json;
+using System.Web.Script.Serialization;
+using System.Web.Security;
+using System.Net;
+using System.Threading.Tasks;
 
 namespace ic_ef.Controllers
 {
@@ -35,10 +40,10 @@ namespace ic_ef.Controllers
             context = new ApplicationDbContext();
         }
 
-        private ic_databaseEntities2 db = new ic_databaseEntities2();
+        private db_a094d4_icdbEntities db = new db_a094d4_icdbEntities();
 
         [AllowAnonymous]
-        public async System.Threading.Tasks.Task<ActionResult> Welcome()
+        public ActionResult Welcome()
         {
    //         var client = new MagentoApi()
    //.Initialize("http://www.dev.interconnection.org/nonprofit/", "e96202a50cf1b8aecb0e7cfba5d63efa", "bb6f8568b476e030c27416751e9ce14a")
@@ -77,13 +82,72 @@ namespace ic_ef.Controllers
 
             return View();
         }
-
+        
+        public ActionResult Logout()
+        {
+            
+            return RedirectToAction("LogOff", "Account");
+        }
         [HttpPost]
         public ActionResult advance_search(string cpu)
         {
 
             return View();
         }
+        public JsonResult pass30 ()
+        {
+           Dictionary<string,string> result = sql_output.sql_result("select date_format(time,'%Y-%m-%d') as items_date ,Count(time) as items from production_log where time >= DATE_SUB(CURDATE(), INTERVAL 30 day) group by date_format(time,'%Y-%m-%d')");
+
+           // var json = new JavaScriptSerializer().Serialize(result);
+            return Json(new { date = result.Keys , items = result.Values}, JsonRequestBehavior.AllowGet);
+        }
+
+
+        public JsonResult get_coa_data()
+        {
+            var ts_wcoa_s1 = (from m in db.coas where (m.Recipient_Organization_Name == "TechSoup.org" && m.location == "wcoa_s1") select m).Count();
+            var ts_ocoa_s1 = (from m in db.coas where (m.Recipient_Organization_Name == "TechSoup.org" && m.location == "ocoa_s1") select m).Count();
+            var mar_wcoa_s1 = (from m in db.coas where (m.Recipient_Organization_Name == "Interconnection" && m.location == "wcoa_s1") select m).Count();
+            var mar_ocoa_s1 = (from m in db.coas where (m.Recipient_Organization_Name == "Interconnection" && m.location == "ocoa_s1") select m).Count();
+            var g360_wcoa_s1 = (from m in db.coas where (m.Recipient_Organization_Name == "Good360" && m.location == "wcoa_s1") select m).Count();
+            var g360_ocoa_s1 = (from m in db.coas where (m.Recipient_Organization_Name == "Good360" && m.location == "ocoa_s1") select m).Count();
+            var ts_wcoa_s2 = (from m in db.coas where (m.Recipient_Organization_Name == "TechSoup.org" && m.location == "wcoa_s2") select m).Count();
+            var ts_ocoa_s2 = (from m in db.coas where (m.Recipient_Organization_Name == "TechSoup.org" && m.location == "ocoa_s2") select m).Count();
+            var mar_wcoa_s2 = (from m in db.coas where (m.Recipient_Organization_Name == "Interconnection" && m.location == "wcoa_s2") select m).Count();
+            var mar_ocoa_s2 = (from m in db.coas where (m.Recipient_Organization_Name == "Interconnection" && m.location == "ocoa_s2") select m).Count();
+            var g360_wcoa_s2 = (from m in db.coas where (m.Recipient_Organization_Name == "Good360" && m.location == "wcoa_s2") select m).Count();
+            var g360_ocoa_s2 = (from m in db.coas where (m.Recipient_Organization_Name == "Good360" && m.location == "ocoa_s2") select m).Count();
+            return Json(new { tswcoas1 = ts_wcoa_s1 , tsocoas1 = ts_ocoa_s1,tswcoas2 = ts_wcoa_s2, tsocoas2 = ts_ocoa_s2, marwcoas1 = mar_wcoa_s1, marocoas1 = mar_ocoa_s1, marwcoas2 = mar_wcoa_s2, marocoas2 = mar_ocoa_s2 , g360wcoas1 = g360_wcoa_s1, g360ocoas1 = g360_ocoa_s1, g360wcoas2 = g360_wcoa_s2, g360ocoas2 = g360_ocoa_s2 }, JsonRequestBehavior.AllowGet);
+        }
+
+        //function for bottom 3 windows coas info from index2 page
+        
+        public JsonResult get_coa (string company, string windows_name)
+        {
+            var w_result = (from m in db.coas where m.Recipient_Organization_Name == company && m.Product_Name == windows_name orderby m.row_id ascending select m.PK).Take(5).ToList();
+            var o_result = (from m in db.coas where m.Recipient_Organization_Name == company && m.Product_Name == "Microsoft Office Home & Business 2010" orderby m.row_id ascending select m.PK).Take(5).ToList();
+            return Json(new { wcoa = w_result , ocoa = o_result} , JsonRequestBehavior.AllowGet);
+        }
+
+        public JsonResult get_frontpage_data()
+        {
+            DateTime startDateTime = DateTime.Today; //Today at 00:00:00
+            DateTime endDateTime = DateTime.Today.AddDays(1).AddTicks(-1);
+            var discovery_data = (from m in db.discovery where (m.time >= startDateTime && m.time <= endDateTime)
+                                 select m).Count();
+            var refrub_data = (from m in db.rediscovery
+                               where (m.time >= startDateTime && m.time <= endDateTime)
+                               select m).Count();
+            var img_data = (from m in db.production_log
+                            where (m.time >= startDateTime && m.time <= endDateTime)
+                            select m).Count();
+            var monitor_data = (from m in db.monitor_log
+                                where (m.time >= startDateTime && m.time <= endDateTime)
+                                select m).Count();
+
+            return Json(new {discovery = discovery_data , refrub = refrub_data, img = img_data, monitor = monitor_data}, JsonRequestBehavior.AllowGet);
+        }
+
         public ActionResult PrintIndex()
         {
             return new ActionAsPdf("multiple_barcode", new { name = "Home" }) { FileName = "Test.pdf" };
@@ -217,6 +281,11 @@ namespace ic_ef.Controllers
                 .SetSeries(new Series { Data = new Data(new object[] { model.dis_day1, model.dis_day2, model.dis_day3, model.dis_day4, model.dis_day5, model.dis_day6, model.dis_day7 }) });
 
             return dis_weekly_chart;
+        }
+       //temp holder for v2.0 dashboard
+        public ActionResult Index2 ()
+        {
+            return View();
         }
         public DotNet.Highcharts.Highcharts lastweek_graph(graphViewModel model, List<DateTime> allDates)
         {
@@ -455,8 +524,10 @@ namespace ic_ef.Controllers
             }
 
         }
-        public ActionResult Index_nonadmin()
+        public async Task<ActionResult> Index_nonadmin()
         {
+            //await shipstation.list_Order_options();
+          // await shipstation.basic_call();
             return View();
         }
 
@@ -595,36 +666,36 @@ namespace ic_ef.Controllers
                         break;
                 }
             }
-                foreach (var coa2 in s2_windows)
+            foreach (var coa2 in s2_windows)
+            {
+                switch (coa2.Recipient_Organization_Name)
                 {
-                    switch (coa2.Recipient_Organization_Name)
-                    {
-                        case "Good360":
-                            w_g360_count_s2 += 1;
-                            break;
-                        case "TechSoup.org":
-                            w_ts_count_s2 += 1;
-                            break;
-                        case "Interconnection":
-                            w_mar_count_s2 += 1;
-                            break;
-                    }
+                    case "Good360":
+                        w_g360_count_s2 += 1;
+                        break;
+                    case "TechSoup.org":
+                        w_ts_count_s2 += 1;
+                        break;
+                    case "Interconnection":
+                        w_mar_count_s2 += 1;
+                        break;
                 }
-                foreach (var coa2 in s2_office)
+            }
+            foreach (var coa2 in s2_office)
+            {
+                switch (coa2.Recipient_Organization_Name)
                 {
-                    switch (coa2.Recipient_Organization_Name)
-                    {
-                        case "Good360":
-                            o_g360_count_s2 += 1;
-                            break;
-                        case "TechSoup.org":
-                            o_ts_count_s2 += 1;
-                            break;
-                        case "Interconnection":
-                            o_mar_count_s2 += 1;
-                            break;
-                    }
+                    case "Good360":
+                        o_g360_count_s2 += 1;
+                        break;
+                    case "TechSoup.org":
+                        o_ts_count_s2 += 1;
+                        break;
+                    case "Interconnection":
+                        o_mar_count_s2 += 1;
+                        break;
                 }
+            }
             ViewBag.w_g360_count_s1 = w_g360_count_s1;
             ViewBag.w_g360_count_s2 = w_g360_count_s2;
             ViewBag.o_g360_count_s1 = o_g360_count_s1;
@@ -639,64 +710,65 @@ namespace ic_ef.Controllers
             ViewBag.o_mar_count_s2 = o_mar_count_s2;
 
             if (ViewBag.fromDate != null)
+            {
+                DateTime end;
+                DateTime begin = DateTime.Parse(fromDate);
+                if (toDate == "")
                 {
-                    DateTime end;
-                    DateTime begin = DateTime.Parse(fromDate);
-                    if (toDate == "")
-                    {
-                        end = begin.AddDays(1).AddTicks(-1);
-                    }
-                    else
-                    {
-                        end = DateTime.Parse(toDate);
-                    }
-
-                    var fromandto = (from m in db.production_log where m.time > begin && m.time < end && m.location.Contains("Station 1") select m.time).ToArray();
-
-                    var fromandto2 = (from m in db.production_log where m.time > begin && m.time < end && m.location.Contains("Station 2") select m.time).ToArray();
-
-                    process_array(fromandto, fromandto2, model, allDates);
-                    int count_stations = fromandto.Count() + fromandto2.Count();
-                    ViewBag.fromandto_total = "[" + count_stations + "] Station 1: [" +  fromandto.Count() + "] Station 2: [" + fromandto2.Count() + "]";
-                    ViewBag.station1 = fromandto.Count();
-                    ViewBag.station2 = fromandto2.Count();
-                    ViewBag.total = count_stations;
+                    end = begin.AddDays(1).AddTicks(-1);
                 }
                 else
                 {
-                    DateTime startDateTime = DateTime.Today; //Today at 00:00:00
-                    DateTime endDateTime = DateTime.Today.AddDays(1).AddTicks(-1);
-
-                    var pallet = (from t in db.production_log
-                                  where (t.time >= startDateTime && t.time <= endDateTime) && t.location.Contains("Station 2")
-                                  select t.time).ToArray();
-
-
-                    //int result = pallet.Count();
-                    var pallet2 = (from t in db.production_log
-                                   where (t.time >= startDateTime && t.time <= endDateTime) && t.location.Contains("Station 1")
-                                   select t.time).ToArray();
-
-                    process_array(pallet2, pallet, model, allDates);
-
-                    ViewBag.today_total = "Station 1: [" + pallet2.Count() + "] Station 2: [" + pallet.Count() + "]";
-                    ViewBag.station1 = pallet2.Count();
-                    ViewBag.station2 = pallet.Count();
-                    ViewBag.total = pallet.Count() + pallet2.Count();
-
-
+                    end = DateTime.Parse(toDate);
                 }
-                Highcharts discovery_data = discover_weekly_graph(model, allDates);
-                Highcharts chartColumn = lastweek_graph(model, allDates);
-                ChartsModel charts = new ChartsModel();
-                charts.Chart3 = chartColumn;
-                charts.Chart2 = discovery_data;
-                ViewBag.weekGrahp = lastweek_graph(model, allDates);
-                ViewBag.dis_weekGrahp = discover_weekly_graph(model, allDates);
-                ViewBag.Model = set_graph(model);
 
-                return View(charts);
+                var fromandto = (from m in db.production_log where m.time > begin && m.time < end && m.location.Contains("Station 1") select m.time).ToArray();
+
+                var fromandto2 = (from m in db.production_log where m.time > begin && m.time < end && m.location.Contains("Station 2") select m.time).ToArray();
+
+                process_array(fromandto, fromandto2, model, allDates);
+                int count_stations = fromandto.Count() + fromandto2.Count();
+                ViewBag.fromandto_total = "[" + count_stations + "] Station 1: [" + fromandto.Count() + "] Station 2: [" + fromandto2.Count() + "]";
+                ViewBag.station1 = fromandto.Count();
+                ViewBag.station2 = fromandto2.Count();
+                ViewBag.total = count_stations;
             }
+            else
+            {
+                DateTime startDateTime = DateTime.Today; //Today at 00:00:00
+                DateTime endDateTime = DateTime.Today.AddDays(1).AddTicks(-1);
+
+                var pallet = (from t in db.production_log
+                              where (t.time >= startDateTime && t.time <= endDateTime) && t.location.Contains("Station 2")
+                              select t.time).ToArray();
+
+
+                //int result = pallet.Count();
+                var pallet2 = (from t in db.production_log
+                               where (t.time >= startDateTime && t.time <= endDateTime) && t.location.Contains("Station 1")
+                               select t.time).ToArray();
+
+                process_array(pallet2, pallet, model, allDates);
+
+                ViewBag.today_total = "Station 1: [" + pallet2.Count() + "] Station 2: [" + pallet.Count() + "]";
+                ViewBag.station1 = pallet2.Count();
+                ViewBag.station2 = pallet.Count();
+                ViewBag.total = pallet.Count() + pallet2.Count();
+
+
+            }
+            Highcharts discovery_data = discover_weekly_graph(model, allDates);
+            Highcharts chartColumn = lastweek_graph(model, allDates);
+            ChartsModel charts = new ChartsModel();
+            charts.Chart3 = chartColumn;
+            charts.Chart2 = discovery_data;
+            ViewBag.weekGrahp = lastweek_graph(model, allDates);
+            ViewBag.dis_weekGrahp = discover_weekly_graph(model, allDates);
+            ViewBag.Model = set_graph(model);
+
+            return View(charts);
+           // return View();
+        }
         
         public class Entry
         {

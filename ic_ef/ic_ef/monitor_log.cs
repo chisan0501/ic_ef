@@ -16,11 +16,11 @@ namespace ic_ef
     {
         public Nullable<System.DateTime> time { get; set; }
         public string manu { get; set; }
+        public int ictag { get; set; }
         public string monitor_ID { get; set; }
         public string serial { get; set; }
         public Nullable<int> size { get; set; }
         public string resou { get; set; }
         public string model { get; set; }
-        public int ictag { get; set; }
     }
 }

@@ -13,10 +13,10 @@ namespace ic_ef
     using System.Data.Entity;
     using System.Data.Entity.Infrastructure;
     
-    public partial class ic_databaseEntities2 : DbContext
+    public partial class db_a094d4_icdbEntities : DbContext
     {
-        public ic_databaseEntities2()
-            : base("name=ic_databaseEntities2")
+        public db_a094d4_icdbEntities()
+            : base("name=db_a094d4_icdbEntities")
         {
         }
     
@@ -31,7 +31,9 @@ namespace ic_ef
         public virtual DbSet<aspnetusers> aspnetusers { get; set; }
         public virtual DbSet<asset_tag_counter> asset_tag_counter { get; set; }
         public virtual DbSet<coas> coas { get; set; }
+        public virtual DbSet<coas_history> coas_history { get; set; }
         public virtual DbSet<discovery> discovery { get; set; }
+        public virtual DbSet<ebay> ebay { get; set; }
         public virtual DbSet<label_menu> label_menu { get; set; }
         public virtual DbSet<mac_log> mac_log { get; set; }
         public virtual DbSet<monitor_log> monitor_log { get; set; }
@@ -40,13 +42,11 @@ namespace ic_ef
         public virtual DbSet<pallet_master> pallet_master { get; set; }
         public virtual DbSet<production_log> production_log { get; set; }
         public virtual DbSet<rediscovery> rediscovery { get; set; }
+        public virtual DbSet<retail> retail { get; set; }
         public virtual DbSet<setting> setting { get; set; }
         public virtual DbSet<setting_bol> setting_bol { get; set; }
         public virtual DbSet<station_setting> station_setting { get; set; }
-        public virtual DbSet<users> users { get; set; }
-        public virtual DbSet<coas_history> coas_history { get; set; }
         public virtual DbSet<temp_label> temp_label { get; set; }
-        public virtual DbSet<retail> retail { get; set; }
-        public virtual DbSet<ebay> ebay { get; set; }
+        public virtual DbSet<users> users { get; set; }
     }
 }

@@ -20,8 +20,8 @@
     <MvcBuildViews>false</MvcBuildViews>
     <UseIISExpress>true</UseIISExpress>
     <IISExpressSSLPort />
-    <IISExpressAnonymousAuthentication />
-    <IISExpressWindowsAuthentication />
+    <IISExpressAnonymousAuthentication>enabled</IISExpressAnonymousAuthentication>
+    <IISExpressWindowsAuthentication>disabled</IISExpressWindowsAuthentication>
     <IISExpressUseClassicPipelineMode />
     <UseGlobalApplicationHostFile />
     <NuGetPackageImportStamp>
@@ -52,6 +52,10 @@
     </Reference>
     <Reference Include="bouncy_castle_hmac_sha_pcl, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\BouncyCastle-PCL.1.0.0.6\lib\bouncy_castle_hmac_sha_pcl.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="CuttingEdge.Conditions, Version=1.2.0.11174, Culture=neutral, PublicKeyToken=984cb50dea722e99, processorArchitecture=MSIL">
+      <HintPath>..\packages\CuttingEdge.Conditions.1.2.0.0\lib\NET35\CuttingEdge.Conditions.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="DoddleReport, Version=1.4.0.0, Culture=neutral, PublicKeyToken=183ffec7490b24a9, processorArchitecture=MSIL">
@@ -122,6 +126,18 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
+    <Reference Include="Microsoft.Data.Edm, Version=5.6.4.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Data.Edm.5.6.4\lib\net40\Microsoft.Data.Edm.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.Data.OData, Version=5.6.4.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Data.OData.5.6.4\lib\net40\Microsoft.Data.OData.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.Data.Services.Client, Version=5.6.4.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Data.Services.Client.5.6.4\lib\net40\Microsoft.Data.Services.Client.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="Microsoft.Owin, Version=3.0.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.Owin.3.0.1\lib\net45\Microsoft.Owin.dll</HintPath>
       <Private>True</Private>
@@ -186,6 +202,10 @@
       <HintPath>..\packages\MySql.Data.Entity.6.9.8\lib\net45\MySql.Data.Entity.EF6.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="Netco, Version=1.5.1.0, Culture=neutral, PublicKeyToken=9d732c15ac2ec2c9, processorArchitecture=MSIL">
+      <HintPath>..\packages\Netco.1.5.1\lib\net45\Netco.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="Newtonsoft.Json, Version=8.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\packages\Newtonsoft.Json.8.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
       <Private>True</Private>
@@ -210,6 +230,14 @@
       <HintPath>..\packages\Rotativa.1.6.4\lib\net40\Rotativa.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="ServiceStack.Text, Version=4.0.42.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\ServiceStack.Text.4.0.42\lib\net40\ServiceStack.Text.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="ShipStationAccess, Version=1.3.66.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\ShipStationAccess.1.3.66\lib\net45\ShipStationAccess.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
@@ -225,6 +253,10 @@
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Security" />
     <Reference Include="System.ServiceModel" />
+    <Reference Include="System.Spatial, Version=5.6.4.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Spatial.5.6.4\lib\net40\System.Spatial.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System.Web.DynamicData" />
     <Reference Include="System.Web.Entity" />
     <Reference Include="System.Web.ApplicationServices" />
@@ -339,6 +371,7 @@
     <Compile Include="label_menu.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
+    <Compile Include="Levenshtein.cs" />
     <Compile Include="mac_log.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
@@ -361,7 +394,10 @@
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\DymoViewModel.cs" />
     <Compile Include="Models\IdentityModels.cs" />
+    <Compile Include="Models\latestsku.cs" />
+    <Compile Include="Models\magento_importModel.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
+    <Compile Include="Models\shipstationModel.cs" />
     <Compile Include="monitor_log.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
@@ -397,6 +433,8 @@
     <Compile Include="setting_bol.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
+    <Compile Include="shipstation.cs" />
+    <Compile Include="sql_output.cs" />
     <Compile Include="Startup.cs" />
     <Compile Include="magento.aspx.cs">
       <DependentUpon>magento.aspx</DependentUpon>
@@ -420,8 +458,18 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Reference.map</DependentUpon>
     </Compile>
+    <Compile Include="Web References\org.interconnection.dev\Reference.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.map</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="build\css\custom.css" />
+    <Content Include="build\css\custom.min.css" />
+    <Content Include="build\js\custom.js" />
+    <Content Include="build\js\custom.min.js" />
+    <Content Include="Content\bg1.jpg" />
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="Content\DataTables\css\autoFill.bootstrap.css" />
@@ -539,6 +587,14 @@
     <Content Include="Content\lap.jpg" />
     <Content Include="Content\main.jpg" />
     <Content Include="Content\PagedList.css" />
+    <Content Include="Content\rack.jpg" />
+    <Content Include="css\cards.css" />
+    <Content Include="css\icomoon.css" />
+    <Content Include="css\magnific-popup.css" />
+    <Content Include="css\owl.carousel.min.css" />
+    <Content Include="css\owl.theme.default.min.css" />
+    <Content Include="css\themes\default\assets\images\flags.png" />
+    <Content Include="js\prefixfree.min.js" />
     <Content Include="Content\retail_sample.png" />
     <Content Include="Content\simple_csv.jpg" />
     <Content Include="Content\spinner.gif" />
@@ -575,16 +631,23 @@
     <Content Include="Content\themes\base\tabs.css" />
     <Content Include="Content\themes\base\theme.css" />
     <Content Include="Content\themes\base\tooltip.css" />
+    <Content Include="css\animate.css" />
+    <Content Include="css\bootstrap-rtl.css" />
+    <Content Include="css\bootstrap-rtl.min.css" />
     <Content Include="css\bootstrap-theme.css" />
     <Content Include="css\bootstrap-theme.min.css" />
     <Content Include="css\bootstrap.css" />
     <Content Include="css\bootstrap.min.css" />
     <Content Include="css\font-awesome.css" />
+    <Content Include="css\font-awesome.min.css" />
     <Content Include="css\fullscreenDemo.css" />
     <Content Include="css\cover.css" />
+    <Content Include="css\main.css" />
+    <Content Include="css\morris.css" />
     <Content Include="css\reset.css" />
     <Content Include="css\semantic.min.css" />
     <Content Include="css\style.css" />
+    <Content Include="css\stylish-portfolio.css" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
@@ -597,11 +660,14 @@
     <Content Include="js\footable.js" />
     <Content Include="js\footable.paginate.js" />
     <Content Include="js\gen_validatorv4.js" />
+    <Content Include="js\jquery-1.11.0.min.js" />
     <Content Include="js\jquery-1.12.3.js" />
     <Content Include="js\jquery.dataTables.min.css" />
     <Content Include="js\jquery.dataTables.min.js" />
     <Content Include="js\jquery.validate.min.js" />
     <Content Include="js\loadingoverlay.min.js" />
+    <Content Include="js\main.js" />
+    <Content Include="js\modernizr-2.7.1.js" />
     <Content Include="js\moment.js" />
     <Content Include="css\monthpicker.css" />
     <Content Include="js\monthpicker.js" />
@@ -612,6 +678,7 @@
     <Content Include="js\sliiide.min.js" />
     <Content Include="js\tileJs.js" />
     <Content Include="js\tileJs.min.js" />
+    <Content Include="js\wow.min.js" />
     <Content Include="Model1.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <DependentUpon>Model1.edmx</DependentUpon>
@@ -625,13 +692,6 @@
     <Content Include="popr\popr.css" />
     <Content Include="popr\popr.js" />
     <Content Include="popr\popr.min.js" />
-    <EntityDeploy Include="Model1.edmx">
-      <Generator>EntityModelCodeGenerator</Generator>
-      <LastGenOutput>Model1.Designer.cs</LastGenOutput>
-    </EntityDeploy>
-    <Content Include="Model1.edmx.diagram">
-      <DependentUpon>Model1.edmx</DependentUpon>
-    </Content>
     <Content Include="packages.config" />
     <Content Include="fonts\glyphicons-halflings-regular.woff" />
     <Content Include="fonts\glyphicons-halflings-regular.ttf" />
@@ -648,15 +708,30 @@
     <Content Include="fonts\FontAwesome.otf" />
     <Content Include="Content\DataTables\css\mixins.scss" />
     <Content Include="Content\DataTables\css\common.scss" />
+    <EntityDeploy Include="Model1.edmx">
+      <Generator>EntityModelCodeGenerator</Generator>
+      <LastGenOutput>Model1.Designer.cs</LastGenOutput>
+    </EntityDeploy>
+    <Content Include="Model1.edmx.diagram">
+      <DependentUpon>Model1.edmx</DependentUpon>
+    </Content>
+    <Content Include="css\themes\default\assets\fonts\icons.eot" />
+    <Content Include="css\themes\default\assets\fonts\icons.otf" />
+    <Content Include="css\themes\default\assets\fonts\icons.svg" />
+    <Content Include="css\themes\default\assets\fonts\icons.ttf" />
+    <Content Include="css\themes\default\assets\fonts\icons.woff" />
+    <Content Include="css\themes\default\assets\fonts\icons.woff2" />
+    <Content Include="css\bootstrap.css.map" />
+    <Content Include="css\cards.css.map" />
     <None Include="Properties\PublishProfiles\icdb.pubxml" />
     <None Include="Properties\PublishProfiles\icmvc.pubxml" />
     <None Include="Properties\PublishProfiles\ic_ef.pubxml" />
     <None Include="Properties\PublishProfiles\interconnection.pubxml" />
+    <None Include="Properties\PublishProfiles\test_hosting.pubxml" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
-    <Content Include="Rotativa\wkhtmltopdf.exe" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="Scripts\DataTables\autoFill.bootstrap.js" />
@@ -798,15 +873,6 @@
     <Content Include="video\refrub.jpg" />
     <Content Include="video\source.jpeg" />
     <Content Include="magento.aspx" />
-    <Content Include="Web.config">
-      <SubType>Designer</SubType>
-    </Content>
-    <Content Include="Web.Debug.config">
-      <DependentUpon>Web.config</DependentUpon>
-    </Content>
-    <Content Include="Web.Release.config">
-      <DependentUpon>Web.config</DependentUpon>
-    </Content>
     <Content Include="Views\Web.config" />
     <Content Include="Views\_ViewStart.cshtml" />
     <Content Include="Views\Shared\Error.cshtml" />
@@ -820,7 +886,7 @@
     <Content Include="Views\Account\ExternalLoginFailure.cshtml" />
     <Content Include="Views\Account\ForgotPassword.cshtml" />
     <Content Include="Views\Account\ForgotPasswordConfirmation.cshtml" />
-    <Content Include="Views\Account\Login.cshtml" />
+    <Content Include="Views\Account\Login22.cshtml" />
     <Content Include="Views\Account\Register.cshtml" />
     <Content Include="Views\Account\ResetPassword.cshtml" />
     <Content Include="Views\Account\ResetPasswordConfirmation.cshtml" />
@@ -880,7 +946,7 @@
     <Content Include="Views\discoveries\Edit.cshtml" />
     <Content Include="Views\discoveries\Index.cshtml" />
     <Content Include="Views\Shared\_welcomeLayout.cshtml" />
-    <Content Include="Views\Home\Welcome.cshtml" />
+    <Content Include="Views\Home\Welcome2.cshtml" />
     <Content Include="Views\Home\Index_nonadmin.cshtml" />
     <Content Include="Views\Dymo\index.cshtml" />
     <Content Include="Views\Dymo\AssetTag.cshtml" />
@@ -1021,6 +1087,13 @@
     <Content Include="Views\monitor_log\Details.cshtml" />
     <Content Include="Views\monitor_log\Edit.cshtml" />
     <Content Include="Views\monitor_log\Index.cshtml" />
+    <Content Include="Views\Home\Welcome.cshtml" />
+    <Content Include="Views\Account\Login.cshtml" />
+    <Content Include="Views\Home\Index2.cshtml" />
+    <Content Include="Views\production_log\magento_main.cshtml" />
+    <Content Include="Views\production_log\magento_create.cshtml" />
+    <Content Include="Views\Manage\Admin_dashboard.cshtml" />
+    <Content Include="Views\production_log\magento_retail.cshtml" />
     <None Include="Web References\org.connectall\item.xsd">
       <SubType>Designer</SubType>
     </None>
@@ -1065,13 +1138,174 @@
     <Content Include="Web References\org.connectall\storeEntity.datasource">
       <DependentUpon>Reference.map</DependentUpon>
     </Content>
+    <Content Include="web.config" />
+    <Content Include="Web References\org.interconnection.dev\apiEntity.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </Content>
+    <Content Include="Web References\org.interconnection.dev\associativeEntity.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </Content>
+    <Content Include="Web References\org.interconnection.dev\catalogAssignedProduct.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </Content>
+    <Content Include="Web References\org.interconnection.dev\catalogAttributeEntity.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </Content>
+    <Content Include="Web References\org.interconnection.dev\catalogAttributeOptionEntity.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </Content>
+    <Content Include="Web References\org.interconnection.dev\catalogCategoryEntityNoChildren.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </Content>
+    <Content Include="Web References\org.interconnection.dev\catalogCategoryInfo.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </Content>
+    <Content Include="Web References\org.interconnection.dev\catalogCategoryTree.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </Content>
+    <Content Include="Web References\org.interconnection.dev\catalogInventoryStockItemEntity.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </Content>
+    <Content Include="Web References\org.interconnection.dev\catalogProductAttributeEntity.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </Content>
+    <Content Include="Web References\org.interconnection.dev\catalogProductAttributeMediaTypeEntity.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </Content>
+    <Content Include="Web References\org.interconnection.dev\catalogProductAttributeSetEntity.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </Content>
+    <Content Include="Web References\org.interconnection.dev\catalogProductCustomOptionInfoEntity.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </Content>
+    <Content Include="Web References\org.interconnection.dev\catalogProductCustomOptionListEntity.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </Content>
+    <Content Include="Web References\org.interconnection.dev\catalogProductCustomOptionTypesEntity.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </Content>
+    <Content Include="Web References\org.interconnection.dev\catalogProductCustomOptionValueInfoEntity.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </Content>
+    <Content Include="Web References\org.interconnection.dev\catalogProductCustomOptionValueListEntity.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </Content>
+    <Content Include="Web References\org.interconnection.dev\catalogProductDownloadableLinkInfoEntity.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </Content>
+    <Content Include="Web References\org.interconnection.dev\catalogProductEntity.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </Content>
+    <Content Include="Web References\org.interconnection.dev\catalogProductImageEntity.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </Content>
+    <Content Include="Web References\org.interconnection.dev\catalogProductLinkAttributeEntity.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </Content>
+    <Content Include="Web References\org.interconnection.dev\catalogProductLinkEntity.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </Content>
+    <Content Include="Web References\org.interconnection.dev\catalogProductReturnEntity.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </Content>
+    <Content Include="Web References\org.interconnection.dev\catalogProductSpecialPriceReturnEntity.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </Content>
+    <Content Include="Web References\org.interconnection.dev\catalogProductTagInfoEntity.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </Content>
+    <Content Include="Web References\org.interconnection.dev\catalogProductTagListEntity.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </Content>
+    <Content Include="Web References\org.interconnection.dev\catalogProductTierPriceEntity.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </Content>
+    <Content Include="Web References\org.interconnection.dev\catalogProductTypeEntity.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </Content>
+    <Content Include="Web References\org.interconnection.dev\customerAddressEntityItem.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </Content>
+    <Content Include="Web References\org.interconnection.dev\customerCustomerEntity.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </Content>
+    <Content Include="Web References\org.interconnection.dev\customerGroupEntity.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </Content>
+    <Content Include="Web References\org.interconnection.dev\directoryCountryEntity.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </Content>
+    <Content Include="Web References\org.interconnection.dev\directoryRegionEntity.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </Content>
+    <Content Include="Web References\org.interconnection.dev\existsFaltureEntity.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </Content>
+    <Content Include="Web References\org.interconnection.dev\giftMessageResponse.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </Content>
+    <None Include="Web References\org.interconnection.dev\item.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Web References\org.interconnection.dev\Magento.wsdl" />
+    <Content Include="Web References\org.interconnection.dev\magentoInfoEntity.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </Content>
+    <Content Include="Web References\org.interconnection.dev\Reference.map">
+      <Generator>MSDiscoCodeGenerator</Generator>
+      <LastGenOutput>Reference.cs</LastGenOutput>
+    </Content>
+    <Content Include="Web References\org.interconnection.dev\salesOrderCreditmemoEntity.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </Content>
+    <Content Include="Web References\org.interconnection.dev\salesOrderEntity.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </Content>
+    <Content Include="Web References\org.interconnection.dev\salesOrderInvoiceEntity.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </Content>
+    <Content Include="Web References\org.interconnection.dev\salesOrderListEntity.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </Content>
+    <Content Include="Web References\org.interconnection.dev\salesOrderShipmentEntity.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </Content>
+    <Content Include="Web References\org.interconnection.dev\shoppingCartInfoEntity.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </Content>
+    <Content Include="Web References\org.interconnection.dev\shoppingCartLicenseEntity.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </Content>
+    <Content Include="Web References\org.interconnection.dev\shoppingCartPaymentMethodResponseEntity.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </Content>
+    <Content Include="Web References\org.interconnection.dev\shoppingCartShippingMethodEntity.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </Content>
+    <Content Include="Web References\org.interconnection.dev\shoppingCartTotalsEntity.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </Content>
+    <Content Include="Web References\org.interconnection.dev\storeEntity.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </Content>
+    <None Include="web.Debug.config">
+      <DependentUpon>web.config</DependentUpon>
+    </None>
+    <None Include="web.Release.config">
+      <DependentUpon>web.config</DependentUpon>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\App_LocalResources\" />
     <Folder Include="App_Data\uploads\" />
+    <Folder Include="css\maps\" />
     <Folder Include="css\plugins\" />
-    <Folder Include="css\themes\" />
     <Folder Include="font-awesome\" />
+    <Folder Include="images\" />
+    <Folder Include="js\datepicker\" />
+    <Folder Include="js\flot\" />
+    <Folder Include="js\moment\" />
+    <Folder Include="vendors\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Project_Readme.html" />
@@ -1100,6 +1334,17 @@
       </CachedDynamicPropName>
       <CachedAppSettingsObjectName>Settings</CachedAppSettingsObjectName>
       <CachedSettingsPropName>ic_ef_org_connectall_MagentoService</CachedSettingsPropName>
+    </WebReferenceUrl>
+    <WebReferenceUrl Include="http://dev.interconnection.org/index.php/api/v2_soap/%3fwsdl">
+      <UrlBehavior>Dynamic</UrlBehavior>
+      <RelPath>Web References\org.interconnection.dev\</RelPath>
+      <UpdateFromURL>http://dev.interconnection.org/index.php/api/v2_soap/%3fwsdl</UpdateFromURL>
+      <ServiceLocationURL>
+      </ServiceLocationURL>
+      <CachedDynamicPropName>
+      </CachedDynamicPropName>
+      <CachedAppSettingsObjectName>Settings</CachedAppSettingsObjectName>
+      <CachedSettingsPropName>ic_ef_org_interconnection_dev_MagentoService</CachedSettingsPropName>
     </WebReferenceUrl>
   </ItemGroup>
   <PropertyGroup>

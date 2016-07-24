@@ -12,7 +12,7 @@ namespace ic_ef.Controllers
 {
     public class rediscoveriesController : Controller
     {
-        private ic_databaseEntities2 db = new ic_databaseEntities2();
+        private db_a094d4_icdbEntities db = new db_a094d4_icdbEntities();
 
         // GET: rediscoveries
         public ActionResult Index(string sortOrder, string currentFilter, string searchString, int? page)

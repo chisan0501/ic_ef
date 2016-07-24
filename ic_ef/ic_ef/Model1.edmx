@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-    <Schema Namespace="ic_databaseModel.Store" Provider="MySql.Data.MySqlClient" ProviderManifestToken="5.5" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="db_a094d4_icdbModel.Store" Provider="MySql.Data.MySqlClient" ProviderManifestToken="5.6" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="aspnetroles">
           <Key>
             <PropertyRef Name="Id" />
@@ -148,7 +148,7 @@
           <Property Name="Model" Type="char" MaxLength="100" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6013: The table/view 'def.ic_database.misc_setting' does not have a primary key defined and no valid primary key could be inferred. This table/view has been excluded. To use the entity, you will need to review your schema, add the correct keys, and uncomment it.
+warning 6013: The table/view 'def.db_a094d4_icdb.misc_setting' does not have a primary key defined and no valid primary key could be inferred. This table/view has been excluded. To use the entity, you will need to review your schema, add the correct keys, and uncomment it.
         <EntityType Name="misc_setting">
           <Property Name="stations" Type="char" MaxLength="100" />
           <Property Name="label_log" Type="char" MaxLength="100" />
@@ -225,6 +225,8 @@ warning 6013: The table/view 'def.ic_database.misc_setting' does not have a prim
           <Property Name="pallet" Type="varchar" MaxLength="45" />
           <Property Name="pre_coa" Type="varchar" MaxLength="75" />
           <Property Name="refurbisher" Type="char" MaxLength="100" />
+          <Property Name="status" Type="char" MaxLength="50" />
+          <Property Name="orderNum" Type="char" MaxLength="100" />
         </EntityType>
         <EntityType Name="retail">
           <Key>
@@ -343,31 +345,31 @@ warning 6013: The table/view 'def.ic_database.misc_setting' does not have a prim
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <EntityContainer Name="ic_databaseModelStoreContainer">
-          <EntitySet Name="aspnetroles" EntityType="Self.aspnetroles" Schema="ic_database" store:Type="Tables" />
-          <EntitySet Name="aspnetuserclaims" EntityType="Self.aspnetuserclaims" Schema="ic_database" store:Type="Tables" />
-          <EntitySet Name="aspnetuserlogins" EntityType="Self.aspnetuserlogins" Schema="ic_database" store:Type="Tables" />
-          <EntitySet Name="aspnetuserroles" EntityType="Self.aspnetuserroles" Schema="ic_database" store:Type="Tables" />
-          <EntitySet Name="aspnetusers" EntityType="Self.aspnetusers" Schema="ic_database" store:Type="Tables" />
-          <EntitySet Name="asset_tag_counter" EntityType="Self.asset_tag_counter" Schema="ic_database" store:Type="Tables" />
-          <EntitySet Name="coas" EntityType="Self.coas" Schema="ic_database" store:Type="Tables" />
-          <EntitySet Name="coas_history" EntityType="Self.coas_history" Schema="ic_database" store:Type="Tables" />
-          <EntitySet Name="discovery" EntityType="Self.discovery" Schema="ic_database" store:Type="Tables" />
-          <EntitySet Name="ebay" EntityType="Self.ebay" Schema="ic_database" store:Type="Tables" />
-          <EntitySet Name="label_menu" EntityType="Self.label_menu" Schema="ic_database" store:Type="Tables" />
-          <EntitySet Name="mac_log" EntityType="Self.mac_log" Schema="ic_database" store:Type="Tables" />
-          <EntitySet Name="monitor_log" EntityType="Self.monitor_log" Schema="ic_database" store:Type="Tables" />
-          <EntitySet Name="monitor_setting" EntityType="Self.monitor_setting" Schema="ic_database" store:Type="Tables" />
-          <EntitySet Name="pallet" EntityType="Self.pallet" Schema="ic_database" store:Type="Tables" />
-          <EntitySet Name="pallet_master" EntityType="Self.pallet_master" Schema="ic_database" store:Type="Tables" />
-          <EntitySet Name="production_log" EntityType="Self.production_log" Schema="ic_database" store:Type="Tables" />
-          <EntitySet Name="rediscovery" EntityType="Self.rediscovery" Schema="ic_database" store:Type="Tables" />
-          <EntitySet Name="retail" EntityType="Self.retail" Schema="ic_database" store:Type="Tables" />
-          <EntitySet Name="setting" EntityType="Self.setting" Schema="ic_database" store:Type="Tables" />
-          <EntitySet Name="setting_bol" EntityType="Self.setting_bol" Schema="ic_database" store:Type="Tables" />
-          <EntitySet Name="station_setting" EntityType="Self.station_setting" Schema="ic_database" store:Type="Tables" />
-          <EntitySet Name="temp_label" EntityType="Self.temp_label" Schema="ic_database" store:Type="Tables" />
-          <EntitySet Name="users" EntityType="Self.users" Schema="ic_database" store:Type="Tables" />
+        <EntityContainer Name="db_a094d4_icdbModelStoreContainer">
+          <EntitySet Name="aspnetroles" EntityType="Self.aspnetroles" Schema="db_a094d4_icdb" store:Type="Tables" />
+          <EntitySet Name="aspnetuserclaims" EntityType="Self.aspnetuserclaims" Schema="db_a094d4_icdb" store:Type="Tables" />
+          <EntitySet Name="aspnetuserlogins" EntityType="Self.aspnetuserlogins" Schema="db_a094d4_icdb" store:Type="Tables" />
+          <EntitySet Name="aspnetuserroles" EntityType="Self.aspnetuserroles" Schema="db_a094d4_icdb" store:Type="Tables" />
+          <EntitySet Name="aspnetusers" EntityType="Self.aspnetusers" Schema="db_a094d4_icdb" store:Type="Tables" />
+          <EntitySet Name="asset_tag_counter" EntityType="Self.asset_tag_counter" Schema="db_a094d4_icdb" store:Type="Tables" />
+          <EntitySet Name="coas" EntityType="Self.coas" Schema="db_a094d4_icdb" store:Type="Tables" />
+          <EntitySet Name="coas_history" EntityType="Self.coas_history" Schema="db_a094d4_icdb" store:Type="Tables" />
+          <EntitySet Name="discovery" EntityType="Self.discovery" Schema="db_a094d4_icdb" store:Type="Tables" />
+          <EntitySet Name="ebay" EntityType="Self.ebay" Schema="db_a094d4_icdb" store:Type="Tables" />
+          <EntitySet Name="label_menu" EntityType="Self.label_menu" Schema="db_a094d4_icdb" store:Type="Tables" />
+          <EntitySet Name="mac_log" EntityType="Self.mac_log" Schema="db_a094d4_icdb" store:Type="Tables" />
+          <EntitySet Name="monitor_log" EntityType="Self.monitor_log" Schema="db_a094d4_icdb" store:Type="Tables" />
+          <EntitySet Name="monitor_setting" EntityType="Self.monitor_setting" Schema="db_a094d4_icdb" store:Type="Tables" />
+          <EntitySet Name="pallet" EntityType="Self.pallet" Schema="db_a094d4_icdb" store:Type="Tables" />
+          <EntitySet Name="pallet_master" EntityType="Self.pallet_master" Schema="db_a094d4_icdb" store:Type="Tables" />
+          <EntitySet Name="production_log" EntityType="Self.production_log" Schema="db_a094d4_icdb" store:Type="Tables" />
+          <EntitySet Name="rediscovery" EntityType="Self.rediscovery" Schema="db_a094d4_icdb" store:Type="Tables" />
+          <EntitySet Name="retail" EntityType="Self.retail" Schema="db_a094d4_icdb" store:Type="Tables" />
+          <EntitySet Name="setting" EntityType="Self.setting" Schema="db_a094d4_icdb" store:Type="Tables" />
+          <EntitySet Name="setting_bol" EntityType="Self.setting_bol" Schema="db_a094d4_icdb" store:Type="Tables" />
+          <EntitySet Name="station_setting" EntityType="Self.station_setting" Schema="db_a094d4_icdb" store:Type="Tables" />
+          <EntitySet Name="temp_label" EntityType="Self.temp_label" Schema="db_a094d4_icdb" store:Type="Tables" />
+          <EntitySet Name="users" EntityType="Self.users" Schema="db_a094d4_icdb" store:Type="Tables" />
           <AssociationSet Name="ApplicationUser_Claims" Association="Self.ApplicationUser_Claims">
             <End Role="aspnetusers" EntitySet="aspnetusers" />
             <End Role="aspnetuserclaims" EntitySet="aspnetuserclaims" />
@@ -388,7 +390,7 @@ warning 6013: The table/view 'def.ic_database.misc_setting' does not have a prim
       </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
-      <Schema Namespace="ic_databaseModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+      <Schema Namespace="db_a094d4_icdbModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
         <EntityType Name="aspnetroles">
           <Key>
             <PropertyRef Name="Id" />
@@ -464,6 +466,24 @@ warning 6013: The table/view 'def.ic_database.misc_setting' does not have a prim
           <Property Name="location" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
           <Property Name="row_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
         </EntityType>
+        <EntityType Name="coas_history">
+          <Key>
+            <PropertyRef Name="COA_ID" />
+          </Key>
+          <Property Name="Request_ID" Type="Int32" />
+          <Property Name="COA_ID" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Product_Name" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="Pre_existing_COA_ID" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="License_Type" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="PK" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="PDF_language" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="Recipient_Organization_Name" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="Recipient_City" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="Recipient_Country___Region" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="Recipient_Type" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="location" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="row_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+        </EntityType>
         <EntityType Name="discovery">
           <Key>
             <PropertyRef Name="ictag" />
@@ -478,6 +498,18 @@ warning 6013: The table/view 'def.ic_database.misc_setting' does not have a prim
           <Property Name="ram" Type="String" MaxLength="45" FixedLength="false" Unicode="false" />
           <Property Name="optical_drive" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
           <Property Name="location" Type="String" MaxLength="45" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="ebay">
+          <Key>
+            <PropertyRef Name="listID" />
+          </Key>
+          <Property Name="listID" Type="Int32" Nullable="false" />
+          <Property Name="title" Type="Int32" />
+          <Property Name="time" Type="DateTime" />
+          <Property Name="start_price" Type="Double" />
+          <Property Name="end_price" Type="Double" />
+          <Property Name="end_time" Type="DateTime" />
+          <Property Name="start_time" Type="DateTime" />
         </EntityType>
         <EntityType Name="label_menu">
           <Key>
@@ -505,12 +537,12 @@ warning 6013: The table/view 'def.ic_database.misc_setting' does not have a prim
           </Key>
           <Property Name="time" Type="DateTime" />
           <Property Name="manu" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="ictag" Type="Int32" Nullable="false" />
           <Property Name="monitor_ID" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
           <Property Name="serial" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
           <Property Name="size" Type="Int32" />
           <Property Name="resou" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
           <Property Name="model" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
-          <Property Name="ictag" Type="Int32" Nullable="false" />
         </EntityType>
         <EntityType Name="monitor_setting">
           <Key>
@@ -571,6 +603,22 @@ warning 6013: The table/view 'def.ic_database.misc_setting' does not have a prim
           <Property Name="pallet" Type="String" MaxLength="45" FixedLength="false" Unicode="false" />
           <Property Name="pre_coa" Type="String" MaxLength="75" FixedLength="false" Unicode="false" />
           <Property Name="refurbisher" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="status" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="orderNum" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="retail">
+          <Key>
+            <PropertyRef Name="asset_tag" />
+          </Key>
+          <Property Name="time" Type="DateTime" />
+          <Property Name="asset_tag" Type="Int32" Nullable="false" />
+          <Property Name="price" Type="Double" Nullable="false" />
+          <Property Name="custom_label" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="cpu" Type="String" MaxLength="120" FixedLength="false" Unicode="false" />
+          <Property Name="ram" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="hdd" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="model" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="sold" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
         </EntityType>
         <EntityType Name="setting">
           <Key>
@@ -595,6 +643,20 @@ warning 6013: The table/view 'def.ic_database.misc_setting' does not have a prim
           <Property Name="station_name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="station_dropdown_value" Type="String" MaxLength="45" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="description" Type="String" MaxLength="45" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="temp_label">
+          <Key>
+            <PropertyRef Name="row_id" />
+          </Key>
+          <Property Name="Time" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="row_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="serial" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="ictags" Type="Int32" />
+          <Property Name="pallet" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="refurbisher" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Manu" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Model" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="pre_coa" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
         </EntityType>
         <EntityType Name="users">
           <Key>
@@ -637,14 +699,16 @@ warning 6013: The table/view 'def.ic_database.misc_setting' does not have a prim
           <End Role="aspnetusers" Type="Self.aspnetusers" Multiplicity="*" />
           <End Role="aspnetroles" Type="Self.aspnetroles" Multiplicity="*" />
         </Association>
-        <EntityContainer Name="ic_databaseEntities2" annotation:LazyLoadingEnabled="true">
+        <EntityContainer Name="db_a094d4_icdbEntities" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="aspnetroles" EntityType="Self.aspnetroles" />
           <EntitySet Name="aspnetuserclaims" EntityType="Self.aspnetuserclaims" />
           <EntitySet Name="aspnetuserlogins" EntityType="Self.aspnetuserlogins" />
           <EntitySet Name="aspnetusers" EntityType="Self.aspnetusers" />
           <EntitySet Name="asset_tag_counter" EntityType="Self.asset_tag_counter" />
           <EntitySet Name="coas" EntityType="Self.coas" />
+          <EntitySet Name="coas_history" EntityType="Self.coas_history" />
           <EntitySet Name="discovery" EntityType="Self.discovery" />
+          <EntitySet Name="ebay" EntityType="Self.ebay" />
           <EntitySet Name="label_menu" EntityType="Self.label_menu" />
           <EntitySet Name="mac_log" EntityType="Self.mac_log" />
           <EntitySet Name="monitor_log" EntityType="Self.monitor_log" />
@@ -653,9 +717,11 @@ warning 6013: The table/view 'def.ic_database.misc_setting' does not have a prim
           <EntitySet Name="pallet_master" EntityType="Self.pallet_master" />
           <EntitySet Name="production_log" EntityType="Self.production_log" />
           <EntitySet Name="rediscovery" EntityType="Self.rediscovery" />
+          <EntitySet Name="retail" EntityType="Self.retail" />
           <EntitySet Name="setting" EntityType="Self.setting" />
           <EntitySet Name="setting_bol" EntityType="Self.setting_bol" />
           <EntitySet Name="station_setting" EntityType="Self.station_setting" />
+          <EntitySet Name="temp_label" EntityType="Self.temp_label" />
           <EntitySet Name="users" EntityType="Self.users" />
           <AssociationSet Name="ApplicationUser_Claims" Association="Self.ApplicationUser_Claims">
             <End Role="aspnetusers" EntitySet="aspnetusers" />
@@ -669,77 +735,15 @@ warning 6013: The table/view 'def.ic_database.misc_setting' does not have a prim
             <End Role="aspnetusers" EntitySet="aspnetusers" />
             <End Role="aspnetroles" EntitySet="aspnetroles" />
           </AssociationSet>
-          <EntitySet Name="coas_history" EntityType="ic_databaseModel.coas_history" />
-          <EntitySet Name="temp_label" EntityType="ic_databaseModel.temp_label" />
-          <EntitySet Name="retail" EntityType="ic_databaseModel.retail" />
-          <EntitySet Name="ebay" EntityType="ic_databaseModel.ebay" />
         </EntityContainer>
-        <EntityType Name="coas_history">
-          <Key>
-            <PropertyRef Name="COA_ID" />
-          </Key>
-          <Property Name="Request_ID" Type="Int32" />
-          <Property Name="COA_ID" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
-          <Property Name="Product_Name" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
-          <Property Name="Pre_existing_COA_ID" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
-          <Property Name="License_Type" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
-          <Property Name="PK" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
-          <Property Name="PDF_language" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
-          <Property Name="Recipient_Organization_Name" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
-          <Property Name="Recipient_City" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
-          <Property Name="Recipient_Country___Region" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
-          <Property Name="Recipient_Type" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
-          <Property Name="location" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
-          <Property Name="row_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-        </EntityType>
-        <EntityType Name="temp_label">
-          <Key>
-            <PropertyRef Name="row_id" />
-          </Key>
-          <Property Name="Time" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="row_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="serial" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="ictags" Type="Int32" />
-          <Property Name="pallet" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="refurbisher" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="Manu" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="Model" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="pre_coa" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-        </EntityType>
-        <EntityType Name="retail">
-          <Key>
-            <PropertyRef Name="asset_tag" />
-          </Key>
-          <Property Name="time" Type="DateTime" />
-          <Property Name="asset_tag" Type="Int32" Nullable="false" />
-          <Property Name="price" Type="Double" Nullable="false" />
-          <Property Name="custom_label" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="cpu" Type="String" Nullable="false" MaxLength="120" FixedLength="false" Unicode="false" />
-          <Property Name="ram" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="hdd" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="model" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="sold" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-        </EntityType>
-        <EntityType Name="ebay">
-          <Key>
-            <PropertyRef Name="listID" />
-          </Key>
-          <Property Name="listID" Type="Int32" Nullable="false" />
-          <Property Name="title" Type="Int32" />
-          <Property Name="time" Type="DateTime" />
-          <Property Name="start_price" Type="Double" />
-          <Property Name="end_price" Type="Double" />
-          <Property Name="end_time" Type="DateTime" />
-          <Property Name="start_time" Type="DateTime" />
-        </EntityType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
     <edmx:Mappings>
       <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
-        <EntityContainerMapping StorageEntityContainer="ic_databaseModelStoreContainer" CdmEntityContainer="ic_databaseEntities2">
+        <EntityContainerMapping StorageEntityContainer="db_a094d4_icdbModelStoreContainer" CdmEntityContainer="db_a094d4_icdbEntities">
           <EntitySetMapping Name="aspnetroles">
-            <EntityTypeMapping TypeName="ic_databaseModel.aspnetroles">
+            <EntityTypeMapping TypeName="db_a094d4_icdbModel.aspnetroles">
               <MappingFragment StoreEntitySet="aspnetroles">
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="Name" ColumnName="Name" />
@@ -747,7 +751,7 @@ warning 6013: The table/view 'def.ic_database.misc_setting' does not have a prim
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="aspnetuserclaims">
-            <EntityTypeMapping TypeName="ic_databaseModel.aspnetuserclaims">
+            <EntityTypeMapping TypeName="db_a094d4_icdbModel.aspnetuserclaims">
               <MappingFragment StoreEntitySet="aspnetuserclaims">
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="UserId" ColumnName="UserId" />
@@ -757,7 +761,7 @@ warning 6013: The table/view 'def.ic_database.misc_setting' does not have a prim
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="aspnetuserlogins">
-            <EntityTypeMapping TypeName="ic_databaseModel.aspnetuserlogins">
+            <EntityTypeMapping TypeName="db_a094d4_icdbModel.aspnetuserlogins">
               <MappingFragment StoreEntitySet="aspnetuserlogins">
                 <ScalarProperty Name="LoginProvider" ColumnName="LoginProvider" />
                 <ScalarProperty Name="ProviderKey" ColumnName="ProviderKey" />
@@ -766,7 +770,7 @@ warning 6013: The table/view 'def.ic_database.misc_setting' does not have a prim
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="aspnetusers">
-            <EntityTypeMapping TypeName="ic_databaseModel.aspnetusers">
+            <EntityTypeMapping TypeName="db_a094d4_icdbModel.aspnetusers">
               <MappingFragment StoreEntitySet="aspnetusers">
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="Email" ColumnName="Email" />
@@ -785,7 +789,7 @@ warning 6013: The table/view 'def.ic_database.misc_setting' does not have a prim
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="asset_tag_counter">
-            <EntityTypeMapping TypeName="ic_databaseModel.asset_tag_counter">
+            <EntityTypeMapping TypeName="db_a094d4_icdbModel.asset_tag_counter">
               <MappingFragment StoreEntitySet="asset_tag_counter">
                 <ScalarProperty Name="Company" ColumnName="Company" />
                 <ScalarProperty Name="count" ColumnName="count" />
@@ -793,7 +797,7 @@ warning 6013: The table/view 'def.ic_database.misc_setting' does not have a prim
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="coas">
-            <EntityTypeMapping TypeName="ic_databaseModel.coas">
+            <EntityTypeMapping TypeName="db_a094d4_icdbModel.coas">
               <MappingFragment StoreEntitySet="coas">
                 <ScalarProperty Name="Request_ID" ColumnName="Request_ID" />
                 <ScalarProperty Name="COA_ID" ColumnName="COA_ID" />
@@ -811,8 +815,27 @@ warning 6013: The table/view 'def.ic_database.misc_setting' does not have a prim
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <EntitySetMapping Name="coas_history">
+            <EntityTypeMapping TypeName="db_a094d4_icdbModel.coas_history">
+              <MappingFragment StoreEntitySet="coas_history">
+                <ScalarProperty Name="Request_ID" ColumnName="Request_ID" />
+                <ScalarProperty Name="COA_ID" ColumnName="COA_ID" />
+                <ScalarProperty Name="Product_Name" ColumnName="Product_Name" />
+                <ScalarProperty Name="Pre_existing_COA_ID" ColumnName="Pre-existing COA ID" />
+                <ScalarProperty Name="License_Type" ColumnName="License_Type" />
+                <ScalarProperty Name="PK" ColumnName="PK" />
+                <ScalarProperty Name="PDF_language" ColumnName="PDF_language" />
+                <ScalarProperty Name="Recipient_Organization_Name" ColumnName="Recipient_Organization_Name" />
+                <ScalarProperty Name="Recipient_City" ColumnName="Recipient City" />
+                <ScalarProperty Name="Recipient_Country___Region" ColumnName="Recipient Country / Region" />
+                <ScalarProperty Name="Recipient_Type" ColumnName="Recipient_Type" />
+                <ScalarProperty Name="location" ColumnName="location" />
+                <ScalarProperty Name="row_id" ColumnName="row_id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           <EntitySetMapping Name="discovery">
-            <EntityTypeMapping TypeName="ic_databaseModel.discovery">
+            <EntityTypeMapping TypeName="db_a094d4_icdbModel.discovery">
               <MappingFragment StoreEntitySet="discovery">
                 <ScalarProperty Name="ictag" ColumnName="ictag" />
                 <ScalarProperty Name="time" ColumnName="time" />
@@ -827,8 +850,21 @@ warning 6013: The table/view 'def.ic_database.misc_setting' does not have a prim
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <EntitySetMapping Name="ebay">
+            <EntityTypeMapping TypeName="db_a094d4_icdbModel.ebay">
+              <MappingFragment StoreEntitySet="ebay">
+                <ScalarProperty Name="listID" ColumnName="listID" />
+                <ScalarProperty Name="title" ColumnName="title" />
+                <ScalarProperty Name="time" ColumnName="time" />
+                <ScalarProperty Name="start_price" ColumnName="start_price" />
+                <ScalarProperty Name="end_price" ColumnName="end_price" />
+                <ScalarProperty Name="end_time" ColumnName="end_time" />
+                <ScalarProperty Name="start_time" ColumnName="start_time" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           <EntitySetMapping Name="label_menu">
-            <EntityTypeMapping TypeName="ic_databaseModel.label_menu">
+            <EntityTypeMapping TypeName="db_a094d4_icdbModel.label_menu">
               <MappingFragment StoreEntitySet="label_menu">
                 <ScalarProperty Name="name" ColumnName="name" />
                 <ScalarProperty Name="product" ColumnName="product" />
@@ -837,7 +873,7 @@ warning 6013: The table/view 'def.ic_database.misc_setting' does not have a prim
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="mac_log">
-            <EntityTypeMapping TypeName="ic_databaseModel.mac_log">
+            <EntityTypeMapping TypeName="db_a094d4_icdbModel.mac_log">
               <MappingFragment StoreEntitySet="mac_log">
                 <ScalarProperty Name="Time" ColumnName="Time" />
                 <ScalarProperty Name="serial" ColumnName="serial" />
@@ -850,11 +886,11 @@ warning 6013: The table/view 'def.ic_database.misc_setting' does not have a prim
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="monitor_log">
-            <EntityTypeMapping TypeName="ic_databaseModel.monitor_log">
+            <EntityTypeMapping TypeName="db_a094d4_icdbModel.monitor_log">
               <MappingFragment StoreEntitySet="monitor_log">
-                <ScalarProperty Name="ictag" ColumnName="ictag" />
                 <ScalarProperty Name="time" ColumnName="time" />
                 <ScalarProperty Name="manu" ColumnName="manu" />
+                <ScalarProperty Name="ictag" ColumnName="ictag" />
                 <ScalarProperty Name="monitor_ID" ColumnName="monitor_ID" />
                 <ScalarProperty Name="serial" ColumnName="serial" />
                 <ScalarProperty Name="size" ColumnName="size" />
@@ -864,7 +900,7 @@ warning 6013: The table/view 'def.ic_database.misc_setting' does not have a prim
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="monitor_setting">
-            <EntityTypeMapping TypeName="ic_databaseModel.monitor_setting">
+            <EntityTypeMapping TypeName="db_a094d4_icdbModel.monitor_setting">
               <MappingFragment StoreEntitySet="monitor_setting">
                 <ScalarProperty Name="manu_wmi" ColumnName="manu_wmi" />
                 <ScalarProperty Name="manu" ColumnName="manu" />
@@ -872,7 +908,7 @@ warning 6013: The table/view 'def.ic_database.misc_setting' does not have a prim
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="pallet">
-            <EntityTypeMapping TypeName="ic_databaseModel.pallet">
+            <EntityTypeMapping TypeName="db_a094d4_icdbModel.pallet">
               <MappingFragment StoreEntitySet="pallet">
                 <ScalarProperty Name="ictags" ColumnName="ictags" />
                 <ScalarProperty Name="pallet_name" ColumnName="pallet_name" />
@@ -882,14 +918,14 @@ warning 6013: The table/view 'def.ic_database.misc_setting' does not have a prim
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="pallet_master">
-            <EntityTypeMapping TypeName="ic_databaseModel.pallet_master">
+            <EntityTypeMapping TypeName="db_a094d4_icdbModel.pallet_master">
               <MappingFragment StoreEntitySet="pallet_master">
                 <ScalarProperty Name="pallet_id" ColumnName="pallet_id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="production_log">
-            <EntityTypeMapping TypeName="ic_databaseModel.production_log">
+            <EntityTypeMapping TypeName="db_a094d4_icdbModel.production_log">
               <MappingFragment StoreEntitySet="production_log">
                 <ScalarProperty Name="time" ColumnName="time" />
                 <ScalarProperty Name="ictags" ColumnName="ictags" />
@@ -910,8 +946,10 @@ warning 6013: The table/view 'def.ic_database.misc_setting' does not have a prim
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="rediscovery">
-            <EntityTypeMapping TypeName="ic_databaseModel.rediscovery">
+            <EntityTypeMapping TypeName="db_a094d4_icdbModel.rediscovery">
               <MappingFragment StoreEntitySet="rediscovery">
+                <ScalarProperty Name="orderNum" ColumnName="orderNum" />
+                <ScalarProperty Name="status" ColumnName="status" />
                 <ScalarProperty Name="ictag" ColumnName="ictag" />
                 <ScalarProperty Name="time" ColumnName="time" />
                 <ScalarProperty Name="serial" ColumnName="serial" />
@@ -928,8 +966,23 @@ warning 6013: The table/view 'def.ic_database.misc_setting' does not have a prim
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <EntitySetMapping Name="retail">
+            <EntityTypeMapping TypeName="db_a094d4_icdbModel.retail">
+              <MappingFragment StoreEntitySet="retail">
+                <ScalarProperty Name="time" ColumnName="time" />
+                <ScalarProperty Name="asset_tag" ColumnName="asset_tag" />
+                <ScalarProperty Name="price" ColumnName="price" />
+                <ScalarProperty Name="custom_label" ColumnName="custom_label" />
+                <ScalarProperty Name="cpu" ColumnName="cpu" />
+                <ScalarProperty Name="ram" ColumnName="ram" />
+                <ScalarProperty Name="hdd" ColumnName="hdd" />
+                <ScalarProperty Name="model" ColumnName="model" />
+                <ScalarProperty Name="sold" ColumnName="sold" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           <EntitySetMapping Name="setting">
-            <EntityTypeMapping TypeName="ic_databaseModel.setting">
+            <EntityTypeMapping TypeName="db_a094d4_icdbModel.setting">
               <MappingFragment StoreEntitySet="setting">
                 <ScalarProperty Name="channel_name" ColumnName="channel_name" />
                 <ScalarProperty Name="background" ColumnName="background" />
@@ -939,7 +992,7 @@ warning 6013: The table/view 'def.ic_database.misc_setting' does not have a prim
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="setting_bol">
-            <EntityTypeMapping TypeName="ic_databaseModel.setting_bol">
+            <EntityTypeMapping TypeName="db_a094d4_icdbModel.setting_bol">
               <MappingFragment StoreEntitySet="setting_bol">
                 <ScalarProperty Name="driver_det" ColumnName="driver_det" />
                 <ScalarProperty Name="server_address" ColumnName="server_address" />
@@ -947,7 +1000,7 @@ warning 6013: The table/view 'def.ic_database.misc_setting' does not have a prim
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="station_setting">
-            <EntityTypeMapping TypeName="ic_databaseModel.station_setting">
+            <EntityTypeMapping TypeName="db_a094d4_icdbModel.station_setting">
               <MappingFragment StoreEntitySet="station_setting">
                 <ScalarProperty Name="station_name" ColumnName="station_name" />
                 <ScalarProperty Name="station_dropdown_value" ColumnName="station_dropdown_value" />
@@ -955,8 +1008,23 @@ warning 6013: The table/view 'def.ic_database.misc_setting' does not have a prim
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <EntitySetMapping Name="temp_label">
+            <EntityTypeMapping TypeName="db_a094d4_icdbModel.temp_label">
+              <MappingFragment StoreEntitySet="temp_label">
+                <ScalarProperty Name="Time" ColumnName="Time" />
+                <ScalarProperty Name="row_id" ColumnName="row_id" />
+                <ScalarProperty Name="serial" ColumnName="serial" />
+                <ScalarProperty Name="ictags" ColumnName="ictags" />
+                <ScalarProperty Name="pallet" ColumnName="pallet" />
+                <ScalarProperty Name="refurbisher" ColumnName="refurbisher" />
+                <ScalarProperty Name="Manu" ColumnName="Manu" />
+                <ScalarProperty Name="Model" ColumnName="Model" />
+                <ScalarProperty Name="pre_coa" ColumnName="pre_coa" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           <EntitySetMapping Name="users">
-            <EntityTypeMapping TypeName="ic_databaseModel.users">
+            <EntityTypeMapping TypeName="db_a094d4_icdbModel.users">
               <MappingFragment StoreEntitySet="users">
                 <ScalarProperty Name="user_name" ColumnName="user_name" />
                 <ScalarProperty Name="work_status" ColumnName="work_status" />
@@ -965,7 +1033,7 @@ warning 6013: The table/view 'def.ic_database.misc_setting' does not have a prim
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <AssociationSetMapping Name="aspnetuserroles" TypeName="ic_databaseModel.aspnetuserroles" StoreEntitySet="aspnetuserroles">
+          <AssociationSetMapping Name="aspnetuserroles" TypeName="db_a094d4_icdbModel.aspnetuserroles" StoreEntitySet="aspnetuserroles">
             <EndProperty Name="aspnetusers">
               <ScalarProperty Name="Id" ColumnName="UserId" />
             </EndProperty>
@@ -973,68 +1041,6 @@ warning 6013: The table/view 'def.ic_database.misc_setting' does not have a prim
               <ScalarProperty Name="Id" ColumnName="RoleId" />
             </EndProperty>
           </AssociationSetMapping>
-          <EntitySetMapping Name="coas_history">
-            <EntityTypeMapping TypeName="ic_databaseModel.coas_history">
-              <MappingFragment StoreEntitySet="coas_history">
-                <ScalarProperty Name="row_id" ColumnName="row_id" />
-                <ScalarProperty Name="location" ColumnName="location" />
-                <ScalarProperty Name="Recipient_Type" ColumnName="Recipient_Type" />
-                <ScalarProperty Name="Recipient_Country___Region" ColumnName="Recipient Country / Region" />
-                <ScalarProperty Name="Recipient_City" ColumnName="Recipient City" />
-                <ScalarProperty Name="Recipient_Organization_Name" ColumnName="Recipient_Organization_Name" />
-                <ScalarProperty Name="PDF_language" ColumnName="PDF_language" />
-                <ScalarProperty Name="PK" ColumnName="PK" />
-                <ScalarProperty Name="License_Type" ColumnName="License_Type" />
-                <ScalarProperty Name="Pre_existing_COA_ID" ColumnName="Pre-existing COA ID" />
-                <ScalarProperty Name="Product_Name" ColumnName="Product_Name" />
-                <ScalarProperty Name="COA_ID" ColumnName="COA_ID" />
-                <ScalarProperty Name="Request_ID" ColumnName="Request_ID" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="temp_label">
-            <EntityTypeMapping TypeName="ic_databaseModel.temp_label">
-              <MappingFragment StoreEntitySet="temp_label">
-                <ScalarProperty Name="pre_coa" ColumnName="pre_coa" />
-                <ScalarProperty Name="Model" ColumnName="Model" />
-                <ScalarProperty Name="Manu" ColumnName="Manu" />
-                <ScalarProperty Name="refurbisher" ColumnName="refurbisher" />
-                <ScalarProperty Name="pallet" ColumnName="pallet" />
-                <ScalarProperty Name="ictags" ColumnName="ictags" />
-                <ScalarProperty Name="serial" ColumnName="serial" />
-                <ScalarProperty Name="row_id" ColumnName="row_id" />
-                <ScalarProperty Name="Time" ColumnName="Time" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="retail">
-            <EntityTypeMapping TypeName="ic_databaseModel.retail">
-              <MappingFragment StoreEntitySet="retail">
-                <ScalarProperty Name="sold" ColumnName="sold" />
-                <ScalarProperty Name="model" ColumnName="model" />
-                <ScalarProperty Name="hdd" ColumnName="hdd" />
-                <ScalarProperty Name="ram" ColumnName="ram" />
-                <ScalarProperty Name="cpu" ColumnName="cpu" />
-                <ScalarProperty Name="custom_label" ColumnName="custom_label" />
-                <ScalarProperty Name="price" ColumnName="price" />
-                <ScalarProperty Name="asset_tag" ColumnName="asset_tag" />
-                <ScalarProperty Name="time" ColumnName="time" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="ebay">
-            <EntityTypeMapping TypeName="ic_databaseModel.ebay">
-              <MappingFragment StoreEntitySet="ebay">
-                <ScalarProperty Name="start_time" ColumnName="start_time" />
-                <ScalarProperty Name="end_time" ColumnName="end_time" />
-                <ScalarProperty Name="end_price" ColumnName="end_price" />
-                <ScalarProperty Name="start_price" ColumnName="start_price" />
-                <ScalarProperty Name="time" ColumnName="time" />
-                <ScalarProperty Name="title" ColumnName="title" />
-                <ScalarProperty Name="listID" ColumnName="listID" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

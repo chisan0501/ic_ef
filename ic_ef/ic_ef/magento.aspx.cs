@@ -621,7 +621,11 @@ MySql.Data.MySqlClient.MySqlConnection();
             String mlogin = mservice.login("admin", "Interconnection123");
 
             string[] arr1 = new string[] { "1218"};
-
+            string product = "1";
+            catalogInventoryStockItemUpdateEntity update_item = new catalogInventoryStockItemUpdateEntity();
+            update_item.qty = "1";
+            update_item.is_in_stock = 1;
+            var update = mservice.catalogInventoryStockItemUpdate(mlogin, product, update_item);
             var item = mservice.catalogInventoryStockItemList(mlogin, arr1);
 
 

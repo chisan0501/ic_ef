@@ -5,6 +5,12 @@ VisualStudioVersion = 14.0.23107.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ic_ef", "ic_ef\ic_ef.csproj", "{791FEAEF-A258-44BD-A719-8D06ABCE879C}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{FE42610E-BEC1-4380-A7FC-26809D58C392}"
+	ProjectSection(SolutionItems) = preProject
+		..\..\..\..\Downloads\DiffMatchPatch.cs = ..\..\..\..\Downloads\DiffMatchPatch.cs
+		..\..\..\..\Desktop\web.config = ..\..\..\..\Desktop\web.config
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU

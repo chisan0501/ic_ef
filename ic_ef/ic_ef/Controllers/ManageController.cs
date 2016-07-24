@@ -128,7 +128,7 @@ namespace ic_ef.Controllers
       // [HttpPost]
         public ActionResult inventoryManage()
         {
-            ic_databaseEntities2 db = new ic_databaseEntities2();
+            db_a094d4_icdbEntities db = new db_a094d4_icdbEntities();
 
             var data = (from p in db.pallet_master
                         select new Models.inventoryManageViewModel
@@ -285,7 +285,7 @@ namespace ic_ef.Controllers
             return View();
 
         }
-        private ic_databaseEntities2 db = new ic_databaseEntities2();
+        private db_a094d4_icdbEntities db = new db_a094d4_icdbEntities();
         private string countpallet()
         {
             string pallet_total = "";
@@ -596,6 +596,11 @@ namespace ic_ef.Controllers
 
             ModelState.Clear();
             return RedirectToAction("admin");
+        }
+
+        public ActionResult admin_dashboard ()
+        {
+            return View();
         }
         [HttpPost]
         public ActionResult reuse_COA(string new_coa, string dash)
