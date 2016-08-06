@@ -2155,6 +2155,19 @@
           <xsd:element name="samples" type="typens:catalogProductDownloadableLinkSampleEntityArray" />
         </xsd:all>
       </xsd:complexType>
+      <xsd:complexType name="fieldInfo">
+        <xsd:sequence>
+          <xsd:element name="entity_id" type="xsd:string" />
+          <xsd:element name="name" type="xsd:string" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="fieldInfoArray">
+        <xsd:complexContent mixed="false">
+          <xsd:restriction base="soapenc:Array">
+            <xsd:attribute wsdl:arrayType="typens:fieldInfo[]" ref="soapenc:arrayType" />
+          </xsd:restriction>
+        </xsd:complexContent>
+      </xsd:complexType>
     </xsd:schema>
   </wsdl:types>
   <wsdl:message name="endSession">
@@ -3368,6 +3381,12 @@
   <wsdl:message name="catalogProductDownloadableLinkRemoveResponse">
     <wsdl:part name="respons" type="xsd:boolean" />
   </wsdl:message>
+  <wsdl:message name="customapimoduleProductListRequest">
+    <wsdl:part name="sessionId" type="xsd:string" />
+  </wsdl:message>
+  <wsdl:message name="customapimoduleProductListResponse">
+    <wsdl:part name="products" type="typens:fieldInfoArray" />
+  </wsdl:message>
   <wsdl:portType name="PortType">
     <wsdl:operation name="endSession">
       <documentation>End web service session</documentation>
@@ -4118,6 +4137,11 @@
       <documentation>Remove links and samples from downloadable product</documentation>
       <wsdl:input message="typens:catalogProductDownloadableLinkRemoveRequest" />
       <wsdl:output message="typens:catalogProductDownloadableLinkRemoveResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="customapimoduleProductList">
+      <documentation>List of products</documentation>
+      <wsdl:input message="typens:customapimoduleProductListRequest" />
+      <wsdl:output message="typens:customapimoduleProductListResponse" />
     </wsdl:operation>
   </wsdl:portType>
   <wsdl:binding name="Binding" type="typens:PortType">
@@ -5464,6 +5488,15 @@
       </wsdl:output>
     </wsdl:operation>
     <wsdl:operation name="catalogProductDownloadableLinkRemove">
+      <soap:operation soapAction="urn:Action" />
+      <wsdl:input>
+        <soap:body use="encoded" namespace="urn:Magento" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="encoded" namespace="urn:Magento" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="customapimoduleProductList">
       <soap:operation soapAction="urn:Action" />
       <wsdl:input>
         <soap:body use="encoded" namespace="urn:Magento" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />

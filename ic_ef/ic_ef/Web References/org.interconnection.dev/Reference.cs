@@ -27,6 +27,7 @@ namespace ic_ef.org.interconnection.dev {
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
     [System.Web.Services.WebServiceBindingAttribute(Name="Binding", Namespace="urn:Magento")]
+    [System.Xml.Serialization.SoapIncludeAttribute(typeof(fieldInfo))]
     [System.Xml.Serialization.SoapIncludeAttribute(typeof(catalogProductDownloadableLinkSampleEntity))]
     [System.Xml.Serialization.SoapIncludeAttribute(typeof(catalogProductDownloadableLinkFileInfoEntity))]
     [System.Xml.Serialization.SoapIncludeAttribute(typeof(catalogProductDownloadableLinkEntity))]
@@ -377,6 +378,8 @@ namespace ic_ef.org.interconnection.dev {
         private System.Threading.SendOrPostCallback catalogProductDownloadableLinkListOperationCompleted;
         
         private System.Threading.SendOrPostCallback catalogProductDownloadableLinkRemoveOperationCompleted;
+        
+        private System.Threading.SendOrPostCallback customapimoduleProductListOperationCompleted;
         
         private bool useDefaultCredentialsSetExplicitly;
         
@@ -865,6 +868,9 @@ namespace ic_ef.org.interconnection.dev {
         
         /// <remarks/>
         public event catalogProductDownloadableLinkRemoveCompletedEventHandler catalogProductDownloadableLinkRemoveCompleted;
+        
+        /// <remarks/>
+        public event customapimoduleProductListCompletedEventHandler customapimoduleProductListCompleted;
         
         /// <remarks/>
         [System.Web.Services.Protocols.SoapRpcMethodAttribute("urn:Action", RequestNamespace="urn:Magento", ResponseNamespace="urn:Magento")]
@@ -5991,6 +5997,36 @@ namespace ic_ef.org.interconnection.dev {
         }
         
         /// <remarks/>
+        [System.Web.Services.Protocols.SoapRpcMethodAttribute("urn:Action", RequestNamespace="urn:Magento", ResponseNamespace="urn:Magento")]
+        [return: System.Xml.Serialization.SoapElementAttribute("products")]
+        public fieldInfo[] customapimoduleProductList(string sessionId) {
+            object[] results = this.Invoke("customapimoduleProductList", new object[] {
+                        sessionId});
+            return ((fieldInfo[])(results[0]));
+        }
+        
+        /// <remarks/>
+        public void customapimoduleProductListAsync(string sessionId) {
+            this.customapimoduleProductListAsync(sessionId, null);
+        }
+        
+        /// <remarks/>
+        public void customapimoduleProductListAsync(string sessionId, object userState) {
+            if ((this.customapimoduleProductListOperationCompleted == null)) {
+                this.customapimoduleProductListOperationCompleted = new System.Threading.SendOrPostCallback(this.OncustomapimoduleProductListOperationCompleted);
+            }
+            this.InvokeAsync("customapimoduleProductList", new object[] {
+                        sessionId}, this.customapimoduleProductListOperationCompleted, userState);
+        }
+        
+        private void OncustomapimoduleProductListOperationCompleted(object arg) {
+            if ((this.customapimoduleProductListCompleted != null)) {
+                System.Web.Services.Protocols.InvokeCompletedEventArgs invokeArgs = ((System.Web.Services.Protocols.InvokeCompletedEventArgs)(arg));
+                this.customapimoduleProductListCompleted(this, new customapimoduleProductListCompletedEventArgs(invokeArgs.Results, invokeArgs.Error, invokeArgs.Cancelled, invokeArgs.UserState));
+            }
+        }
+        
+        /// <remarks/>
         public new void CancelAsync(object userState) {
             base.CancelAsync(userState);
         }
@@ -6119,6 +6155,39 @@ namespace ic_ef.org.interconnection.dev {
             }
             set {
                 this.aliasesField = value;
+            }
+        }
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.6.81.0")]
+    [System.SerializableAttribute()]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    [System.Xml.Serialization.SoapTypeAttribute(Namespace="urn:Magento")]
+    public partial class fieldInfo {
+        
+        private string entity_idField;
+        
+        private string nameField;
+        
+        /// <remarks/>
+        public string entity_id {
+            get {
+                return this.entity_idField;
+            }
+            set {
+                this.entity_idField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public string name {
+            get {
+                return this.nameField;
+            }
+            set {
+                this.nameField = value;
             }
         }
     }
@@ -28267,6 +28336,32 @@ namespace ic_ef.org.interconnection.dev {
             get {
                 this.RaiseExceptionIfNecessary();
                 return ((bool)(this.results[0]));
+            }
+        }
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.6.81.0")]
+    public delegate void customapimoduleProductListCompletedEventHandler(object sender, customapimoduleProductListCompletedEventArgs e);
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.6.81.0")]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    public partial class customapimoduleProductListCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
+        
+        private object[] results;
+        
+        internal customapimoduleProductListCompletedEventArgs(object[] results, System.Exception exception, bool cancelled, object userState) : 
+                base(exception, cancelled, userState) {
+            this.results = results;
+        }
+        
+        /// <remarks/>
+        public fieldInfo[] Result {
+            get {
+                this.RaiseExceptionIfNecessary();
+                return ((fieldInfo[])(this.results[0]));
             }
         }
     }

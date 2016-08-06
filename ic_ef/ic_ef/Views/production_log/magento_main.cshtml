@@ -27,6 +27,12 @@
         <script src="~/js/modernizr-2.7.1.js"></script>
     </head>
     <body >
+        <div class="ui large breadcrumb">
+            <a href="@Url.Action("Index", "Home")" class="section">Home</a>
+            <i class="right chevron icon divider"></i>
+            <a href="@Url.Action("magento_main", "production_log")" class="section">Magento</a>
+        </div>
+
         <div id="fh5co-page">
 
             <div class="fh5co-team-style-2">
@@ -87,10 +93,10 @@
                             <div class="fh5co-person">
                                 <i class="circular shipping icon"></i>
                                 <div class="fh5co-text">
-                                    <h3>ShipStation Check</h3>
+                                    <h3>Retail CheckList</h3>
                                     <span class="fh5co-meta"></span>
-                                    <p>check rather a listing have shipped</p>
-                                    <button class="ui primary button" onclick="location.href='@Url.Action("magento", "production_log")';return false;">
+                                    <p>Inventory List</p>
+                                    <button class="ui primary button" onclick="location.href='@Url.Action("magento_retail_view", "production_log")';return false;">
                                         Select
                                     </button>
                                 </div>

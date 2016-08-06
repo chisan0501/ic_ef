@@ -1,0 +1,174 @@
+﻿
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<link href="~/js/jquery.dataTables.min.css" rel="stylesheet" />
+<link href="../vendors/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+<link href="~/css/semantic.min.css" rel="stylesheet" />
+<script src="../vendors/jquery/dist/jquery.min.js"></script>
+<script src="~/js/jquery.dataTables.min.js"></script>
+<script src="~/js/semantic.min.js"></script>
+<script src="https://use.fontawesome.com/558da96ad2.js"></script>
+<!-- Bootstrap -->
+<script src="../vendors/bootstrap/dist/js/bootstrap.min.js"></script>
+<script type="text/javascript">
+    window.onload = function () {
+        
+        var table = $.getJSON("@Url.Action("retail_inv")", function (data) {
+            $('#table_reminder').DataTable({
+                data: data,
+                columnDefs: [{
+                    targets: 4,
+                    data: null,
+                    defaultContent: "<button id='add_btn'>Add to CheckList</button>"
+                }],
+                columns: [
+                                { data: "updated_at" },
+                               { data: "name" },
+                               { data: "sku" },
+                                { data: "qty" },
+                ]
+
+            });
+         
+       });
+    
+    }
+    
+   
+ </script>
+<script>
+   
+    $(document).on('click', '#refresh_btn', function () {
+
+        location.reload();
+    });
+    
+    $(document).ready(
+
+       function () {
+           $("#print_btn").click(function () {
+              
+               function printDiv() {
+
+                   var divToPrint = document.getElementById('print');
+
+                   var newWin = window.open('', 'Print-Window');
+
+                   newWin.document.open();
+
+                   newWin.document.write('<html><body onload="window.print()">' + divToPrint.innerHTML + '</body></html>');
+
+                   newWin.document.close();
+
+                   setTimeout(function () { newWin.close(); }, 10);
+
+               }
+               printDiv();
+           });
+           var websites = ["5"];
+           $('#table_reminder tbody').on('click', 'button', function () {
+               var title = $(this).closest('td').siblings(':nth-child(2)').text();
+               var sku = $(this).closest('td').siblings(':nth-child(3)').text();
+               var qty = $(this).closest('td').siblings(':nth-child(4)').text();
+               $("#check_list").append('<li><i class="fa fa-check" aria-hidden="true"></i><strong>' + title + '</strong> with sku <strong>' + sku + '</strong></li>');
+               var jsonObject = {
+                   price: '0',
+                   name: title,
+                   sku: sku,
+                   weight: '12',
+                   desc: "default",
+                   short_desc: "defalt",
+                   qty: '1',
+                   websites: websites,
+                   stock: '1',
+                   status: '1',
+                   visible: '4',
+                   attr: '4',
+                   type: "simple",
+                   tax: '2',
+                   img_path: 'null'
+               };
+               $.ajax({
+                   url: "@Url.Action("quick_import")",
+                   type: "POST",
+
+                   data: JSON.stringify(jsonObject),
+                   contentType: "application/json; charset=utf-8",
+                   dataType: "json",
+                   success: function (data) {
+                       alert(data);
+
+                   }
+               });
+
+           });
+       });
+    
+</script>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>magento_retail_view</title>
+</head>
+<body>
+    <div class="ui grid">
+        <div class="four wide computer nine wide tablet six wide mobile column">
+            <div>
+                <h3 class="ui block header">
+                    CheckList
+                    <button id="print_btn">Print</button>
+                </h3>
+                <div id="print">
+                    <ul id="check_list"></ul>
+                </div>
+               
+            </div>
+        </div>
+   
+        <div class="twelve wide computer three wide tablet six wide mobile column">
+            <div>
+                <div class="ui breadcrumb">
+                    <a class="section" href="@Url.Action("index", "home")">Home</a>
+                    <div class="divider"> / </div>
+                    <a class="section" href="@Url.Action("magento_main", "production_log")">Magento Import Tool</a>
+                    <div class="divider"> / </div>
+                    <div class="active section">Retail CheckList</div>
+                </div>
+                <div class="ui clearing segment">
+                    <h3 class="ui right floated header">
+                        <a href="javascript:void(0)" id="refresh_btn"><i class="fa fa-refresh fa-2x" aria-hidden="true"></i></a>
+                    </h3>
+                    <h3 class="ui left floated header">
+                        <a style="font-size:35px"><strong>Current Inventory List</strong></a>                       
+                    </h3>
+                </div>
+                <a href="http://dev.interconnection.org//webpos/index/index" target="_blank">Link to Web POS</a>
+                <table class="table" id="table_reminder">
+                    <thead>
+                        <tr>
+                            <th>Last Update</th>
+                            <th>Title</th>
+                            <th>SKU</th>
+                            <th>QTY Left</th>
+                            <th>Action</th>
+
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+
+                </table>
+            </div>
+        </div>
+    </div>
+
+    
+    <br /><br />
+    
+</body>
+</html>
+
+
+

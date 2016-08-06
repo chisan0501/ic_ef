@@ -1,8 +1,12 @@
 ﻿using ic_ef.org.interconnection.dev;
 using System;
 using System.Collections.Generic;
+using System.Drawing;
+using System.IO;
 using System.Linq;
+using System.Net;
 using System.Web;
+using System.Web.Mvc;
 
 namespace ic_ef
 {
@@ -104,6 +108,22 @@ namespace ic_ef
 
         }
 
+        public static string image_to_64 (string Path)
+        {
+            using (Image image = Image.FromFile(Path))
+            {
+                using (MemoryStream m = new MemoryStream())
+                {
+                    image.Save(m, image.RawFormat);
+                    byte[] imageBytes = m.ToArray();
+                    // Convert byte[] to Base64 String
+                    string base64String = Convert.ToBase64String(imageBytes);
+                    return base64String;
+                }
+
+            }
+        }
+
         public List<string> pallet_list ()
         {
             var pallet_list = (from t in db.label_menu where (t.name == "Mar (Desktop)" || t.name == "Mar (Laptop)" || t.name == "OEM (Desktop)" || t.name == "OEM (Laptop)") select t.product).ToList();
@@ -112,22 +132,66 @@ namespace ic_ef
 
         //this is currently connect to the dev site's SOAP Api
         //*** remeber to change it back to connect all SOAP API after live***
+        public void quick_update(Models.retail_quick_import retail, string path)
+        {
+            MagentoService mservice = new MagentoService();
+            String mlogin = mservice.login("admin", "Interconnection123!");
+            catalogInventoryStockItemUpdateEntity qty_update = new catalogInventoryStockItemUpdateEntity();
+
+            qty_update.manage_stockSpecified = true;
+
+            qty_update.manage_stock = 1;
+            qty_update.qty = retail.qty;
+            qty_update.is_in_stock = 1;
+            qty_update.is_in_stockSpecified = true;
+            mservice.catalogInventoryStockItemUpdate(
+ mlogin, retail.sku, qty_update);
+            //catalogProductAttributeMediaCreateEntity photo = new catalogProductAttributeMediaCreateEntity();
+
+            //string image64 = image_to_64(path);
+            //var imageEntity = new catalogProductImageFileEntity();
+
+            //imageEntity.content = image64;
+            //imageEntity.name = "photo1";
+            //imageEntity.mime = "image/jpeg";
+            //photo.file = imageEntity;
+            //photo.label = "label";
+            //photo.position = "0";
+            //photo.exclude = "0";
+            //photo.types = new[] { "image", "small_image", "thumbnail" };
+
+            //mservice.catalogProductAttributeMediaCreate(mlogin, retail.p_id, photo, "", "ID");
+        }
+
+        public catalogInventoryStockItemEntity [] check_product (string sku)
+        {
+            MagentoService mservice = new MagentoService();
+            String mlogin = mservice.login("admin", "Interconnection123!");
+            string[] sku_arr = { sku };
+            catalogInventoryStockItemEntity [] result = null;
+            
+            try
+            {
+               result = mservice.catalogInventoryStockItemList(mlogin, sku_arr);
+                return result;
+            }
+            catch
+            {
+                
+            }
+
+            return result;
+        }
+
         public void retail_quick_import (Models.retail_quick_import retail)
         {
             MagentoService mservice = new MagentoService();
             String mlogin = mservice.login("admin", "Interconnection123!");
 
-            
-            
-            
             catalogProductCreateEntity create = new catalogProductCreateEntity();
-            catalogInventoryStockItemUpdateEntity qty_update = new catalogInventoryStockItemUpdateEntity();
+            catalogCategoryEntity add_cat = new catalogCategoryEntity();
+            
            
-            qty_update.manage_stockSpecified = true;
-            qty_update.is_in_stock = int.Parse(retail.stock);
-            qty_update.manage_stock = 1;
-            qty_update.qty = retail.qty;
-
             create.description = retail.desc;
             create.name = retail.name;
             create.price = retail.price;
@@ -137,22 +201,22 @@ namespace ic_ef
             create.weight = retail.weight;
             create.website_ids = retail.webistes;
             create.tax_class_id = retail.tax_id;
-            associativeEntity[] attributes = new associativeEntity[2];
-            attributes[0] = new associativeEntity();
-            attributes[0].key = "inventory_select_warehouse[0][qty]";
-            attributes[0].value = retail.qty;
-
-            attributes[1] = new associativeEntity();
-            attributes[1].key = "inventory_select_warehouse[0][warehouse_id]";
-            attributes[1].value = "1";
-
+            
             catalogProductAdditionalAttributesEntity additionalAttributes = new catalogProductAdditionalAttributesEntity();
-            additionalAttributes.single_data = attributes;
+            
             create.additional_attributes = additionalAttributes;
             mservice.catalogProductCreate(
     mlogin, retail.type, retail.attr, retail.sku, create, "1");
-            mservice.catalogInventoryStockItemUpdate(
-    mlogin, retail.sku, qty_update);
+            
+            mservice.catalogCategoryAssignProduct(mlogin, 2, retail.sku, "0", "SKU");
+
+          
+          
+
+
+
+           
+
         }
     }
     

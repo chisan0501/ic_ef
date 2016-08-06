@@ -10,9 +10,9 @@ using ic_ef;
 using PagedList;
 using HtmlAgilityPack;
 using Newtonsoft.Json;
-using ic_ef.org.connectall;
 using System.Collections;
 using System.Web.Script.Serialization;
+using System.IO;
 
 namespace ic_ef.Controllers
 {
@@ -151,224 +151,232 @@ namespace ic_ef.Controllers
         
        
 
-        [HttpPost]
-        public ActionResult laptop_inv_update (string qty, string laptop_listing)
-        {
-            MagentoService mservice = new MagentoService();
-            String mlogin = mservice.login("admin", "Interconnection123");
-            string message = "";
-            catalogInventoryStockItemUpdateEntity qty_update = new catalogInventoryStockItemUpdateEntity();
+//        [HttpPost]
+//        public ActionResult laptop_inv_update (string qty, string laptop_listing)
+//        {
+//            MagentoService mservice = new MagentoService();
+//            String mlogin = mservice.login("admin", "Interconnection123");
+//            string message = "";
+//            catalogInventoryStockItemUpdateEntity qty_update = new catalogInventoryStockItemUpdateEntity();
 
 
-            qty_update.qty = qty;
+//            qty_update.qty = qty;
   
-            mservice.catalogInventoryStockItemUpdate(
-mlogin, laptop_listing, qty_update);
-            message = "Update Complete";
-            return Json(new { result = message });
-        }
-        [HttpPost]
-        public ActionResult desktop_inv_update(string qty, string desktop_listing)
-        {
-            MagentoService mservice = new MagentoService();
-            String mlogin = mservice.login("admin", "Interconnection123");
-            string message = "";
-            catalogInventoryStockItemUpdateEntity qty_update = new catalogInventoryStockItemUpdateEntity();
+//            mservice.catalogInventoryStockItemUpdate(
+//mlogin, laptop_listing, qty_update);
+//            message = "Update Complete";
+//            return Json(new { result = message });
+//        }
+//        [HttpPost]
+//        public ActionResult desktop_inv_update(string qty, string desktop_listing)
+//        {
+//            MagentoService mservice = new MagentoService();
+//            String mlogin = mservice.login("admin", "Interconnection123");
+//            string message = "";
+//            catalogInventoryStockItemUpdateEntity qty_update = new catalogInventoryStockItemUpdateEntity();
 
 
-            qty_update.qty = qty;
+//            qty_update.qty = qty;
 
-            mservice.catalogInventoryStockItemUpdate(
-mlogin, desktop_listing, qty_update);
-            message = "Update Complete";
-            return Json(new { result = message });
-        }
-        [HttpPost]
-        public ActionResult export(string qty, string price, string listingid, string tax_class,string des, string short_des, string meta_des, string soft_des,string software, string name, string create_date, string Wireless, string type, string include, string sku, string optical,string video, string serial, string screen,string model, string ram, string hdd, string cpu, string pallet, string brand,string asset, string grade,string computerType, string laptop_listing, string desktop_listing)
-        {
-            MagentoService mservice = new MagentoService();
-           String mlogin = mservice.login("admin", "Interconnection123");
+//            mservice.catalogInventoryStockItemUpdate(
+//mlogin, desktop_listing, qty_update);
+//            message = "Update Complete";
+//            return Json(new { result = message });
+//        }
+//        [HttpPost]
+//        public ActionResult export(string qty, string price, string listingid, string tax_class,string des, string short_des, string meta_des, string soft_des,string software, string name, string create_date, string Wireless, string type, string include, string sku, string optical,string video, string serial, string screen,string model, string ram, string hdd, string cpu, string pallet, string brand,string asset, string grade,string computerType, string laptop_listing, string desktop_listing)
+//        {
+//            MagentoService mservice = new MagentoService();
+//           String mlogin = mservice.login("admin", "Interconnection123");
 
-            //            string[] arr1 = new string[] { "1218" };
+//            //            string[] arr1 = new string[] { "1218" };
 
-            //           // var item = mservice.catalogInventoryStockItemList(mlogin, arr1);
+//            //           // var item = mservice.catalogInventoryStockItemList(mlogin, arr1);
             
 
-            //working up_sell function
-            //            //catalogProductLinkEntity assign = new catalogProductLinkEntity();
-            //            //assign.position = "1";
+//            //working up_sell function
+//            //            //catalogProductLinkEntity assign = new catalogProductLinkEntity();
+//            //            //assign.position = "1";
 
 
-            //            //mservice.catalogProductLinkUpdate(mlogin, "related", "1030", "1029", assign, "product_id");
+//            //            //mservice.catalogProductLinkUpdate(mlogin, "related", "1030", "1029", assign, "product_id");
 
-           string message = "";
+//           string message = "";
 
-    //        if(laptop_listing != "" || desktop_listing != "")
-    //        {
-    //            catalogInventoryStockItemUpdateEntity qty_update = new catalogInventoryStockItemUpdateEntity();
+//    //        if(laptop_listing != "" || desktop_listing != "")
+//    //        {
+//    //            catalogInventoryStockItemUpdateEntity qty_update = new catalogInventoryStockItemUpdateEntity();
 
 
-    //            qty_update.qty = qty;
-    //            qty_update.is_in_stock = 1;
-    //            qty_update.manage_stock = 1;
+//    //            qty_update.qty = qty;
+//    //            qty_update.is_in_stock = 1;
+//    //            qty_update.manage_stock = 1;
 
-    //            mservice.catalogInventoryStockItemUpdate(
-    //mlogin, sku, qty_update);
-    //            message = "Update Complete";
-    //            return Json(new { result = message });
-    //        }
-            try
-            {
-                catalogProductCreateEntity create = new catalogProductCreateEntity();
-                var inv = new catalogProductTierPriceEntity();
+//    //            mservice.catalogInventoryStockItemUpdate(
+//    //mlogin, sku, qty_update);
+//    //            message = "Update Complete";
+//    //            return Json(new { result = message });
+//    //        }
+//            try
+//            {
+//                catalogProductCreateEntity create = new catalogProductCreateEntity();
+//                var inv = new catalogProductTierPriceEntity();
                 
-                create.name = name;
-                create.price = price;
-                create.description = des;
-                create.short_description = short_des;
-                create.tax_class_id = tax_class;
-                // create.meta_title = 
-                create.visibility = "4";
-                create.weight = "0";
-                create.status = "2";
-                create.meta_description = meta_des;
-                inv.qty = int.Parse(qty);
+//                create.name = name;
+//                create.price = price;
+//                create.description = des;
+//                create.short_description = short_des;
+//                create.tax_class_id = tax_class;
+//                // create.meta_title = 
+//                create.visibility = "4";
+//                create.weight = "0";
+//                create.status = "2";
+//                create.meta_description = meta_des;
+//                inv.qty = int.Parse(qty);
 
-                associativeEntity[] attributes = new associativeEntity[18];
-                attributes[0] = new associativeEntity();
-                attributes[0].key = "asset_tag";
-                attributes[0].value = asset;
+//                associativeEntity[] attributes = new associativeEntity[18];
+//                attributes[0] = new associativeEntity();
+//                attributes[0].key = "asset_tag";
+//                attributes[0].value = asset;
 
-                attributes[1] = new associativeEntity();
-                attributes[1].key = "sku_family";
-                attributes[1].value = pallet;
+//                attributes[1] = new associativeEntity();
+//                attributes[1].key = "sku_family";
+//                attributes[1].value = pallet;
 
-                attributes[2] = new associativeEntity();
-                attributes[2].key = "cpu";
-                attributes[2].value = cpu;
+//                attributes[2] = new associativeEntity();
+//                attributes[2].key = "cpu";
+//                attributes[2].value = cpu;
 
-                attributes[3] = new associativeEntity();
-                attributes[3].key = "software_description";
-                attributes[3].value = soft_des;
+//                attributes[3] = new associativeEntity();
+//                attributes[3].key = "software_description";
+//                attributes[3].value = soft_des;
 
-                attributes[4] = new associativeEntity();
-                attributes[4].key = "ram";
-                attributes[4].value = ram;
+//                attributes[4] = new associativeEntity();
+//                attributes[4].key = "ram";
+//                attributes[4].value = ram;
 
-                attributes[5] = new associativeEntity();
-                attributes[5].key = "hdd";
-                attributes[5].value = hdd;
+//                attributes[5] = new associativeEntity();
+//                attributes[5].key = "hdd";
+//                attributes[5].value = hdd;
 
-                attributes[6] = new associativeEntity();
-                attributes[6].key = "os";
-                attributes[6].value = software;
+//                attributes[6] = new associativeEntity();
+//                attributes[6].key = "os";
+//                attributes[6].value = software;
 
-                attributes[7] = new associativeEntity();
-                attributes[7].key = "creation_date";
-                attributes[7].value = create_date;
+//                attributes[7] = new associativeEntity();
+//                attributes[7].key = "creation_date";
+//                attributes[7].value = create_date;
 
-                attributes[8] = new associativeEntity();
-                attributes[8].key = "wireless";
-                attributes[8].value = Wireless;
+//                attributes[8] = new associativeEntity();
+//                attributes[8].key = "wireless";
+//                attributes[8].value = Wireless;
 
-                attributes[9] = new associativeEntity();
-                attributes[9].key = "incl";
-                attributes[9].value = include;
+//                attributes[9] = new associativeEntity();
+//                attributes[9].key = "incl";
+//                attributes[9].value = include;
 
-                attributes[10] = new associativeEntity();
-                attributes[10].key = "brand";
-                attributes[10].value = brand;
+//                attributes[10] = new associativeEntity();
+//                attributes[10].key = "brand";
+//                attributes[10].value = brand;
 
-                attributes[11] = new associativeEntity();
-                attributes[11].key = "grade";
-                attributes[11].value = grade;
+//                attributes[11] = new associativeEntity();
+//                attributes[11].key = "grade";
+//                attributes[11].value = grade;
 
-                attributes[12] = new associativeEntity();
-                attributes[12].key = "wcoa";
-                attributes[12].value = "empty";
+//                attributes[12] = new associativeEntity();
+//                attributes[12].key = "wcoa";
+//                attributes[12].value = "empty";
 
-                attributes[13] = new associativeEntity();
-                attributes[13].key = "ocoa";
-                attributes[13].value = "empty";
+//                attributes[13] = new associativeEntity();
+//                attributes[13].key = "ocoa";
+//                attributes[13].value = "empty";
 
-                attributes[14] = new associativeEntity();
-                attributes[14].key = "video";
-                attributes[14].value = video;
+//                attributes[14] = new associativeEntity();
+//                attributes[14].key = "video";
+//                attributes[14].value = video;
 
-                attributes[15] = new associativeEntity();
-                attributes[15].key = "display";
-                attributes[15].value = screen;
+//                attributes[15] = new associativeEntity();
+//                attributes[15].key = "display";
+//                attributes[15].value = screen;
 
-                attributes[16] = new associativeEntity();
-                attributes[16].key = "computer";
-                attributes[16].value = computerType;
+//                attributes[16] = new associativeEntity();
+//                attributes[16].key = "computer";
+//                attributes[16].value = computerType;
 
-                attributes[17] = new associativeEntity();
-                attributes[17].key = "optical";
-                attributes[17].value = optical;
+//                attributes[17] = new associativeEntity();
+//                attributes[17].key = "optical";
+//                attributes[17].value = optical;
 
                 
 
-                catalogProductAdditionalAttributesEntity additionalAttributes = new catalogProductAdditionalAttributesEntity();
-                additionalAttributes.single_data = attributes;
-                create.additional_attributes = additionalAttributes;
+//                catalogProductAdditionalAttributesEntity additionalAttributes = new catalogProductAdditionalAttributesEntity();
+//                additionalAttributes.single_data = attributes;
+//                create.additional_attributes = additionalAttributes;
 
-                mservice.catalogProductCreate(
-    mlogin, "simple", "4", sku, create, "1");
+//                mservice.catalogProductCreate(
+//    mlogin, "simple", "4", sku, create, "1");
 
-                mservice.Dispose();
+//                mservice.Dispose();
 
-                //update inventory 
-                catalogInventoryStockItemUpdateEntity qty_update = new catalogInventoryStockItemUpdateEntity();
+//                //update inventory 
+//                catalogInventoryStockItemUpdateEntity qty_update = new catalogInventoryStockItemUpdateEntity();
 
                
-                qty_update.qty = qty;
-                qty_update.is_in_stock = 1;
-                qty_update.manage_stock = 1;
+//                qty_update.qty = qty;
+//                qty_update.is_in_stock = 1;
+//                qty_update.manage_stock = 1;
 
-                mservice.catalogInventoryStockItemUpdate(
-    mlogin, sku, qty_update);
+//                mservice.catalogInventoryStockItemUpdate(
+//    mlogin, sku, qty_update);
 
-                message = "Listing Created";
-            }
-           catch ( Exception e) {
-                message = "FAILED : " + e.Message.ToString();
+//                message = "Listing Created";
+//            }
+//           catch ( Exception e) {
+//                message = "FAILED : " + e.Message.ToString();
 
-            }
+//            }
             
 
-            return Json(new { result =  message});
+//            return Json(new { result =  message});
 
 
 
-        }
+//        }
         
-        public void get_catory_tree ()
+        /// <summary>
+        /// 
+        /// </summary>
+        //public void get_catory_tree ()
+        //{
+           
+        //    string[] arr1 = new string[] {  };
+        //    MagentoService mservice = new MagentoService();
+        //    String mlogin = mservice.login("admin", "Interconnection123");
+        //    List<SelectListItem> cat_list = new List<SelectListItem>();
+        //  var tree = mservice.catalogCategoryTree(mlogin, "2", "1");
+        //    //var tree = mservice.catalogCategoryInfo(mlogin, 2, "1",arr1);
+
+        //    foreach (var t in tree.children)
+        //    {
+        //        cat_list.Add(new SelectListItem() { Value = t.category_id.ToString(), Text = t.name.ToString() });
+        //    }
+        //    //int childen = tree.children.Count();
+
+
+        //    //for (int i = 0; i < childen; i++)
+        //    //{
+
+
+
+        //    //}
+        //    magentoView.cat = new SelectList(cat_list, "Value", "Text");
+        //}
+        public ActionResult magento_retail_view ()
         {
+           
 
-            string[] arr1 = new string[] {  };
-            MagentoService mservice = new MagentoService();
-            String mlogin = mservice.login("admin", "Interconnection123");
-            List<SelectListItem> cat_list = new List<SelectListItem>();
-          var tree = mservice.catalogCategoryTree(mlogin, "2", "1");
-            //var tree = mservice.catalogCategoryInfo(mlogin, 2, "1",arr1);
-
-            foreach (var t in tree.children)
-            {
-                cat_list.Add(new SelectListItem() { Value = t.category_id.ToString(), Text = t.name.ToString() });
-            }
-            //int childen = tree.children.Count();
-
-
-            //for (int i = 0; i < childen; i++)
-            //{
-
-
-
-            //}
-            magentoView.cat = new SelectList(cat_list, "Value", "Text");
+            return View();
         }
-
         public ActionResult magento_retail ()
         {
             return View();
@@ -486,10 +494,21 @@ mlogin, desktop_listing, qty_update);
 
             return result + " RAM";
         }
-        public void smart_inventory ()
+        public void smart_inventory (string p_id, string qty)
         {
-
-          //  magentoView.model
+            try
+            {
+                HttpWebRequest myHttpWebRequest = (HttpWebRequest)WebRequest.Create("http://dev.interconnection.org/update.php?product_id=" +p_id + "&qty=" + qty);
+                myHttpWebRequest.ContentType = "application/x-www-form-urlencoded";
+                myHttpWebRequest.UserAgent = ".NET Framework Test Client";
+                WebResponse wr = myHttpWebRequest.GetResponse();
+            }
+            catch (WebException wex)
+            {
+                var pageContent = new StreamReader(wex.Response.GetResponseStream())
+                                      .ReadToEnd();
+            }
+            //  magentoView.model
         }
         //post method to generate magento post
        
@@ -501,12 +520,36 @@ mlogin, desktop_listing, qty_update);
             return Json(result, JsonRequestBehavior.AllowGet);
         }
 
-        public JsonResult quick_import (string price, string name, string sku, string weight, string desc, string short_desc,string qty, string[] websites, string stock, string status, string visible, string attr, string type, string tax)
+
+        [HttpPost]
+        public JsonResult Upload()
         {
+           
+            try
+            {
+               
+                    var file = Request.Files[0];
+
+                    var fileName = Path.GetFileName(file.FileName);
+
+                    var path = Path.Combine(Server.MapPath("~/App_Data/uploads"), fileName);
+                    file.SaveAs(path);
+                
+                return Json(new { success = true, path = path });
+            }
+          catch
+            {
+                return Json(new { success = false });
+            }
+        }
+
+        public JsonResult quick_import (string price, string name, string sku, string weight, string desc, string short_desc,string qty, string[] websites, string stock, string status, string visible, string attr, string type, string tax, string img_path)
+        {
+
             Models.retail_quick_import retail_model = new Models.retail_quick_import();
             retail_model.price = price;
-            retail_model.name = name;
-            retail_model.sku = sku;
+            retail_model.name = name + "_retail";
+            retail_model.sku = sku + "_retail";
             retail_model.weight = weight;
             retail_model.desc = desc;
             retail_model.short_desc = short_desc;
@@ -518,9 +561,55 @@ mlogin, desktop_listing, qty_update);
             retail_model.attr = attr;
             retail_model.type = type;
             retail_model.tax_id = tax;
-
+            
             mage mage = new mage();
-            mage.retail_quick_import(retail_model);
+            string path = img_path;
+
+
+            //add a SKU checking function
+            //if sku already exisit jump to quick_update
+            var product = mage.check_product(retail_model.sku);
+            
+            if (product.Length == 0)
+            {
+                //if product not exisit 
+                //set qty to 0;
+                mage.retail_quick_import(retail_model);
+                product = mage.check_product(retail_model.sku);
+                retail_model.p_id = product[0].product_id;
+                retail_model.qty = "0";
+            }
+            else
+            {
+                //if product exisit
+                //use exisiting qty
+                retail_model.p_id = product[0].product_id;
+                retail_model.qty = product[0].qty;
+            }
+            //convert qty from string to dobule and add 1
+            double temp_qty = double.Parse(retail_model.qty);
+            temp_qty += 1;
+            retail_model.qty = temp_qty.ToString();
+
+            //update qty for inventory module
+            smart_inventory(retail_model.p_id, retail_model.qty);
+
+            //update qty for classic magento inventory entity
+            mage.quick_update(retail_model, path);
+
+            //update shelf qty 
+            //obtain old sku data
+            var old_product = mage.check_product(sku);
+            double temp_old_qty = double.Parse(old_product[0].qty);
+            temp_old_qty -= 1;
+            old_product[0].qty = temp_old_qty.ToString();
+            retail_model.qty = old_product[0].qty;
+            retail_model.sku = old_product[0].sku;
+
+            smart_inventory(retail_model.sku, retail_model.qty);
+            mage.quick_update(retail_model, path);
+
+
             string message = "Product Imported";
 
             return Json(new {message=message }, JsonRequestBehavior.AllowGet);
@@ -557,124 +646,124 @@ mlogin, desktop_listing, qty_update);
         }
 
         [HttpPost]
-        public ActionResult magento (string asset, int grade_selectedId,bool is_cat)
-        {
-           int  int_asset = int.Parse(asset);
-            mage mage = new mage();
-            ViewBag.spec = mage.get_spec(int_asset);
+        //public ActionResult magento (string asset, int grade_selectedId,bool is_cat)
+        //{
+        //   int  int_asset = int.Parse(asset);
+        //    mage mage = new mage();
+        //    ViewBag.spec = mage.get_spec(int_asset);
             
 
 
-            if (is_cat == true)
-            {
-                get_catory_tree();
-            }
-           else
-            {
-                List<SelectListItem> cat_list = new List<SelectListItem>();
-                cat_list.Add(new SelectListItem() { Value = "1", Text = "Empty"});
-                magentoView.cat = new SelectList(cat_list, "Value", "Text");
+        //    if (is_cat == true)
+        //    {
+        //        get_catory_tree();
+        //    }
+        //   else
+        //    {
+        //        List<SelectListItem> cat_list = new List<SelectListItem>();
+        //        cat_list.Add(new SelectListItem() { Value = "1", Text = "Empty"});
+        //        magentoView.cat = new SelectList(cat_list, "Value", "Text");
 
-            }
-            var url = "http://connectall.org/desktop.php";
-            //for all enabled latop product
-            var desktop = json_to_list(url);
-             url = "http://connectall.org/get_enable.php";
-            //for all enabled latop product
-           var laptop = json_to_list(url);
-            List<SelectListItem> desktop_listing = new List<SelectListItem>();
-            foreach (var item in desktop)
-            {
-                desktop_listing.Add(new SelectListItem() { Value = item.entity_id, Text = item.name });
-            }
-            magentoView.desktop_listing = new SelectList(desktop_listing, "Value", "Text");
-            List<SelectListItem> laptop_listing = new List<SelectListItem>();
-            foreach (var item in laptop)
-            {
-                laptop_listing.Add(new SelectListItem() { Value = item.entity_id, Text = item.name });
-            }
-            magentoView.laptop_listing = new SelectList(laptop_listing, "Value", "Text");
-           // get_catory_tree();
-         //   fetch_latest_sku();
-            List<SelectListItem> wireless_list = new List<SelectListItem>()
-            {
-                new SelectListItem(){ Value="1", Text="Yes"},
-                new SelectListItem(){ Value="2", Text="No"},
+        //    }
+        //    var url = "http://connectall.org/desktop.php";
+        //    //for all enabled latop product
+        //    var desktop = json_to_list(url);
+        //     url = "http://connectall.org/get_enable.php";
+        //    //for all enabled latop product
+        //   var laptop = json_to_list(url);
+        //    List<SelectListItem> desktop_listing = new List<SelectListItem>();
+        //    foreach (var item in desktop)
+        //    {
+        //        desktop_listing.Add(new SelectListItem() { Value = item.entity_id, Text = item.name });
+        //    }
+        //    magentoView.desktop_listing = new SelectList(desktop_listing, "Value", "Text");
+        //    List<SelectListItem> laptop_listing = new List<SelectListItem>();
+        //    foreach (var item in laptop)
+        //    {
+        //        laptop_listing.Add(new SelectListItem() { Value = item.entity_id, Text = item.name });
+        //    }
+        //    magentoView.laptop_listing = new SelectList(laptop_listing, "Value", "Text");
+        //   // get_catory_tree();
+        // //   fetch_latest_sku();
+        //    List<SelectListItem> wireless_list = new List<SelectListItem>()
+        //    {
+        //        new SelectListItem(){ Value="1", Text="Yes"},
+        //        new SelectListItem(){ Value="2", Text="No"},
                
-            };
-            magentoView.wireless = new SelectList(wireless_list, "Value", "Text");
-            List<SelectListItem> list = new List<SelectListItem>()
-            {
-                new SelectListItem(){ Value="1", Text="Desktop"},
-                new SelectListItem(){ Value="2", Text="Laptop"},
-                new SelectListItem(){ Value="3", Text="MAC"},
-            };
-            magentoView.type = new SelectList(list, "Value", "Text");
+        //    };
+        //    magentoView.wireless = new SelectList(wireless_list, "Value", "Text");
+        //    List<SelectListItem> list = new List<SelectListItem>()
+        //    {
+        //        new SelectListItem(){ Value="1", Text="Desktop"},
+        //        new SelectListItem(){ Value="2", Text="Laptop"},
+        //        new SelectListItem(){ Value="3", Text="MAC"},
+        //    };
+        //    magentoView.type = new SelectList(list, "Value", "Text");
 
-            List<SelectListItem> taxable_list = new List<SelectListItem>()
-            {
-                new SelectListItem(){ Value="1", Text="Taxable Goods"},
-                new SelectListItem(){ Value="2", Text="Shipping"},
-                new SelectListItem(){ Value="3", Text="None"},
-            };
-            magentoView.tax_class = new SelectList(taxable_list, "Value", "Text");
+        //    List<SelectListItem> taxable_list = new List<SelectListItem>()
+        //    {
+        //        new SelectListItem(){ Value="1", Text="Taxable Goods"},
+        //        new SelectListItem(){ Value="2", Text="Shipping"},
+        //        new SelectListItem(){ Value="3", Text="None"},
+        //    };
+        //    magentoView.tax_class = new SelectList(taxable_list, "Value", "Text");
           
 
             
-            string result = "";
-            int ictags = int.Parse(asset);
-            var get_serial = ( from b in db.rediscovery where b.ictag == ictags select b);
-            foreach (var item in get_serial)
-            {
+        //    string result = "";
+        //    int ictags = int.Parse(asset);
+        //    var get_serial = ( from b in db.rediscovery where b.ictag == ictags select b);
+        //    foreach (var item in get_serial)
+        //    {
                
-                result = item.serial;
-            }
+        //        result = item.serial;
+        //    }
             
 
-            //inner join linq to join both table's common coloum
-            var spec = (from t in db.production_log where t.serial == result from h in db.rediscovery where t.serial == h.serial select new Models.magentoViewModel { hdd = t.HDD , cpu = t.CPU, brand = t.Manufacture, ram = t.RAM, ictags = ictags, model = t.Model,serial = h.serial, screen_size =t.screen_size , video_card = t.video_card, optical = h.optical_drive, pallet_name = h.pallet}).ToList();
-            ViewBag.spec = spec;
-            string temp_pallet = "";
-            foreach (var item in spec)
-            {
-                temp_pallet = item.pallet_name;
-                magentoView.brand = item.brand;
-                magentoView.cpu = item.cpu;
-                magentoView.hdd = item.hdd;
-             //   string rounded_hdd = round_hdd(item.hdd);
-                magentoView.ram = item.ram;
-            //    string rounded_ram = round_ram(item.ram);
-                magentoView.screen_size = item.screen_size;
+        //    //inner join linq to join both table's common coloum
+        //    var spec = (from t in db.production_log where t.serial == result from h in db.rediscovery where t.serial == h.serial select new Models.magentoViewModel { hdd = t.HDD , cpu = t.CPU, brand = t.Manufacture, ram = t.RAM, ictags = ictags, model = t.Model,serial = h.serial, screen_size =t.screen_size , video_card = t.video_card, optical = h.optical_drive, pallet_name = h.pallet}).ToList();
+        //    ViewBag.spec = spec;
+        //    string temp_pallet = "";
+        //    foreach (var item in spec)
+        //    {
+        //        temp_pallet = item.pallet_name;
+        //        magentoView.brand = item.brand;
+        //        magentoView.cpu = item.cpu;
+        //        magentoView.hdd = item.hdd;
+        //     //   string rounded_hdd = round_hdd(item.hdd);
+        //        magentoView.ram = item.ram;
+        //    //    string rounded_ram = round_ram(item.ram);
+        //        magentoView.screen_size = item.screen_size;
                
-            }
+        //    }
             
             
 
 
 
-            string_rebuild new_string = new string_rebuild();
+        //    string_rebuild new_string = new string_rebuild();
             
-            onenote description = new onenote();
-            price price = new price();
-            //rebuild brand string 
-            magentoView.brand = new_string.brand(magentoView.brand);
-            magentoView.cpu = new_string.CPU(magentoView.cpu); magentoView.hdd =new_string.hdd(magentoView.hdd);
-            magentoView.ram = new_string.ram(magentoView.ram);
-            magentoView.creat_date = DateTime.Now.ToString();
-            magentoView.sku = sku_builder(temp_pallet);
+        //    onenote description = new onenote();
+        //    price price = new price();
+        //    //rebuild brand string 
+        //    magentoView.brand = new_string.brand(magentoView.brand);
+        //    magentoView.cpu = new_string.CPU(magentoView.cpu); magentoView.hdd =new_string.hdd(magentoView.hdd);
+        //    magentoView.ram = new_string.ram(magentoView.ram);
+        //    magentoView.creat_date = DateTime.Now.ToString();
+        //    magentoView.sku = sku_builder(temp_pallet);
             
-            if (magentoView.screen_size == "NA")
-            {
-                magentoView.screen_size = "0";
-            }
-             Double temp_size = double.Parse(magentoView.screen_size);
-            int real_size = Convert.ToInt32(temp_size);
-            magentoView.screen_size = real_size.ToString();
+        //    if (magentoView.screen_size == "NA")
+        //    {
+        //        magentoView.screen_size = "0";
+        //    }
+        //     Double temp_size = double.Parse(magentoView.screen_size);
+        //    int real_size = Convert.ToInt32(temp_size);
+        //    magentoView.screen_size = real_size.ToString();
             
             
           
-            return PartialView("_magentoTable", magentoView);
-        }
+        //    return PartialView("_magentoTable", magentoView);
+        //}
 
 
         public JsonResult get_sku_family_table (string sku_family , DateTime target)
@@ -692,7 +781,12 @@ mlogin, desktop_listing, qty_update);
             return View();
 
         }
-
+        public JsonResult retail_inv ()
+        {
+            var url = "http://dev.interconnection.org/get_product.php";
+            var retail_inv = json_to_list(url);
+            return Json(retail_inv, JsonRequestBehavior.AllowGet);
+        }
         public JsonResult get_latest_sku (string sku_family)
         {
             var url = "http://connectall.org/json_php/get_sku.php";
@@ -719,32 +813,32 @@ mlogin, desktop_listing, qty_update);
 
         public ActionResult magento_create()
         {
-
+           
             return View();
         }
-        public JsonResult qty(string sku,string qty)
-        {
-            if (string.IsNullOrEmpty(qty))
-            {
-                qty = "0";
-            }
-            double qty32 = double.Parse(qty);
-            qty32 += 1.00;
-            qty = qty32.ToString();
-            MagentoService mservice = new MagentoService();
-            String mlogin = mservice.login("admin", "Interconnection123!");
+        //public JsonResult qty(string sku,string qty)
+        //{
+        //    if (string.IsNullOrEmpty(qty))
+        //    {
+        //        qty = "0";
+        //    }
+        //    double qty32 = double.Parse(qty);
+        //    qty32 += 1.00;
+        //    qty = qty32.ToString();
+        //    MagentoService mservice = new MagentoService();
+        //    String mlogin = mservice.login("admin", "Interconnection123!");
 
          
 
            
-            string product = sku;
-            catalogInventoryStockItemUpdateEntity update_item = new catalogInventoryStockItemUpdateEntity();
-            update_item.qty = qty;
-            update_item.is_in_stock = 1;
-            var update = mservice.catalogInventoryStockItemUpdate(mlogin, product, update_item);
+        //    string product = sku;
+        //    catalogInventoryStockItemUpdateEntity update_item = new catalogInventoryStockItemUpdateEntity();
+        //    update_item.qty = qty;
+        //    update_item.is_in_stock = 1;
+        //    var update = mservice.catalogInventoryStockItemUpdate(mlogin, product, update_item);
 
-            return Json(new { success = true, responseText = "Qty Updated" }, JsonRequestBehavior.AllowGet);
-        }
+        //    return Json(new { success = true, responseText = "Qty Updated" }, JsonRequestBehavior.AllowGet);
+        //}
 
         public JsonResult detail_status(string hdd, string ram, string cpu, string sku_family)
         {

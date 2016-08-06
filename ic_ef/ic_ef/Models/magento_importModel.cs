@@ -7,7 +7,7 @@ namespace ic_ef.Models
 {
     public class magento_importModel
     {
-
+        
     }
     public class retail_quick_import
     {
@@ -25,5 +25,6 @@ namespace ic_ef.Models
         public string visible { get; set; }
         public string attr { get; set; }
         public string type { get; set; }
+        public string p_id { get; set; }
     }
 }
