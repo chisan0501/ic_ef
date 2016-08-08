@@ -149,6 +149,8 @@ namespace ic_ef.Controllers
             return Json(result, JsonRequestBehavior.AllowGet);
         }
 
+        
+
         [HttpPost]
         public JsonResult write_RetailDymo(int asset_tag, double price, string manu, string cpu, string ram, string hdd)
         {
@@ -180,6 +182,11 @@ namespace ic_ef.Controllers
                     db.SaveChanges();
                     db.Dispose();
                 }
+
+                string asset_tag_str = asset_tag.ToString();
+                string price_str = price.ToString();
+                mage mage = new mage();
+                mage.update_price(asset_tag_str,price_str);
             }
             catch (Exception e)
             {

@@ -1,24 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
 using System.Linq;
 using System.Net;
-using System.Web;
 using System.Web.Mvc;
-using ic_ef;
-using PagedList;
-using System.Configuration;
-using InstaSharp;
 using System.Threading.Tasks;
-using InstaSharp.Models.Responses;
-using InstaAPI.Auth;
-using InstaAPI.Entities;
-using InstaAPI.Endpoints.Authenticated;
-using InstaAPI.Endpoints.OptionalParameters;
-using Newtonsoft.Json;
-using System.Collections;
-using Newtonsoft.Json.Linq;
 
 namespace ic_ef.Controllers
 {

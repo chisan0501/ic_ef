@@ -183,6 +183,18 @@ namespace ic_ef
             return result;
         }
 
+        public void update_price(string sku, string price)
+        {
+            MagentoService mservice = new MagentoService();
+            String mlogin = mservice.login("admin", "Interconnection123!");
+            catalogProductCreateEntity create = new catalogProductCreateEntity();
+            create.price = price;
+            mservice.catalogProductUpdate(mlogin,sku,create,"5","SKU");
+            
+            
+
+        }
+
         public void retail_quick_import (Models.retail_quick_import retail)
         {
             MagentoService mservice = new MagentoService();
