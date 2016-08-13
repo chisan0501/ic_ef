@@ -417,7 +417,22 @@ namespace ic_ef.Controllers
 
             return laptop_inv;
         }
-        
+
+        public List<Models.csv_import> json_to_customer(string url)
+        {
+
+            List<Models.csv_import> laptop_inv = new List<Models.csv_import>();
+            var w = new WebClient();
+            var json_data = w.DownloadString(url);
+            if (!string.IsNullOrEmpty(json_data))
+            {
+                var result = JsonConvert.DeserializeObject<List<Models.csv_import>>(json_data);
+                // laptop_inv = result;
+                laptop_inv = result;
+            }
+
+            return laptop_inv;
+        }
         public string round_hdd(string hdd)
         {
             
@@ -520,7 +535,29 @@ namespace ic_ef.Controllers
             return Json(result, JsonRequestBehavior.AllowGet);
         }
 
+        [HttpGet]
+        public ActionResult get_list(string id)
+        {
+            var list_item = (from t in db.picklist where t.id == id select t).ToList();
+            ViewBag.item = MvcHtmlString.Create(list_item[0].item);
+            return View();
+        }
     
+        public JsonResult write_list (string id, string name, string item, DateTime date)
+        {
+          // item =  System.Web.HttpUtility.HtmlEncode(item);
+            var write_table = new picklist();
+            write_table.id = id;
+            write_table.name = name ;
+            write_table.item = item;
+            write_table.date = date;
+            db.picklist.Add(write_table);
+            db.SaveChanges();
+            db.Dispose();
+
+            return Json(new { success = true }, JsonRequestBehavior.AllowGet);
+        }
+
         [HttpPost]
         public JsonResult Upload()
         {
@@ -545,7 +582,7 @@ namespace ic_ef.Controllers
 
         public JsonResult quick_import (string price, string name, string sku, string weight, string desc, string short_desc,string qty, string[] websites, string stock, string status, string visible, string attr, string type, string tax, string img_path)
         {
-
+            string message = "";
             Models.retail_quick_import retail_model = new Models.retail_quick_import();
             retail_model.price = price;
             retail_model.name = name + "_retail";
@@ -565,54 +602,60 @@ namespace ic_ef.Controllers
             mage mage = new mage();
             string path = img_path;
 
-
-            //add a SKU checking function
-            //if sku already exisit jump to quick_update
-            var product = mage.check_product(retail_model.sku);
-            
-            if (product.Length == 0)
+            try
             {
-                //if product not exisit 
-                //set qty to 0;
-                mage.retail_quick_import(retail_model);
-                product = mage.check_product(retail_model.sku);
-                retail_model.p_id = product[0].product_id;
-                retail_model.qty = "0";
+                //add a SKU checking function
+                //if sku already exisit jump to quick_update
+                var product = mage.check_product(retail_model.sku);
+
+                if (product.Length == 0)
+                {
+                    //if product not exisit 
+                    //set qty to 0;
+                    mage.retail_quick_import(retail_model);
+                    product = mage.check_product(retail_model.sku);
+                    retail_model.p_id = product[0].product_id;
+                    retail_model.qty = "0";
+                }
+                else
+                {
+                    //if product exisit
+                    //use exisiting qty
+                    retail_model.p_id = product[0].product_id;
+                    retail_model.qty = product[0].qty;
+                }
+                //convert qty from string to dobule and add 1
+                double temp_qty = double.Parse(retail_model.qty);
+                temp_qty += 1;
+                retail_model.qty = temp_qty.ToString();
+
+                //update qty for inventory module
+                smart_inventory(retail_model.p_id, retail_model.qty);
+
+                //update qty for classic magento inventory entity
+                mage.quick_update(retail_model, path);
+
+                //update shelf qty 
+                //obtain old sku data
+                var old_product = mage.check_product(sku);
+                double temp_old_qty = double.Parse(old_product[0].qty);
+                temp_old_qty -= 1;
+                old_product[0].qty = temp_old_qty.ToString();
+                retail_model.qty = old_product[0].qty;
+                retail_model.sku = old_product[0].sku;
+
+                smart_inventory(retail_model.sku, retail_model.qty);
+                mage.quick_update(retail_model, path);
+
+
+                message = "<h3 style='color:green'>Product Imported Successfully</h3>";
             }
-            else
+           catch(Exception e)
             {
-                //if product exisit
-                //use exisiting qty
-                retail_model.p_id = product[0].product_id;
-                retail_model.qty = product[0].qty;
+                message = "<h3 style='color:red'>Product Imported Fail </p><p style='red'>"+e.Message+"</h3>";
             }
-            //convert qty from string to dobule and add 1
-            double temp_qty = double.Parse(retail_model.qty);
-            temp_qty += 1;
-            retail_model.qty = temp_qty.ToString();
 
-            //update qty for inventory module
-            smart_inventory(retail_model.p_id, retail_model.qty);
-
-            //update qty for classic magento inventory entity
-            mage.quick_update(retail_model, path);
-
-            //update shelf qty 
-            //obtain old sku data
-            var old_product = mage.check_product(sku);
-            double temp_old_qty = double.Parse(old_product[0].qty);
-            temp_old_qty -= 1;
-            old_product[0].qty = temp_old_qty.ToString();
-            retail_model.qty = old_product[0].qty;
-            retail_model.sku = old_product[0].sku;
-
-            smart_inventory(retail_model.sku, retail_model.qty);
-            mage.quick_update(retail_model, path);
-
-
-            string message = "Product Imported";
-
-            return Json(new {message=message }, JsonRequestBehavior.AllowGet);
+            return Json(new {message= message }, JsonRequestBehavior.AllowGet);
         }
 
         [HttpPost] 
@@ -816,6 +859,8 @@ namespace ic_ef.Controllers
            
             return View();
         }
+
+
         //public JsonResult qty(string sku,string qty)
         //{
         //    if (string.IsNullOrEmpty(qty))
@@ -828,9 +873,9 @@ namespace ic_ef.Controllers
         //    MagentoService mservice = new MagentoService();
         //    String mlogin = mservice.login("admin", "Interconnection123!");
 
-         
 
-           
+
+
         //    string product = sku;
         //    catalogInventoryStockItemUpdateEntity update_item = new catalogInventoryStockItemUpdateEntity();
         //    update_item.qty = qty;
@@ -839,6 +884,35 @@ namespace ic_ef.Controllers
 
         //    return Json(new { success = true, responseText = "Qty Updated" }, JsonRequestBehavior.AllowGet);
         //}
+     
+
+        [HttpPost]
+        public JsonResult order_json (Models.ts_order[] tsorder)
+        {
+            foreach (var item in tsorder)
+            {
+                //split full name into first and last
+                var names = item.Org_Contact_Name.Split(' ');
+                item.first_name = names[0];
+                item.last_name = names[1];
+                //remove the \n stirng from address 
+                item.Org_Street_Address = item.Org_Street_Address.Replace("\n", "");
+            }
+            mage mage = new mage();
+           string result =  mage.create_order(tsorder);
+            return Json(new { scuess = true , message = result}, JsonRequestBehavior.AllowGet);
+        }
+
+        public ActionResult mage_order_import ()
+        {
+           string url = "http://www.dev.interconnection.org/qbjson.json";
+         //   var retail_inv = json_to_customer(url);
+            mage mage = new mage();
+           // mage.create_customer(retail_inv);
+            // mage mage = new mage();
+            //mage.create_order();
+            return View();
+        }
 
         public JsonResult detail_status(string hdd, string ram, string cpu, string sku_family)
         {

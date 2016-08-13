@@ -6,23 +6,40 @@
 <!DOCTYPE html>
 <link href="~/js/jquery.dataTables.min.css" rel="stylesheet" />
 <link href="../vendors/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+<link rel="stylesheet" href="//code.jquery.com/ui/1.12.0/themes/base/jquery-ui.css">
 <link href="~/css/semantic.min.css" rel="stylesheet" />
 <script src="../vendors/jquery/dist/jquery.min.js"></script>
+<script src="https://code.jquery.com/ui/1.12.0/jquery-ui.js"></script>
 <script src="~/js/jquery.dataTables.min.js"></script>
 <script src="~/js/semantic.min.js"></script>
+<script src="~/js/guid.js"></script>
+<script src="~/js/qrcode.min.js"></script>
 <script src="https://use.fontawesome.com/558da96ad2.js"></script>
 <!-- Bootstrap -->
 <script src="../vendors/bootstrap/dist/js/bootstrap.min.js"></script>
 <script type="text/javascript">
     window.onload = function () {
+        load_table();
+    }
+
+    
+    $(document).on('click', '#refresh_btn', function () {
         
+        load_table();
+        
+    });
+         
+       
+    
+    function load_table() {
         var table = $.getJSON("@Url.Action("retail_inv")", function (data) {
             $('#table_reminder').DataTable({
+                destroy: true,
                 data: data,
                 columnDefs: [{
                     targets: 4,
                     data: null,
-                    defaultContent: "<button id='add_btn'>Add to CheckList</button>"
+                    defaultContent: "<button id='add_btn'>Add to List</button>"
                 }],
                 columns: [
                                 { data: "updated_at" },
@@ -32,25 +49,87 @@
                 ]
 
             });
-         
-       });
-    
-    }
-    
-   
- </script>
-<script>
-   
-    $(document).on('click', '#refresh_btn', function () {
-
-        location.reload();
-    });
+        });
+        }
     
     $(document).ready(
 
        function () {
-           $("#print_btn").click(function () {
+           var guid;
+           var qrcode;
+           var today;
+           var name;
+           var item_html;
+           $("#dialog").dialog({
+               autoOpen: false,
+               show: {
+                   effect: "bounce",
+                   duration: 1000
+               },
+               
+           });
+           $("#dialog").dialog("open");
+           $("#name_btn").click(function () {
+               guid = Guid.create();
+               qrcode = new QRCode("qrcode", {
+                   text: 'http://ic.icdb.name/production_log/get_list?id=' + guid,
+                   width: 160,
+                   height: 160,
+                   colorDark: "#000000",
+                   colorLight: "#ffffff",
+                   correctLevel: QRCode.CorrectLevel.H
+               });
+               
+               
+               today = new Date();
+               var dd = today.getDate();
+               var mm = today.getMonth() + 1; //January is 0!
+               var yyyy = today.getFullYear();
+
+               if (dd < 10) {
+                   dd = '0' + dd
+               }
+
+               if (mm < 10) {
+                   mm = '0' + mm
+               }
+
+               today = mm + '/' + dd + '/' + yyyy;
               
+               name = $("#name_field").val();
+               name = name.toUpperCase();
+               item_html = '<p>User : ' + name + '</p><p> Date : ' + today + '</p><p>Pick List Unique ID : ' + guid + '</p><hr><h3>Pick List Items :</h3>';
+               $("#name_header").html(item_html);
+               $("#dialog").dialog("close");
+
+           });
+           $("#print_btn").click(function () {
+               var ul_html = $("#left_content").clone().html()
+               var jsonObject = {
+                   id: guid,
+                   name : name,
+                   date: today,
+                   item: ul_html,
+               };
+               $.ajax({
+                   url: "@Url.Action("write_list")",
+                   type: "POST",
+
+               data: JSON.stringify(jsonObject),
+               contentType: "application/json; charset=utf-8",
+               dataType: "json",
+               success: function (data) {
+                   printDiv();
+               }
+               });
+
+
+
+
+
+               $("#opener").on("click", function () {
+                  
+               });
                function printDiv() {
 
                    var divToPrint = document.getElementById('print');
@@ -66,10 +145,11 @@
                    setTimeout(function () { newWin.close(); }, 10);
 
                }
-               printDiv();
+              
            });
            var websites = ["5"];
            $('#table_reminder tbody').on('click', 'button', function () {
+               $('#table_loader').attr('class', 'ui active inverted dimmer');
                var title = $(this).closest('td').siblings(':nth-child(2)').text();
                var sku = $(this).closest('td').siblings(':nth-child(3)').text();
                var qty = $(this).closest('td').siblings(':nth-child(4)').text();
@@ -99,8 +179,10 @@
                    contentType: "application/json; charset=utf-8",
                    dataType: "json",
                    success: function (data) {
-                       alert(data);
-
+                       load_table();
+                       $('#table_loader').attr('class', 'ui disabled inverted dimmer');
+                       $("#output").html(data.message);
+                       
                    }
                });
 
@@ -114,14 +196,30 @@
     <title>magento_retail_view</title>
 </head>
 <body>
+
+    <div id="dialog" title="Basic dialog">
+        <p>Please Enter User Name</p>
+        <div class="ui input">
+            <input type="text" id="name_field" placeholder="User Name">
+            <button class="ui primary button" id="name_btn">
+                Save
+            </button>
+        </div>
+
+    </div>
     <div class="ui grid">
         <div class="four wide computer nine wide tablet six wide mobile column">
-            <div>
+            
                 <h3 class="ui block header">
-                    CheckList
+                    Picklist
                     <button id="print_btn">Print</button>
                 </h3>
+            <div id="left_content">
                 <div id="print">
+                    
+                    <div id='qrcode'></div>
+                    <div id="name_header"></div>
+                   
                     <ul id="check_list"></ul>
                 </div>
                
@@ -135,7 +233,7 @@
                     <div class="divider"> / </div>
                     <a class="section" href="@Url.Action("magento_main", "production_log")">Magento Import Tool</a>
                     <div class="divider"> / </div>
-                    <div class="active section">Retail CheckList</div>
+                    <div class="active section">Retail Picklist</div>
                 </div>
                 <div class="ui clearing segment">
                     <h3 class="ui right floated header">
@@ -146,20 +244,31 @@
                     </h3>
                 </div>
                 <a href="http://dev.interconnection.org//webpos/index/index" target="_blank">Link to Web POS</a>
-                <table class="table" id="table_reminder">
-                    <thead>
-                        <tr>
-                            <th>Last Update</th>
-                            <th>Title</th>
-                            <th>SKU</th>
-                            <th>QTY Left</th>
-                            <th>Action</th>
+                
+                <div  class="ui segment">
+                    <table class="table" id="table_reminder">
+                        <thead>
+                            <tr>
+                                <th>Last Update</th>
+                                <th>Title</th>
+                                <th>SKU</th>
+                                <th>QTY Left</th>
+                                <th>Action</th>
 
-                        </tr>
-                    </thead>
-                    <tbody></tbody>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
 
-                </table>
+                    </table>
+                    <div id="output"></div>
+                    <div id="table_loader" class="ui disabled inverted dimmer">
+
+                        <div class="ui text loader">Loading</div>
+                        
+                    </div>
+                    <p></p>
+                </div>
+               
             </div>
         </div>
     </div>

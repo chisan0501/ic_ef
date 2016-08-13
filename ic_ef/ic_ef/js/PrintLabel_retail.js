@@ -386,7 +386,7 @@
                 var ram = document.getElementById("table2").rows[x+1].cells[4].innerHTML;
                 var hdd = document.getElementById("table2").rows[x+1].cells[5].innerHTML;
                 var asset_tag = document.getElementById("table2").rows[x+1].cells[1].innerHTML;
-                
+                var sku = document.getElementById("table2").rows[x + 1].cells[7].innerHTML;
 
                 label.setObjectText("time", time);
                 label.setObjectText("price", price);
@@ -395,7 +395,7 @@
                 label.setObjectText("ram", ram );
                 label.setObjectText("hdd", hdd );
                 label.setObjectText("asset_tag", asset_tag);
-              
+           
               //  label.setObjectText("channel", channel_name.innerText);
   
 
@@ -405,14 +405,15 @@
                 selectedNode = printername.options[printername.selectedIndex];
                label.print(selectedNode.value);
                 
-
+               
                 var jsonObject2 = {
                     "asset_tag": asset_tag,
                     "manu": manu,
                     "cpu": cpu,
                     "ram": ram,
                     "hdd": hdd,
-                    "price": price
+                    "price": price,
+                    "sku": sku
                 };
                 $.ajax({
                     url: 'write_RetailDymo',
@@ -420,12 +421,12 @@
                     data: JSON.stringify(jsonObject2),
                     contentType: "application/json; charset=utf-8",
                     dataType: "json",           
-                    success: function (data) {
-                        
+                    success: function () {
+                        alert('success');
                         //write code here manage "data"
                     },
                     error: function () {
-                      
+                       alert('error');
                     }
                 });
 

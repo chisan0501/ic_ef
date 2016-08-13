@@ -31,6 +31,7 @@
         <AssociationConnector Association="db_a094d4_icdbModel.ApplicationUser_Claims" ManuallyRouted="false" />
         <AssociationConnector Association="db_a094d4_icdbModel.ApplicationUser_Logins" ManuallyRouted="false" />
         <AssociationConnector Association="db_a094d4_icdbModel.aspnetuserroles" ManuallyRouted="false" />
+        <EntityTypeShape EntityType="db_a094d4_icdbModel.picklist" Width="1.5" PointX="0.75" PointY="13.75" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

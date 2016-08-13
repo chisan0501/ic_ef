@@ -48,5 +48,6 @@ namespace ic_ef
         public virtual DbSet<station_setting> station_setting { get; set; }
         public virtual DbSet<temp_label> temp_label { get; set; }
         public virtual DbSet<users> users { get; set; }
+        public virtual DbSet<picklist> picklist { get; set; }
     }
 }

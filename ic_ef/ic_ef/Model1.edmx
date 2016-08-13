@@ -188,6 +188,15 @@ warning 6013: The table/view 'def.db_a094d4_icdb.misc_setting' does not have a p
           </Key>
           <Property Name="pallet_id" Type="varchar" MaxLength="128" Nullable="false" />
         </EntityType>
+        <EntityType Name="picklist">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="char" MaxLength="255" Nullable="false" />
+          <Property Name="date" Type="date" />
+          <Property Name="name" Type="char" MaxLength="50" />
+          <Property Name="item" Type="text" />
+        </EntityType>
         <EntityType Name="production_log">
           <Key>
             <PropertyRef Name="wcoa" />
@@ -362,6 +371,7 @@ warning 6013: The table/view 'def.db_a094d4_icdb.misc_setting' does not have a p
           <EntitySet Name="monitor_setting" EntityType="Self.monitor_setting" Schema="db_a094d4_icdb" store:Type="Tables" />
           <EntitySet Name="pallet" EntityType="Self.pallet" Schema="db_a094d4_icdb" store:Type="Tables" />
           <EntitySet Name="pallet_master" EntityType="Self.pallet_master" Schema="db_a094d4_icdb" store:Type="Tables" />
+          <EntitySet Name="picklist" EntityType="Self.picklist" Schema="db_a094d4_icdb" store:Type="Tables" />
           <EntitySet Name="production_log" EntityType="Self.production_log" Schema="db_a094d4_icdb" store:Type="Tables" />
           <EntitySet Name="rediscovery" EntityType="Self.rediscovery" Schema="db_a094d4_icdb" store:Type="Tables" />
           <EntitySet Name="retail" EntityType="Self.retail" Schema="db_a094d4_icdb" store:Type="Tables" />
@@ -735,7 +745,17 @@ warning 6013: The table/view 'def.db_a094d4_icdb.misc_setting' does not have a p
             <End Role="aspnetusers" EntitySet="aspnetusers" />
             <End Role="aspnetroles" EntitySet="aspnetroles" />
           </AssociationSet>
+          <EntitySet Name="picklist" EntityType="db_a094d4_icdbModel.picklist" />
         </EntityContainer>
+        <EntityType Name="picklist">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="date" Type="DateTime" />
+          <Property Name="name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="item" Type="String" />
+        </EntityType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -1041,6 +1061,16 @@ warning 6013: The table/view 'def.db_a094d4_icdb.misc_setting' does not have a p
               <ScalarProperty Name="Id" ColumnName="RoleId" />
             </EndProperty>
           </AssociationSetMapping>
+          <EntitySetMapping Name="picklist">
+            <EntityTypeMapping TypeName="db_a094d4_icdbModel.picklist">
+              <MappingFragment StoreEntitySet="picklist">
+                <ScalarProperty Name="item" ColumnName="item" />
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="date" ColumnName="date" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

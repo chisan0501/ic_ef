@@ -152,10 +152,10 @@ namespace ic_ef.Controllers
         
 
         [HttpPost]
-        public JsonResult write_RetailDymo(int asset_tag, double price, string manu, string cpu, string ram, string hdd)
+        public JsonResult write_RetailDymo(int asset_tag, double price, string manu, string cpu, string ram, string hdd,string sku)
         {
-            try
-            {
+           
+            
                 var existing = (from im in db.retail
                                 where im.asset_tag.Equals(asset_tag)
                                 select im).SingleOrDefault();
@@ -183,17 +183,14 @@ namespace ic_ef.Controllers
                     db.Dispose();
                 }
 
-                string asset_tag_str = asset_tag.ToString();
+                
                 string price_str = price.ToString();
                 mage mage = new mage();
-                mage.update_price(asset_tag_str,price_str);
-            }
-            catch (Exception e)
-            {
-
-            }
-        
-            return Json(JsonRequestBehavior.AllowGet);
+              bool success =  mage.update_price(sku, price_str);
+            
+            
+            
+            return Json(new { success = success }, JsonRequestBehavior.AllowGet);
         }
 
         public JsonResult RetailDymo (string asset, string price, string channel)

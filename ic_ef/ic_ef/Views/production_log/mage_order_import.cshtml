@@ -1,0 +1,85 @@
+﻿
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+
+    <meta name="viewport" content="width=device-width" />
+    <title>mage_order_import</title>  
+    <link href="~/css/bootstrap.fd.css" rel="stylesheet" />
+    <link href="~/css/font-awesome.min.css" rel="stylesheet" />
+    <link href="~/css/bootstrap.min.css" rel="stylesheet" />
+    <script src="~/js/jquery-1.12.3.js"></script>
+    <script src="~/js/papaparse.min.js"></script>
+    <script src="~/js/bootstrap.js"></script>
+    <script src="~/js/bootstrap.fd.js"></script>
+</head>
+
+<body>
+    <button id="open_btn" class="btn btn-primary">Upload</button>
+   
+    <div id="output"></div>
+
+</body>
+</html>
+<script type="text/javascript">
+        $("#open_btn").click(function() {
+            $.FileDialog({multiple: false}).on('files.bs.filedialog', function(ev) {
+                var file = ev.files[0];
+
+                Papa.parse(file, {
+                    header: true,
+                    skipEmptyLines: true,
+                    dynamicTyping: true,
+                    complete: function (results) {
+
+                        var ResultToConvert = results.data;
+                        ResultToConvert.forEach(function (e, i) {
+                            // Iterate over the keys of object
+                            Object.keys(e).forEach(function (key) {
+
+                                // Copy the value
+                                var val = e[key],
+                                  newKey = key.replace(/\s+/g, '_');
+
+                                // Remove key-value from object
+                                delete ResultToConvert[i][key];
+
+                                // Add value with new key
+                                ResultToConvert[i][newKey] = val;
+
+                                var arrrr = JSON.stringify(ResultToConvert, 0, 4);
+
+                            });
+                        });
+                        console.log(results.data);
+                        var jsonObject = { tsorder: results.data };
+                        $.ajax({
+                            url: 'order_json',
+                            method: 'post',
+                            data: JSON.stringify(jsonObject),
+                            contentType: "application/json; charset=utf-8",
+                            dataType: "json",
+                            success: function (response) {
+                               $("#output").html(response.message);
+                            },
+                            error: function () {
+                                console.error('an error occurred');
+                            }
+                        });
+                    }
+                });
+
+                $("#output").html("Order Created!");
+            }).on('cancel.bs.filedialog', function(ev) {
+                $("#output").html("Cancelled!");
+            });
+        });
+</script>
+
+
+
+
