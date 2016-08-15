@@ -94,6 +94,13 @@ namespace ic_ef.Controllers
 
             return View();
         }
+
+        public JsonResult small_graph()
+        {
+            var result = sql_output.small_graph("select Count(time) as items from discovery where time >= DATE_SUB(CURDATE(), INTERVAL 7 day) group by date_format(time,'%Y-%m-%d') limit 7");
+            return Json(result, JsonRequestBehavior.AllowGet);
+
+        }
         public JsonResult pass30 ()
         {
            Dictionary<string,string> result = sql_output.sql_result("select date_format(time,'%Y-%m-%d') as items_date ,Count(time) as items from production_log where time >= DATE_SUB(CURDATE(), INTERVAL 30 day) group by date_format(time,'%Y-%m-%d')");
@@ -585,7 +592,18 @@ namespace ic_ef.Controllers
             sw.Close();
 
         }
+        public ActionResult export_coa_csv_new(string channel)
+        {
+            string file_name = DateTime.Now.ToString("yyyy-MM-dd") + "_" + channel + "_coa.csv";
+            var result = from c in db.coas
+                         where c.Recipient_Organization_Name == channel 
 
+                         select c;
+
+
+            ExportCSV(result, file_name);
+            return new EmptyResult();
+        }
         public ActionResult export_coa_csv (string id)
         {
             string file_name = DateTime.Now.ToString("yyyy-MM-dd") + "_" + id + "_coa.csv";

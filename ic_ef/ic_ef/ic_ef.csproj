@@ -580,16 +580,14 @@
     <Content Include="Content\main.jpg" />
     <Content Include="Content\PagedList.css" />
     <Content Include="Content\rack.jpg" />
-    <Content Include="css\bootstrap.fd.css" />
     <Content Include="css\cards.css" />
     <Content Include="css\icomoon.css" />
     <Content Include="css\magnific-popup.css" />
     <Content Include="css\owl.carousel.min.css" />
     <Content Include="css\owl.theme.default.min.css" />
     <Content Include="css\themes\default\assets\images\flags.png" />
-    <Content Include="js\bootstrap.fd.js" />
-    <Content Include="js\guid.js" />
-    <Content Include="js\papaparse.min.js" />
+    <Content Include="css\vex-theme-os.css" />
+    <Content Include="js\base.js" />
     <Content Include="js\prefixfree.min.js" />
     <Content Include="Content\retail_sample.png" />
     <Content Include="Content\simple_csv.jpg" />
@@ -669,14 +667,12 @@
     <Content Include="js\monthpicker.js" />
     <Content Include="js\PrintLabel.js" />
     <Content Include="js\PrintLabel_retail_custom.js" />
-    <Content Include="js\PrintLabel_retail.js">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="js\qrcode.min.js" />
+    <Content Include="js\PrintLabel_retail.js" />
     <Content Include="js\semantic.min.js" />
     <Content Include="js\sliiide.min.js" />
     <Content Include="js\tileJs.js" />
     <Content Include="js\tileJs.min.js" />
+    <Content Include="js\vex.combined.js" />
     <Content Include="js\wow.min.js" />
     <Content Include="Model1.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
@@ -722,6 +718,7 @@
     <Content Include="css\themes\default\assets\fonts\icons.woff2" />
     <Content Include="css\bootstrap.css.map" />
     <Content Include="css\cards.css.map" />
+    <Content Include="css\global.sass" />
     <None Include="Properties\PublishProfiles\icdb.pubxml" />
     <None Include="Properties\PublishProfiles\icmvc.pubxml" />
     <None Include="Properties\PublishProfiles\ic_ef.pubxml" />
@@ -988,8 +985,6 @@
     <Content Include="Views\Manage\Admin_dashboard.cshtml" />
     <Content Include="Views\production_log\magento_retail.cshtml" />
     <Content Include="web.config" />
-    <Content Include="Views\production_log\magento_retail_view.cshtml" />
-    <Content Include="Views\production_log\mage_order_import.cshtml" />
     <Content Include="Web References\org.interconnection.dev\apiEntity.datasource">
       <DependentUpon>Reference.map</DependentUpon>
     </Content>
@@ -1092,12 +1087,14 @@
     <Content Include="Web References\org.interconnection.dev\existsFaltureEntity.datasource">
       <DependentUpon>Reference.map</DependentUpon>
     </Content>
-    <Content Include="Web References\org.interconnection.dev\fieldInfo.datasource">
-      <DependentUpon>Reference.map</DependentUpon>
-    </Content>
     <Content Include="Web References\org.interconnection.dev\giftMessageResponse.datasource">
       <DependentUpon>Reference.map</DependentUpon>
     </Content>
+    <Content Include="Web References\org.interconnection.dev\fieldInfo.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </Content>
+    <Content Include="Views\production_log\magento_retail_view.cshtml" />
+    <Content Include="Views\production_log\mage_order_import.cshtml" />
     <Content Include="Views\production_log\get_list.cshtml" />
     <None Include="Web References\org.interconnection.dev\item.xsd">
       <SubType>Designer</SubType>
@@ -1106,10 +1103,10 @@
     <Content Include="Web References\org.interconnection.dev\magentoInfoEntity.datasource">
       <DependentUpon>Reference.map</DependentUpon>
     </Content>
-    <Content Include="Web References\org.interconnection.dev\Reference.map">
+    <None Include="Web References\org.interconnection.dev\Reference.map">
       <Generator>MSDiscoCodeGenerator</Generator>
       <LastGenOutput>Reference.cs</LastGenOutput>
-    </Content>
+    </None>
     <Content Include="Web References\org.interconnection.dev\salesOrderCreditmemoEntity.datasource">
       <DependentUpon>Reference.map</DependentUpon>
     </Content>

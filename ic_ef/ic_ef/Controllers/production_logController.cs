@@ -116,6 +116,7 @@ namespace ic_ef.Controllers
             }
 
         }
+        
         public string sku_builder (string sku)
         {
             string new_sku = "";
@@ -527,7 +528,7 @@ namespace ic_ef.Controllers
         }
         //post method to generate magento post
        
-          
+        
             public JsonResult channel_list ()
         {
             mage mage = new mage();

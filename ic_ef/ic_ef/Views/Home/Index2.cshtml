@@ -10,21 +10,24 @@
         var chartColours = ['#96CA59', '#3F97EB', '#72c380', '#6f7a8a', '#f7cb38', '#5a8022', '#2c7282'];
 
          $.getJSON("@Url.Action("get_frontpage_data")", function (data) {
-          
+
         $("#discover_data").text(data.discovery);
         $("#refrub_data").text(data.refrub);
         $("#img_data").text(data.img);
         $("#monitor_data").text(data.monitor);
     }
                 );
+        $.getJSON("@Url.Action("small_graph")", function (data) {
+
+        });
             $.getJSON("@Url.Action("pass30")", function (data) {
                 var d1 = [];
-              
+
                 for (var i = 0; i < data.items.length; i++) {
                     d1.push([new Date(data.date[i]), data.items[i]]);
                     //    d2.push([new Date(Date.today().add(i).days()).getTime(), randNum()]);
                 }
-                var chartMinDate = d1[0][0]; //first day        
+                var chartMinDate = d1[0][0]; //first day
                 var chartMaxDate = d1[7][0]; //last day
 
                 var tickSize = [1, "day"];
@@ -108,53 +111,49 @@
             });
         $.post("@Url.Action("get_coa")", { company: "Techsoup.org", windows_name: "Windows 7 Professional 64-bit" }, function (data) {
                 $('#ts_coa').empty();
-               
-             
+
+
                 for (i = 0; i < data.wcoa.length; i++) {
                     $('#ts_coa').append(" <article class='media event'><a class='pull-left date'><p class='day'>" + (i + 1) + "</p></a><div class='media-body'><a class='title' >wcoa<p>" + data.wcoa[i] + "</p></a><a class='title' >ocoa<p>" + data.ocoa[i] + "</p></a></div></article>");
-                 
+
                 }
-              
-              
-               
+
+
+
             }
-            
+
  );
         $.post("@Url.Action("get_coa")", { company: "Interconnection", windows_name: "Windows 7 Professional 64-bit" }, function (data) {
             $('#mar_coa').empty();
-               
-             
+
+
             for (i = 0; i < data.wcoa.length; i++) {
                 $('#mar_coa').append(" <article class='media event'><a class='pull-left date'><p class='day'>" + (i + 1) + "</p></a><div class='media-body'><a class='title' >wcoa<p>" + data.wcoa[i] + "</p></a><a class='title' >ocoa<p>" + data.ocoa[i] + "</p></a></div></article>");
-                 
+
             }
-              
-              
-               
+
+
+
         }
-            
+
  );
         $.post("@Url.Action("get_coa")", { company: "Good360", windows_name: "Windows 7 Professional" }, function (data) {
             $('#g360_coa').empty();
-               
-             
+
+
             for (i = 0; i < data.wcoa.length; i++) {
                 $('#g360_coa').append(" <article class='media event'><a class='pull-left date'><p class='day'>" + (i + 1) + "</p></a><div class='media-body'><a class='title' >wcoa<p>" + data.wcoa[i] + "</p></a><a class='title' >ocoa<p>" + data.ocoa[i] + "</p></a></div></article>");
-                 
+
             }
-              
-              
-               
+
+
+
         }
-            
+
  );
-        $.getJSON("@Url.Action("get_mar_coa")", function (data) {
-          
-            
+
         }
-                );
-        }
-   
+
 </script>
 <html lang="en">
   <head>
@@ -165,9 +164,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
     <title>ICDB | Interconnection </title>
-
+      
     <!-- Bootstrap -->
     <link href="../vendors/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+  
     <!-- Font Awesome -->
     <link href="../vendors/font-awesome/css/font-awesome.min.css" rel="stylesheet">
     <!-- NProgress -->
@@ -175,6 +175,16 @@
 
     <!-- Custom Theme Style -->
     <link href="~/build/css/custom.min.css" rel="stylesheet">
+     <style>
+         body.modal-open .modal {
+    display: flex !important;
+    height: 100%;
+} 
+
+body.modal-open .modal .modal-dialog {
+    margin: auto;
+}
+     </style>
   </head>
 
   <body class="nav-md">
@@ -185,7 +195,7 @@
             <div class="navbar nav_title" style="border: 0;">
               <a href="index.html" class="site_title"><i class="fa fa-dashboard"></i> <span>ICDB</span></a>
             </div>
-
+             
             <div class="clearfix"></div>
 
             <!-- menu profile quick info -->
@@ -193,6 +203,7 @@
               <div class="profile_pic">
                 <img src="../images/img.jpg" alt="..." class="img-circle profile_img">
               </div>
+               
               <div class="profile_info">
                 <span>Welcome,</span>
                 <h2>@Html.ActionLink(User.Identity.GetUserName(), "Index", "Manage", routeValues: null, htmlAttributes: new { title = "Manage", @style = "color:white;" })</h2>
@@ -212,15 +223,15 @@
                   </li>
                   <li><a><i class="fa fa-edit"></i> Production <span class="fa fa-chevron-down"></span></a>
                     <ul class="nav child_menu">
-                      <li><a href="form.html">Discovery Data</a></li>
-                      <li><a href="form_advanced.html">Refrub Data</a></li>
-                      <li><a href="form_validation.html">Imaging Data</a></li>
-                      <li><a href="form_wizards.html">Monitors Discovery Data</a></li>                    
+                      <li><a href=@Url.Action("index", "discoveries")>Discovery Data</a></li>
+                      <li><a href=@Url.Action("index", "rediscoveries")>Refrub Data</a></li>
+                      <li><a href=@Url.Action("index", "production_log")>Imaging Data</a></li>
+                      <li><a href=@Url.Action("index", "monitor_log")>Monitors Discovery Data</a></li>                    
                     </ul>
                   </li>
                   <li><a><i class="fa fa-desktop"></i> Inventroy <span class="fa fa-chevron-down"></span></a>
                     <ul class="nav child_menu">
-                      <li><a href="general_elements.html">Pallet Management</a></li>
+                      <li><a href=@Url.Action("inventoryManage", "manage")>Pallet Management</a></li>
                       <li><a href="media_gallery.html">RAW Inventory</a></li>
                       
                     </ul>
@@ -231,16 +242,16 @@
                       <li><a href="tables_dynamic.html">Table Dynamic</a></li>
                     </ul>
                   </li>
-                  <li><a><i class="fa fa-bar-chart-o"></i> Data Presentation <span class="fa fa-chevron-down"></span></a>
+                  <li><a><i class="fa fa-shopping-cart"></i> Magento Tools <span class="fa fa-chevron-down"></span></a>
                     <ul class="nav child_menu">
-                      <li><a href="chartjs.html">Chart JS</a></li>
+                      <li><a href="chartjs.html">Retail WebPOS Pick List</a></li>
                       <li><a href="chartjs2.html">Chart JS2</a></li>
                       <li><a href="morisjs.html">Moris JS</a></li>
                       <li><a href="echarts.html">ECharts</a></li>
                       <li><a href="other_charts.html">Other Charts</a></li>
                     </ul>
                   </li>
-                  <li><a><i class="fa fa-users"></i>Admin Settings</a>
+                  <li><a id="admin_page"><i class="fa fa-users"></i>Admin Settings</a>
                   
                   </li>
                 </ul>
@@ -319,7 +330,15 @@
             <!-- /menu footer buttons -->
           </div>
         </div>
-
+          <div class="modal fade bd-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+              <div class="modal-dialog modal-sm">
+                  <div class="modal-content">
+                      <h4>Add TechSoup COA</h4>
+                      <hr />
+                      
+                  </div>
+              </div>
+          </div>
         <!-- top navigation -->
         <div class="top_nav">
           <div class="nav_menu">
@@ -429,8 +448,8 @@
         <!-- /top navigation -->
 
         <!-- page content -->
-        <div class="right_col" role="main">
-          <div class="">
+        <div class="right_col"  role="main">
+          <div class="" id="mainpage">
             <div class="row top_tiles">
               <div class="animated flipInY col-lg-3 col-md-3 col-sm-6 col-xs-12">
                 <div class="tile-stats">
@@ -487,21 +506,21 @@
                       </div>
                       <div class="tiles">
                         <div class="col-md-4 tile">
-                          <span>Total Sessions</span>
+                          <span>Discovery Data</span>
                           <h2>231,809</h2>
                           <span class="sparkline11 graph" style="height: 160px;">
                                           <canvas width="200" height="60" style="display: inline-block; vertical-align: top; width: 94px; height: 30px;"></canvas>
                                       </span>
                         </div>
                         <div class="col-md-4 tile">
-                          <span>Total Revenue</span>
+                          <span>Refrub Data</span>
                           <h2>$231,809</h2>
                           <span class="sparkline22 graph" style="height: 160px;">
                                           <canvas width="200" height="60" style="display: inline-block; vertical-align: top; width: 94px; height: 30px;"></canvas>
                                       </span>
                         </div>
                         <div class="col-md-4 tile">
-                          <span>Total Sessions</span>
+                          <span>Imaging Data</span>
                           <h2>231,809</h2>
                           <span class="sparkline11 graph" style="height: 160px;">
                                           <canvas width="200" height="60" style="display: inline-block; vertical-align: top; width: 94px; height: 30px;"></canvas>
@@ -603,7 +622,7 @@
               <div class="col-md-12">
                 <div class="x_panel">
                   <div class="x_title">
-                    <h2>Weekly Summary <small>Activity shares</small></h2>
+                    <h2>COAs Summary <small>Windows & Offices</small></h2>
                     <ul class="nav navbar-right panel_toolbox">
                       <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
                       </li>
@@ -624,14 +643,15 @@
                   <div class="x_content">
 
                     <div class="row" style="border-bottom: 1px solid #E0E0E0; padding-bottom: 5px; margin-bottom: 5px;">
-                      <div class="col-md-7" style="overflow:hidden;">
+                      @*<div class="col-md-12" style="overflow:hidden;">
                         <span class="sparkline_one" style="height: 160px; padding: 10px 25px;">
                                       <canvas width="200" height="60" style="display: inline-block; vertical-align: top; width: 94px; height: 30px;"></canvas>
                                   </span>
-                        <h4 style="margin:18px">Weekly sales progress</h4>
-                      </div>
+                      
+                      </div>*@
 
                       <div class="col-md-5">
+                          
                         <div class="row" style="text-align: center;">
                           <div class="col-md-4">
                             <canvas id="canvas1i" height="110" width="110" style="margin: 5px 10px 10px 0"></canvas>
@@ -654,7 +674,7 @@
             </div>
 
 
-
+          
             <div class="row">
               <div class="col-md-4">
                 <div class="x_panel">
@@ -664,7 +684,7 @@
                       <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
                       </li>
                         <li>
-                            <a class=""><i class="fa fa-download"></i></a>
+                            <a class="" id="ts_coa_btn" href= @Url.Action("export_coa_csv_new", "home", new { channel = "TechSoup.org" })><i class="fa fa-download"></i></a>
                         </li>
                       <li><a class="close-link"><i class="fa fa-close"></i></a>
                       </li>
@@ -735,7 +755,7 @@
                       <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
                       </li>
                         <li>
-                            <a class=""><i class="fa fa-download"></i></a>
+                            <a class="" id="ts_coa_btn" href=@Url.Action("export_coa_csv_new", "home", new { channel = "Interconnection" })><i class="fa fa-download"></i></a>
                         </li>
                       <li><a class="close-link"><i class="fa fa-close"></i></a>
                       </li>
@@ -805,7 +825,7 @@
                       <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
                       </li>
                         <li>
-                            <a class=""><i class="fa fa-download"></i></a>
+                            <a class="" id="ts_coa_btn" href=@Url.Action("export_coa_csv_new", "home", new { channel = "Good360" })><i class="fa fa-download"></i></a>
                         </li>
                       <li><a class="close-link"><i class="fa fa-close"></i></a>
                       </li>
@@ -884,6 +904,7 @@
 
     <!-- jQuery -->
     <script src="../vendors/jquery/dist/jquery.min.js"></script>
+
     <!-- Bootstrap -->
     <script src="../vendors/bootstrap/dist/js/bootstrap.min.js"></script>
     <!-- FastClick -->
@@ -918,7 +939,8 @@
 
     <!-- jQuery Sparklines -->
     <script>
-      $(document).ready(function() {
+        $(document).ready(function () {
+         
         $(".sparkline_one").sparkline([2, 4, 3, 4, 5, 4, 5, 4, 3, 4, 5, 6, 4, 5, 6, 3, 5, 4, 5, 4, 5, 4, 3, 4, 5, 6, 7, 5, 4, 3, 5, 6], {
           type: 'bar',
           height: '125',
@@ -1102,17 +1124,16 @@
     <!-- bootstrap-daterangepicker -->
     <script type="text/javascript">
       $(document).ready(function() {
-
         var cb = function(start, end, label) {
           console.log(start.toISOString(), end.toISOString(), label);
           $('#reportrange span').html(start.format('MMMM D, YYYY') + ' - ' + end.format('MMMM D, YYYY'));
         };
-
+       
         var optionSet1 = {
           startDate: moment().subtract(29, 'days'),
           endDate: moment(),
           minDate: '01/01/2012',
-          maxDate: '12/31/2015',
+          maxDate: '12/31/2020',
           dateLimit: {
             days: 60
           },
@@ -1146,6 +1167,10 @@
             firstDay: 1
           }
         };
+        $("#admin_page").on("click", function () {
+            $("#mainpage").load("/production_log/magento_main")
+        });
+
         $('#reportrange span').html(moment().subtract(29, 'days').format('MMMM D, YYYY') + ' - ' + moment().format('MMMM D, YYYY'));
         $('#reportrange').daterangepicker(optionSet1, cb);
         $('#reportrange').on('show.daterangepicker', function() {
@@ -1166,6 +1191,23 @@
         $('#options2').click(function() {
           $('#reportrange').data('daterangepicker').setOptions(optionSet2, cb);
         });
+       
+        $('#ts_coa_btn').click(function () {
+            @*var jsonObject = {
+                channel : "Techsoup.org"
+            };
+            $.ajax({
+                url: "@Url.Action("export_coa_csv_new")",
+                type: "POST",
+
+            data: JSON.stringify(jsonObject),
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            success: function (data) {
+               
+            }
+        });*@
+        });       
         $('#destroy').click(function() {
           $('#reportrange').data('daterangepicker').remove();
         });

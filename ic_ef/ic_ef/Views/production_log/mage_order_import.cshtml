@@ -12,10 +12,13 @@
     <link href="~/css/bootstrap.fd.css" rel="stylesheet" />
     <link href="~/css/font-awesome.min.css" rel="stylesheet" />
     <link href="~/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="~/css/all.css" rel="stylesheet" />
+
     <script src="~/js/jquery-1.12.3.js"></script>
     <script src="~/js/papaparse.min.js"></script>
     <script src="~/js/bootstrap.js"></script>
     <script src="~/js/bootstrap.fd.js"></script>
+    <script src="~/js/base.js"></script>
 </head>
 
 <body>
@@ -23,6 +26,78 @@
    
     <div id="output"></div>
 
+    <div class="grid-10 gutter-20">
+        <div class="span-7">
+            <form class="grid-form">
+                <fieldset>
+                    <legend>Product Details</legend>
+                    <div data-row-span="2">
+                        <div data-field-span="1" style="height: 59px;">
+                            <label>Product Name</label>
+                            <input type="text">
+                        </div>
+                        <div data-field-span="1" style="height: 59px;">
+                            <label>Tags</label>
+                            <input type="text">
+                        </div>
+                    </div>
+                    <div data-row-span="2">
+                        <div data-field-span="1" style="height: 59px;">
+                            <label>Vendor</label>
+                            <input type="text">
+                        </div>
+                        <div data-field-span="1" style="height: 59px;" class="">
+                            <label>Product Type</label>
+                            <input type="text">
+                        </div>
+                    </div>
+                    <div data-row-span="1">
+                        <div data-field-span="1" style="height: 184px;" class="">
+                            <label>Product Description</label>
+                            <textarea rows="6"></textarea>
+                        </div>
+                    </div>
+                </fieldset>
+            </form>
+        </div>
+        <div class="span-3">
+            <form class="grid-form">
+                <fieldset>
+                    <legend>Product Specs</legend>
+                    <div data-row-span="1">
+                        <div data-field-span="1" style="height: 59px;">
+                            <label>SKU</label>
+                            <input type="text">
+                        </div>
+                    </div>
+                    <div data-row-span="1">
+                        <div data-field-span="1" style="height: 59px;" class="">
+                            <label>Initial Stock Level</label>
+                            <input type="text">
+                        </div>
+                    </div>
+                    <div data-row-span="1">
+                        <div data-field-span="1" style="height: 59px;">
+                            <label>Cost Price</label>
+                            <input type="text">
+                        </div>
+                    </div>
+                    <div data-row-span="1">
+                        <div data-field-span="1" style="height: 59px;">
+                            <label>Wholesale Price</label>
+                            <input type="text">
+                        </div>
+                    </div>
+                    <div data-row-span="1">
+                        <div data-field-span="1" style="height: 59px;">
+                            <label>Retail Price</label>
+                            <input type="text">
+                        </div>
+                    </div>
+                </fieldset>
+            </form>
+        </div>
+    </div>
 </body>
 </html>
 <script type="text/javascript">
