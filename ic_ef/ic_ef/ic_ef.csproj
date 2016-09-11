@@ -1107,7 +1107,9 @@
     <Content Include="Views\production_log\magento_retail_view.cshtml" />
     <Content Include="Views\production_log\mage_order_import.cshtml" />
     <Content Include="Views\production_log\get_list.cshtml" />
-    <Content Include="Views\Dymo\landing.cshtml" />
+    <Content Include="Views\Dymo\landing.cshtml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Views\production_log\magento_main.cshtml" />
     <Content Include="Views\Dymo\apple.cshtml" />
     <None Include="Web References\org.interconnection.dev\item.xsd">

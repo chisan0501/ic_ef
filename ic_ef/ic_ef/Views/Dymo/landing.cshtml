@@ -1,0 +1,33 @@
+﻿
+@{
+
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+   
+    <title>landing</title>
+    
+</head>
+<body>
+    <div class="ui center aligned basic segment">
+       
+        <h1 style="margin-top : 4em; margin-bottom : 0em;font-weight:normal" class="ui header">Dymo Label Web App</h1>
+        <h2>Select one</h2>
+        
+        <a href="@Url.Action("Retail_dymo", "Dymo")"><div class="ui huge primary button">Retail Pricing Tool<i class="right arrow icon"></i></div></a>
+        <a href="@Url.Action("index", "Dymo")">
+            <div class="ui huge primary button">Production Refrub Label (PC)<i class="right arrow icon"></i></div></a>
+        <a href="@Url.Action("apple", "Dymo")"><div class="ui huge primary button">Production Refrub Label (Apple) <i class="right arrow icon"></i></div></a>
+</div>
+    
+    
+    
+   
+</body>
+</html>
