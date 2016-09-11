@@ -1,0 +1,225 @@
+﻿
+@{
+    ViewBag.Title = "apple";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<script src="~/js/DYMO.Label.Framework_2.0.js"></script>
+<script src="~/js/PrintLabel_mac.js"></script>
+
+
+<h2>Discovery Tool for Mac</h2>
+
+<div class="ui steps">
+    <div class="step">
+        <i class="info icon"></i>
+        <div class="content">
+            <div class="title">Basic Info</div>
+            <div class="description">Fill in all Basic Info</div>
+        </div>
+    </div>
+    <div class="step">
+        <i class="paste icon"></i>
+        <div class="content">
+            <div class="title">Paste Hardware Info</div>
+            <div class="description">Paste Hardware Info into TextArea</div>
+        </div>
+    </div>
+    <div class="step">
+        <i class="pointing up icon"></i>
+        <div class="content">
+            <div class="title">Upload to DB</div>
+            <div class="description">Upload Info to DB</div>
+        </div>
+    </div>
+</div>
+<br />
+
+
+
+<div class="ui grid">
+    <div class="six wide column">
+        <div id="content">
+            <h4 class="ui horizontal divider header">
+                <i class="tag icon"></i>
+                Basic Info
+            </h4>
+            <select id="channel_dropdown" class="ui dropdown">
+                <option value="">Channel</option>
+                <option value="0">IDK105-109</option>
+                <option value="1">MB105-109</option>
+                <option value="2">MBP105-109</option>
+            </select>
+            <select id="user_dropdown" class="ui dropdown">
+                <option value="">Mike</option>
+
+            </select>
+            <div class="ui input">
+                <input id="asset" type="text" placeholder="Asset Tag">
+            </div>
+            
+          
+        </div>
+    </div>
+    <div class="six wide column">
+        <p>Copy and Paste hardware spec to below textarea</p>
+        <textarea id="txtarea_p" rows="20" cols="50">
+            
+        </textarea>
+     <p><button id="txtarea_b">Parse and save to DB</button></p>
+        <p id="result"></p>
+    </div>
+   
+</div>
+<div class="ui grid">
+    <div class="six wide column">
+        <h4 class="ui horizontal divider header">
+            <i class="print icon"></i>
+            Print
+        </h4>
+        <div class="ui input">
+            <input id="asset_print" type="text" placeholder="Asset Tag to Print"><button id="search_print">Search</button>
+        </div>
+        <h4 class="ui horizontal divider header">
+            <i class="bar chart icon"></i>
+            Specifications
+        </h4>
+
+        <table class="ui definition table">
+            <tbody>
+                <tr>
+                    <td class="two wide column">Model</td>
+                    <td id="model_content"></td>
+                </tr>
+                <tr>
+                    <td>Serial</td>
+                    <td id="serial_content"></td>
+                </tr>
+                <tr>
+                    <td>CPU</td>
+                    <td id="cpu_content"></td>
+                </tr>
+                <tr>
+                    <td>RAM</td>
+                    <td id="ram_content"></td>
+                </tr>
+                <tr>
+                    <td>HDD</td>
+                    <td id="hdd_content"></td>
+                </tr>
+                <tr>
+                    <td>Time</td>
+                    <td id="time_content"></td>
+                </tr>
+                <tr>
+                    <td>Channel</td>
+                    <td id="channel_content"></td>
+                </tr>
+                <tr>
+                    <td>Refurbisher</td>
+                    <td id="user_content"></td>
+                </tr>
+            </tbody>
+        </table>
+        <select id="printersSelect" class="form-control"></select>
+        <button id="print_label">Print Label</button>
+    </div>
+    </div>
+    <script>
+        $("#search_print").click(function () {
+            var asset_tag = document.getElementById('asset_print').value;
+            $.ajax({
+                type: "POST",
+                traditional: true,
+                url: "search_to_print",
+                data: { asset: asset_tag },
+                success: function (data) {
+                    $("#model_content").html(data.model);
+                    $("#time_content").html(data.time);
+                    $("#cpu_content").html(data.cpu);
+                    $("#ram_content").html(data.ram);
+                    $("#hdd_content").html(data.hdd);
+                    $("#serial_content").html(data.serial);
+                    $("#user_content").html(data.user);
+                    $("#channel_content").html(data.channel);
+                },
+            });
+        });
+        $("#txtarea_b").click(function () {
+            var lines = $("#txtarea_p").val().split('\n');
+            var channel = $("#channel_dropdown option:selected").text();
+            var user = $("#user_dropdown option:selected").text();
+            var asset_tag = document.getElementById('asset').value;
+
+            $.ajax({
+                type: "POST",
+                traditional: true,
+                url: "readapple",
+                data: { arr: lines, is_db: true, asset_tag: asset_tag, channel: channel, user: user },
+                success: function (data) {
+                    $("#result").html("<p style='color:green'>Product Import Success</p>");
+                },
+                error: function (xhr, status, error) {
+                    $("#result").html("<p style='color:red'>"+error+"</p>");
+                },
+            });
+        });
+    </script>
+
+    <script>
+        @*window.onload = function () {
+            $.getJSON("@Url.Action("get_channel")", function (data) {
+                var mySelect = $('#channel_dropdown');
+                $.each(data, function (val, text) {
+                    mySelect.append(
+                        $('<option></option>').val(val).html(text)
+                    );
+                });
+            })
+            $.getJSON("@Url.Action("get_user")", function (data) {
+                var mySelect = $('#user_dropdown');
+                $.each(data, function (val, text) {
+                    mySelect.append(
+                        $('<option></option>').val(val).html(text)
+                    );
+                });
+            })
+        };*@
+
+        document.getElementById('file').onchange = function () {
+
+            var file = this.files[0];
+
+            var reader = new FileReader();
+            reader.onload = function (progressEvent) {
+                // Entire file
+                //  alert(this.result);
+
+                // By lines
+
+                var lines = this.result.split('\r');
+                $.ajax({
+                    type: "POST",
+                    traditional: true,
+                    url: "readapple",
+                    data: { arr: lines, is_db: false },
+                    success: function (data) {
+                        $("#model_content").html(data.model);
+                        $("#time_content").html(data.time);
+                        $("#cpu_content").html(data.cpu);
+                        $("#ram_content").html(data.ram);
+                        $("#hdd_content").html(data.hdd);
+                        $("#serial_content").html(data.serial);
+
+
+                    },
+                });
+                //for (var line = 0; line < lines.length; line++) {
+
+                //    $("#content").append("<p>" + lines[line] + "</p>");
+
+                //    //console.log(lines[line]);
+                //}
+            };
+            reader.readAsText(file);
+        };
+    </script>

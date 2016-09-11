@@ -290,6 +290,31 @@ namespace ic_ef.Controllers
             return dis_weekly_chart;
         }
        //temp holder for v2.0 dashboard
+
+        public JsonResult asset_result (string asset)
+        {
+           
+                int temp_asset = int.Parse(asset);
+                var discovery = (from t in db.discovery
+                                 where (t.ictag == temp_asset)
+                                 select t).FirstOrDefault();
+                var rediscovery = (from t in db.rediscovery
+                                   where (t.ictag == temp_asset)
+                                   select t).FirstOrDefault();
+            try
+            {
+                var img = (from t in db.production_log
+                           where (t.serial == rediscovery.serial)
+                           select t).FirstOrDefault();
+                return Json(new { discovery = discovery, rediscovery = rediscovery, img = img }, JsonRequestBehavior.AllowGet);
+            }
+          catch(Exception e)
+            {
+                return Json(new { discovery = discovery, rediscovery = rediscovery, img = "" }, JsonRequestBehavior.AllowGet);
+            }
+            
+        }
+
         public ActionResult Index2 ()
         {
             return View();

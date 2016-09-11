@@ -580,14 +580,21 @@
     <Content Include="Content\main.jpg" />
     <Content Include="Content\PagedList.css" />
     <Content Include="Content\rack.jpg" />
+    <Content Include="Content\sample_sku.png" />
+    <Content Include="css\all.css" />
     <Content Include="css\cards.css" />
+    <Content Include="css\filedrop.css" />
+    <Content Include="css\gridforms.css" />
     <Content Include="css\icomoon.css" />
     <Content Include="css\magnific-popup.css" />
     <Content Include="css\owl.carousel.min.css" />
     <Content Include="css\owl.theme.default.min.css" />
     <Content Include="css\themes\default\assets\images\flags.png" />
     <Content Include="css\vex-theme-os.css" />
+    <Content Include="images\interconnection-logo.png" />
     <Content Include="js\base.js" />
+    <Content Include="js\filedrop.js" />
+    <Content Include="js\gridforms.js" />
     <Content Include="js\prefixfree.min.js" />
     <Content Include="Content\retail_sample.png" />
     <Content Include="Content\simple_csv.jpg" />
@@ -666,10 +673,15 @@
     <Content Include="css\monthpicker.css" />
     <Content Include="js\monthpicker.js" />
     <Content Include="js\PrintLabel.js" />
+    <Content Include="js\PrintLabel_mac.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="js\PrintLabel_retail_custom.js" />
     <Content Include="js\PrintLabel_retail.js" />
+    <Content Include="js\responsive-elements.js" />
     <Content Include="js\semantic.min.js" />
     <Content Include="js\sliiide.min.js" />
+    <Content Include="js\snap.min.js" />
     <Content Include="js\tileJs.js" />
     <Content Include="js\tileJs.min.js" />
     <Content Include="js\vex.combined.js" />
@@ -980,7 +992,6 @@
     <Content Include="Views\Home\Welcome.cshtml" />
     <Content Include="Views\Account\Login.cshtml" />
     <Content Include="Views\Home\Index2.cshtml" />
-    <Content Include="Views\production_log\magento_main.cshtml" />
     <Content Include="Views\production_log\magento_create.cshtml" />
     <Content Include="Views\Manage\Admin_dashboard.cshtml" />
     <Content Include="Views\production_log\magento_retail.cshtml" />
@@ -1096,6 +1107,9 @@
     <Content Include="Views\production_log\magento_retail_view.cshtml" />
     <Content Include="Views\production_log\mage_order_import.cshtml" />
     <Content Include="Views\production_log\get_list.cshtml" />
+    <Content Include="Views\Dymo\landing.cshtml" />
+    <Content Include="Views\production_log\magento_main.cshtml" />
+    <Content Include="Views\Dymo\apple.cshtml" />
     <None Include="Web References\org.interconnection.dev\item.xsd">
       <SubType>Designer</SubType>
     </None>
@@ -1152,7 +1166,6 @@
     <Folder Include="css\maps\" />
     <Folder Include="css\plugins\" />
     <Folder Include="font-awesome\" />
-    <Folder Include="images\" />
     <Folder Include="js\datepicker\" />
     <Folder Include="js\flot\" />
     <Folder Include="js\moment\" />

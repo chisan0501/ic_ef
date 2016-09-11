@@ -407,15 +407,21 @@ namespace ic_ef.Controllers
         public List<Models.laptop> json_to_list(string url) {
 
             List<Models.laptop> laptop_inv = new List<Models.laptop>() ;
-            var w = new WebClient();
-            var json_data = w.DownloadString(url);
-            if (!string.IsNullOrEmpty(json_data))
+            try
             {
-                var result = JsonConvert.DeserializeObject<List<Models.laptop>>(json_data);
-                // laptop_inv = result;
-                laptop_inv = result;
-            }
+                var w = new WebClient();
+                var json_data = w.DownloadString(url);
+                if (!string.IsNullOrEmpty(json_data))
+                {
+                    var result = JsonConvert.DeserializeObject<List<Models.laptop>>(json_data);
+                    // laptop_inv = result;
+                    laptop_inv = result;
+                }
 
+            }
+            catch (Exception e) {
+                laptop_inv = null;
+                }
             return laptop_inv;
         }
 
@@ -586,8 +592,8 @@ namespace ic_ef.Controllers
             string message = "";
             Models.retail_quick_import retail_model = new Models.retail_quick_import();
             retail_model.price = price;
-            retail_model.name = name + "_retail";
-            retail_model.sku = sku + "_retail";
+            retail_model.name = name;
+            retail_model.sku = sku;
             retail_model.weight = weight;
             retail_model.desc = desc;
             retail_model.short_desc = short_desc;
@@ -627,7 +633,7 @@ namespace ic_ef.Controllers
                 }
                 //convert qty from string to dobule and add 1
                 double temp_qty = double.Parse(retail_model.qty);
-                temp_qty += 1;
+                //temp_qty += 1;
                 retail_model.qty = temp_qty.ToString();
 
                 //update qty for inventory module
@@ -888,7 +894,7 @@ namespace ic_ef.Controllers
      
 
         [HttpPost]
-        public JsonResult order_json (Models.ts_order[] tsorder)
+        public JsonResult order_json_ts (Models.ts_order[] tsorder)
         {
             foreach (var item in tsorder)
             {
@@ -900,10 +906,23 @@ namespace ic_ef.Controllers
                 item.Org_Street_Address = item.Org_Street_Address.Replace("\n", "");
             }
             mage mage = new mage();
-           string result =  mage.create_order(tsorder);
+           string result =  mage.create_order_ts(tsorder);
             return Json(new { scuess = true , message = result}, JsonRequestBehavior.AllowGet);
         }
-
+        [HttpPost]
+        public JsonResult order_json_g360(Models.g360_order[] g360order)
+        {
+            foreach (var item in g360order)
+            {
+                //split full name into first and last
+                
+                //remove the \n stirng from address 
+                
+            }
+            mage mage = new mage();
+            string result = mage.create_order_g360(g360order);
+            return Json(new { scuess = true, message = result }, JsonRequestBehavior.AllowGet);
+        }
         public ActionResult mage_order_import ()
         {
            string url = "http://www.dev.interconnection.org/qbjson.json";

@@ -3,374 +3,352 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>@ViewBag.Title - My ASP.NET Application</title>
-    @Scripts.Render("~/bundles/jquery")
-
-    <link href="@Url.Content("~/Content/Site.css")" rel="stylesheet" type="text/css" />
+    <link href="~/css/bootstrap.css" rel="stylesheet" />
     <link href="~/css/semantic.min.css" rel="stylesheet" />
-    <script src="@Url.Content("~/Scripts/modernizr-2.6.2.js")" type="text/javascript"></script>
-    <script src="https://use.fontawesome.com/bbd0418749.js"></script>
-    <link rel="stylesheet" href="//code.jquery.com/ui/1.11.2/themes/smoothness/jquery-ui.css">
-    <script src="@Url.Content("~/Scripts/Highcharts-4.0.1/js/highcharts-all.js")" type="text/javascript"></script>
-    <script src="@Url.Content("~/Scripts/Highcharts-4.0.1/js/modules/funnel.js")" type="text/javascript"></script>
-    <script src="~/js/gen_validatorv4.js" type="text/javascript"></script>
-   
-
-    @Styles.Render("~/css/css")
-    @Styles.Render("~/Content/css")
-    @Scripts.Render("~/bundles/modernizr")
-    @Styles.Render("~/Content/themes/base/css")
-
-    @Scripts.Render("~/bundles/bootstrap")
-    @Scripts.Render("~/bundles/jqueryui")
-    
-    <script type="text/javascript">
-            $(document).ready(function () {
-                // We will test DataPicker
-                $('.datepicker').datepicker();
-                // We will test TABS
-               
-            });
-    </script>
-    <style>
-
-        .menu,
-        .menu .btn .fa,
-        .menu .btn.trigger .line {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            -webkit-transform: translateX(-50%) translateY(-50%);
-            -ms-transform: translateX(-50%) translateY(-50%);
-            transform: translateX(-50%) translateY(-50%);
-        }
-
-        .menu {
-            width: 5em;
-            height: 5em;
-        }
-
-            .menu .btn {
-                position: absolute;
-                top: 0;
-                left: 0;
-                width: 100%;
-                height: 100%;
-                border-radius: 50%;
-                background: rgba(255, 255, 255, 0.15);
-                opacity: 0;
-                z-index: -10;
-                cursor: pointer;
-                -webkit-transition: opacity 1s, z-index 0.3s, -webkit-transform 1s;
-                transition: opacity 1s, z-index 0.3s, transform 1s;
-                -webkit-transform: translateX(0);
-                -ms-transform: translateX(0);
-                transform: translateX(0);
-            }
-
-                .menu .btn .fa {
-                    font-size: 3em;
-                    -webkit-transition: color 0.3s;
-                    transition: color 0.3s;
-                }
-
-                .menu .btn:hover .fa {
-                    color: rgba(255, 255, 255, 0.7);
-                }
-
-                .menu .btn.trigger {
-                    opacity: 1;
-                    z-index: 100;
-                    cursor: pointer;
-                    -webkit-transition: -webkit-transform 0.3s;
-                    transition: transform 0.3s;
-                }
-
-                    .menu .btn.trigger:hover {
-                        -webkit-transform: scale(1.2);
-                        -ms-transform: scale(1.2);
-                        transform: scale(1.2);
-                    }
-
-                        .menu .btn.trigger:hover .line {
-                            background-color: rgba(255, 255, 255, 0.7);
-                        }
-
-                            .menu .btn.trigger:hover .line:before,
-                            .menu .btn.trigger:hover .line:after {
-                                background-color: rgba(255, 255, 255, 0.7);
-                            }
-
-                    .menu .btn.trigger .line {
-                        width: 60%;
-                        height: 6px;
-                        background: #000;
-                        border-radius: 6px;
-                        -webkit-transition: background-color 0.3s, height 0.3s, top 0.3s;
-                        transition: background-color 0.3s, height 0.3s, top 0.3s;
-                    }
-
-                        .menu .btn.trigger .line:before,
-                        .menu .btn.trigger .line:after {
-                            content: "";
-                            display: block;
-                            position: absolute;
-                            left: 0;
-                            width: 100%;
-                            height: 6px;
-                            background: #000;
-                            border-radius: 6px;
-                            -webkit-transition: background-color 0.3s, -webkit-transform 0.3s;
-                            transition: background-color 0.3s, transform 0.3s;
-                        }
-
-                        .menu .btn.trigger .line:before {
-                            top: -12px;
-                            -webkit-transform-origin: 15% 100%;
-                            -ms-transform-origin: 15% 100%;
-                            transform-origin: 15% 100%;
-                        }
-
-                        .menu .btn.trigger .line:after {
-                            top: 12px;
-                            -webkit-transform-origin: 25% 30%;
-                            -ms-transform-origin: 25% 30%;
-                            transform-origin: 25% 30%;
-                        }
-
-            .menu .rotater {
-                position: absolute;
-                top: 0;
-                left: 0;
-                width: 100%;
-                height: 100%;
-                -webkit-transform-origin: 50% 50%;
-                -ms-transform-origin: 50% 50%;
-                transform-origin: 50% 50%;
-            }
-
-            .menu.active .btn-icon {
-                opacity: 1;
-                z-index: 50;
-            }
-
-            .menu.active .trigger .line {
-                height: 0px;
-                top: 45%;
-            }
-
-                .menu.active .trigger .line:before {
-                    -webkit-transform: rotate(45deg);
-                    -ms-transform: rotate(45deg);
-                    transform: rotate(45deg);
-                    width: 110%;
-                }
-
-                .menu.active .trigger .line:after {
-                    -webkit-transform: rotate(-45deg);
-                    -ms-transform: rotate(-45deg);
-                    transform: rotate(-45deg);
-                    width: 110%;
-                }
-
-        .rotater:nth-child(1) {
-            -webkit-transform: rotate(-22.5deg);
-            -ms-transform: rotate(-22.5deg);
-            transform: rotate(-22.5deg);
-        }
-
-        .menu.active .rotater:nth-child(1) .btn-icon {
-            -webkit-transform: translateX(-10em) rotate(22.5deg);
-            -ms-transform: translateX(-10em) rotate(22.5deg);
-            transform: translateX(-10em) rotate(22.5deg);
-        }
-
-        .rotater:nth-child(2) {
-            -webkit-transform: rotate(22.5deg);
-            -ms-transform: rotate(22.5deg);
-            transform: rotate(22.5deg);
-        }
-
-        .menu.active .rotater:nth-child(2) .btn-icon {
-            -webkit-transform: translateX(-10em) rotate(-22.5deg);
-            -ms-transform: translateX(-10em) rotate(-22.5deg);
-            transform: translateX(-10em) rotate(-22.5deg);
-        }
-
-        .rotater:nth-child(3) {
-            -webkit-transform: rotate(67.5deg);
-            -ms-transform: rotate(67.5deg);
-            transform: rotate(67.5deg);
-        }
-
-        .menu.active .rotater:nth-child(3) .btn-icon {
-            -webkit-transform: translateX(-10em) rotate(-67.5deg);
-            -ms-transform: translateX(-10em) rotate(-67.5deg);
-            transform: translateX(-10em) rotate(-67.5deg);
-        }
-
-        .rotater:nth-child(4) {
-            -webkit-transform: rotate(112.5deg);
-            -ms-transform: rotate(112.5deg);
-            transform: rotate(112.5deg);
-        }
-
-        .menu.active .rotater:nth-child(4) .btn-icon {
-            -webkit-transform: translateX(-10em) rotate(-112.5deg);
-            -ms-transform: translateX(-10em) rotate(-112.5deg);
-            transform: translateX(-10em) rotate(-112.5deg);
-        }
-
-        .rotater:nth-child(5) {
-            -webkit-transform: rotate(157.5deg);
-            -ms-transform: rotate(157.5deg);
-            transform: rotate(157.5deg);
-        }
-
-        .menu.active .rotater:nth-child(5) .btn-icon {
-            -webkit-transform: translateX(-10em) rotate(-157.5deg);
-            -ms-transform: translateX(-10em) rotate(-157.5deg);
-            transform: translateX(-10em) rotate(-157.5deg);
-        }
-
-        .rotater:nth-child(6) {
-            -webkit-transform: rotate(202.5deg);
-            -ms-transform: rotate(202.5deg);
-            transform: rotate(202.5deg);
-        }
-
-        .menu.active .rotater:nth-child(6) .btn-icon {
-            -webkit-transform: translateX(-10em) rotate(-202.5deg);
-            -ms-transform: translateX(-10em) rotate(-202.5deg);
-            transform: translateX(-10em) rotate(-202.5deg);
-        }
-
-        .rotater:nth-child(7) {
-            -webkit-transform: rotate(247.5deg);
-            -ms-transform: rotate(247.5deg);
-            transform: rotate(247.5deg);
-        }
-
-        .menu.active .rotater:nth-child(7) .btn-icon {
-            -webkit-transform: translateX(-10em) rotate(-247.5deg);
-            -ms-transform: translateX(-10em) rotate(-247.5deg);
-            transform: translateX(-10em) rotate(-247.5deg);
-        }
-
-        .rotater:nth-child(8) {
-            -webkit-transform: rotate(292.5deg);
-            -ms-transform: rotate(292.5deg);
-            transform: rotate(292.5deg);
-        }
-
-        .menu.active .rotater:nth-child(8) .btn-icon {
-            -webkit-transform: translateX(-10em) rotate(-292.5deg);
-            -ms-transform: translateX(-10em) rotate(-292.5deg);
-            transform: translateX(-10em) rotate(-292.5deg);
-        }
-
-        .rotater:nth-child(9) {
-            -webkit-transform: rotate(337.5deg);
-            -ms-transform: rotate(337.5deg);
-            transform: rotate(337.5deg);
-        }
-
-        .menu.active .rotater:nth-child(9) .btn-icon {
-            -webkit-transform: translateX(-10em) rotate(-337.5deg);
-            -ms-transform: translateX(-10em) rotate(-337.5deg);
-            transform: translateX(-10em) rotate(-337.5deg);
-        }
-        
-    </style>
+    <script src="~/js/jquery-1.12.3.js"></script>
+    <script src="~/js/semantic.min.js"></script>
+    <script src="@Url.Content("~/Scripts/jquery-ui-1.11.4.min.js")"></script>
 </head>
 
 <body>
-    <div class="navbar navbar-default navbar-fixed-top" style="background-color: #4CAF50">
-        <div class="container">
-            <div class="navbar-header">
-                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-                @Html.ActionLink("InterConnection.org", "Index", "Home", new { area = "" }, new { @class = "navbar-brand", @style= "color:white;" })
-            </div>
-            <div class="navbar-collapse collapse" >
-                <ul class="nav navbar-nav">
-                    <li>@Html.ActionLink("Home", "Index", "Home", null, new { @style = "color:white;" })</li>
-                    <li class="dropdown">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" style="color:white">Production<span class="caret"></span></a>
-                        <ul class="dropdown-menu" role="menu" >
-                            <li role="menuitem">@Html.ActionLink("Discovery", "Index", "discoveries")</li>
-                            <li role="menuitem">@Html.ActionLink("Refurbish", "Index", "rediscoveries")</li>
-                            <li role="menuitem">@Html.ActionLink("Imaging", "Index", "production_log")</li>
-                            <li role="menuitem">@Html.ActionLink("Monitor Log", "index", "monitor_log")</li>
-                        </ul>
-                    <li>@Html.ActionLink("Inventory", "inventoryManage", "Manage", null, new { @style = "color:white;" })</li>
-
-                    <li>@Html.ActionLink("Report", "report", "Manage", null, new { @style = "color:white;" })</li>
-                 
-                    @if (User.IsInRole("Admin"))
-                    {
-                        <li>@Html.ActionLink("Admin", "admin", "Manage", null, new { @style = "color:white;" })</li>
-                    }
-                     
-                                            <li>
-                                              @using (Html.BeginForm("search_result", "home"))
-                                              {
-
-                                                    @Html.TextBox("search_id", "", new { placeholder = "Search", @class = "form-control", style = "width: 100px" })
-
-                                              }
-                                            </li>
-
-                                        
-</ul>
-             
-                @Html.Partial("_LoginPartial")
-            </div>
+    
+      
+    
+   
+    <div class="ui basic segment">
+    <div style="float: left;"><a href="#"><i id="sidebar" class="huge green content icon"></i></a></div>
         </div>
-    </div>
-    <div class="container body-content">
         @RenderBody()
-        <hr />
-        <footer>
-            <p>InterConnection.org</p>
-            <p>3415 Stone Way N, Seattle, WA 98103</p>
-            <p>General Information: 206-633-1517</p>
-        </footer>
-    </div>
-
-    <div style="position : fixed ; bottom : 30px; left: 50%;">
+  
 
 
-        <div class="menu">
-            <div class="btn trigger"> <span class="line"></span> </div>
-            <div class="rotater">
-                <div class="btn btn-icon"> @Html.ActionLink("Dymo", "index", "Dymo") </div>
-            </div>
-            <div class="rotater">
-                <div class="btn btn-icon">@Html.ActionLink("Magento", "magento_main", "production_log") </div>
-            </div>
-            <div class="rotater">
-                <div class="btn btn-icon">@Html.ActionLink("Asset Tag", "barcode", "Home") </div>
+
+    <div class="ui left demo vertical inverted sidebar labeled icon menu">
+        <a class="item">
+
+            <img src="~/images/interconnection-logo.png" />
+        </a>
+        <div class="ui action input">
+            <input id="search_field" type="text" placeholder="Search Asset">
+            <button id="search_asset" class="ui icon button">
+                <i class="search icon"></i>
+            </button>
+        </div>
+
+        <a class="item" href="@Url.Action("index", "home")">
+            <i class="home icon"></i>
+            Home
+        </a>
+        <a class="item">
+            <i class="cube icon"></i>
+            <div id="prod_menu" class="ui dropdown">
+                <div class="text">Production</div>
+                <i class="dropdown icon"></i>
+                <div class="menu">
+                    <div class="item">Discovery</div>
+                  
+                    <div class="item">Refurbish</div>
+                    <div class="item">Imaging</div>
+                    <div class="item">Monitor Discovery</div>
                 </div>
-            <div class="rotater">
-                <div class="btn btn-icon">@Html.ActionLink("Advanced Search", "advance_search", "Home") </div>
+            </div>
+        </a>
+        <script>
+            $('#prod_menu').dropdown();
+        </script>
+        <a class="item" href="@Url.Action("inventoryManage", "manage")">
+            <i class="shipping icon"></i>
+            Inventory
+        </a>
+        <a class="item" href="@Url.Action("report", "manage")">
+            <i class="file icon"></i>
+            Report
+        </a>
+        <a class="item" href="@Url.Action("admin", "Manage")">
+            <i class="setting icon"></i>
+            Admin Setting
+        </a>
+        <hr />
+        <a class="item" href="@Url.Action("landing", "dymo")">
+            <i class="print icon"></i>
+            Dymo Web App
+        </a>
+        <a class="item" href="@Url.Action("magento_main", "production_log")">
+            <i class="add to cart icon"></i>
+            Magento Web App
+        </a>
+        <a class="item" href="@Url.Action("barcode", "Home")">
+            <i class="barcode icon"></i>
+            Asset Tag
+        </a>
+    
+    </div>    
+      
+    
+        
+    <div class="fullscreen modal">
+        <i class="close icon"></i>
+        <div class="header">
+            Search Result 
+        </div>
+        <div class="ui equal width grid">
+            <div class="four wide column">
+                <h3>Discovery</h3>
+                <table class="ui definition table">
+                    <thead>
+                        <tr>
+                            <th colspan="2">
+                                <strong><i class="info circle icon"></i>Discovery</strong>
+                            </th>
+                    <tbody>
+                        <tr>
+                            <td class="four wide column">Model</td>
+                            <td id="discovery_model_content"></td>
+                        </tr>
+                        <tr>
+                            <td>Serial</td>
+                            <td id="discovery_serial_content"></td>
+                        </tr>
+                        <tr>
+                            <td>CPU</td>
+                            <td id="discovery_cpu_content"></td>
+                        </tr>
+                        <tr>
+                            <td>RAM</td>
+                            <td id="discovery_ram_content"></td>
+                        </tr>
+                        <tr>
+                            <td>HDD</td>
+                            <td id="discovery_hdd_content"></td>
+                        </tr>
+                        <tr>
+                            <td>Time</td>
+                            <td id="discovery_time_content"></td>
+                        </tr>
+                        <tr>
+                            <td>Brand</td>
+                            <td id="discovery_brand_content"></td>
+                        </tr>
+
+                    </tbody>
+                </table>
+            </div>
+            <div class="four wide column">
+                <h3>ReDiscovery</h3>
+                <table class="ui definition table">
+                    <thead>
+                        <tr>
+                            <th colspan="2">
+                                <strong><i class="info circle icon"></i>ReDiscovery</strong>
+                            </th>
+                    <tbody>
+<tbody>
+                        <tr>
+                            <td class="two wide column">Model</td>
+                            <td id="rediscovery_model_content"></td>
+                        </tr>
+                        <tr>
+                            <td>Serial</td>
+                            <td id="rediscovery_serial_content"></td>
+                        </tr>
+                        <tr>
+                            <td>CPU</td>
+                            <td id="rediscovery_cpu_content"></td>
+                        </tr>
+                        <tr>
+                            <td>RAM</td>
+                            <td id="rediscovery_ram_content"></td>
+                        </tr>
+                        <tr>
+                            <td>HDD</td>
+                            <td id="rediscovery_hdd_content"></td>
+                        </tr>
+                        <tr>
+                            <td>Time</td>
+                            <td id="rediscovery_time_content"></td>
+                        </tr>
+                        <tr>
+                            <td>Brand</td>
+                            <td id="rediscovery_brand_content"></td>
+                        </tr>
+                        <tr>
+                            <td>Refurbisher</td>
+                            <td id="rediscovery_user_content"></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="four wide column">
+                <h3>Imaging</h3>
+                <table class="ui definition table">
+                    <thead>
+                        <tr>
+                            <th colspan="2">
+                                <strong><i class="info circle icon"></i>Imaging</strong>
+                            </th>
+                    <tbody>
+<tbody>
+                        <tr>
+                            <td class="two wide column">Model</td>
+                            <td id="img_model_content"></td>
+                        </tr>
+                        <tr>
+                            <td>Serial</td>
+                            <td id="img_serial_content"></td>
+                        </tr>
+                        <tr>
+                            <td>CPU</td>
+                            <td id="img_cpu_content"></td>
+                        </tr>
+                        <tr>
+                            <td>RAM</td>
+                            <td id="img_ram_content"></td>
+                        </tr>
+                        <tr>
+                            <td>HDD</td>
+                            <td id="img_hdd_content"></td>
+                        </tr>
+                        <tr>
+                            <td>Time</td>
+                            <td id="img_time_content"></td>
+                        </tr>
+                        <tr>
+                            <td>Channel</td>
+                            <td id="img_channel_content"></td>
+                        </tr>
+    <tr>
+        <td>wcoa</td>
+        <td id="img_wcoa_content"></td>
+    </tr>
+    <tr>
+        <td>ocoa</td>
+        <td id="img_ocoa_content"></td>
+    </tr>
+                      
+                    </tbody>
+                </table>
             </div>
 
         </div>
     </div>
-    <script>
-        $(document).ready(function () {
-            $(".trigger").click(function () {
-                $(".menu").toggleClass("active");
+
+
+
+        <script>
+
+            $('#search_asset').click(function () {
+                var asset = document.getElementById('search_field').value;
+
+                $.ajax({
+                    type: "POST",
+                    traditional: true,
+                    url: "@Url.Action("asset_result", "home")",
+                    data: { asset : asset  },
+                    success: function (data) {
+                        try{
+                            
+                            data.discovery.time = eval(data.discovery.time.slice(1, -1))
+
+                            $("#discovery_brand_content").html(data.discovery.brand);
+                            $("#discovery_model_content").html(data.discovery.model);
+                            $("#discovery_time_content").html(data.discovery.time);
+                            $("#discovery_cpu_content").html(data.discovery.cpu);
+                            $("#discovery_ram_content").html(data.discovery.ram);
+                            $("#discovery_hdd_content").html(data.discovery.hdd);
+                            $("#discovery_serial_content").html(data.discovery.serial);
+                        }
+                        catch (err) {
+
+                            $("#discovery_brand_content").html("");
+                            $("#discovery_model_content").html("");
+                            $("#discovery_time_content").html("");
+                            $("#discovery_cpu_content").html("");
+                            $("#discovery_ram_content").html("");
+                            $("#discovery_hdd_content").html("");
+                            $("#discovery_serial_content").html("");
+                        }
+                        try {
+
+                            data.rediscovery.time = eval(data.rediscovery.time.slice(1, -1))
+
+                            $("#rediscovery_user_content").html(data.rediscovery.refurbisher);
+                            $("#rediscovery_brand_content").html(data.rediscovery.brand);
+                            $("#rediscovery_model_content").html(data.rediscovery.model);
+                            $("#rediscovery_time_content").html(data.rediscovery.time);
+                            $("#rediscovery_cpu_content").html(data.rediscovery.cpu);
+                            $("#rediscovery_ram_content").html(data.rediscovery.ram);
+                            $("#rediscovery_hdd_content").html(data.rediscovery.hdd);
+                            $("#rediscovery_serial_content").html(data.rediscovery.serial);
+                        }
+                        catch (err) {
+
+                            $("#rediscovery_user_content").html("");
+                            $("#rediscovery_brand_content").html("");
+                            $("#rediscovery_model_content").html("");
+                            $("#rediscovery_time_content").html("");
+                            $("#rediscovery_cpu_content").html("");
+                            $("#rediscovery_ram_content").html("");
+                            $("#rediscovery_hdd_content").html("");
+                            $("#rediscovery_serial_content").html("");
+                        }
+
+                           
+                        try {
+
+                            data.img.time = eval(data.img.time.slice(1, -1))
+
+                            $("#img_brand_content").html(data.img.Manufacture);
+                            $("#img_model_content").html(data.img.Model);
+                            $("#img_time_content").html(data.img.time);
+                            $("#img_cpu_content").html(data.img.CPU);
+                            $("#img_ram_content").html(data.img.RAM);
+                            $("#img_hdd_content").html(data.img.HDD);
+                            $("#img_wcoa_content").html(data.img.wcoa);
+                            $("#img_ocoa_content").html(data.img.ocoa);
+                            $("#img_serial_content").html(data.img.serial);
+                            $("#img_channel_content").html(data.img.channel);
+                        }
+                        catch (err) {
+                            $("#img_brand_content").html("");
+                            $("#img_model_content").html("");
+                            $("#img_time_content").html("");
+                            $("#img_cpu_content").html("");
+                            $("#img_ram_content").html("");
+                            $("#img_hdd_content").html("");
+                            $("#img_wcoa_content").html("");
+                            $("#img_ocoa_content").html("");
+                            $("#img_serial_content").html("");
+                            $("#img_channel_content").html("");
+                        }
+                        
+
+                        $('.fullscreen.modal').modal('show');
+
+
+                    },
+                    error: function (xhr, status, error) {
+                       
+                    },
+                });
+
+                
+
             });
-        });
-    </script>
+    $('#sidebar').click(function() {
+        $('.ui.sidebar').sidebar({
+            transition: 'scale down'
+        })
+   .sidebar('toggle')
+        ;
+    });
+    $("#search_field").keyup(function (event) {
+        if (event.keyCode == 13) {
+            $("#search_asset").click();
+        }
+    });
+
+        </script>
+
 
 
 

@@ -70,7 +70,25 @@
                         </div>
                     </div>
                 </div>
+                <div class="panel panel-default">
+                    <div class="panel-heading">Search By Asset Tag(Mac Only)</div>
+                    <div class="panel-body">
+                        <div class="form-group">
+                            <label for="search_input">Search Asset Tag:</label>
+                            <input type="text" required class="form-control" id="search_input_mac">
+                            <label for="price_text">Price:</label>
+                            <input type="text" class="form-control" id="price_text_mac">
+                            <label for="title_text">Channel:</label>
+                            <input type="text" class="form-control" id="title_text_mac" value="Mar">
+                            <label for="time_text">Time:</label>
+                            <input type="text" class="form-control" id="time_text_mac">
+                            <button type="submit" class="btn btn-default" id="submit_asset_mac">Submit</button>
 
+                            
+
+                        </div>
+                    </div>
+                </div>
 
 
 
@@ -220,7 +238,7 @@
             var n = d.getTime();
             var responseDate = moment(n).format('YYYY-MM-DD');
             $("#time_text").val(responseDate);
-             
+            $("#time_text_mac").val(responseDate);
             $('body').on('click', '#editbtn', function () {
                 var currentTD = $(this).parents('tr').find('td');
 
@@ -354,7 +372,50 @@
 
             });
             
+            $("#submit_asset_mac").click(function () {
+                $('#loading').show();
 
+                var asset = $("#search_input_mac").val();
+                var price = $("#price_text_mac").val();
+                var channel = $("#title_text_mac").val();
+
+                $.getJSON('@Url.Action("RetailDymo_mac")', {
+                    asset: asset,
+                    price: price
+                })
+                .done(function (data) {
+
+                    $('#loading').hide();
+
+
+                    var tr;
+
+
+                    tr = $('<tr/>');
+                    tr.append("<td>" + responseDate + "</td>");
+                    tr.append("<td>" + data.result.ictags + "</td>");
+                    tr.append("<td>" + data.result.Model + "</td>");
+                    tr.append("<td>" + data.result.cpu + "</td>");
+                    tr.append("<td>" + data.ram + "</td>");
+                    tr.append("<td>" + data.hdd + "</td>");
+
+                    tr.append("<td>" + price + "</td>");
+                    tr.append("<td>" + channel + "</td>");
+                    tr.append("<td><button class='form-control' id='editbtn'>Edit</button></td>");
+                    tr.append("<td><input type='button' value='Print' class='form-control' id='non_custom_printButton'/> </button></td>");
+
+                    $("#table2").append(tr);
+
+
+
+                })
+
+               .fail(function (jqxhr, textStatus, error) {
+                   var err = textStatus + ", " + error;
+                   console.log("Asset Not Found: " + err);
+               });
+
+            });
 
         });
 

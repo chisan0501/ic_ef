@@ -9,99 +9,94 @@
 
     <meta name="viewport" content="width=device-width" />
     <title>mage_order_import</title>  
+    
+    
     <link href="~/css/bootstrap.fd.css" rel="stylesheet" />
     <link href="~/css/font-awesome.min.css" rel="stylesheet" />
     <link href="~/css/bootstrap.min.css" rel="stylesheet" />
-    <link href="~/css/all.css" rel="stylesheet" />
-
+    <link href="~/css/semantic.min.css" rel="stylesheet" />
     <script src="~/js/jquery-1.12.3.js"></script>
+    <script src="~/js/semantic.min.js"></script>
     <script src="~/js/papaparse.min.js"></script>
     <script src="~/js/bootstrap.js"></script>
     <script src="~/js/bootstrap.fd.js"></script>
-    <script src="~/js/base.js"></script>
+   
 </head>
 
 <body>
-    <button id="open_btn" class="btn btn-primary">Upload</button>
+  
+    <div style="margin-top : 20em; margin-bottom : 0em;font-weight:normal" class="ui center aligned basic segment">
+        <div style="float: left; margin-top : -20em;"><a href="#"><i id="sidebar" class="huge green content icon"></i></a></div>
+        <h2 class="ui icon header">
+            <i class="upload icon"></i>
+            <div class="content">
+                Magento Orders Import tool for TS/G360
+                <div class="sub header">Select a csv file to start</div>
+            </div>
+        </h2>
+    </div>
    
-    <div id="output"></div>
+        <div class="ui center aligned basic segment">
+      
 
-    <div class="grid-10 gutter-20">
-        <div class="span-7">
-            <form class="grid-form">
-                <fieldset>
-                    <legend>Product Details</legend>
-                    <div data-row-span="2">
-                        <div data-field-span="1" style="height: 59px;">
-                            <label>Product Name</label>
-                            <input type="text">
-                        </div>
-                        <div data-field-span="1" style="height: 59px;">
-                            <label>Tags</label>
-                            <input type="text">
-                        </div>
-                    </div>
-                    <div data-row-span="2">
-                        <div data-field-span="1" style="height: 59px;">
-                            <label>Vendor</label>
-                            <input type="text">
-                        </div>
-                        <div data-field-span="1" style="height: 59px;" class="">
-                            <label>Product Type</label>
-                            <input type="text">
-                        </div>
-                    </div>
-                    <div data-row-span="1">
-                        <div data-field-span="1" style="height: 184px;" class="">
-                            <label>Product Description</label>
-                            <textarea rows="6"></textarea>
-                        </div>
-                    </div>
-                </fieldset>
-            </form>
+
+            <div id="upload_loader" class="ui disabled inverted dimmer">
+                <div class="ui text loader">Please Allow 1-2 minutes for all orders to be imported</div>
+            </div>
+           
+
+            <button id="open_btn_ts" class="btn btn-primary">Upload TechSoup Orders csv</button>
+            <button id="open_btn_g360" class="btn btn-primary">Upload G360 Orders csv</button>
+            <div id="output"></div>
         </div>
-        <div class="span-3">
-            <form class="grid-form">
-                <fieldset>
-                    <legend>Product Specs</legend>
-                    <div data-row-span="1">
-                        <div data-field-span="1" style="height: 59px;">
-                            <label>SKU</label>
-                            <input type="text">
-                        </div>
-                    </div>
-                    <div data-row-span="1">
-                        <div data-field-span="1" style="height: 59px;" class="">
-                            <label>Initial Stock Level</label>
-                            <input type="text">
-                        </div>
-                    </div>
-                    <div data-row-span="1">
-                        <div data-field-span="1" style="height: 59px;">
-                            <label>Cost Price</label>
-                            <input type="text">
-                        </div>
-                    </div>
-                    <div data-row-span="1">
-                        <div data-field-span="1" style="height: 59px;">
-                            <label>Wholesale Price</label>
-                            <input type="text">
-                        </div>
-                    </div>
-                    <div data-row-span="1">
-                        <div data-field-span="1" style="height: 59px;">
-                            <label>Retail Price</label>
-                            <input type="text">
-                        </div>
-                    </div>
-                </fieldset>
-            </form>
-        </div>
+
+
+    <div class="ui left demo vertical inverted sidebar labeled icon menu">
+        <a class="item" href="@Url.Action("index", "home")">
+            <i class="home icon"></i>
+            Home
+        </a>
+        <a class="item">
+            <i class="cube icon"></i>
+            Production<i class="dropdown icon"></i>
+        </a>
+        <a class="item" href="@Url.Action("inventoryManage", "manage")">
+            <i class="shipping icon"></i>
+            Inventory
+        </a>
+        <a class="item" href="@Url.Action("report", "manage")">
+            <i class="file icon"></i>
+            Report
+        </a>
+        <a class="item" href="@Url.Action("admin", "Manage")">
+            <i class="setting icon"></i>
+            Admin Setting
+        </a>
+        <hr />
+        <a class="item" href="@Url.Action("landing", "dymo")">
+            <i class="print icon"></i>
+            Dymo Web App
+        </a>
+        <a class="item" href="@Url.Action("magento_main", "production_log")">
+            <i class="add to cart icon"></i>
+            Magento Web App
+        </a>
+        <a class="item" href="@Url.Action("barcode", "Home")">
+            <i class="barcode icon"></i>
+            Asset Tag
+        </a>
     </div>
 </body>
 </html>
 <script type="text/javascript">
-        $("#open_btn").click(function() {
+    $('#sidebar').click(function () {
+        $('.ui.sidebar').sidebar({
+            transition: 'scale down'
+        })
+   .sidebar('toggle')
+        ;
+    });
+        $("#open_btn_ts").click(function() {
             $.FileDialog({multiple: false}).on('files.bs.filedialog', function(ev) {
                 var file = ev.files[0];
 
@@ -130,16 +125,17 @@
 
                             });
                         });
-                        console.log(results.data);
+                        $('#upload_loader').attr('class', 'ui active inverted dimmer');
                         var jsonObject = { tsorder: results.data };
                         $.ajax({
-                            url: 'order_json',
+                            url: 'order_json_ts',
                             method: 'post',
                             data: JSON.stringify(jsonObject),
                             contentType: "application/json; charset=utf-8",
                             dataType: "json",
                             success: function (response) {
-                               $("#output").html(response.message);
+                                $("#output").html(response.message);
+                                $('#upload_loader').attr('class', 'ui disabled inverted dimmer');
                             },
                             error: function () {
                                 console.error('an error occurred');
@@ -150,6 +146,59 @@
 
                 $("#output").html("Order Created!");
             }).on('cancel.bs.filedialog', function(ev) {
+                $("#output").html("Cancelled!");
+            });
+        });
+        $("#open_btn_g360").click(function () {
+            $.FileDialog({ multiple: false }).on('files.bs.filedialog', function (ev) {
+                var file = ev.files[0];
+
+                Papa.parse(file, {
+                    header: true,
+                    skipEmptyLines: true,
+                    dynamicTyping: true,
+                    complete: function (results) {
+
+                        var ResultToConvert = results.data;
+                        ResultToConvert.forEach(function (e, i) {
+                            // Iterate over the keys of object
+                            Object.keys(e).forEach(function (key) {
+
+                                // Copy the value
+                                var val = e[key],
+                                  newKey = key.replace(/\s+/g, '_');
+
+                                // Remove key-value from object
+                                delete ResultToConvert[i][key];
+
+                                // Add value with new key
+                                ResultToConvert[i][newKey] = val;
+
+                                var arrrr = JSON.stringify(ResultToConvert, 0, 4);
+
+                            });
+                        });
+                        $('#upload_loader').attr('class', 'ui active inverted dimmer');
+                        var jsonObject = { tsorder: results.data };
+                        $.ajax({
+                            url: 'order_json_g360',
+                            method: 'post',
+                            data: JSON.stringify(jsonObject),
+                            contentType: "application/json; charset=utf-8",
+                            dataType: "json",
+                            success: function (response) {
+                                $("#output").html(response.message);
+                                $('#upload_loader').attr('class', 'ui disabled inverted dimmer');
+                            },
+                            error: function () {
+                                console.error('an error occurred');
+                            }
+                        });
+                    }
+                });
+
+                $("#output").html("Order Created!");
+            }).on('cancel.bs.filedialog', function (ev) {
                 $("#output").html("Cancelled!");
             });
         });

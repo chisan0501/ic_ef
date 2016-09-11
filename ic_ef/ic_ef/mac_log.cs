@@ -21,5 +21,8 @@ namespace ic_ef
         public string refurbisher { get; set; }
         public string os_version { get; set; }
         public string Model { get; set; }
+        public string cpu { get; set; }
+        public string ram { get; set; }
+        public string hdd { get; set; }
     }
 }

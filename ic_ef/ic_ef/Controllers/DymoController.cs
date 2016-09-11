@@ -61,6 +61,95 @@ namespace ic_ef.Controllers
             ViewBag.myList = list;
             return View();
         }
+        public ActionResult landing()
+        {
+            return View();
+        }
+
+        [AllowAnonymous]
+        public JsonResult search_to_print (string asset)
+        {
+            int temp_asset = int.Parse(asset);
+            var result = (from t in db.mac_log
+                          where (t.ictags == temp_asset)
+                          select t).FirstOrDefault();
+            string Model = result.Model;
+            string cpu = result.cpu;
+            string serial = result.serial;
+            string ram = result.ram;
+            string hdd = result.hdd;
+            var time = DateTime.Today.ToString("yyyy-MM-dd");
+            string channel = result.pallet;
+            string user = result.refurbisher;
+            return Json(new { model = Model, cpu = cpu, serial = serial, ram = ram, hdd = hdd, time = time,user=user,channel=channel }, JsonRequestBehavior.AllowGet);
+        }
+        [AllowAnonymous]
+        [HttpPost]
+        public JsonResult readapple(string[] arr, bool is_db, string channel, string user, string asset_tag)
+        {
+            try
+            {
+                var Model = Array.FindAll(arr, s => s.Contains("Model Identifier")).FirstOrDefault(); ;
+                Model = Model.Substring(Model.IndexOf(':') + 1).ToString();
+                Model = Model.Trim();
+                var cpu = Array.FindAll(arr, s => s.Contains("Processor Name")).FirstOrDefault(); ;
+                cpu = cpu.Substring(cpu.IndexOf(':') + 1).ToString();
+                cpu = cpu.Trim();
+                var cpu_speed = Array.FindAll(arr, s => s.Contains("Processor Speed")).FirstOrDefault(); ;
+                cpu_speed = cpu_speed.Substring(cpu_speed.IndexOf(':') + 1).ToString();
+                cpu_speed = cpu_speed.Trim();
+                cpu = cpu + " @ " + cpu_speed;
+                var serial = Array.FindAll(arr, s => s.Contains("Serial Number (system)")).FirstOrDefault(); ;
+                serial = serial.Substring(serial.IndexOf(':') + 1).ToString();
+                serial = serial.Trim();
+                var ram = Array.FindAll(arr, s => s.Contains("Memory: ")).FirstOrDefault();
+                ram = ram.Substring(ram.IndexOf(':') + 1).ToString();
+                ram = ram.Trim();
+                var hdd = Array.FindAll(arr, s => s.Contains("Capacity:")).FirstOrDefault();
+                hdd = hdd.Substring(hdd.IndexOf(':') + 1).ToString();
+
+                int index = hdd.IndexOf("(");
+                if (index > 0)
+                    hdd = hdd.Substring(0, index);
+                hdd = hdd.Trim();
+                var time = DateTime.Today.ToString("yyyy-MM-dd");
+               
+                if (is_db == true)
+                {
+                    int temp_asset_tag = int.Parse(asset_tag);
+                    write_macDymo(temp_asset_tag, channel, serial, Model, cpu, ram, hdd, time, user);
+                }
+
+
+                return Json(JsonRequestBehavior.AllowGet);    
+            }
+           catch (Exception e)
+            {
+                return Json(new { result = e }, JsonRequestBehavior.AllowGet);
+            }
+           
+        }
+        [HttpGet]
+        public JsonResult get_channel ()
+        {
+            var menu = (from t in db.label_menu
+                                     where (t.name == "MAC")
+                                     select t.product).ToList();
+            return Json(menu,JsonRequestBehavior.AllowGet);
+        }
+        public JsonResult get_user()
+        {
+            var users = (from t in db.users
+                        
+                        select t.user_name).ToList();
+            return Json(users, JsonRequestBehavior.AllowGet);
+        }
+
+        [AllowAnonymous]
+        public ActionResult apple ()
+        {
+            return View();
+        }
 
         [HttpPost]
         public ActionResult Print (int? asset, string pre_coa, string product,string myList)
@@ -149,7 +238,31 @@ namespace ic_ef.Controllers
             return Json(result, JsonRequestBehavior.AllowGet);
         }
 
-        
+
+        [HttpPost]
+        public JsonResult write_macDymo(int asset_tag, string product_name, string serial ,string manu, string cpu, string ram, string hdd, string time,string user)
+        {
+
+
+           
+                var create_dymo = new mac_log();
+                create_dymo.Time = DateTime.Today;
+            create_dymo.refurbisher = user;
+            create_dymo.pallet = product_name;
+                create_dymo.ictags = asset_tag;
+                create_dymo.Model = manu;
+                create_dymo.cpu = cpu;
+                create_dymo.ram = ram;
+                create_dymo.hdd = hdd;
+            create_dymo.serial = serial;
+                db.mac_log.Add(create_dymo);
+                db.SaveChanges();
+                db.Dispose();
+   
+
+
+         return Json(new { success = "true"}, JsonRequestBehavior.AllowGet);       
+        }
 
         [HttpPost]
         public JsonResult write_RetailDymo(int asset_tag, double price, string manu, string cpu, string ram, string hdd,string sku)
@@ -191,6 +304,26 @@ namespace ic_ef.Controllers
             
             
             return Json(new { success = success }, JsonRequestBehavior.AllowGet);
+        }
+
+
+        public JsonResult RetailDymo_mac(string asset, string price, string channel)
+        {
+
+            if (String.IsNullOrEmpty(asset))
+            {
+                asset = "0";
+            }
+            int ictag = int.Parse(asset);
+           
+            var result = (from m in db.mac_log where m.ictags == ictag select m).SingleOrDefault();
+            // var memory = (from m in db.rediscovery where m.ictag == ictag select m.ram).SingleOrDefault();
+            
+            
+
+
+            var multiple = new { ram = result.ram, hdd = result.hdd, price = price, result = result, channel = channel };
+            return Json(multiple, JsonRequestBehavior.AllowGet);
         }
 
         public JsonResult RetailDymo (string asset, string price, string channel)

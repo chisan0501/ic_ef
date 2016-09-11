@@ -6,49 +6,88 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="">
     <meta name="author" content="">
-    <title>@ViewBag.Title</title>
-    <!-- Bootstrap core CSS -->
     <link href="@Url.Content("~/css/bootstrap.css")" rel="stylesheet">
     <link href="@Url.Content("~/css/cover.css")" rel="stylesheet">
+    <link href="~/css/semantic.min.css" rel="stylesheet" />
+    <link href="~/css/font-awesome.css" rel="stylesheet" />
 
-    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
-    <!--[if lt IE 9]>
-      <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
-      <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
-    <![endif]-->
+
+
+
+    <style>
+        #sidebar {
+    
+        font-family: "Myriad Pro";
+        font-size: 17px;
+        color: black;
+        text-transform: uppercase;
+        padding: 0 10px;
+        outline: none;
+        text-decoration: none;
+        position: absolute; 
+        top: 109px;
+        right:0;
+        /*width: 136px;*/
+        height: 40px;
+        line-height: 45px;
+        -webkit-transform: rotate(-90deg);
+        -moz-transform: rotate(-90deg);
+        transform: rotate(-90deg);
+    
+     -webkit-transform-origin:100% 100%;
+    -moz-transform-origin:100% 100%;
+    transform-origin:100% 100%;
+        
+}
+    </style>
 </head>
 
 <body>
 
-
-    <div class="site-wrapper">
-
-        <div class="site-wrapper-inner">
-
-            <div class="cover-container">
-
-                <div class="masthead clearfix" style="z-index: 2;">
-                    <div class="inner" style="z-index: 1;">
-                        @*<h3 class="masthead-brand" style="color:lawngreen">@ViewBag.Title</h3>*@
-                        <ul class="nav masthead-nav" >
-                          
-                               <li><img src="/Content/main.jpg" alt="main" style="padding-top: 50px;"></li> 
-                           
-                            
-                        </ul>
-                    </div>
-                </div>
-              
-                @RenderBody()
-
-            </div>
-           
-        </div>
-     
+    <div class="ui left demo vertical inverted sidebar labeled icon menu">
+        <a class="item" href="@Url.Action("index", "home")">
+            <i class="home icon"></i>
+            Home
+        </a>
+        <a class="item">
+            <i class="cube icon"></i>
+            Production
+        </a>
+        <a class="item" href="@Url.Action("inventoryManage", "manage")">
+            <i class="shipping icon"></i>
+            Inventory
+        </a>
+        <a class="item" href="@Url.Action("report", "manage")">
+            <i class="file icon"></i>
+            Report
+        </a>
+        <a class="item" href="@Url.Action("admin", "Manage")">
+            <i class="setting icon"></i>
+            Admin Setting
+        </a>
+        <hr />
+        <a class="item" href="@Url.Action("landing", "dymo")">
+            <i class="print icon"></i>
+            Dymo Web App
+        </a>
+        <a class="item" href="@Url.Action("magento_main", "production_log")">
+            <i class="add to cart icon"></i>
+            Magento Web App
+        </a>
+        <a class="item" href="@Url.Action("barcode", "Home")">
+            <i class="barcode icon"></i>
+            Asset Tag
+        </a>
     </div>
+    <button id="sidebar" class="circular ui icon button">
+        Menu
+    </button>
 
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+    
+
+    <script src="~/js/jquery-1.12.3.js"></script>
+    <script src="~/js/semantic.min.js"></script>
     <script src="@Url.Content("~/js/bootstrap.js")"></script>
-    <script src="@Url.Content("~/js/vidbg.min.js")"></script>
+   
 </body>
 </html>

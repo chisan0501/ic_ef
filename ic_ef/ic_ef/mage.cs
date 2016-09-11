@@ -252,7 +252,7 @@ namespace ic_ef
             }
         }
 
-        public string create_order(Models.ts_order[] tsorder)
+        public string create_order_ts(Models.ts_order[] tsorder)
         {
             string result = "";
             foreach(var order in tsorder)
@@ -305,7 +305,7 @@ namespace ic_ef
                 var Products_list = new shoppingCartProductEntity() {
                     qty = order.Total_Product_Quantity,
                     qtySpecified = true,
-                    sku = order.Item_ID
+                    sku = order.Item_ID 
                 };
                     
                 
@@ -316,11 +316,12 @@ namespace ic_ef
                     mservice.shoppingCartProductAdd(mlogin, cart, new shoppingCartProductEntity[] { Products_list }, null);
                     //add shipping method
                     var avaiable_method = mservice.shoppingCartShippingList(mlogin, cart, "1");
+
                     mservice.shoppingCartShippingMethod(mlogin, cart, "storepickup_storepickup", "1");
                     //add payment method
                     var avaiable_payment = mservice.shoppingCartPaymentList(mlogin, cart, "1");
                     shoppingCartPaymentMethodEntity payment_method_entity = new shoppingCartPaymentMethodEntity();
-               //     payment_method_entity.method = "custompayment";
+                   // payment_method_entity.method = "custompayment";
                     payment_method_entity.method = "free";
                     payment_method_entity.cc_cid = null;
                     payment_method_entity.cc_owner = null;
@@ -332,15 +333,113 @@ namespace ic_ef
                     mservice.shoppingCartPaymentMethod(mlogin, cart, payment_method_entity, "1");
                     //var price_total = mservice.shoppingCartTotals(mlogin, cart, "1");
                     var order_ID = mservice.shoppingCartOrder(mlogin, cart, "1", null);
-                    result += "<p style='color:green'>Order " + order.Item_ID + " for " + order.Org_Contact_Name + "Created\n</p>";
+                    result += "<p style='color:green'>Order " + order.Item_ID + " for " + order.Org_Contact_Name + " Created\n</p>";
 
-                 }   
-                
+               
+        
+                }
                 catch (Exception e)
                 {
-                    result += "<p style='color:red'>Order " + order.Item_ID + " for " + order.Org_Contact_Name + "Failed\n Message : "+e.Message + "\n</p>";
+                    result += "<p style='color:red'>Order " +  order.Item_ID + " for " + order.Org_Contact_Name + "Failed\n Message : "+e.Message + "\n</p>";
                 }
               
+
+
+            }
+            return result;
+        }
+        public string create_order_g360(Models.g360_order[] g360order)
+        {
+            string result = "";
+            foreach (var order in g360order)
+            {
+                try
+                {
+                    MagentoService mservice = new MagentoService();
+                    String mlogin = mservice.login("admin", "Interconnection123!");
+                    //create shopping cart 
+                    var cart = mservice.shoppingCartCreate(mlogin, "1");
+                    //set customer to cart 
+                    shoppingCartCustomerEntity customer = new shoppingCartCustomerEntity();
+                    customer.firstname = order.Organization_Name;
+                    customer.lastname = order.Organization_Name;
+                    customer.email = order.Email;
+                    customer.mode = "guest";
+                    customer.website_id = 1;
+                    mservice.shoppingCartCustomerSet(mlogin, cart, customer, "1");
+                    //set customer address
+                    List<shoppingCartCustomerAddressEntity> customer_Address_List = new List<shoppingCartCustomerAddressEntity>();
+                    shoppingCartCustomerAddressEntity address = new shoppingCartCustomerAddressEntity();
+                    address.mode = "billing";
+                    address.firstname = order.Organization_Name;
+                    address.lastname = order.Organization_Name;
+                    address.street = order.Address1 + " " +order.Address2;
+                    address.city = order.City;
+                    address.region = order.State;
+                    address.country_id = "US";
+                    address.postcode = order.Zip;
+                    address.telephone = order.Phone;
+                    address.is_default_billing = 1;
+                    customer_Address_List.Add(address);
+                    shoppingCartCustomerAddressEntity customer_Address_Billing = new shoppingCartCustomerAddressEntity();
+                    customer_Address_Billing.mode = "shipping";
+                    // If you have already a Magento User address list then use below field "address_id".
+                    //customer_Address_Billing.address_id = Session["Customer_Address_ID"].ToString();
+                    customer_Address_Billing.firstname = order.Organization_Name;
+                    customer_Address_Billing.lastname = order.Organization_Name;
+                    customer_Address_Billing.company = order.Organization_Name;
+                    customer_Address_Billing.street = order.Address1 + " " + order.Address2;
+                    customer_Address_Billing.city = order.City;
+                    customer_Address_Billing.country_id = "US";
+                    customer_Address_Billing.region = order.State;
+                    customer_Address_Billing.postcode = order.Zip;
+                    customer_Address_Billing.telephone = order.Phone;
+                    customer_Address_Billing.fax = "";
+                    customer_Address_List.Add(customer_Address_Billing);
+                    mservice.shoppingCartCustomerAddresses(mlogin, cart, customer_Address_List.ToArray(), "1");
+                    //add product
+                    var Products_list = new shoppingCartProductEntity()
+                    {
+                        qty = order.Quantity,
+                        qtySpecified = true,
+                        sku = order.Display_Name
+                    };
+
+
+
+
+
+
+                    mservice.shoppingCartProductAdd(mlogin, cart, new shoppingCartProductEntity[] { Products_list }, null);
+                    //add shipping method
+                    var avaiable_method = mservice.shoppingCartShippingList(mlogin, cart, "1");
+
+                    mservice.shoppingCartShippingMethod(mlogin, cart, "storepickup_storepickup", "1");
+                    //add payment method
+                    var avaiable_payment = mservice.shoppingCartPaymentList(mlogin, cart, "1");
+                    shoppingCartPaymentMethodEntity payment_method_entity = new shoppingCartPaymentMethodEntity();
+                    // payment_method_entity.method = "custompayment";
+                    payment_method_entity.method = "free";
+                    payment_method_entity.cc_cid = null;
+                    payment_method_entity.cc_owner = null;
+                    payment_method_entity.cc_number = null;
+                    payment_method_entity.cc_type = null;
+                    payment_method_entity.cc_exp_month = null;
+                    payment_method_entity.cc_exp_year = null;
+
+                    mservice.shoppingCartPaymentMethod(mlogin, cart, payment_method_entity, "1");
+                    //var price_total = mservice.shoppingCartTotals(mlogin, cart, "1");
+                    var order_ID = mservice.shoppingCartOrder(mlogin, cart, "1", null);
+                    result += "<p style='color:green'>Order " + order.Display_Name + " for " + order.Organization_Name + " Created\n</p>";
+
+
+
+                }
+                catch (Exception e)
+                {
+                    result += "<p style='color:red'>Order " + order.Display_Name + " for " + order.Organization_Name + "Failed\n Message : " + e.Message + "\n</p>";
+                }
+
 
 
             }

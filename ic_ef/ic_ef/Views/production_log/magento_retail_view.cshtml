@@ -55,11 +55,13 @@
     $(document).ready(
 
        function () {
+           
            var guid;
            var qrcode;
            var today;
            var name;
            var item_html;
+         
            $("#dialog").dialog({
                autoOpen: false,
                show: {
@@ -104,6 +106,8 @@
 
            });
            $("#print_btn").click(function () {
+               $("#print_btn").html('Loading....');
+               $('#print_btn').attr("disabled", true);
                var ul_html = $("#left_content").clone().html()
                var jsonObject = {
                    id: guid,
@@ -120,6 +124,8 @@
                dataType: "json",
                success: function (data) {
                    printDiv();
+                   $("#print_btn").html('Print');
+                   $('#print_btn').attr("disabled", false);
                }
                });
 
@@ -154,6 +160,8 @@
                var sku = $(this).closest('td').siblings(':nth-child(3)').text();
                var qty = $(this).closest('td').siblings(':nth-child(4)').text();
                $("#check_list").append('<li><i class="fa fa-check" aria-hidden="true"></i><strong>' + title + '</strong> with sku <strong>' + sku + '</strong></li>');
+               var ul_count = $("#check_list li").length;
+               $("#list_count").html("<h4>Total # of Items : " + ul_count + "</h4>");
                var jsonObject = {
                    price: '0',
                    name: title,
@@ -221,6 +229,7 @@
                     <div id="name_header"></div>
                    
                     <ul id="check_list"></ul>
+                    <div id="list_count"></div>
                 </div>
                
             </div>

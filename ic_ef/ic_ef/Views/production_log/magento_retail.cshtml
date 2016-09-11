@@ -2,8 +2,6 @@
 @{
     Layout = null;
 }
-
-
 <!DOCTYPE html>
 <html>
 <head>
@@ -12,6 +10,8 @@
     <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,300,700|Monsterrat:400,700|Merriweather:400,300italic,700" rel="stylesheet" type="text/css">
 
     <!-- Animate.css -->
+    <link href="~/css/gridforms.css" rel="stylesheet" />
+    <link href="~/css/all.css" rel="stylesheet" />
     <link href="~/css/font-awesome.css" rel="stylesheet" />
     <link rel="stylesheet" href="~/css/animate.css">
     <!-- Icomoon Icon Fonts-->
@@ -26,188 +26,188 @@
     <link rel="stylesheet" href="~/css/cards.css">
 
     <!-- Modernizr JS -->
+    <script src="~/js/jquery-1.12.3.js"></script>
+    <script src="~/js/semantic.min.js"></script>
     <script src="~/js/modernizr-2.7.1.js"></script>
+    <script src="~/js/base.js"></script>
+    <script src="~/js/snap.min.js"></script>
+    <script src="~/js/responsive-elements.js"></script>
+    <script src="~/js/gridforms.js"></script>
+    
+
+    <style>
+      #sample_sku {
+    -webkit-filter: blur(1px); /* Chrome, Safari, Opera */
+      filter:blur(1px);
+}
+
+    </style>
 </head>
 <body>
-  
-    <div class="ui large breadcrumb">
-        <a href="@Url.Action("Index", "Home")" class="section">Home</a>
-        <i class="right chevron icon divider"></i>
-        <a href="@Url.Action("magento_main", "production_log")" class="section">Magento</a>
-        <i class="right chevron icon divider"></i>
-        <div class="active section">Retail Import Tool</div>
-    </div>
-
-    <div class="fh5co-content-style-9">
-        <div class="container">
-            <div class="row">
-                <div class="col-md-6 col-md-push-6">
-                    <p></p>
-                </div>
-                <div class="col-md-6 col-md-pull-6">
-                    <h2 class="font-weight-normal">Qucik Import</h2>
-                    <p>Quick Import provide user the ability to create a quick listing with as little as 5 clicks, this is perfect for quick POS item import</p>
-                    <button id="quick_btn"class="positive ui button">Start Nows</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div class="fh5co-content-style-9">
-        <div class="container">
-            <div class="row">
-                <div class="col-md-6 col-md-push-6">
-                    <h2 class="font-weight-normal">Custom Import</h2>
-                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Nulla laboriosam cumque saepe aliquid aliquam doloremque quam, alias ipsam aperiam. Quidem voluptates porro suscipit nostrum ex, voluptatem voluptatibus vitae. Reprehenderit, dolorem!</p>
-                    <p class="btn-actions"><a href="#" class="btn btn-success"><i class="fa fa-thumbs-o-up"></i> Start Now</a></p>
-                </div>
-                <div class="col-md-6 col-md-pull-6">
-                    <p></p>
-               
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div class="ui segment">
+    <a href="#"><i id="sidebar" class="big green content icon"></i></a>
+    <div class="ui basic segment">
         <div id="prepare_dimmer" class="ui disabled dimmer">
             <div class="ui indeterminate text loader">Importing Data now...</div>
         </div>
         <p></p>
 
-        <div id="new" class="fh5co-content-style-10">
+        <div id="new">
             <div class="container">
-                <div class="row">
-                    <div class="col-md-5 col-sm-5">
-                        <h2>Quick Import</h2>
-                        <div>
-                            <label style="color:black">Upload Image</label>
-                            <input style="color:black" type="file" id="FileUpload" />
-                            <button id="Upload" value="Upload" class="ui green submit button" type="button">Uploads</button>
+
+                <form class="grid-form">
+                    <div class="ui error message"></div>
+                    <fieldset>
+                        <legend>Quick Import</legend>
+                        <div data-row-span="3">
+                            <div data-field-span="1" class="" style="height: 59px;">
+                                <label>Name*</label>
+                                <input type="text" id="name" placeholder="Listing Title">
+                            </div>
+                            <div data-field-span="1" style="height: 59px;">
+                                <label>SKU*</label>
+                                <input type="text" id="sku" placeholder="SKU">
+                            </div>
+
+                            <div data-field-span="1" class="" style="height: 59px;">
+                                <label>Image Path</label>
+                                <input type="text" id="image_path" value="" disabled="disabled">
+
+                            </div>
+
+
 
                         </div>
-                    </div>
-
-                    <div class="col-md-6 col-md-push-1 col-sm-6 col-sm-push-1">
-                        <div id="quick_form" class="ui form">
-                            <div class="fields">
-                                <div class="field">
-                                    <label>Attribute Set</label>
-                                    <select id="attr" class="ui dropdown">
-                                        <option value="4">Default</option>
-                                    </select>
-                                </div>
-                                <div class="field">
-                                    <label>Product Type</label>
-                                    <select id="product_type" class="ui dropdown">
-                                        <option value="simple">Simple Product</option>
-                                    </select>
-                                </div>
-
+                        <div data-row-span="3">
+                            <div data-field-span="1" style="height: 59px;">
+                                <label>Attribute Set</label>
+                                <select id="attr" class="ui dropdown">
+                                    <option value="4">Default</option>
+                                </select>
                             </div>
-                            <div class="fields">
-                                <div class="field">
-                                    <label>Status</label>
-                                    <select id="status" class="ui dropdown">
-                                        <option value="1">Enabled</option>
-                                        <option value="2">Disabled</option>
-                                    </select>
-                                </div>
-                                <div class="field">
-                                    <label>Visbility</label>
-                                    <select id="visible" class="ui dropdown">
-                                        <option value="4">Catalog, Search</option>
-                                        <option value="1">Not Visible</option>
-                                    </select>
-                                </div>
-
+                            <div data-field-span="1" style="height: 59px;">
+                                <label>Product Type</label>
+                                <select id="product_type" class="ui dropdown">
+                                    <option value="simple">Simple Product</option>
+                                </select>
                             </div>
-                            <div class="fields">
-                                <div class="field">
-                                    <label>Description</label>
-                                    <input type="text" id="desc" placeholder="Description" value="NA">
-                                </div>
-                                <div class="field">
-                                    <label>Short Description</label>
-                                    <input type="text" id="short_desc" placeholder="Short Description" value="NA">
-                                </div>
-                                <div class="field">
-                                    <label>Weight</label>
-                                    <input type="text" id="weight" placeholder="Weight" value="10">
-                                </div>
+                            <div data-field-span="1" style="height: 59px;">
+                                <label>Status</label>
+                                <select id="status" class="ui dropdown">
+                                    <option value="1">Enabled</option>
+                                    <option value="2">Disabled</option>
+                                </select>
                             </div>
-                            <div class="fields">
-                                <div class="field">
-                                    <label>SKU</label>
-                                    <input type="text" id="sku" placeholder="SKU">
-                                </div>
-
-                                <div class="field">
-                                    <label>Name</label>
-                                    <input type="text" id="name" placeholder="Listing Title" required>
-                                </div>
-                                <div class="field">
-                                    <label>Price</label>
-                                    <input type="text" id="price" placeholder="Price">
-                                </div>
-                            </div>
-                            <div class="fields">
-                                <div class="field">
-                                    <label>Stock Avalability</label>
-                                    <select id="stock" class="ui dropdown">
-                                        <option value="true">In Stock</option>
-                                        <option value="false">Out of Stock</option>
-                                    </select>
-                                </div>
-                                <div class="field">
-                                    <label>QTY</label>
-                                    <input type="text" id="qty" placeholder="Qty" value="1">
-                                </div>
-                                <div class="field">
-                                    <label>Tax Class</label>
-                                    <select id="tax" class="ui dropdown">
-                                        <option value="2">Taxable Goods</option>
-                                        <option value="0">None</option>
-                                        <option value="4">Shipping</option>
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="fields">
-                                <div class="field">
-                                    <label>Store(s)</label>
-
-                                    <select multiple="multiple" id="websites" class="ui fluid normal dropdown">
-                                        <option value="">Select Store(s)</option>
-                                        <option value="5">Fremont Store</option>
-                                        <option value="2">Kenmore Store</option>
-                                        <option value="1">Connectall.org</option>
-                                        <option value="4">Vendor</option>
-                                        <option value="3">Online Retail Store</option>
-                                    </select>
-
-                                </div>
-                                <div class="field">
-                                    <label>Image Path</label>
-                                    <input type="text" id="image_path"  value="" disabled="disabled">
-                                </div>
-                                </div>
- 
-                           
-                            <div id="quick_submit" class="ui green submit button">
-                                Submit
-                            </div>
-                            <div class="ui reset button">Reset</div>
-                            <div class="ui reset button">Reset</div>
                         </div>
+                        <div data-row-span="4">
+                            <div data-field-span="1" style="height: 59px;">
+                                <label>Visbility</label>
+                                <select id="visible" class="ui dropdown">
+                                    <option value="4">Catalog, Search</option>
+                                    <option value="1">Not Visible</option>
+                                </select>
+                            </div>
+                            <div data-field-span="1" style="height: 59px;">
+                                <label>Description</label>
+                                <input type="text" id="desc" placeholder="Description" value="NA">
+                            </div>
+                            <div data-field-span="1" style="height: 59px;">
+                                <label>Short Description</label>
+                                <input type="text" id="short_desc" placeholder="Short Description" value="NA">
+                            </div>
+                            <div data-field-span="1" style="height: 59px;">
+                                <label>Weight</label>
+                                <input type="text" id="weight" placeholder="Weight" value="10">
+                            </div>
+                        </div>
+                        <div data-row-span="5">
+                            <div data-field-span="1" style="height: 59px;">
+                                <label>Price*</label>
+                                <input type="text" id="price" placeholder="Price">
+                            </div>
+                            <div data-field-span="1" style="height: 59px;">
+                                <label>Stock Avalability</label>
+                                <select id="stock" class="ui dropdown">
+                                    <option value="true">In Stock</option>
+                                    <option value="false">Out of Stock</option>
+                                </select>
+                            </div>
+                            <div data-field-span="1" style="height: 59px;">
+                                <label>QTY</label>
+                                <input type="text" id="qty" placeholder="Qty" value="1">
+                            </div>
+                            <div data-field-span="1" style="height: 59px;">
+                                <label>Tax Class</label>
+                                <select id="tax" class="ui dropdown">
+                                    <option value="2">Taxable Goods</option>
+                                    <option value="0">None</option>
+                                    <option value="4">Shipping</option>
+                                </select>
+                            </div>
+                            <div data-field-span="1" style="height: 59px;">
+                                <label>Store(s)*</label>
+
+                                <select multiple="multiple" id="websites" class="ui fluid normal dropdown">
+                                    <option value="">Select Store(s)</option>
+                                    <option value="5">Fremont Store</option>
+                                    <option value="2">Kenmore Store</option>
+                                    <option value="1">Connectall.org</option>
+                                    <option value="4">Vendor</option>
+                                    <option value="3">Online Retail Store</option>
+                                </select>
+                            </div>
+                        </div>
+                    </fieldset>
+                    <div class="ui submit button">Submit</div>
+                    <div class="ui reset button">Reset</div>
+
+                </form>
 
 
 
-
-                    </div>
-                </div>
             </div>
         </div>
     </div>
+    <div class="ui left demo vertical inverted sidebar labeled icon menu">
+        <a class="item" href="@Url.Action("index", "home")">
+            <i class="home icon"></i>
+            Home
+        </a>
+        <a class="item">
+            <i class="cube icon"></i>
+            Production
+        </a>
+        <a class="item" href="@Url.Action("inventoryManage", "manage")">
+            <i class="shipping icon"></i>
+            Inventory
+        </a>
+        <a class="item" href="@Url.Action("report", "manage")">
+            <i class="file icon"></i>
+            Report
+        </a>
+        <a class="item" href="@Url.Action("admin", "Manage")">
+            <i class="setting icon"></i>
+            Admin Setting
+        </a>
+        <hr />
+        <a class="item" href="@Url.Action("landing", "dymo")">
+            <i class="print icon"></i>
+            Dymo Web App
+        </a>
+        <a class="item" href="@Url.Action("magento_main", "production_log")">
+            <i class="add to cart icon"></i>
+            Magento Web App
+        </a>
+        <a class="item" href="@Url.Action("barcode", "Home")">
+            <i class="barcode icon"></i>
+            Asset Tag
+        </a>
+    </div>
+
+    
+
+    
+
+    
 </body>
 </html>
 
@@ -247,27 +247,35 @@
 
 </script>
 <script>
+    $('#sidebar').click(function() {
+        $('.ui.sidebar')
+   .sidebar('toggle')
+        ;
+    });
+
+
+</script>
+<script>
 
     $('.ui.dropdown').dropdown();
     $('#quick_btn').click(function () {
         $('html, body').animate({
             scrollTop: $("#new").offset().top
-        }, 2000);
+        }, 500);
     });
-    $('.ui.form')
-  .form({
+    $('.grid-form').form({
       fields: {
           name: 'empty',
-          price: 'number',
+          price: ['empty',"number"],
           sku: 'empty',
-          websites: 'empty',
+          websites: 'empty'
           
           
       }, onSuccess: function () {
-          $('#prepare_dimmer').attr('class', 'ui active dimmer');
+         $('#prepare_dimmer').attr('class', 'ui active dimmer');
           var price = $('#price').val();
         var name = $('#name').val();
-        var sku = $('#sku').val();
+        var sku = $('#sku').val(); 
         var weight = $('#weight').val();
         var desc = $('#desc').val();
         var short_desc = $("#short_desc").val();
