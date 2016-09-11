@@ -3,13 +3,8 @@
     ViewBag.Title = "report";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-<head>
-    @Styles.Render("~Content/style.css")
-</head>
-@Styles.Render("~/Content/css")
-@Styles.Render("~/Content/themes/base/css")
-@Scripts.Render("~/bundles/modernizr")
 
+<link rel="stylesheet" href="//code.jquery.com/ui/1.11.2/themes/smoothness/jquery-ui.css">
 <h2><i class="fa fa-book"></i>Report</h2>
 
 <hr />
@@ -111,8 +106,13 @@
                 </div>
 </div>
     </div>
-
-<hr />
-                       
-<h3>Details</h3>
+            
  
+<script type="text/javascript">
+            $(document).ready(function () {
+
+                $('.datepicker').datepicker();
+
+
+            });
+</script>
