@@ -580,11 +580,8 @@
     <Content Include="Content\main.jpg" />
     <Content Include="Content\PagedList.css" />
     <Content Include="Content\rack.jpg" />
-    <Content Include="Content\sample_sku.png" />
-    <Content Include="css\all.css" />
     <Content Include="css\cards.css" />
     <Content Include="css\filedrop.css" />
-    <Content Include="css\gridforms.css" />
     <Content Include="css\icomoon.css" />
     <Content Include="css\magnific-popup.css" />
     <Content Include="css\owl.carousel.min.css" />
@@ -594,7 +591,6 @@
     <Content Include="images\interconnection-logo.png" />
     <Content Include="js\base.js" />
     <Content Include="js\filedrop.js" />
-    <Content Include="js\gridforms.js" />
     <Content Include="js\prefixfree.min.js" />
     <Content Include="Content\retail_sample.png" />
     <Content Include="Content\simple_csv.jpg" />
@@ -678,10 +674,8 @@
     </Content>
     <Content Include="js\PrintLabel_retail_custom.js" />
     <Content Include="js\PrintLabel_retail.js" />
-    <Content Include="js\responsive-elements.js" />
     <Content Include="js\semantic.min.js" />
     <Content Include="js\sliiide.min.js" />
-    <Content Include="js\snap.min.js" />
     <Content Include="js\tileJs.js" />
     <Content Include="js\tileJs.min.js" />
     <Content Include="js\vex.combined.js" />
