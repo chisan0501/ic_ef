@@ -41,6 +41,12 @@ namespace ic_ef.Controllers
             SignInManager = signInManager;
         }
 
+        public ActionResult coa()
+        {
+
+            return View();
+        }
+
         public ApplicationSignInManager SignInManager
         {
             get
@@ -542,6 +548,13 @@ namespace ic_ef.Controllers
            return RedirectToAction("admin"); 
 
             
+        }
+
+
+        public JsonResult Search_COA_json (string coa, string dash_used)
+        {
+
+            return Json(JsonRequestBehavior.AllowGet);
         }
 
 

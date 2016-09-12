@@ -1113,6 +1113,7 @@
     </Content>
     <Content Include="Views\production_log\magento_main.cshtml" />
     <Content Include="Views\Dymo\apple.cshtml" />
+    <Content Include="Views\Manage\coa.cshtml" />
     <None Include="Web References\org.interconnection.dev\item.xsd">
       <SubType>Designer</SubType>
     </None>

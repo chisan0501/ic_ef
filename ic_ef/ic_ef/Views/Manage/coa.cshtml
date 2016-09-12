@@ -1,0 +1,82 @@
+﻿
+@{
+    ViewBag.Title = "coa";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+
+<div class="ui three column centered grid container">
+    <div class="column">
+
+        <h3 class="ui center aligned block header">
+            Manage COAs
+        </h3>
+    </div>
+    <div class="THREE column centered row">
+        
+        <div class="column">
+            <div class="ui raised segment">
+                <div class="ui center aligned basic segment">
+                    <h3>Search by COA-ID</h3>
+                    <div class="ui left icon action input">
+                        <i class="search icon"></i>
+                        <input type="text" placeholder="Order #">
+                        <div id="search_coa" class="ui blue submit button">Search</div>
+                    </div>
+                    <fieldset >
+                        <input type="checkbox" id="search_check" name="chk"/>With Dashes
+
+                        
+                    </fieldset>
+                    <div class="ui horizontal divider">
+                        Or
+                    </div>
+                    <h3>Search by Product Key</h3>
+                    <div class="ui left icon action input">
+                        <i class="search icon"></i>
+                        <input type="text" placeholder="Order #">
+                        <div class="ui blue submit button">Search</div>
+                    </div>
+                    <div class="ui toggle checkbox">
+                        <input type="checkbox" name="public">
+                        <label>with dashes</label>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="column">
+            <div class="ui raised segment">
+                <div class="ui center aligned basic segment">
+                    <h3>Mark COA as USED</h3>
+                    <div class="ui left icon action input">
+                        <i class="search icon"></i>
+                        <input type="text" placeholder="Order #">
+                        <div class="ui blue submit button">Submit</div>
+                    </div>
+                    <div class="ui horizontal divider">
+                        Or
+                    </div>
+                    <h3>Mark COA as New</h3>
+                    <div class="ui left icon action input">
+                        <i class="search icon"></i>
+                        <input type="text" placeholder="Order #">
+                        <div class="ui blue submit button">Submit</div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<script>
+    
+    $("#search_coa").click(function () {
+        var chk = $('#search_check').is(":checked")
+        
+    });
+
+</script>
+
+
