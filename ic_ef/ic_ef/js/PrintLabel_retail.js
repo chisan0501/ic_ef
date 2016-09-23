@@ -422,11 +422,11 @@
                     contentType: "application/json; charset=utf-8",
                     dataType: "json",           
                     success: function () {
-                        alert('success');
+                       
                         //write code here manage "data"
                     },
                     error: function () {
-                       alert('error');
+                       
                     }
                 });
 

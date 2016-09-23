@@ -1,0 +1,210 @@
+﻿
+@{
+    ViewBag.Title = "bin_location";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+
+
+<div class="ui two column centered grid">
+    <div class="column">
+
+
+
+        <div id="input">
+            <h3>Scan Asset Tag to Assign Location to Bin : @ViewData["id"]</h3>
+            <div class="ui compact segments">
+                <div class="ui segment">
+                    <div class="ui input">
+                        <input type="text" id="box0" class="insert">
+                    </div>
+                </div>
+                <div class="ui segment">
+                    <div class="ui input">
+                        <input type="text" id="box1" class="insert">
+                    </div>
+                </div>
+                <div class="ui segment">
+                    <div class="ui input">
+                        <input type="text" id="box2" class="insert">
+                    </div>
+                </div>
+                <div class="ui segment">
+                    <div class="ui input">
+                        <input type="text" id="box3" class="insert">
+                    </div>
+                </div>
+                <div class="ui segment">
+                    <div class="ui input">
+                        <input id="box4" class="insert">
+                    </div>
+                </div>
+            </div>
+            <p id="message"></p>
+        </div>
+    </div>
+    <div class="two column centered row">
+        <div class="column">
+
+            <div class="ui segment">
+               
+                        <h3>Reset Bin Location</h3>
+                    
+                    <div class="active content">
+                        <p>Scan the Asset Tag to reset the bin location</p>
+                        <input type="text" id="reset_field" />
+                        <button type="button" id="reset_btn">Reset</button>
+                    </div>
+                <p id="message2"></p>
+                </div>
+            </div>
+
+        </div>
+    <div class="two column centered row">
+        <div class="column">
+
+            <div class="ui segment">
+
+                <h3>Associate Serial with Asset Tag</h3>
+
+                <div class="active content">
+                    <p>Scan the Asset Tag and Serial</p>
+                    <input type="text" id="serial_field" placeholder="Serial #"/>
+                    <input type="text" id="asset_field" placeholder="Asset Tag" />
+                    <button type="button" id="asso_btn">Associate</button>
+                </div>
+                <p id="message3"></p>
+            </div>
+        </div>
+
+    </div>
+    </div>
+
+
+
+<script>
+
+    
+    var currentBoxNumber = 0;
+    $(".insert").keyup(function (event) {
+        if (event.keyCode == 13) {
+            textboxes = $("input.insert");
+            currentBoxNumber = textboxes.index(this);
+            
+            if (textboxes[currentBoxNumber + 1] != null) {
+                nextBox = textboxes[currentBoxNumber + 1];
+                nextBox.focus();
+                nextBox.select();
+                event.preventDefault();
+                return false;
+            }
+        }
+    });
+
+    $(document).ready(function () {
+        var id = @ViewData["id"];
+        var jsonObject = {
+            id : id
+        };
+        $.ajax({
+            url: "@Url.Action("get_bin_location")",
+            type: "POST",
+
+        data: JSON.stringify(jsonObject),
+        contentType: "application/json; charset=utf-8",
+        dataType: "json",
+
+        success: function (data) {
+            
+            for (i = 0; i < data.result.length ; i++){
+                
+                $('#box'+i).val(data.result[i]);
+                $('#box'+i).attr("disabled","");
+            }
+            
+                       
+        },
+        error: function (data) {
+           
+ 
+        }
+        });
+
+        $('#asso_btn').click(function(){
+        
+            var serial_id = $('#serial_field').val();
+            var asset_id = $('#asset_field').val();
+            var jsonObject = {
+                asset : asset_id,
+                serial : serial_id
+            };
+            $.ajax({
+                url: "@Url.Action("asso")",
+                type: "POST",
+
+            data: JSON.stringify(jsonObject),
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+
+            success: function (data) {
+              
+                $('#message3').append(data.message);
+            
+            },
+            });
+        });
+
+        $('#reset_btn').click(function(){
+            var reset_id = $('#reset_field').val();
+            var jsonObject = {
+                asset : reset_id,
+            };
+        
+            $.ajax({
+                url: "@Url.Action("reset_location")",
+                type: "POST",
+
+            data: JSON.stringify(jsonObject),
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+
+            success: function (data) {
+                $('#reset_field').val('') ;
+                $('#message2').append(data.message);
+            
+            },
+            });
+
+            });
+
+        $( ".insert" ).focusout(function() {
+            var asset =  $(this).val() ;
+            if(asset != ''){
+                $(this).attr("disabled","");
+                var jsonObject = {
+                    asset :asset,
+                    id : id
+                };
+           
+                $.ajax({
+                    url: "@Url.Action("write_bin_location")",
+                    type: "POST",
+
+                data: JSON.stringify(jsonObject),
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+
+                success: function (data) {
+                    $('#message').append(data.message);
+            
+                },
+                });
+            }
+           
+           
+    });
+    });
+
+
+</script>

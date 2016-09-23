@@ -250,11 +250,11 @@
                     success: function (data) {
                         try{
                             
-                            data.discovery.time = eval(data.discovery.time.slice(1, -1))
+                           
 
                             $("#discovery_brand_content").html(data.discovery.brand);
                             $("#discovery_model_content").html(data.discovery.model);
-                            $("#discovery_time_content").html(data.discovery.time);
+                            $("#discovery_time_content").html(data.discovery_time);
                             $("#discovery_cpu_content").html(data.discovery.cpu);
                             $("#discovery_ram_content").html(data.discovery.ram);
                             $("#discovery_hdd_content").html(data.discovery.hdd);
@@ -272,12 +272,12 @@
                         }
                         try {
 
-                            data.rediscovery.time = eval(data.rediscovery.time.slice(1, -1))
+                           
 
                             $("#rediscovery_user_content").html(data.rediscovery.refurbisher);
                             $("#rediscovery_brand_content").html(data.rediscovery.brand);
                             $("#rediscovery_model_content").html(data.rediscovery.model);
-                            $("#rediscovery_time_content").html(data.rediscovery.time);
+                            $("#rediscovery_time_content").html(data.rediscovery_time);
                             $("#rediscovery_cpu_content").html(data.rediscovery.cpu);
                             $("#rediscovery_ram_content").html(data.rediscovery.ram);
                             $("#rediscovery_hdd_content").html(data.rediscovery.hdd);
@@ -298,11 +298,11 @@
                            
                         try {
 
-                            data.img.time = eval(data.img.time.slice(1, -1))
+                            
 
                             $("#img_brand_content").html(data.img.Manufacture);
                             $("#img_model_content").html(data.img.Model);
-                            $("#img_time_content").html(data.img.time);
+                            $("#img_time_content").html(data.img_time);
                             $("#img_cpu_content").html(data.img.CPU);
                             $("#img_ram_content").html(data.img.RAM);
                             $("#img_hdd_content").html(data.img.HDD);

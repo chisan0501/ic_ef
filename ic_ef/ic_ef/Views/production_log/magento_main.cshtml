@@ -12,25 +12,52 @@
 </head>
 <body>
 
+
+    <div class="ui stackable one column centered grid">
+        <div class="column">
+            <h2 class="ui header">
+                <i class="cart icon"></i>
+                <div class="content">
+                    Magento Web APP
+                </div>
+            </h2>
+        </div>
+        <div class="six column centered row">
+            <div class="column"><a href="@Url.Action("magento_retail", "production_log")">
+    <div class="ui huge primary button">TS/G360 Quick SKU Import<i class="right arrow icon"></i></div>
+</a></div>
+            <div class="column"><a href="@Url.Action("mage_order_import", "production_log")">
+    <div class="ui huge primary button">Upload Orders csv for TS/G360<i class="right arrow icon"></i></div>
+</a></div>
+            <div class="column">
+                <a href="@Url.Action("magento_retail_view", "production_log")">
+                    <div class="ui huge primary button">Retail Pick List<i class="right arrow icon"></i></div>
+                </a>
+            </div>
+        </div>
+        <div class="four column centered row">
+        
+            <div class="column"><a href="@Url.Action("magento_create", "production_log")">
+    <div class="ui huge primary button">Create Listing(Advance Mode)<i class="right arrow icon"></i></div>
+</a></div>
+            <div class="column">
+                <a href="@Url.Action("qc", "production_log")">
+                    <div class="ui huge primary button">Production QC Tool<i class="right arrow icon"></i></div>
+                </a>
+            </div>
+        </div>
+        <div class="four column centered row">
+
+            <div class="column">
+                <a href="@Url.Action("asset_locator", "production_log")">
+                    <div class="ui huge primary button">Online Store Asset Locator<i class="right arrow icon"></i></div>
+                </a>
+            </div>
+            </div>
+        </div>
+
     
-    <div class="ui center aligned basic segment">
-
-        <h1 style="margin-top : 4em; margin-bottom : 0em;font-weight:normal" class="ui header">Magento Web App</h1>
-        <h2>Select one</h2>
-
-        <a href="@Url.Action("magento_retail", "production_log")">
-            <div class="ui huge primary button">TS/G360 Quick SKU Import<i class="right arrow icon"></i></div>
-        </a>
-        <a href="@Url.Action("mage_order_import", "production_log")">
-            <div class="ui huge primary button">Upload Orders csv for TS/G360<i class="right arrow icon"></i></div>
-        </a>
-        <a href="@Url.Action("magento_retail_view", "production_log")">
-            <div class="ui huge primary button">Retail CheckList<i class="right arrow icon"></i></div>
-        </a>
-        <a href="@Url.Action("magento_create", "production_log")">
-            <div class="ui huge primary button">Create Listing(Advance Mode)<i class="right arrow icon"></i></div>
-        </a>
-    </div>
+    
 
     
 

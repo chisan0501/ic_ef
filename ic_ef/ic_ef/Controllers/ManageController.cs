@@ -551,10 +551,51 @@ namespace ic_ef.Controllers
         }
 
 
-        public JsonResult Search_COA_json (string coa, string dash_used)
+        public JsonResult Search_COA_json (string coa)
         {
+            coas coa_table = new coas();
+            production_log production_log_table = new production_log();
+            //if coa id
+            if (coa.Length == 17)
+            {
+                if (coa.IndexOf("-") == -1)
+                {
+                    string temp_new_coa = coa.Insert(5, "-");
+                    temp_new_coa = temp_new_coa.Insert(9, "-");
+                    temp_new_coa = temp_new_coa.Insert(13, "-");
+                    coa = temp_new_coa;
+                }
+                // get coa table info
+               coa_table = (from t in db.coas where t.COA_ID == coa select t).FirstOrDefault();
+                    //get production_log table info 
+            }
+            //if product key
+            else
+            {
+                if (coa.IndexOf("-") == -1)
+                {
+                    string temp_new_coa = coa.Insert(5, "-");
+                    temp_new_coa = temp_new_coa.Insert(11, "-");
+                    temp_new_coa = temp_new_coa.Insert(17, "-");
+                    temp_new_coa = temp_new_coa.Insert(23, "-");
+                    coa = temp_new_coa;
+                }
+                // get coa table info
+                coa_table = (from t in db.coas where t.PK == coa select t).FirstOrDefault();
+                //get production_log table info 
+            }
 
-            return Json(JsonRequestBehavior.AllowGet);
+            if (coa_table.Product_Name.Contains("Office"))
+            {
+                 production_log_table = (from t in db.production_log where t.ocoa == coa select t).FirstOrDefault();
+            }
+            else
+            {
+                 production_log_table = (from t in db.production_log where t.wcoa == coa select t).FirstOrDefault();
+            }
+
+            return Json(coa_table, JsonRequestBehavior.AllowGet);
+            //return Json(new {coa_table = coa_table, production_log_table = production_log_table} ,JsonRequestBehavior.AllowGet);
         }
 
 

@@ -1,0 +1,139 @@
+﻿
+@{
+    ViewBag.Title = "qc";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+    
+  
+<link href="~/js/jquery.dataTables.min.css" rel="stylesheet" />
+<script src="~/js/jquery.dataTables.min.js"></script>
+
+<h2>Production QC Tool</h2>
+
+<div class="ui three column centered grid">
+    <div class="center aligned two column row">
+        <div class="column">
+            <div id="loader" class="ui disabled dimmer">
+                <div class="ui text loader">Loading</div>
+            </div>
+            <div class="ui segment">
+                <div class="ui icon message">
+                    <i class="warning icon"></i>
+                    <div class="content">
+                        <div class="header">
+                            Problem Found After Imaged
+                        </div>
+                        <p>Computer that did not pass QC after Imaged can be remove from Magento Inventory. To do so, simply Enter the Asset Tag and press the Submit button to have the QTY removed. *The Listing will stay in Magento for record</p>
+                    </div>
+                </div>
+
+                <div class="ui right labeled left icon input">
+                    <i class="tags icon"></i>
+                    <input type="text" id="asset" placeholder="Enter tags">
+                    <a id="qc_remove" class="ui tag label">
+                        Submit
+                    </a>
+                </div>
+                <div id="message" class="basic ui center aligned segment">
+
+                </div>
+            </div>
+        </div>
+
+        
+    </div>
+   
+</div>
+
+<h3>Production Data (Last 50 Machines)</h3>
+
+<div class="ui one column centered grid">
+    <div class="column">
+        <table class="table" id="table_reminder">
+            <thead>
+                <tr>
+                    <th>Time</th>
+                    <th>Asset Tag</th>
+                    <th>WCOA</th>
+                    <th>OCOA</th>
+                    <th>SKU</th>
+                    <th>Serial</th>
+                 @*<th>Action</th>*@
+                </tr>
+            </thead>
+            <tbody></tbody>
+
+        </table>
+    </div>
+</div>
+
+
+
+<script>
+
+    window.onload = function () {
+        load_table();
+    }
+
+    function load_table() {
+        var table = $.getJSON("@Url.Action("get_productionData")", function (data) {
+            $('#table_reminder').DataTable({
+                destroy: true,
+                data: data,
+                columnDefs: [{
+                    //targets: 6,                    
+                    //defaultContent: "<button id='add_btn'>Add to List</button>"
+                }],
+                columns: [
+                    
+                                { data: "location" },
+                               { data: "ictags" },
+                               { data: "wcoa" },
+                                { data: "ocoa" },
+                                { data: "channel" },
+                                { data: "serial" },
+                ]
+
+            });
+        });
+    }
+
+
+    $('#qc_remove').on("click", function () {
+        var txt;    
+        var r = confirm("Confrim on QTY removal");
+        if (r == true) {
+            $('#loader').attr('class', 'ui active dimmer');
+            var asset_tag = $("#asset").val();
+            var jsonObject = {
+                asset_tag: asset_tag
+            };
+            $.ajax({
+                url: "@Url.Action("qc_update")",
+                type: "POST",
+
+            data: JSON.stringify(jsonObject),
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            success: function (data) {
+                $('#loader').attr('class', 'ui disabled dimmer');
+                $('#message').attr('class', 'basic ui center aligned segment');
+                $('#message').html(data.message + data.status);
+                
+                       
+            },
+            error: function (data) {
+                $('#loader').attr('class', 'ui disabled dimmer');
+                $('#message').attr('class', 'basic ui center aligned red segment');
+                $('#message').html("<p>" + data.message + "</p>" + "<p>" + data.status + "</p>");
+            }
+            });
+
+        } else {
+
+            alert("Action Aborted");
+        }
+    })
+
+</script>

@@ -128,7 +128,24 @@ namespace ic_ef.Controllers
         }
 
         //function for bottom 3 windows coas info from index2 page
-        
+        public JsonResult update_counter(int count)
+        {
+            var updateQuery = new asset_tag_counter() { Company = "interconnection", count = count };
+            db.asset_tag_counter.Attach(updateQuery);
+            db.Entry(updateQuery).Property(x => x.count).IsModified = true;
+            db.SaveChanges();
+
+            return Json(JsonRequestBehavior.AllowGet);
+        }
+
+        [HttpGet]
+        public JsonResult get_count()
+        {
+            var num = (from t in db.asset_tag_counter select t.count).FirstOrDefault();
+
+            return Json(num, JsonRequestBehavior.AllowGet);
+        }
+
         public JsonResult get_coa (string company, string windows_name)
         {
             var w_result = (from m in db.coas where m.Recipient_Organization_Name == company && m.Product_Name == windows_name orderby m.row_id ascending select m.PK).Take(5).ToList();
@@ -289,7 +306,7 @@ namespace ic_ef.Controllers
 
             return dis_weekly_chart;
         }
-       //temp holder for v2.0 dashboard
+      
 
         public JsonResult asset_result (string asset)
         {
@@ -298,23 +315,27 @@ namespace ic_ef.Controllers
                 var discovery = (from t in db.discovery
                                  where (t.ictag == temp_asset)
                                  select t).FirstOrDefault();
+            string discovery_time = discovery.time.ToString();
                 var rediscovery = (from t in db.rediscovery
                                    where (t.ictag == temp_asset)
                                    select t).FirstOrDefault();
+            string rediscovery_time = rediscovery.time.ToString();
             try
             {
                 var img = (from t in db.production_log
                            where (t.serial == rediscovery.serial)
                            select t).FirstOrDefault();
-                return Json(new { discovery = discovery, rediscovery = rediscovery, img = img }, JsonRequestBehavior.AllowGet);
+                string img_time = img.time.ToString();
+                return Json(new { discovery = discovery, rediscovery = rediscovery, img = img, discovery_time = discovery_time, rediscovery_time = rediscovery_time, img_time = img_time }, JsonRequestBehavior.AllowGet);
             }
           catch(Exception e)
             {
-                return Json(new { discovery = discovery, rediscovery = rediscovery, img = "" }, JsonRequestBehavior.AllowGet);
+                return Json(new { discovery = discovery, rediscovery = rediscovery, img = "", discovery_time = discovery_time, rediscovery_time = rediscovery_time }, JsonRequestBehavior.AllowGet);
             }
             
         }
 
+        //temp holder for v2.0 dashboard
         public ActionResult Index2 ()
         {
             return View();

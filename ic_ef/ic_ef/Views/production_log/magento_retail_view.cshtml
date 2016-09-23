@@ -154,13 +154,14 @@
               
            });
            var websites = ["5"];
+           //when click on the "Add to List" button
            $('#table_reminder tbody').on('click', 'button', function () {
                $('#table_loader').attr('class', 'ui active inverted dimmer');
                var title = $(this).closest('td').siblings(':nth-child(2)').text();
                var sku = $(this).closest('td').siblings(':nth-child(3)').text();
                var qty = $(this).closest('td').siblings(':nth-child(4)').text();
-               $("#check_list").append('<li><i class="fa fa-check" aria-hidden="true"></i><strong>' + title + '</strong> with sku <strong>' + sku + '</strong></li>');
-               var ul_count = $("#check_list li").length;
+               
+               var ul_count = $("#check_list li").length + 1;
                $("#list_count").html("<h4>Total # of Items : " + ul_count + "</h4>");
                var jsonObject = {
                    price: '0',
@@ -180,7 +181,7 @@
                    img_path: 'null'
                };
                $.ajax({
-                   url: "@Url.Action("quick_import")",
+                   url: "@Url.Action("retail_quick_import")",
                    type: "POST",
 
                    data: JSON.stringify(jsonObject),
@@ -190,7 +191,7 @@
                        load_table();
                        $('#table_loader').attr('class', 'ui disabled inverted dimmer');
                        $("#output").html(data.message);
-                       
+                       $("#check_list").append('<li><i class="fa fa-check" aria-hidden="true"></i><strong>' + title + '</strong> with sku <strong>' + sku + '</strong> Asset : <strong>'+data.asset+'</strong> at Bin Location <strong>'+data.location+'</strong></li>');
                    }
                });
 
@@ -252,7 +253,7 @@
                         <a style="font-size:35px"><strong>Current Inventory List</strong></a>                       
                     </h3>
                 </div>
-                <a href="http://dev.interconnection.org//webpos/index/index" target="_blank">Link to Web POS</a>
+                <a href="http://dev.interconnection.org/webpos/index/index" target="_blank">Link to Web POS</a>
                 
                 <div  class="ui segment">
                     <table class="table" id="table_reminder">

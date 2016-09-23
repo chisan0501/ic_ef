@@ -4,73 +4,103 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
+<script src="~/js/jquery-barcode.min.js"></script>
 
 <head>
     <style>
         .form-control {
             margin: 10px;
-
         }
 
-      p {
-page-break-after : always;
-}
-
+        .tobeprint {
+            page-break-after: always;
+        }
     </style>
 </head>
 
 <body>
-    <h3>Asset Tags</h3>
-    <hr />
-      
+    <h3>Print Asset Tags</h3>
+    
+    <div class="ui two column centered grid">
+        <div class="column">
+
             <div class="panel panel-info">
-                <div class="panel-heading">
-                    Print Barcode
-                </div>
+                <div class="panel-heading">Print Barcode</div>
+
                 <div class="panel-body">
                     <div class="alert alert-danger">
-                        <strong>Please Contact Admin For Reprinting Asset Tag!</strong> 
+                        <strong>Please Contact Admin For Reprinting Asset Tag!</strong>
                     </div>
 
-                    @using (Html.BeginForm("barcode", "Home", FormMethod.Post))
-                    {
-                        <input type="text" id="multiple_txtcode" name="txtcode_num" class="form-control" data_ng_model = "name", required = "required" placeholder="Enter # of Barcode Desired" />
-                        <input type="submit" value="Get barcode" class="form-control" />
-                        }
-                        <div id="multiple_sku">
-                            @if (ViewBag.test != null)
-                            {
-                                foreach (string image in ViewBag.test)
-                                {
-                                    @Html.Raw(image)
-                                }
+                    <input type="text" class="form-control" id="num" placeholder="Number of Barcode to Print">
+                    <button type="button" id="submit_barcode" class="btn btn-default">Submit</button>
+                    <button type="button" id="print_barcode" class="btn btn-default">Print</button>
 
-                            }
-                        </div>
-                        <input type="button" onclick="PrintPartOfPage2('multiple_sku')" value="Print Barcode" class="form-control" />
-                        
-                 
-                </div>
-              
-               
+                    <p></p>
+                    <div id="barcode_table"></div>
+
 
                     <script language="javascript">
-                        function PrintPartOfPage2(dvprintidu) {
-                            var prtContent = document.getElementById(multiple_sku);
+                        $("#print_barcode").click(function () {
+
+                            var prtContent = document.getElementById(barcode_table);
                             var WinPrint = window.open('', '', 'letf=100,top=100,width=700,height=500');
-                            WinPrint.document.write(multiple_sku.innerHTML);
+                            WinPrint.document.write(barcode_table.innerHTML);
                             WinPrint.document.close();
                             WinPrint.onload = function () { WinPrint.print(); WinPrint.close(); }
-                           
-                            // WinPrint.print();
+                             WinPrint.print();
+                        });
 
-                        }
                     </script>
-                
-            </div>
 
-    <div class="row">
-        <div class="col-md-12">
+                </div>
+            </div>
         </div>
+       
     </div>
+
 </body>
+
+
+<script>
+    $(document).ready(function () {
+
+    });
+    $("#submit_barcode").click(function () {
+        $('#barcode_table').empty();
+        var table = $.getJSON("@Url.Action("get_count")", function (data) {
+            var count = parseInt(data.toString());
+            var numToPrint = $('#num').val();
+
+            for (i = 0; i < numToPrint; i++) {
+                count += 1;
+                $('#barcode_table').append("<div style='page-break-after:always;' class='tobeprint' id='bcTarget" + count + "'></div>");
+
+
+                $('#bcTarget' + count).barcode(count.toString(), "code39", { barWidth: 2, barHeight: 40 });
+
+            }
+            var jsonObject = {
+                count: count
+            };
+            $.ajax({
+                url: "@Url.Action("update_counter")",
+                type: "POST",
+
+                data: JSON.stringify(jsonObject),
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: function (data) {
+
+
+                },
+            });
+
+
+        });
+
+
+
+    });
+
+</script>

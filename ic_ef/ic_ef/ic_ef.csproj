@@ -591,6 +591,7 @@
     <Content Include="images\interconnection-logo.png" />
     <Content Include="js\base.js" />
     <Content Include="js\filedrop.js" />
+    <Content Include="js\jquery-barcode.min.js" />
     <Content Include="js\prefixfree.min.js" />
     <Content Include="Content\retail_sample.png" />
     <Content Include="Content\simple_csv.jpg" />
@@ -1108,6 +1109,9 @@
     <Content Include="Views\production_log\magento_main.cshtml" />
     <Content Include="Views\Dymo\apple.cshtml" />
     <Content Include="Views\Manage\coa.cshtml" />
+    <Content Include="Views\production_log\qc.cshtml" />
+    <Content Include="Views\production_log\bin_location.cshtml" />
+    <Content Include="Views\production_log\asset_locator.cshtml" />
     <None Include="Web References\org.interconnection.dev\item.xsd">
       <SubType>Designer</SubType>
     </None>

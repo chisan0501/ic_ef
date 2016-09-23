@@ -13,6 +13,7 @@ using Newtonsoft.Json;
 using System.Collections;
 using System.Web.Script.Serialization;
 using System.IO;
+using ic_ef.org.interconnection.dev;
 
 namespace ic_ef.Controllers
 {
@@ -117,6 +118,21 @@ namespace ic_ef.Controllers
 
         }
         
+        [HttpGet]
+        //get top 50 result from production_log and post back as json format 
+        public JsonResult get_productionData ()
+        {
+           
+            var result = (from t in db.production_log orderby t.time descending select t).Take(50).ToList();
+            foreach ( var item in result)
+            {
+                item.location = item.time.ToString();
+              
+            }
+            return Json(result ,JsonRequestBehavior.AllowGet);
+        }
+
+
         public string sku_builder (string sku)
         {
             string new_sku = "";
@@ -372,6 +388,12 @@ namespace ic_ef.Controllers
         //    //}
         //    magentoView.cat = new SelectList(cat_list, "Value", "Text");
         //}
+
+
+        public ActionResult qc()
+        {
+            return View();
+        }
         public ActionResult magento_retail_view ()
         {
            
@@ -516,6 +538,55 @@ namespace ic_ef.Controllers
 
             return result + " RAM";
         }
+
+        public JsonResult qc_update (string asset_tag)
+        {
+
+            try
+            {
+                mage mage = new mage();
+                var sku = (from t in db.production_log where t.ictags == asset_tag select t.channel).FirstOrDefault();
+
+                if (string.IsNullOrEmpty(sku))
+                {
+                    int temp_asset = int.Parse(asset_tag);
+                    var serial = (from t in db.rediscovery where t.ictag == temp_asset orderby t.time descending select t.serial).FirstOrDefault();
+                    sku = (from t in db.production_log where t.serial == serial select t.channel).FirstOrDefault();
+                }
+
+
+
+                var product = mage.check_product(sku);
+                var pid = product[0].product_id;
+                var pqty = product[0].qty;
+                double temp_qty = Double.Parse(pqty);
+                temp_qty -= 1;
+                pqty = temp_qty.ToString();
+                smart_inventory(pid, pqty);
+
+                //update qty for classic magento inventory entity
+
+                MagentoService mservice = new MagentoService();
+                String mlogin = mservice.login("admin", "Interconnection123!");
+                catalogInventoryStockItemUpdateEntity qty_update = new catalogInventoryStockItemUpdateEntity();
+
+                qty_update.manage_stockSpecified = true;
+
+
+                qty_update.qty = pqty;
+
+                mservice.catalogInventoryStockItemUpdate(
+     mlogin, sku, qty_update);
+
+                return Json(new { success = true, message = "<p style='color:green'>Qty Update Sucessfully</p>", status = "<p style='color:green'>SKU: " + sku +  " QTY in stock: " + pqty +"</p>"}, JsonRequestBehavior.AllowGet);
+
+            }
+           catch(Exception e)
+            {
+                return Json(new { success = false, message = "<p style='color:red'>FAILED : " + e.Message +"</p>"}, JsonRequestBehavior.AllowGet);
+            }
+        }
+
         public void smart_inventory (string p_id, string qty)
         {
             try
@@ -540,6 +611,99 @@ namespace ic_ef.Controllers
             mage mage = new mage();
             var result = mage.pallet_list();
             return Json(result, JsonRequestBehavior.AllowGet);
+        }
+
+        public JsonResult get_bin_location(string id)
+        {
+            var result = (from t in db.production_log where t.bin_location == id && t.status != "pulled" select t.ictags).ToList();
+            return Json(new { result = result},JsonRequestBehavior.AllowGet);
+        }
+        //reset the location of the asset tag
+        public JsonResult reset_location (string asset)
+        {
+            string message = "";
+            var record = (from t in db.production_log where t.ictags == asset select t.wcoa).FirstOrDefault();
+            try
+            {
+                var original = db.production_log.Find(record.ToString());
+                if (original != null)
+                {
+                    original.bin_location = null;
+                    db.SaveChanges();
+                    db.Dispose();
+                    message = "<p style='color:green'>Asset " + asset + " is now reset to null</p>";
+                }
+               
+            }
+            catch
+            {
+                message = "<p style='color:red'>Asset " + asset + " Fail to reset</p>";
+            }
+            return Json(new { message = message }, JsonRequestBehavior.AllowGet);
+        }
+
+
+        public JsonResult asso (string asset, string serial)
+        {
+            string message = "";
+            var record = (from t in db.production_log where t.serial == serial select t.wcoa).FirstOrDefault();
+            try
+            {
+                var original = db.production_log.Find(record.ToString());
+                if (original != null)
+                {
+                    original.ictags = asset;
+                    db.SaveChanges();
+                    db.Dispose();
+                    message = "<p style='color:green'>Asset " + asset + " is now associate with " + serial + "</p>";
+                }
+            }
+
+
+            catch
+            {
+                message = "<p style='color:red'>Cant Find Asset " + asset + " please Contact your Supervisor" + "</p>";
+            }
+            return Json(new { message = message }, JsonRequestBehavior.AllowGet);
+        }
+
+        public JsonResult write_bin_location (string asset,string id)
+
+        {
+            string message = "";
+            if (!String.IsNullOrEmpty(asset))
+            {
+                var record = (from t in db.production_log where t.ictags == asset select t.wcoa).FirstOrDefault();
+                try
+                {
+                    var original = db.production_log.Find(record.ToString());
+                    if (original != null)
+                    {
+                        original.bin_location = id;
+                        db.SaveChanges();
+                        db.Dispose();
+                        message = "<p style='color:green'>Asset " + asset + " is now assigned to Bin " + id + "</p>";
+                    }
+                }
+                
+               
+                catch
+                {
+                     message = "<p style='color:red'>Cant Find Asset " + asset + " Please check Data Inputed or try to Associate Serial # with Asset tag Below. If Problem Still Occur, please Contact your Supervisor" + "</p>";
+                }
+            }
+            
+          
+            
+           
+            return Json(new { message = message}, JsonRequestBehavior.AllowGet);
+        }
+
+        public ActionResult bin_location(string id)
+        {
+
+            ViewData["id"] = id;
+            return View();
         }
 
         [HttpGet]
@@ -587,6 +751,145 @@ namespace ic_ef.Controllers
             }
         }
 
+
+        //import sku for retail POS
+        //update QTY in main website 
+        public JsonResult retail_quick_import(string price, string name, string sku, string weight, string desc, string short_desc, string qty, string[] websites, string stock, string status, string visible, string attr, string type, string tax, string img_path)
+        {
+            string message = "";
+           
+               
+            Models.retail_quick_import retail_model = new Models.retail_quick_import();
+            retail_model.price = price;
+            retail_model.name = name;
+            retail_model.sku = sku;
+            string original_sku = retail_model.sku;
+            retail_model.weight = weight;
+            retail_model.desc = desc;
+            retail_model.short_desc = short_desc;
+            retail_model.qty = qty;
+            retail_model.webistes = websites;
+            retail_model.stock = stock;
+            retail_model.status = status;
+            retail_model.visible = visible;
+            retail_model.attr = attr;
+            retail_model.type = type;
+            retail_model.tax_id = tax;
+
+            //format a sku just for retail
+            string to_be_import_sku = retail_model.sku + "_retail";
+
+            mage mage = new mage();
+            string path = img_path;
+
+
+            //create sku if product is not exisited
+            var original_product = mage.check_product(retail_model.sku);
+            var added_retail_product = mage.check_product(to_be_import_sku);
+            if (added_retail_product.Length == 0)
+            {
+                //if product not exisit create a new listing and set qty to 0
+                retail_model.sku = to_be_import_sku;
+                mage.retail_quick_import(retail_model);
+                added_retail_product = mage.check_product(retail_model.sku);
+                //get the product id for the new retail listing 
+                retail_model.p_id = added_retail_product[0].product_id;
+                //set the QTY to 1
+                retail_model.qty = "1";
+                double temp_qty = double.Parse(retail_model.qty);
+                
+                retail_model.qty = temp_qty.ToString();
+                //update qty for inventory module
+                smart_inventory(retail_model.p_id, retail_model.qty);
+
+                //update qty for classic magento inventory entity
+                mage.quick_update(retail_model.qty, retail_model.p_id,path);
+            }
+            else
+            {
+                //if sku is exisited
+                //just update the qty
+                double temp_added_retail_qty = double.Parse(added_retail_product[0].qty);
+                temp_added_retail_qty += 1;
+                added_retail_product[0].qty = temp_added_retail_qty.ToString();
+
+
+                //update qty for inventory module
+                smart_inventory(added_retail_product[0].product_id, added_retail_product[0].qty);
+
+                //update qty for classic magento inventory entity
+                mage.quick_update(added_retail_product[0].qty, added_retail_product[0].product_id,path);
+            }
+
+
+                //qty -1 on the original sku
+                double update_qty = double.Parse(original_product[0].qty);
+                update_qty -= 1;
+            //update inventroy module
+            smart_inventory(original_product[0].product_id, update_qty.ToString());
+                //update the core magento table
+                mage.quick_update(update_qty.ToString(), original_product[0].product_id, path);
+
+            //assign one asset to user
+            var location = (from t in db.production_log where t.channel == original_sku && t.status !="pulled" && t.bin_location != null  select t).FirstOrDefault();
+            //update the asset to sold
+            if (location != null)
+            {
+                var original = db.production_log.Find(location.wcoa);
+                if (original != null)
+                {
+                    original.status = "pulled";
+                    db.SaveChanges();
+                    db.Dispose();
+                    message = "<h3 style='color:green'>Product Imported Successfully</h3>";
+                }
+            }
+            else { message = "<h3 style='color:red'>Magento Inventory and Warehouse Inventory does not match, Contact your Supervisor</h3>"; }
+
+
+
+            
+            
+            //catch (Exception e)
+            //{
+            //    message = "<h3 style='color:red'>Product Imported Fail </p><p style='red'>" + e.Message + "</h3>";
+            //}
+
+            return Json(new { message = message , location = location.bin_location,asset = location.ictags }, JsonRequestBehavior.AllowGet);
+        }
+
+        public JsonResult online_store_picklist(string sku)
+        {
+            string message = "";
+            string result = "";
+            var location = (from t in db.production_log where t.channel == sku && t.status != "pulled" && t.bin_location != null select t).FirstOrDefault();
+            //update the asset to sold
+            if (location != null)
+            {
+                var original = db.production_log.Find(location.wcoa);
+                if (original != null)
+                {
+                    original.status = "pulled";
+                    db.SaveChanges();
+                    db.Dispose();
+                    result = "<div class='ui positive icon message'><i class='inbox icon'></i><div class='content'><div class='header'>Asset :" + location.ictags+"</div><p>Location : "+location.bin_location+"</p></div></div>";
+                    
+                }
+            }
+            else {
+                result = "<div class='ui negative message'><i class='inbox icon'></i><div class='content'><div class='header'><p style='color:red'>Magento Inventory and Warehouse Inventory does not match, Contact your Supervisor</p></div></div></div>";
+                    }
+
+            return Json(new {result = result} ,JsonRequestBehavior.AllowGet);
+        }
+
+
+        public ActionResult asset_locator ()
+        {
+
+            return View();
+        }
+
         public JsonResult quick_import (string price, string name, string sku, string weight, string desc, string short_desc,string qty, string[] websites, string stock, string status, string visible, string attr, string type, string tax, string img_path)
         {
             string message = "";
@@ -611,7 +914,7 @@ namespace ic_ef.Controllers
 
             try
             {
-                //add a SKU checking function
+                //add a SKU checking function   
                 //if sku already exisit jump to quick_update
                 var product = mage.check_product(retail_model.sku);
 
@@ -640,7 +943,7 @@ namespace ic_ef.Controllers
                 smart_inventory(retail_model.p_id, retail_model.qty);
 
                 //update qty for classic magento inventory entity
-                mage.quick_update(retail_model, path);
+                mage.quick_update(retail_model.qty,retail_model.sku, path);
 
                 //update shelf qty 
                 //obtain old sku data
@@ -652,7 +955,7 @@ namespace ic_ef.Controllers
                 retail_model.sku = old_product[0].sku;
 
                 smart_inventory(retail_model.sku, retail_model.qty);
-                mage.quick_update(retail_model, path);
+                mage.quick_update(retail_model.qty, retail_model.sku, path);
 
 
                 message = "<h3 style='color:green'>Product Imported Successfully</h3>";

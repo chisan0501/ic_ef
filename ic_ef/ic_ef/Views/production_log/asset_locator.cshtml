@@ -1,0 +1,57 @@
+﻿
+@{
+    ViewBag.Title = "asset_locator";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+
+<div class="ui two column centered grid">
+    <div class="column">
+
+
+
+        <div id="input">
+            <h3>Scan QR code to Search for Asset Location</h3>
+           
+                <input type="text" id="search_input" class="insert">
+                <button id="search_submit" type="button">Search</button>
+            <div id="status"></div>
+            <p id="message"></p>
+        </div>
+    </div>
+
+</div>
+
+
+<script>
+    $('#search_submit').click(function(){
+    
+        var sku = $('#search_input').val();
+    
+        var jsonObject = {
+            sku : sku
+        };
+        $.ajax({
+            url: "@Url.Action("online_store_picklist")",
+            type: "POST",
+
+        data: JSON.stringify(jsonObject),
+        contentType: "application/json; charset=utf-8",
+        dataType: "json",
+
+        success: function (data) {
+            $('#status').append(data.result);
+            $('#message').append(data.message);
+
+          
+                       
+        },
+        error: function (data) {
+           
+ 
+        }
+    });
+
+    });
+</script>

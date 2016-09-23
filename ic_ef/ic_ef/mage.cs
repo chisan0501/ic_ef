@@ -132,7 +132,7 @@ namespace ic_ef
 
         //this is currently connect to the dev site's SOAP Api
         //*** remeber to change it back to connect all SOAP API after live***
-        public void quick_update(Models.retail_quick_import retail, string path)
+        public void quick_update(string qty,string sku, string path)
         {
             MagentoService mservice = new MagentoService();
             String mlogin = mservice.login("admin", "Interconnection123!");
@@ -141,11 +141,11 @@ namespace ic_ef
             qty_update.manage_stockSpecified = true;
 
             qty_update.manage_stock = 1;
-            qty_update.qty = retail.qty;
+            qty_update.qty = qty;
             qty_update.is_in_stock = 1;
             qty_update.is_in_stockSpecified = true;
             mservice.catalogInventoryStockItemUpdate(
- mlogin, retail.sku, qty_update);
+ mlogin, sku, qty_update);
             //catalogProductAttributeMediaCreateEntity photo = new catalogProductAttributeMediaCreateEntity();
 
             //string image64 = image_to_64(path);
@@ -468,6 +468,7 @@ namespace ic_ef
 
         }
 
+        //use for retail picklist
         public void retail_quick_import (Models.retail_quick_import retail)
         {
             MagentoService mservice = new MagentoService();
@@ -491,7 +492,7 @@ namespace ic_ef
             
             create.additional_attributes = additionalAttributes;
             mservice.catalogProductCreate(
-    mlogin, retail.type, retail.attr, retail.sku, create, "1");
+    mlogin, retail.type, retail.attr, retail.sku, create, "5");
             
             mservice.catalogCategoryAssignProduct(mlogin, 2, retail.sku, "0", "SKU");
 

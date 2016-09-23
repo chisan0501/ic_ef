@@ -29,5 +29,7 @@ namespace ic_ef
         public string location { get; set; }
         public string video_card { get; set; }
         public string screen_size { get; set; }
+        public string bin_location { get; set; }
+        public string status { get; set; }
     }
 }

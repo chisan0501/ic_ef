@@ -4,9 +4,13 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-
+<link href="~/js/jquery.dataTables.min.css" rel="stylesheet" />
+<script src="~/js/jquery.dataTables.min.js"></script>
 
 <div class="ui three column centered grid container">
+    <div id="loader" class="ui disabled dimmer">
+        <div class="ui text loader">Loading</div>
+    </div>
     <div class="column">
 
         <h3 class="ui center aligned block header">
@@ -21,14 +25,9 @@
                     <h3>Search by COA-ID</h3>
                     <div class="ui left icon action input">
                         <i class="search icon"></i>
-                        <input type="text" placeholder="Order #">
+                        <input id="coa" type="text" placeholder="Order #">
                         <div id="search_coa" class="ui blue submit button">Search</div>
                     </div>
-                    <fieldset >
-                        <input type="checkbox" id="search_check" name="chk"/>With Dashes
-
-                        
-                    </fieldset>
                     <div class="ui horizontal divider">
                         Or
                     </div>
@@ -69,13 +68,65 @@
         </div>
     </div>
 </div>
-
+<div class="ui basic modal">
+    <i class="close icon"></i>
+    <div class="header">
+        Archive Old Messages
+    </div>
+    <div class="image content">
+        <div class="image">
+            <i class="archive icon"></i>
+        </div>
+        <div class="description">
+            <p>Your inbox is getting full, would you like us to enable automatic archiving of old messages?</p>
+        </div>
+    </div>
+    <div class="actions">
+        <div class="two fluid ui inverted buttons">
+            <div class="ui cancel red basic inverted button">
+                <i class="remove icon"></i>
+                No
+            </div>
+            <div class="ui ok green basic inverted button">
+                <i class="checkmark icon"></i>
+                Yes
+            </div>
+        </div>
+    </div>
+</div>
 <script>
     
     $("#search_coa").click(function () {
-        var chk = $('#search_check').is(":checked")
-        
+        $('#loader').attr('class', 'ui active dimmer');
+        var coa = $('#coa').val();
+        var jsonObject = {
+            coa : coa
+        };
+        $.ajax({
+            url: "@Url.Action("Search_COA_json")",
+            type: "POST",
+
+        data: JSON.stringify(jsonObject),
+        contentType: "application/json; charset=utf-8",
+        dataType: "json",
+
+        success: function (data) {
+            $('#loader').attr('class', 'ui disabled dimmer');
+            $('.ui.modal')
+  .modal({
+      blurring: true
+  })
+  .modal('show')
+            ;
+                
+                       
+        },
+        error: function (data) {
+            $('#loader').attr('class', 'ui disabled dimmer');
+ 
+        }
     });
+    })
 
 </script>
 
