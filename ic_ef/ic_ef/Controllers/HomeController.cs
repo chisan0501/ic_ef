@@ -328,7 +328,7 @@ namespace ic_ef.Controllers
                 string img_time = img.time.ToString();
                 return Json(new { discovery = discovery, rediscovery = rediscovery, img = img, discovery_time = discovery_time, rediscovery_time = rediscovery_time, img_time = img_time }, JsonRequestBehavior.AllowGet);
             }
-          catch(Exception e)
+          catch(Exception )
             {
                 return Json(new { discovery = discovery, rediscovery = rediscovery, img = "", discovery_time = discovery_time, rediscovery_time = rediscovery_time }, JsonRequestBehavior.AllowGet);
             }

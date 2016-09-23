@@ -31,7 +31,7 @@ namespace ic_ef.Controllers
         public string mar_des_current = "";
         public string oem_lap_current = "";
         public string apple_current = "";
-        
+
         private db_a094d4_icdbEntities db = new db_a094d4_icdbEntities();
         Models.magentoViewModel magentoView = new Models.magentoViewModel();
 
@@ -51,6 +51,8 @@ namespace ic_ef.Controllers
                 return !string.IsNullOrEmpty(json_data) ? JsonConvert.DeserializeObject<T>(json_data) : new T();
             }
         }
+
+
         //fetch the lastest sku from magento site
         protected void fetch_latest_sku()
         {
@@ -116,6 +118,18 @@ namespace ic_ef.Controllers
                 }
             }
 
+        }
+
+        public ActionResult bin_overview()
+        {
+            return View();
+
+        }
+        //get current inventory in bins 
+        public JsonResult get_current_inv()
+        {
+            var result = (from t in db.production_log where t.status == null && t.bin_location != null orderby t.bin_location select t).ToList();
+            return Json(result,JsonRequestBehavior.AllowGet);
         }
         
         [HttpGet]
@@ -441,7 +455,7 @@ namespace ic_ef.Controllers
                 }
 
             }
-            catch (Exception e) {
+            catch (Exception) {
                 laptop_inv = null;
                 }
             return laptop_inv;
@@ -860,7 +874,7 @@ namespace ic_ef.Controllers
 
         public JsonResult online_store_picklist(string sku)
         {
-            string message = "";
+         
             string result = "";
             var location = (from t in db.production_log where t.channel == sku && t.status != "pulled" && t.bin_location != null select t).FirstOrDefault();
             //update the asset to sold
@@ -1284,10 +1298,10 @@ namespace ic_ef.Controllers
            // get_catory_tree();
             //for all product qty > 1
             //var url = "http://connectall.org/get_product.php";
-            var url = "http://connectall.org/get_enable.php";
+            //var url = "http://connectall.org/get_enable.php";
             //for all enabled latop product
             // ViewBag.laptop =  read_json(url);
-           url = "http://connectall.org/desktop.php";
+          var url = "http://connectall.org/desktop.php";
            // ViewBag.desktop = read_json(url);
 
             fetch_latest_sku();

@@ -132,7 +132,7 @@ namespace ic_ef
             int default_hdd = 0;
             int default_ram = 0;
             double final_price = 0;
-            string sku_family = "";
+            
 
             sku_family = "MARDKC2D/all";
             final_price = 79;
@@ -172,7 +172,7 @@ namespace ic_ef
             int default_hdd = 0;
             int default_ram = 0;
             double final_price = 0;
-            string sku_family = "";
+           
 
             sku_family = "MARDKi3/all-250";
             final_price = 179;
@@ -582,7 +582,7 @@ namespace ic_ef
             int default_hdd = 0;
             int default_ram = 0;
             double final_price = 0;
-            string sku_family = "";
+            
 
             sku_family = "OEMDKC2D/all";
             final_price = 124;
@@ -622,7 +622,7 @@ namespace ic_ef
             int default_hdd = 0;
             int default_ram = 0;
             double final_price = 0;
-            string sku_family = "";
+          
 
             sku_family = "OEMDKi3/all-250";
             final_price = 199;
@@ -662,7 +662,7 @@ namespace ic_ef
             int default_hdd = 0;
             int default_ram = 0;
             double final_price = 0;
-            string sku_family = "";
+            //string sku_family = "";
             if (cpu <= 2.4)
             {
                 sku_family = "OEMDKI5/1st-250";
@@ -723,7 +723,7 @@ namespace ic_ef
             int default_hdd = 0;
             int default_ram = 0;
             double final_price = 0;
-            string sku_family = "";
+           
             if (cpu <= 2.4)
             {
                 sku_family = "OEMDKI7/1st-250";
