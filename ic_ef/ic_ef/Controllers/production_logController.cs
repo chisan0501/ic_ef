@@ -771,6 +771,17 @@ namespace ic_ef.Controllers
         public JsonResult retail_quick_import(string price, string name, string sku, string weight, string desc, string short_desc, string qty, string[] websites, string stock, string status, string visible, string attr, string type, string tax, string img_path)
         {
             string message = "";
+            //check to see if inventory has that item before adding it to the list
+            var quick_check = (from t in db.production_log where t.channel == sku select t).ToList();
+
+            if(quick_check.Count == 0)
+            {
+                message = "<h3 style='color:red'>" + sku + " is not yet avaiable in Inventory, please contact administrator for more information</h3>";
+                return Json(new { message = message }, JsonRequestBehavior.AllowGet);
+            }
+
+
+           
            
                
             Models.retail_quick_import retail_model = new Models.retail_quick_import();
