@@ -772,7 +772,7 @@ namespace ic_ef.Controllers
         {
             string message = "";
             //check to see if inventory has that item before adding it to the list
-            var quick_check = (from t in db.production_log where t.channel == sku select t).ToList();
+            var quick_check = (from t in db.production_log where t.channel == sku && t.bin_location != null select t).ToList();
 
             if(quick_check.Count == 0)
             {
