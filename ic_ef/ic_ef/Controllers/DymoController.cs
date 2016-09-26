@@ -264,6 +264,9 @@ namespace ic_ef.Controllers
          return Json(new { success = "true"}, JsonRequestBehavior.AllowGet);       
         }
 
+
+        //this is originally a function to record item input and sold date, but it was abandon due to lack of usage
+        //update price on click 
         [HttpPost]
         public JsonResult write_RetailDymo(int asset_tag, double price, string manu, string cpu, string ram, string hdd,string sku)
         {
@@ -296,7 +299,7 @@ namespace ic_ef.Controllers
                     db.Dispose();
                 }
 
-                
+                //update price to magento system after price label have printed out 
                 string price_str = price.ToString();
                 mage mage = new mage();
               bool success =  mage.update_price(sku, price_str);
