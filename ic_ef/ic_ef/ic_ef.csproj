@@ -395,6 +395,7 @@
     <Compile Include="Models\magento_importModel.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
     <Compile Include="Models\shipstationModel.cs" />
+    <Compile Include="Models\shipstation_order_model.cs" />
     <Compile Include="monitor_log.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
@@ -446,7 +447,7 @@
     <Compile Include="users.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
-    <Compile Include="Web References\org.interconnection.dev\Reference.cs">
+    <Compile Include="Web References\org.connectall\Reference.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Reference.map</DependentUpon>
@@ -989,114 +990,6 @@
     <Content Include="Views\Manage\Admin_dashboard.cshtml" />
     <Content Include="Views\production_log\magento_retail.cshtml" />
     <Content Include="web.config" />
-    <Content Include="Web References\org.interconnection.dev\apiEntity.datasource">
-      <DependentUpon>Reference.map</DependentUpon>
-    </Content>
-    <Content Include="Web References\org.interconnection.dev\associativeEntity.datasource">
-      <DependentUpon>Reference.map</DependentUpon>
-    </Content>
-    <Content Include="Web References\org.interconnection.dev\catalogAssignedProduct.datasource">
-      <DependentUpon>Reference.map</DependentUpon>
-    </Content>
-    <Content Include="Web References\org.interconnection.dev\catalogAttributeEntity.datasource">
-      <DependentUpon>Reference.map</DependentUpon>
-    </Content>
-    <Content Include="Web References\org.interconnection.dev\catalogAttributeOptionEntity.datasource">
-      <DependentUpon>Reference.map</DependentUpon>
-    </Content>
-    <Content Include="Web References\org.interconnection.dev\catalogCategoryEntityNoChildren.datasource">
-      <DependentUpon>Reference.map</DependentUpon>
-    </Content>
-    <Content Include="Web References\org.interconnection.dev\catalogCategoryInfo.datasource">
-      <DependentUpon>Reference.map</DependentUpon>
-    </Content>
-    <Content Include="Web References\org.interconnection.dev\catalogCategoryTree.datasource">
-      <DependentUpon>Reference.map</DependentUpon>
-    </Content>
-    <Content Include="Web References\org.interconnection.dev\catalogInventoryStockItemEntity.datasource">
-      <DependentUpon>Reference.map</DependentUpon>
-    </Content>
-    <Content Include="Web References\org.interconnection.dev\catalogProductAttributeEntity.datasource">
-      <DependentUpon>Reference.map</DependentUpon>
-    </Content>
-    <Content Include="Web References\org.interconnection.dev\catalogProductAttributeMediaTypeEntity.datasource">
-      <DependentUpon>Reference.map</DependentUpon>
-    </Content>
-    <Content Include="Web References\org.interconnection.dev\catalogProductAttributeSetEntity.datasource">
-      <DependentUpon>Reference.map</DependentUpon>
-    </Content>
-    <Content Include="Web References\org.interconnection.dev\catalogProductCustomOptionInfoEntity.datasource">
-      <DependentUpon>Reference.map</DependentUpon>
-    </Content>
-    <Content Include="Web References\org.interconnection.dev\catalogProductCustomOptionListEntity.datasource">
-      <DependentUpon>Reference.map</DependentUpon>
-    </Content>
-    <Content Include="Web References\org.interconnection.dev\catalogProductCustomOptionTypesEntity.datasource">
-      <DependentUpon>Reference.map</DependentUpon>
-    </Content>
-    <Content Include="Web References\org.interconnection.dev\catalogProductCustomOptionValueInfoEntity.datasource">
-      <DependentUpon>Reference.map</DependentUpon>
-    </Content>
-    <Content Include="Web References\org.interconnection.dev\catalogProductCustomOptionValueListEntity.datasource">
-      <DependentUpon>Reference.map</DependentUpon>
-    </Content>
-    <Content Include="Web References\org.interconnection.dev\catalogProductDownloadableLinkInfoEntity.datasource">
-      <DependentUpon>Reference.map</DependentUpon>
-    </Content>
-    <Content Include="Web References\org.interconnection.dev\catalogProductEntity.datasource">
-      <DependentUpon>Reference.map</DependentUpon>
-    </Content>
-    <Content Include="Web References\org.interconnection.dev\catalogProductImageEntity.datasource">
-      <DependentUpon>Reference.map</DependentUpon>
-    </Content>
-    <Content Include="Web References\org.interconnection.dev\catalogProductLinkAttributeEntity.datasource">
-      <DependentUpon>Reference.map</DependentUpon>
-    </Content>
-    <Content Include="Web References\org.interconnection.dev\catalogProductLinkEntity.datasource">
-      <DependentUpon>Reference.map</DependentUpon>
-    </Content>
-    <Content Include="Web References\org.interconnection.dev\catalogProductReturnEntity.datasource">
-      <DependentUpon>Reference.map</DependentUpon>
-    </Content>
-    <Content Include="Web References\org.interconnection.dev\catalogProductSpecialPriceReturnEntity.datasource">
-      <DependentUpon>Reference.map</DependentUpon>
-    </Content>
-    <Content Include="Web References\org.interconnection.dev\catalogProductTagInfoEntity.datasource">
-      <DependentUpon>Reference.map</DependentUpon>
-    </Content>
-    <Content Include="Web References\org.interconnection.dev\catalogProductTagListEntity.datasource">
-      <DependentUpon>Reference.map</DependentUpon>
-    </Content>
-    <Content Include="Web References\org.interconnection.dev\catalogProductTierPriceEntity.datasource">
-      <DependentUpon>Reference.map</DependentUpon>
-    </Content>
-    <Content Include="Web References\org.interconnection.dev\catalogProductTypeEntity.datasource">
-      <DependentUpon>Reference.map</DependentUpon>
-    </Content>
-    <Content Include="Web References\org.interconnection.dev\customerAddressEntityItem.datasource">
-      <DependentUpon>Reference.map</DependentUpon>
-    </Content>
-    <Content Include="Web References\org.interconnection.dev\customerCustomerEntity.datasource">
-      <DependentUpon>Reference.map</DependentUpon>
-    </Content>
-    <Content Include="Web References\org.interconnection.dev\customerGroupEntity.datasource">
-      <DependentUpon>Reference.map</DependentUpon>
-    </Content>
-    <Content Include="Web References\org.interconnection.dev\directoryCountryEntity.datasource">
-      <DependentUpon>Reference.map</DependentUpon>
-    </Content>
-    <Content Include="Web References\org.interconnection.dev\directoryRegionEntity.datasource">
-      <DependentUpon>Reference.map</DependentUpon>
-    </Content>
-    <Content Include="Web References\org.interconnection.dev\existsFaltureEntity.datasource">
-      <DependentUpon>Reference.map</DependentUpon>
-    </Content>
-    <Content Include="Web References\org.interconnection.dev\giftMessageResponse.datasource">
-      <DependentUpon>Reference.map</DependentUpon>
-    </Content>
-    <Content Include="Web References\org.interconnection.dev\fieldInfo.datasource">
-      <DependentUpon>Reference.map</DependentUpon>
-    </Content>
     <Content Include="Views\production_log\magento_retail_view.cshtml" />
     <Content Include="Views\production_log\mage_order_import.cshtml" />
     <Content Include="Views\production_log\get_list.cshtml" />
@@ -1110,48 +1003,153 @@
     <Content Include="Views\production_log\bin_location.cshtml" />
     <Content Include="Views\production_log\asset_locator.cshtml" />
     <Content Include="Views\production_log\bin_overview.cshtml" />
-    <None Include="Web References\org.interconnection.dev\item.xsd">
+    <Content Include="Web References\org.connectall\apiEntity.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </Content>
+    <Content Include="Web References\org.connectall\associativeEntity.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </Content>
+    <Content Include="Web References\org.connectall\catalogAssignedProduct.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </Content>
+    <Content Include="Web References\org.connectall\catalogAttributeEntity.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </Content>
+    <Content Include="Web References\org.connectall\catalogAttributeOptionEntity.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </Content>
+    <Content Include="Web References\org.connectall\catalogCategoryEntityNoChildren.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </Content>
+    <Content Include="Web References\org.connectall\catalogCategoryInfo.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </Content>
+    <Content Include="Web References\org.connectall\catalogCategoryTree.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </Content>
+    <Content Include="Web References\org.connectall\catalogInventoryStockItemEntity.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </Content>
+    <Content Include="Web References\org.connectall\catalogProductAttributeEntity.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </Content>
+    <Content Include="Web References\org.connectall\catalogProductAttributeMediaTypeEntity.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </Content>
+    <Content Include="Web References\org.connectall\catalogProductAttributeSetEntity.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </Content>
+    <Content Include="Web References\org.connectall\catalogProductCustomOptionInfoEntity.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </Content>
+    <Content Include="Web References\org.connectall\catalogProductCustomOptionListEntity.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </Content>
+    <Content Include="Web References\org.connectall\catalogProductCustomOptionTypesEntity.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </Content>
+    <Content Include="Web References\org.connectall\catalogProductCustomOptionValueInfoEntity.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </Content>
+    <Content Include="Web References\org.connectall\catalogProductCustomOptionValueListEntity.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </Content>
+    <Content Include="Web References\org.connectall\catalogProductDownloadableLinkInfoEntity.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </Content>
+    <Content Include="Web References\org.connectall\catalogProductEntity.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </Content>
+    <Content Include="Web References\org.connectall\catalogProductImageEntity.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </Content>
+    <Content Include="Web References\org.connectall\catalogProductLinkAttributeEntity.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </Content>
+    <Content Include="Web References\org.connectall\catalogProductLinkEntity.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </Content>
+    <Content Include="Web References\org.connectall\catalogProductReturnEntity.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </Content>
+    <Content Include="Web References\org.connectall\catalogProductSpecialPriceReturnEntity.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </Content>
+    <Content Include="Web References\org.connectall\catalogProductTagInfoEntity.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </Content>
+    <Content Include="Web References\org.connectall\catalogProductTagListEntity.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </Content>
+    <Content Include="Web References\org.connectall\catalogProductTierPriceEntity.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </Content>
+    <Content Include="Web References\org.connectall\catalogProductTypeEntity.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </Content>
+    <Content Include="Web References\org.connectall\customerAddressEntityItem.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </Content>
+    <Content Include="Web References\org.connectall\customerCustomerEntity.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </Content>
+    <Content Include="Web References\org.connectall\customerGroupEntity.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </Content>
+    <Content Include="Web References\org.connectall\directoryCountryEntity.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </Content>
+    <Content Include="Web References\org.connectall\directoryRegionEntity.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </Content>
+    <Content Include="Web References\org.connectall\existsFaltureEntity.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </Content>
+    <Content Include="Web References\org.connectall\giftMessageResponse.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </Content>
+    <None Include="Web References\org.connectall\item.xsd">
       <SubType>Designer</SubType>
     </None>
-    <None Include="Web References\org.interconnection.dev\Magento.wsdl" />
-    <Content Include="Web References\org.interconnection.dev\magentoInfoEntity.datasource">
+    <None Include="Web References\org.connectall\Magento.wsdl" />
+    <Content Include="Web References\org.connectall\magentoInfoEntity.datasource">
       <DependentUpon>Reference.map</DependentUpon>
     </Content>
-    <None Include="Web References\org.interconnection.dev\Reference.map">
+    <Content Include="Web References\org.connectall\Reference.map">
       <Generator>MSDiscoCodeGenerator</Generator>
       <LastGenOutput>Reference.cs</LastGenOutput>
-    </None>
-    <Content Include="Web References\org.interconnection.dev\salesOrderCreditmemoEntity.datasource">
+    </Content>
+    <Content Include="Web References\org.connectall\salesOrderCreditmemoEntity.datasource">
       <DependentUpon>Reference.map</DependentUpon>
     </Content>
-    <Content Include="Web References\org.interconnection.dev\salesOrderEntity.datasource">
+    <Content Include="Web References\org.connectall\salesOrderEntity.datasource">
       <DependentUpon>Reference.map</DependentUpon>
     </Content>
-    <Content Include="Web References\org.interconnection.dev\salesOrderInvoiceEntity.datasource">
+    <Content Include="Web References\org.connectall\salesOrderInvoiceEntity.datasource">
       <DependentUpon>Reference.map</DependentUpon>
     </Content>
-    <Content Include="Web References\org.interconnection.dev\salesOrderListEntity.datasource">
+    <Content Include="Web References\org.connectall\salesOrderListEntity.datasource">
       <DependentUpon>Reference.map</DependentUpon>
     </Content>
-    <Content Include="Web References\org.interconnection.dev\salesOrderShipmentEntity.datasource">
+    <Content Include="Web References\org.connectall\salesOrderShipmentEntity.datasource">
       <DependentUpon>Reference.map</DependentUpon>
     </Content>
-    <Content Include="Web References\org.interconnection.dev\shoppingCartInfoEntity.datasource">
+    <Content Include="Web References\org.connectall\shoppingCartInfoEntity.datasource">
       <DependentUpon>Reference.map</DependentUpon>
     </Content>
-    <Content Include="Web References\org.interconnection.dev\shoppingCartLicenseEntity.datasource">
+    <Content Include="Web References\org.connectall\shoppingCartLicenseEntity.datasource">
       <DependentUpon>Reference.map</DependentUpon>
     </Content>
-    <Content Include="Web References\org.interconnection.dev\shoppingCartPaymentMethodResponseEntity.datasource">
+    <Content Include="Web References\org.connectall\shoppingCartPaymentMethodResponseEntity.datasource">
       <DependentUpon>Reference.map</DependentUpon>
     </Content>
-    <Content Include="Web References\org.interconnection.dev\shoppingCartShippingMethodEntity.datasource">
+    <Content Include="Web References\org.connectall\shoppingCartShippingMethodEntity.datasource">
       <DependentUpon>Reference.map</DependentUpon>
     </Content>
-    <Content Include="Web References\org.interconnection.dev\shoppingCartTotalsEntity.datasource">
+    <Content Include="Web References\org.connectall\shoppingCartTotalsEntity.datasource">
       <DependentUpon>Reference.map</DependentUpon>
     </Content>
-    <Content Include="Web References\org.interconnection.dev\storeEntity.datasource">
+    <Content Include="Web References\org.connectall\storeEntity.datasource">
       <DependentUpon>Reference.map</DependentUpon>
     </Content>
     <None Include="web.Debug.config">
@@ -1188,16 +1186,16 @@
     <TypeScriptCompile Include="Scripts\typings\dymo-label-framework\dymo-label-framework.d.ts" />
   </ItemGroup>
   <ItemGroup>
-    <WebReferenceUrl Include="http://dev.interconnection.org/index.php/api/v2_soap/%3fwsdl">
+    <WebReferenceUrl Include="http://connectall.org/index.php/api/v2_soap/%3fwsdl">
       <UrlBehavior>Dynamic</UrlBehavior>
-      <RelPath>Web References\org.interconnection.dev\</RelPath>
-      <UpdateFromURL>http://dev.interconnection.org/index.php/api/v2_soap/%3fwsdl</UpdateFromURL>
+      <RelPath>Web References\org.connectall\</RelPath>
+      <UpdateFromURL>http://connectall.org/index.php/api/v2_soap/%3fwsdl</UpdateFromURL>
       <ServiceLocationURL>
       </ServiceLocationURL>
       <CachedDynamicPropName>
       </CachedDynamicPropName>
       <CachedAppSettingsObjectName>Settings</CachedAppSettingsObjectName>
-      <CachedSettingsPropName>ic_ef_org_interconnection_dev_MagentoService</CachedSettingsPropName>
+      <CachedSettingsPropName>ic_ef_org_connectall_MagentoService</CachedSettingsPropName>
     </WebReferenceUrl>
   </ItemGroup>
   <PropertyGroup>

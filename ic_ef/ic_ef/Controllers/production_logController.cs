@@ -13,13 +13,17 @@ using Newtonsoft.Json;
 using System.Collections;
 using System.Web.Script.Serialization;
 using System.IO;
-using ic_ef.org.interconnection.dev;
+using ic_ef.org.connectall;
+using System.Net.Http;
+using ic_ef.Models;
+using System.Threading.Tasks;
+using System.Globalization;
 
 namespace ic_ef.Controllers
 {
 
 
-    public class production_logController : Controller
+    public class production_logController : AsyncController
     {
         public string oem_des = "";
         public string mar_lap = "";
@@ -1219,11 +1223,12 @@ namespace ic_ef.Controllers
 
         //    return Json(new { success = true, responseText = "Qty Updated" }, JsonRequestBehavior.AllowGet);
         //}
-     
+
 
         [HttpPost]
-        public JsonResult order_json_ts (Models.ts_order[] tsorder)
+        public async Task<JsonResult> order_json_ts(Models.ts_order[] tsorder)
         {
+            await shipstation(tsorder);
             foreach (var item in tsorder)
             {
                 //split full name into first and last
@@ -1234,9 +1239,100 @@ namespace ic_ef.Controllers
                 item.Org_Street_Address = item.Org_Street_Address.Replace("\n", "");
             }
             mage mage = new mage();
-           string result =  mage.create_order_ts(tsorder);
-            return Json(new { scuess = true , message = result}, JsonRequestBehavior.AllowGet);
+            string result = mage.create_order_ts(tsorder);
+
+            return Json(new { scuess = true, message = result }, JsonRequestBehavior.AllowGet);
         }
+
+        public static async Task shipstation(Models.ts_order[] tsorder)
+        {
+
+            var baseAddress = new Uri("https://ssapi.shipstation.com/");
+
+            foreach (var csv_item in tsorder)
+            {
+
+           
+           
+
+            using (var httpClient = new HttpClient { BaseAddress = baseAddress })
+            {
+                httpClient.DefaultRequestHeaders.TryAddWithoutValidation("authorization", "Basic ZmU3YzE2MGMyZjE0NDc1ZDljNWQ0ZWI2ZmMzYmRhOWU6YzRiM2RhMjlkZWZlNDgyOWJlZmRlYTExNmU1N2Q5ZTY=");
+
+
+                shipstation_order_model order = new shipstation_order_model();
+                shipstation_order_model.Billto billto = new shipstation_order_model.Billto();
+                shipstation_order_model.Shipto shipto = new shipstation_order_model.Shipto();
+                shipstation_order_model.Item item = new shipstation_order_model.Item();
+                shipstation_order_model.Advancedoptions option = new shipstation_order_model.Advancedoptions();
+                    //order info
+                    //parse current ts order number to int
+                    int ts_order_number = int.Parse(csv_item.TS_Order_Number);
+                    order.orderId = ts_order_number;
+                order.orderNumber = csv_item.TS_Order_Number ;
+                var date = DateTime.UtcNow.ToString("yyyy'-'MM'-'dd'T'HH':'mm':'ss'.'fff");
+
+                order.orderDate = date;
+                order.createDate = date;
+                order.modifyDate = date;
+                order.paymentDate = date;
+                order.shipByDate = date;
+                order.orderStatus = "awaiting_shipment";
+                order.customerEmail = csv_item.Org_Email;
+
+                //bill to info
+                //order.billTo = billto;
+                //billto.name = "Sam Yeung";
+                //billto.street1 = "1208 N 185th CT";
+                //billto.city = "Seattle";
+                //billto.state = "WA";
+                //billto.country = "US";
+                //billto.company = "Interconnection";
+
+                //ship to info
+                order.shipTo = shipto;
+                    shipto.name = csv_item.Org_Contact_Name;
+                    shipto.street1 = csv_item.Org_Street_Address;
+                    shipto.postalCode = csv_item.Org_Zip_Code;
+                    shipto.city = csv_item.Org_City;
+                    shipto.state = csv_item.Org_State;
+                    shipto.country = csv_item.Org_Country;
+                    shipto.company = csv_item.Org_Name;
+
+                    //item info
+                    shipstation_order_model.Item[] items = new shipstation_order_model.Item[] {
+                    item
+                };
+                    item.sku = csv_item.Item_ID;
+                    item.name = csv_item.Product_Name;
+                    item.quantity = csv_item.Total_Product_Quantity;
+                
+
+                
+                order.items = items;
+                order.advancedOptions = option;
+                    //store id for TechSoup
+                    option.storeId = 12171;
+                option.warehouseId = 11239;
+
+
+                var order_json = new JavaScriptSerializer().Serialize(order);
+               
+
+                using (var content = new StringContent(order_json, System.Text.Encoding.Default, "application/json"))
+
+               
+                {
+                    using (var response = await httpClient.PostAsync("orders/createorder", content))
+                    {
+                        string responseData = await response.Content.ReadAsStringAsync();
+                    }
+                }
+
+            }
+            }
+        }
+
         [HttpPost]
         public JsonResult order_json_g360(Models.g360_order[] g360order)
         {
@@ -1253,6 +1349,7 @@ namespace ic_ef.Controllers
         }
         public ActionResult mage_order_import ()
         {
+            
            string url = "http://www.dev.interconnection.org/qbjson.json";
          //   var retail_inv = json_to_customer(url);
             mage mage = new mage();

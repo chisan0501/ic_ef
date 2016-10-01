@@ -12,7 +12,7 @@
 
 
         <div id="input">
-            <h3>Scan QR code to Search for Asset Location</h3>
+            <h3>Copy and Paste SKU to Pull asset(s) from ICDB</h3>
            
                 <input type="text" id="search_input" class="insert">
                 <button id="search_submit" type="button">Search</button>
@@ -25,33 +25,40 @@
 
 
 <script>
-    $('#search_submit').click(function(){
-    
+    $('#search_submit').click(function () {
+        
+        
         var sku = $('#search_input').val();
-    
-        var jsonObject = {
-            sku : sku
-        };
-        $.ajax({
-            url: "@Url.Action("online_store_picklist")",
-            type: "POST",
+        var confirm_box = confirm("Do you want to Pull " + sku + " from ICDB?");
+        if (confirm_box == true) {
+            var jsonObject = {
+                sku : sku
+            };
+            $.ajax({
+                url: "@Url.Action("online_store_picklist")",
+                type: "POST",
 
-        data: JSON.stringify(jsonObject),
-        contentType: "application/json; charset=utf-8",
-        dataType: "json",
+            data: JSON.stringify(jsonObject),
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
 
-        success: function (data) {
-            $('#status').append(data.result);
-            $('#message').append(data.message);
+            success: function (data) {
+                $('#status').append(data.result);
+                $('#message').append(data.message);
 
           
                        
-        },
-        error: function (data) {
+            },
+            error: function (data) {
            
  
+            }
+        });
+        } else {
+            alert("You pressed Cancel!");
         }
-    });
+
+       
 
     });
 </script>

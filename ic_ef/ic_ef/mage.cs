@@ -1,4 +1,5 @@
-﻿using ic_ef.org.interconnection.dev;
+﻿using ic_ef.org.connectall;
+
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -265,10 +266,13 @@ namespace ic_ef
                     var cart = mservice.shoppingCartCreate(mlogin, "1");
                     //set customer to cart 
                     shoppingCartCustomerEntity customer = new shoppingCartCustomerEntity();
-                    customer.firstname = order.first_name;
-                    customer.lastname = order.last_name;
-                    customer.email = order.Org_Email;
-                    customer.mode = "guest";
+                    customer.firstname = "import";
+                    customer.lastname = "Orders";
+                    customer.email = "import@interconnection.org";
+                    customer.password = "111111";
+                    customer.customer_id = 15795;
+                    customer.customer_idSpecified = true;
+                    customer.mode = "customer";
                     customer.website_id = 1;
                     mservice.shoppingCartCustomerSet(mlogin, cart, customer, "1");
                     //set customer address
@@ -317,12 +321,12 @@ namespace ic_ef
                     //add shipping method
                     var avaiable_method = mservice.shoppingCartShippingList(mlogin, cart, "1");
 
-                    mservice.shoppingCartShippingMethod(mlogin, cart, "storepickup_storepickup", "1");
+                    mservice.shoppingCartShippingMethod(mlogin, cart, "fedex_FEDEX_GROUND", "1");
                     //add payment method
                     var avaiable_payment = mservice.shoppingCartPaymentList(mlogin, cart, "1");
                     shoppingCartPaymentMethodEntity payment_method_entity = new shoppingCartPaymentMethodEntity();
-                   // payment_method_entity.method = "custompayment";
-                    payment_method_entity.method = "free";
+                    payment_method_entity.method = "custompayment";
+                 //   payment_method_entity.method = "authorizenet";
                     payment_method_entity.cc_cid = null;
                     payment_method_entity.cc_owner = null;
                     payment_method_entity.cc_number = null;

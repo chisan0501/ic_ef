@@ -26,10 +26,10 @@ namespace ic_ef.Properties {
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.SpecialSettingAttribute(global::System.Configuration.SpecialSetting.WebServiceUrl)]
-        [global::System.Configuration.DefaultSettingValueAttribute("http://dev.interconnection.org/index.php/api/v2_soap/index/")]
-        public string ic_ef_org_interconnection_dev_MagentoService {
+        [global::System.Configuration.DefaultSettingValueAttribute("http://connectall.org/index.php/api/v2_soap/index/")]
+        public string ic_ef_org_connectall_MagentoService {
             get {
-                return ((string)(this["ic_ef_org_interconnection_dev_MagentoService"]));
+                return ((string)(this["ic_ef_org_connectall_MagentoService"]));
             }
         }
     }

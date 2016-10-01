@@ -106,6 +106,7 @@
 
            });
            $("#print_btn").click(function () {
+
                $("#print_btn").html('Loading....');
                $('#print_btn').attr("disabled", true);
                var ul_html = $("#left_content").clone().html()
@@ -126,7 +127,12 @@
                    printDiv();
                    $("#print_btn").html('Print');
                    $('#print_btn').attr("disabled", false);
-               }
+               },
+                   error: function () {
+                       printDiv();
+                       $("#print_btn").html('Print');
+                       $('#print_btn').attr("disabled", false);
+                   }
                });
 
 
@@ -156,33 +162,38 @@
            var websites = ["5"];
            //when click on the "Add to List" button
            $('#table_reminder tbody').on('click', 'button', function () {
-               $('#table_loader').attr('class', 'ui active inverted dimmer');
                var title = $(this).closest('td').siblings(':nth-child(2)').text();
                var sku = $(this).closest('td').siblings(':nth-child(3)').text();
                var qty = $(this).closest('td').siblings(':nth-child(4)').text();
+
+               var confirm_box = confirm("Do you want to Pull " + sku);
+               if (confirm_box == true) {
+
+                   $('#table_loader').attr('class', 'ui active inverted dimmer');
                
-               var ul_count = $("#check_list li").length + 1;
-               $("#list_count").html("<h4>Total # of Items : " + ul_count + "</h4>");
-               var jsonObject = {
-                   price: '0',
-                   name: title,
-                   sku: sku,
-                   weight: '12',
-                   desc: "default",
-                   short_desc: "defalt",
-                   qty: '1',
-                   websites: websites,
-                   stock: '1',
-                   status: '1',
-                   visible: '4',
-                   attr: '4',
-                   type: "simple",
-                   tax: '2',
-                   img_path: 'null'
-               };
-               $.ajax({
-                   url: "@Url.Action("retail_quick_import")",
-                   type: "POST",
+               
+                   var ul_count = $("#check_list li").length + 1;
+                   $("#list_count").html("<h4>Total # of Items : " + ul_count + "</h4>");
+                   var jsonObject = {
+                       price: '0',
+                       name: title,
+                       sku: sku,
+                       weight: '12',
+                       desc: "default",
+                       short_desc: "defalt",
+                       qty: '1',
+                       websites: websites,
+                       stock: '1',
+                       status: '1',
+                       visible: '4',
+                       attr: '4',
+                       type: "simple",
+                       tax: '2',
+                       img_path: 'null'
+                   };
+                   $.ajax({
+                       url: "@Url.Action("retail_quick_import")",
+                       type: "POST",
 
                    data: JSON.stringify(jsonObject),
                    contentType: "application/json; charset=utf-8",
@@ -195,7 +206,15 @@
                    }
                });
 
+
+               }
+               else {
+                   alert("You Press Cancel");
+               }
+                
+
            });
+              
        });
     
 </script>
