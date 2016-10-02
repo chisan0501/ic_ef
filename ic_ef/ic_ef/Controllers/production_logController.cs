@@ -1280,7 +1280,7 @@ namespace ic_ef.Controllers
                 order.orderStatus = "awaiting_shipment";
                 order.customerEmail = csv_item.Org_Email;
 
-                //bill to info
+                //bill to info required
                 order.billTo = billto;
                     billto.name = csv_item.Org_Contact_Name;
                     billto.street1 = csv_item.Org_Street_Address;
