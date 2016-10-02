@@ -84,23 +84,33 @@
 
 
 <script>
-
-    
+   
     var currentBoxNumber = 0;
     $(".insert").keyup(function (event) {
-        if (event.keyCode == 13) {
-            textboxes = $("input.insert");
-            currentBoxNumber = textboxes.index(this);
-            
+        textboxes = $("input.insert");
+        currentBoxNumber = textboxes.index(this);
+
+        //last input box hit enter and focus out
+        if (event.keyCode == 13 && currentBoxNumber == 4) {
+            thisBox = textboxes[currentBoxNumber];
+
+            thisBox.blur();
+        }
+        else if (event.keyCode == 13 && currentBoxNumber != 4){
             if (textboxes[currentBoxNumber + 1] != null) {
                 nextBox = textboxes[currentBoxNumber + 1];
                 nextBox.focus();
                 nextBox.select();
                 event.preventDefault();
+                
                 return false;
             }
+        }   
+            
+            
+            
         }
-    });
+    );
 
     $(document).ready(function () {
         var id = @ViewData["id"];
@@ -121,6 +131,9 @@
                 
                 $('#box'+i).val(data.result[i]);
                 $('#box'+i).attr("disabled","");
+
+              
+
             }
             
                        
@@ -130,6 +143,7 @@
  
         }
         });
+     
 
         $('#asso_btn').click(function(){
         
@@ -148,9 +162,9 @@
             dataType: "json",
 
             success: function (data) {
-              
+                
                 $('#message3').append(data.message);
-            
+                
             },
             });
         });
