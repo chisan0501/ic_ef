@@ -1281,16 +1281,16 @@ namespace ic_ef.Controllers
                 order.customerEmail = csv_item.Org_Email;
 
                 //bill to info
-                //order.billTo = billto;
-                //billto.name = "Sam Yeung";
-                //billto.street1 = "1208 N 185th CT";
-                //billto.city = "Seattle";
-                //billto.state = "WA";
-                //billto.country = "US";
-                //billto.company = "Interconnection";
+                order.billTo = billto;
+                    billto.name = csv_item.Org_Contact_Name;
+                    billto.street1 = csv_item.Org_Street_Address;
+                    //billto.city = "Seattle";
+                    //billto.state = "WA";
+                    //billto.country = "US";
+                    billto.company = csv_item.Org_Name;
 
-                //ship to info
-                order.shipTo = shipto;
+                    //ship to info
+                    order.shipTo = shipto;
                     shipto.name = csv_item.Org_Contact_Name;
                     shipto.street1 = csv_item.Org_Street_Address;
                     shipto.postalCode = csv_item.Org_Zip_Code;
