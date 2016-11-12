@@ -1,0 +1,384 @@
+﻿
+@{
+    ViewBag.Title = "report";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+
+<div class="ui large modal" id="alltime_modal">
+    <i class="close icon"></i>
+    <div class="header">
+        Sales Graph
+    </div>
+
+    <div class="ui grid container">
+        <div class="column">
+            <div id="chart_div" style="width: 2000px; height: 500px;"></div>
+        </div>
+
+    </div>
+   
+</div>
+
+<div class="ui large modal" id="month_modal">
+    <i class="close icon"></i>
+    <div class="header">
+        Sales Graph
+    </div>
+
+    <div class="ui grid container">
+        <div class="column">
+            <div id="chart_div2" style="width: 2000px; height: 500px;"></div>
+        </div>
+
+    </div>
+
+</div>
+
+<div  class="ui large modal" id="year_modal">
+    <i class="close icon"></i>
+    <div class="header">
+        Sales Graph
+    </div>
+
+    <div class="ui grid container">
+        <div class="column">
+            <div id="chart_div3" style="width: 2000px; height: 500px;"></div>
+        </div>
+
+    </div>
+
+</div>
+
+<div class="ui large modal" id="return_modal">
+    <i class="close icon"></i>
+    <div class="header">
+       Asset Return (All time)
+    </div>
+
+    <div class="ui grid container">
+        <div class="column">
+            <div id="chart_div4" style="width: 2000px; height: 500px;"></div>
+        </div>
+
+    </div>
+
+</div>
+
+
+<div class="ui raised very padded text container segment">
+
+    <h2 class="ui header">Retail Report (Overall Data)</h2>
+
+    <div class="ui statistics">
+        <a href="#" id="alltime_graph">
+            <div class="statistic">
+                <div class="label">
+                    Avg Assets Sold
+                </div>
+                <div class="value" id="alltime_value">
+                    0
+                </div>
+
+                <div class="label">
+                    All time (2015/05)
+                </div>
+            </div>
+        </a>
+        <a href="#" id="month_graph">
+            <div class="statistic">
+                <div class="label">
+                    Avg Assets Sold
+                </div>
+                <div class="value" id="month_value">
+                    0
+                </div>
+                <div class="label">
+                    Current Month
+                </div>
+            </div>
+            </a>
+        <a href="#" id="year_graph">
+            <div class="statistic">
+                <div class="label">
+                    AVG Assets Sold
+                </div>
+                <div class="value" id="year_value">
+                    0
+                </div>
+                <div class="label">
+                    Year to Date
+                </div>
+            </div>
+            </a>
+        <a href="#" id="return_graph">
+            <div class="statistic">
+                <div class="label">
+                    AVG Returns
+                </div>
+                <div class="value" id="return_value">
+                    0
+                </div>
+                <div class="label">
+                 All Time(2015/05)
+                </div>
+            </div>
+        </a>
+</div>
+
+
+   
+</div>
+
+<div class="ui raised very padded text container segment">
+
+    <h2 class="ui dividing header">Data By Machine Type :</h2>
+    <h3 class="ui header">
+        <i class="windows icon"></i>Windows : Mar
+    </h3>
+  
+
+    <h2 class="ui sub block header">
+
+        <div class="ui accordion">
+            <div class="title">
+                <i class="dropdown icon"></i>
+                Desktop
+            </div>
+            <div class="content">
+                <button class="ui primary basic button">Primary</button>
+                <button class="ui secondary basic button">Secondary</button>
+                <button class="ui positive basic button">Positive</button>
+                <button class="ui negative basic button">Negative</button>
+            </div>
+</div>
+
+</h2>
+        <div class="ui Four statistics">
+           
+                <div class="statistic">
+                    <div class="value" id="c2ddk_all_value">
+                        0
+                    </div>
+                    <div class="label">
+                        Core 2 Duo
+                    </div>
+                </div>
+          
+                <div class="statistic">
+                    <div class="value" id="i3dk_all_value">
+                        0
+                    </div>
+                    <div class="label">
+                        Core i3
+                    </div>
+                </div>
+           
+                <div class="statistic">
+                    <div class="value" id="i5dk_all_value">
+                        0
+                    </div>
+                    <div class="label">
+                      Core i5
+                    </div>
+                </div>
+           
+                <div class="statistic">
+                    <div class="value" id="i7dk_all_value">
+                        0
+                    </div>
+                    <div class="label">
+                        Core i7
+                    </div>
+                </div>
+        </div>
+    <button class="ui primary basic button">Show Graph</button>
+    
+    <h2 class="ui sub block header"></i>Laptops</h2>
+
+    <div class="ui Four statistics">
+
+        <div class="statistic">
+            <div class="value" id="c2dlp_all_value">
+                0
+            </div>
+            <div class="label">
+                Core 2 Duo
+            </div>
+        </div>
+
+        <div class="statistic">
+            <div class="value" id="i3lp_all_value">
+                0
+            </div>
+            <div class="label">
+                Core i3
+            </div>
+        </div>
+
+        <div class="statistic">
+            <div class="value" id="i5lp_all_value">
+                0
+            </div>
+            <div class="label">
+                Core i5
+            </div>
+        </div>
+
+        <div class="statistic">
+            <div class="value" id="i7lp_all_value">
+                0
+            </div>
+            <div class="label">
+                Core i7
+            </div>
+        </div>
+    </div>
+
+
+</div>
+    <script>
+
+     $(document).ready(function () {
+         $('.ui.accordion')
+   .accordion()
+         ;
+         $.getJSON("@Url.Action("get_yTd_report")", function (Data) {
+
+            $('#alltime_value').text(Data.avg_alltime);
+            $('#month_value').text(Data.avg_month);
+            $('#year_value').text(Data.avg_year);
+            $('#return_value').text(Data.avg_return);
+            $('#c2ddk_all_value').text(Data.C2DDK_all);
+            $('#i3dk_all_value').text(Data.i3dk_all);
+            $('#i5dk_all_value').text(Data.i5dk_all);
+            $('#i7dk_all_value').text(Data.i7dk_all);
+            $('#c2dlp_all_value').text(Data.C2Dlp_all);
+            $('#i3lp_all_value').text(Data.i3lp_all);
+            $('#i5lp_all_value').text(Data.i5lp_all);
+            $('#i7lp_all_value').text(Data.i7lp_all);
+            google.charts.load('visualization', '1', { 'packages': ['corechart'] });
+            google.charts.setOnLoadCallback(drawStuff);
+
+            function drawStuff() {
+
+                var google_data = {
+                    "cols": [{
+                        "type": "string"
+                    }, {
+                        "type": "number"
+                    }],
+                    rows: []
+                };
+
+                for (var i = 0; i < Data.alltime_result.length; i++) {
+                    google_data.rows.push({ c: [{ v: Data.alltime_result[i].date }, { v: Data.alltime_result[i].count }] });
+                }
+                var data = new google.visualization.DataTable(google_data);
+
+                var chart = new google.visualization.LineChart(document.getElementById('chart_div'));
+                chart.draw(data, { title : 'All time Sales Graph',vAxis: {title: '# of Assets Sold', titleTextStyle: {color: 'red'}},width: 1100, height: 400 });
+            }
+			google.charts.load('visualization', '1', { 'packages': ['corechart'] });
+            google.charts.setOnLoadCallback(drawStuff2);
+            function drawStuff2() {
+
+                var google_data = {
+                    "cols": [{
+                        "type": "string"
+                    }, {
+                        "type": "number"
+                    }],
+                    rows: []
+                };
+
+                for (var i = 0; i < Data.month_result.length; i++) {
+                    google_data.rows.push({ c: [{ v: Data.month_result[i].date }, { v: Data.month_result[i].count }] });
+                }
+                var data = new google.visualization.DataTable(google_data);
+
+                var chart = new google.visualization.LineChart(document.getElementById('chart_div2'));
+                chart.draw(data, { title : 'Month to Date Sales Graph',vAxis: {title: '# of Assets Sold', titleTextStyle: {color: 'red'}},width: 1100, height: 400 });
+            }
+			google.charts.load('visualization', '1', { 'packages': ['corechart'] });
+            google.charts.setOnLoadCallback(drawStuff3);
+			    function drawStuff3() {
+
+                var google_data = {
+                    "cols": [{
+                        "type": "string"
+                    }, {
+                        "type": "number"
+                    }],
+                    rows: []
+                };
+
+                for (var i = 0; i < Data.year_result.length; i++) {
+                    google_data.rows.push({ c: [{ v: Data.year_result[i].date }, { v: Data.year_result[i].count }] });
+                }
+                var data = new google.visualization.DataTable(google_data);
+
+                var chart = new google.visualization.LineChart(document.getElementById('chart_div3'));
+                chart.draw(data, { title : 'Year to Date Sales Graph',vAxis: {title: '# of Assets Sold', titleTextStyle: {color: 'red'}},width: 1100, height: 400 });
+            }
+    google.charts.load('visualization', '1', { 'packages': ['corechart'] });
+            google.charts.setOnLoadCallback(drawStuff4);
+            function drawStuff4() {
+
+                var google_data = {
+                    "cols": [{
+                        "type": "string"
+                    }, {
+                        "type": "number"
+                    }],
+                    rows: []
+                };
+
+                for (var i = 0; i < Data.return_result.length; i++) {
+                    google_data.rows.push({ c: [{ v: Data.return_result[i].date }, { v: Data.return_result[i].count }] });
+                }
+                var data = new google.visualization.DataTable(google_data);
+
+                var chart = new google.visualization.LineChart(document.getElementById('chart_div4'));
+                chart.draw(data, { title : 'All Time Returns',vAxis: {title: '# of Assets Return', titleTextStyle: {color: 'red'}},width: 1100, height: 400 });
+            }
+        });
+
+
+        $('#alltime_graph').click(function() {
+
+    $('#alltime_modal')
+  .modal('show')
+;
+
+
+    });
+
+      $('#month_graph').click(function() {
+
+    $('#month_modal')
+  .modal('show')
+;
+
+
+    });
+     $('#year_graph').click(function() {
+
+    $('#year_modal')
+  .modal('show')
+;
+
+
+    });
+    $('#return_graph').click(function() {
+
+    $('#return_modal')
+  .modal('show')
+;
+
+
+    });
+    });
+    </script>

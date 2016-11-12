@@ -397,7 +397,9 @@
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\latestsku.cs" />
     <Compile Include="Models\magento_importModel.cs" />
-    <Compile Include="Models\magento_validation.cs" />
+    <Compile Include="Models\magento_validation.cs">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Compile>
     <Compile Include="Models\ManageViewModels.cs" />
     <Compile Include="Models\shipstationModel.cs" />
     <Compile Include="Models\shipstation_order_model.cs" />

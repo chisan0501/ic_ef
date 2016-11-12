@@ -1,0 +1,173 @@
+﻿
+@{
+    ViewBag.Title = "bin_overview";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<link href="~/js/jquery.dataTables.min.css" rel="stylesheet" />
+<script src="~/js/jquery.dataTables.min.js"></script>
+
+<div id="table_loader" class="ui disabled inverted dimmer">
+
+    <div class="ui text loader">Please be Patient while we are creating a new listing, update the QTY for the original listing, update QTY for the new retail listing, prepare infomration for the WEBPOS.........</div>
+
+</div>
+
+
+<div class="ui two column centered grid">
+    <div class="column">
+        <h2>Inventory Overview (MAC Products)</h2>
+        <h4 id="last_update"></h4>
+        <div id="item_total"></div>
+    </div>
+    <div class="two column centered row">
+        <div class="column">
+
+
+            <div id="output"></div>
+            <table id="table_reminder" class="stripe" cellspacing="0" width="100%">
+                <thead>
+                    <tr>
+                        <th>Asset Tag</th>
+                        <th>SKU</th>
+                        <th>Bin Location</th>
+                        <th>Action</th>
+                        <th> </th>
+
+                    </tr>
+                </thead>
+                <tbody></tbody>
+
+            </table>
+        </div>
+       
+    </div>
+</div>
+
+
+
+<script>
+    $(document).ready(function () {
+        function load_table() {
+
+            var table = $.getJSON("@Url.Action("get_current_inv_mac")", function (data) {
+                $("#item_total").html("<h3># of Items : "+data.length+"</h3>")
+                $('#table_reminder').DataTable({
+                    destroy: true,
+                    data: data,
+                    columnDefs: [{
+                        targets: 3,
+                        data: null,
+                        defaultContent: "<button class='ui teal button' id='add_btn_retail_mac'>For Retail</button>"
+                    },{
+                        targets: 4,
+                        data: null,
+                        defaultContent: "<button class='ui blue button' id='add_btn_online_mac'>For Online Store</button>"
+                    }],
+                    columns: [
+                                    { data: "ictags" },
+                                   { data: "pallet" },
+                                   { data: "bin_location" },
+
+                    ]
+
+                });
+            }
+                );
+
+
+
+        }
+
+        setInterval(function () { cache_clear() }, 1800000);
+
+        function cache_clear() {
+            window.location.reload(true);
+
+        }
+        var x = document.lastModified;
+        $("#last_update").html("Last Update at " + x + " (Page refreshes every 30min)");
+        load_table();
+
+
+
+        $('#table_reminder tbody').on('click', '#add_btn_retail_mac', function () {
+
+            var asset_tag = $(this).closest('td').siblings(':nth-child(1)').text();
+            var sku = $(this).closest('td').siblings(':nth-child(2)').text();
+            var r = confirm("are you sure you want to Pull Asset " + asset_tag + "For retail store");
+            if (r == true) {
+
+                $('#table_loader').attr('class', 'ui active inverted dimmer');
+                var jsonObject = {
+                    asset: asset_tag,
+                    sku: sku,
+                    mac : "true",
+                };
+                $.ajax({
+                    url: "@Url.Action("retail_pull")",
+                    type: "POST",
+
+                    data: JSON.stringify(jsonObject),
+                    contentType: "application/json; charset=utf-8",
+                    dataType: "json",
+                    success: function (data) {
+                        load_table();
+                        $('#table_loader').attr('class', 'ui disabled inverted dimmer');
+                        $("#output").html(data.message);
+
+                    }
+                });
+            } else
+            {
+                return;
+            }
+        });
+
+        $('#table_reminder tbody').on('click', '#add_btn_online_mac', function () {
+            var asset_tag = $(this).closest('td').siblings(':nth-child(1)').text();
+            var sku = $(this).closest('td').siblings(':nth-child(2)').text();
+
+            var r = confirm("are you sure you want to Pull Asset " + asset_tag + " for Online Store");
+            if (r == true) {
+                var price = prompt("Do you want to Price the Item now?", "Enter Price here WITHOUT the $ sign");
+
+            
+
+                $('#table_loader').attr('class', 'ui active inverted dimmer');
+
+                var jsonObject = {
+                    asset: asset_tag,
+                    sku: sku,
+                    mac: "true",
+                };
+
+                $.ajax({
+                    url: "@Url.Action("online_store_picklist")",
+                    type: "POST",
+
+                data: JSON.stringify(jsonObject),
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: function (data) {
+                    load_table();
+                    $('#table_loader').attr('class', 'ui disabled inverted dimmer');
+                    $("#output").html(data.result);
+
+                }
+            });
+        } else {
+                        return;
+    }
+
+
+
+
+
+
+    });
+
+
+
+
+    })
+</script>
