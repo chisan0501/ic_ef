@@ -48,20 +48,27 @@
                     <div class="item">Discovery</div>
                   
                     <div class="item">Refurbish</div>
-                    <div class="item">Imaging</div>
+                    <div class="item" id="imaging">Imaging</div>
                     <div class="item">Monitor Discovery</div>
                 </div>
             </div>
         </a>
         <script>
             $('#prod_menu').dropdown();
+            $('#imaging').on('click', function () {
+                window.location = 'http://ic.icdb.name/production_log/Index';
+            });
         </script>
+        <a class="item" href="@Url.Action("home", "retail")">
+            <i class="building outline icon"></i>
+            Retail
+        </a>
         <a class="item" href="@Url.Action("inventoryManage", "manage")">
             <i class="shipping icon"></i>
             Bulk Processing
         </a>
         <a class="item" href="@Url.Action("report", "manage")">
-            <i class="file icon"></i>
+            <i class="line chart icon"></i>
             Report
         </a>
         <a class="item" href="@Url.Action("admin", "Manage")">
@@ -132,7 +139,10 @@
                             <td>Brand</td>
                             <td id="discovery_brand_content"></td>
                         </tr>
-
+                        <tr>
+                            <td>Optical Drive</td>
+                            <td id="discovery_optical_content"></td>
+                        </tr>
                     </tbody>
                 </table>
             </div>
@@ -211,6 +221,10 @@
                             <td>HDD</td>
                             <td id="img_hdd_content"></td>
                         </tr>
+                         <tr>
+                            <td>Screen Size</td>
+                            <td id="img_screen_content"></td>
+                        </tr>
                         <tr>
                             <td>Time</td>
                             <td id="img_time_content"></td>
@@ -259,6 +273,7 @@
                             $("#discovery_ram_content").html(data.discovery.ram);
                             $("#discovery_hdd_content").html(data.discovery.hdd);
                             $("#discovery_serial_content").html(data.discovery.serial);
+                            $("#discovery_optical_content").html(data.discovery.optical_drive);
                         }
                         catch (err) {
 
@@ -269,6 +284,7 @@
                             $("#discovery_ram_content").html("");
                             $("#discovery_hdd_content").html("");
                             $("#discovery_serial_content").html("");
+                            $("#discovery_optical_content").html("");
                         }
                         try {
 
@@ -297,7 +313,17 @@
 
                            
                         try {
-
+                            $("#img_brand_content").html("");
+                            $("#img_model_content").html("");
+                            $("#img_time_content").html("");
+                            $("#img_cpu_content").html("");
+                            $("#img_ram_content").html("");
+                            $("#img_hdd_content").html("");
+                            $("#img_wcoa_content").html("");
+                            $("#img_ocoa_content").html("");
+                            $("#img_serial_content").html("");
+                            $("#img_channel_content").html("");
+                            $("#img_screen_content").html("");
                             
 
                             $("#img_brand_content").html(data.img.Manufacture);
@@ -308,6 +334,7 @@
                             $("#img_hdd_content").html(data.img.HDD);
                             $("#img_wcoa_content").html(data.img.wcoa);
                             $("#img_ocoa_content").html(data.img.ocoa);
+                            $("#img_screen_content").html(data.img.screen_size);
                             $("#img_serial_content").html(data.img.serial);
                             $("#img_channel_content").html(data.img.channel);
                         }
@@ -322,6 +349,7 @@
                             $("#img_ocoa_content").html("");
                             $("#img_serial_content").html("");
                             $("#img_channel_content").html("");
+                            $("#img_screen_content").html("");
                         }
                         
 

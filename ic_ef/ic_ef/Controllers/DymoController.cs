@@ -85,10 +85,10 @@ namespace ic_ef.Controllers
         }
         [AllowAnonymous]
         [HttpPost]
-        public JsonResult readapple(string[] arr, bool is_db, string channel, string user, string asset_tag)
+        public JsonResult readapple(string[] arr, bool is_db, string channel, string user, string asset_tag, string hddchecked)
         {
             try
-            {
+            { 
                 var Model = Array.FindAll(arr, s => s.Contains("Model Identifier")).FirstOrDefault(); ;
                 Model = Model.Substring(Model.IndexOf(':') + 1).ToString();
                 Model = Model.Trim();
@@ -105,14 +105,24 @@ namespace ic_ef.Controllers
                 var ram = Array.FindAll(arr, s => s.Contains("Memory: ")).FirstOrDefault();
                 ram = ram.Substring(ram.IndexOf(':') + 1).ToString();
                 ram = ram.Trim();
-                var hdd = Array.FindAll(arr, s => s.Contains("Capacity:")).FirstOrDefault();
-                hdd = hdd.Substring(hdd.IndexOf(':') + 1).ToString();
 
+            string hdd = "";
+            if (hddchecked == "false")
+            {
+                hdd = Array.FindAll(arr, s => s.Contains("Capacity:")).FirstOrDefault();
+                hdd = hdd.Substring(hdd.IndexOf(':') + 1).ToString();
                 int index = hdd.IndexOf("(");
                 if (index > 0)
                     hdd = hdd.Substring(0, index);
                 hdd = hdd.Trim();
-                var time = DateTime.Today.ToString("yyyy-MM-dd");
+            }
+            else
+            {
+                hdd = "0GB";
+            }
+
+
+            var time = DateTime.Today.ToString("yyyy-MM-dd");
                
                 if (is_db == true)
                 {

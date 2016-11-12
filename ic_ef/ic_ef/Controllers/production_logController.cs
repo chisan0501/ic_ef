@@ -18,6 +18,8 @@ using System.Net.Http;
 using ic_ef.Models;
 using System.Threading.Tasks;
 using System.Globalization;
+using System.Text.RegularExpressions;
+using Magento.RestApi;
 
 namespace ic_ef.Controllers
 {
@@ -39,6 +41,18 @@ namespace ic_ef.Controllers
         private db_a094d4_icdbEntities db = new db_a094d4_icdbEntities();
         Models.magentoViewModel magentoView = new Models.magentoViewModel();
 
+
+        
+
+        public JsonResult get_production_data(string asset)
+        {
+            int int_asset = int.Parse(asset);
+            var result = (from t in db.production_log where t.ictags == asset select t).FirstOrDefault();
+            var discovery = (from t in db.discovery where t.ictag == int_asset select t).FirstOrDefault();
+
+            return Json(new { production = result, discovery = discovery},JsonRequestBehavior.AllowGet);
+        }
+
         //read json object from the web
         private static T _download_serialized_json_data<T>(string url) where T : new()
         {
@@ -56,75 +70,310 @@ namespace ic_ef.Controllers
             }
         }
 
-
-        //fetch the lastest sku from magento site
-        protected void fetch_latest_sku()
+        //function to return asset to stock
+        public JsonResult return_stock_json (string asset, string sku,string source, string bin)
         {
-
-            HtmlDocument page = new HtmlWeb().Load("http://connectall.org/example/amasty/");
-            var pageLinks = page.DocumentNode.SelectNodes("//h1");
-            foreach (var link in pageLinks)
+            
+            string message = "";
+            string to_be_import_sku = sku + "_retail";
+            //update both the bin location and status to null 
+            var entry = new production_log();
+            using (var ctx = new db_a094d4_icdbEntities())
             {
-                string titleText = link.InnerText;
-
-                if (titleText.Contains("ICRD"))
+                entry = ctx.production_log.Where(s => s.ictags == asset).FirstOrDefault<production_log>();
+                if (entry != null)
                 {
-                    oem_des = titleText;
-                    oem_des_current = titleText;
-                    ViewBag.oem_des_current = oem_des_current;
-                    oem_des = oem_des.Replace("ICRD", "");
-                    int temp = int.Parse(oem_des);
-                    temp = temp + 1;
-                    oem_des = temp.ToString();
-                    oem_des = "ICRD" + oem_des;
-                }
-                else if (titleText.Contains("ICL"))
-                {
-                    mar_lap = titleText;
-                    mar_lap_current = titleText;
-                    ViewBag.mar_lap_current = mar_lap_current;
-                    mar_lap = mar_lap.Replace("ICL", "");
-                    int temp = int.Parse(mar_lap);
-                    temp = temp + 1;
-                    mar_lap = temp.ToString();
-                    mar_lap = "ICL" + mar_lap;
-                }
-                else if (titleText.Contains("ICD"))
-                {
-                    mar_des = titleText;
-                    mar_des_current = titleText;
-                    ViewBag.mar_des_current = mar_des_current;
-                    mar_des = mar_des.Replace("ICD", "");
-                    int temp = int.Parse(mar_des);
-                    temp = temp + 1;
-                    mar_des = temp.ToString();
-                    mar_des = "ICD" + mar_des;
-                }
-                else if (titleText.Contains("ICRL"))
-                {
-                    oem_lap = titleText;
-                    oem_lap_current = titleText;
-                    ViewBag.oem_lap_current = oem_lap_current;
-                    oem_lap = oem_lap.Replace("ICRL", "");
-                    int temp = int.Parse(oem_lap);
-                    temp = temp + 1;
-                    oem_lap = temp.ToString();
-                    oem_lap = "ICRL" + oem_lap;
-                }
-                else if (titleText.Contains("ICMA"))
-                {
-                    apple_current = titleText;
-                    ViewBag.apple_current = apple_current;
-                }
-                else
-                {
-
+                    entry.status = null;
+                    entry.bin_location = bin;
                 }
             }
+            using (var dbCtx = new db_a094d4_icdbEntities())
+            {
+                //3. Mark entity as modified
+                dbCtx.Entry(entry).State = System.Data.Entity.EntityState.Modified;
+
+                //4. call SaveChanges
+                dbCtx.SaveChanges();
+            }
+
+            //now deduct retail sku qty from magento 
+            mage mage = new mage();
+            double qty = 0.00;
+
+            if (source == "retail")
+            {
+                var retail_product = mage.check_product(to_be_import_sku).FirstOrDefault();
+                 qty = double.Parse(retail_product.qty);
+                qty -= 1;
+
+                smart_inventory(retail_product.product_id, qty.ToString());
+                mage.quick_update(qty.ToString(), to_be_import_sku, null);
+
+                //now increment qty of stock SKU
+
+                
+            }
+
+            var stock_product = mage.check_product(sku).FirstOrDefault();
+
+            qty = double.Parse(stock_product.qty);
+            qty += 1;
+
+            smart_inventory(stock_product.product_id, qty.ToString());
+            mage.quick_update(qty.ToString(), sku, null);
+
+
+
+
+            message = "<h3 style='color:green'>Completed</h3>";
+
+            return Json(new { message = message }, JsonRequestBehavior.AllowGet);
 
         }
 
+        public JsonResult get_bin_report()
+        {
+            var total = (from p in db.production_log where p.bin_location != null && p.status != "pulled" group p by p.bin_location into g select new { ictag = g.Key, pc = g.ToList() }).ToList();
+
+
+            return Json(total,JsonRequestBehavior.AllowGet);
+        }
+
+       public JsonResult get_inventrory_report ()
+        {
+            int mar_i5_LP = 0;
+            int mar_i3_LP = 0;
+            int mar_i7_LP = 0;
+            int mar_c2d_LP = 0;
+            int mar_amd_LP = 0;
+            int oem_i5_LP = 0;
+            int oem_i3_LP = 0;
+            int oem_i7_LP = 0;
+            int oem_c2d_LP = 0;
+            int oem_amd_LP = 0;
+            int mar_i5_DK = 0;
+            int mar_i3_DK = 0;
+            int mar_i7_DK = 0;
+            int mar_c2d_DK = 0;
+            int mar_amd_DK = 0;
+            int oem_i5_DK = 0;
+            int oem_i3_DK = 0;
+            int oem_i7_DK = 0;
+            int oem_c2d_DK = 0;
+            int oem_amd_DK = 0;
+            
+
+
+            var CPU = (from c in db.production_log where c.bin_location != null && c.status != "pulled" select c.channel).ToList();
+
+            
+
+
+            foreach ( var item in CPU)
+            {
+                if (item.Contains("i3") && item.Contains("OEM") && item.Contains("LP")){
+                    oem_i3_LP++;
+                }
+                if (item.Contains("i5") && item.Contains("OEM") && item.Contains("LP"))
+                {
+                    oem_i5_LP++;
+                }
+                if (item.Contains("i7") && item.Contains("OEM") && item.Contains("LP"))
+                {
+                    oem_i7_LP++;
+                }
+                if (item.Contains("i3") && item.Contains("OEM") && item.Contains("DK"))
+                {
+                    oem_i3_DK++;
+                }
+                if (item.Contains("i5") && item.Contains("OEM") && item.Contains("DK"))
+                {
+                    oem_i5_DK++;
+                }
+                if (item.Contains("i7") && item.Contains("OEM") && item.Contains("DK"))
+                {
+                    oem_i7_DK++;
+                }
+                if (item.Contains("i3") && !item.Contains("OEM") && item.Contains("LP"))
+                {
+                    mar_i3_LP++;
+                }
+                if (item.Contains("i5") && !item.Contains("OEM") && item.Contains("LP"))
+                {
+                    mar_i5_LP++;
+                }
+                if (item.Contains("i7") && !item.Contains("OEM") && item.Contains("LP"))
+                {
+                    mar_i7_LP++;
+                }
+                if (item.Contains("i3") && !item.Contains("OEM") && item.Contains("DK"))
+                {
+                    mar_i3_DK++;
+                }
+                if (item.Contains("i5") && !item.Contains("OEM") && item.Contains("DK"))
+                {
+                    mar_i5_DK++;
+                }
+                if (item.Contains("i7") && !item.Contains("OEM") && item.Contains("DK"))
+                {
+                    mar_i7_DK++;
+                }
+                if (item.Contains("c2d") && !item.Contains("OEM") && item.Contains("DK"))
+                {
+                    mar_c2d_DK++;
+                }
+                if (item.Contains("c2d") && item.Contains("OEM") && item.Contains("DK"))
+                {
+                    oem_c2d_DK++;
+                }
+                if (item.Contains("c2d") && !item.Contains("OEM") && item.Contains("LP"))
+                {
+                    mar_c2d_LP++;
+                }
+                if (item.Contains("c2d") && item.Contains("OEM") && item.Contains("LP"))
+                {
+                    oem_c2d_LP++;
+                }
+                if (item.Contains("AMD") && !item.Contains("OEM") && item.Contains("DK"))
+                {
+                    mar_amd_DK++;
+                }
+                if (item.Contains("AMD") && item.Contains("OEM") && item.Contains("DK"))
+                {
+                    oem_amd_DK++;
+                }
+                if (item.Contains("AMD") && !item.Contains("OEM") && item.Contains("LP"))
+                {
+                    mar_amd_LP++;
+                }
+                if (item.Contains("AMD") && item.Contains("OEM") && item.Contains("LP"))
+                {
+                    oem_amd_LP++;
+                }
+            }
+
+            int[] cpu_total = { oem_i3_DK, oem_i3_LP, oem_i5_LP , oem_i5_DK , oem_i7_LP , oem_i7_DK , mar_i3_LP , mar_i3_DK , mar_i5_DK ,mar_i5_LP, mar_i7_DK , mar_i7_LP, mar_c2d_DK , mar_c2d_LP, oem_c2d_LP , oem_c2d_DK, oem_amd_DK , oem_amd_LP, mar_amd_DK , mar_amd_LP };
+            string[] cpu_name = { "OEM i3 DK", "OEM i3 LP", "OEM i5 LP", "OEM i5 DK", "OEM i7 LP", "OEM i7 DK", "MAR i3 LP", "MAR i3 DK", "MAR i5 DK", "MAR i5 LP", "MAR i7 DK", "MAR i7 LP", "MAR C2D DK", "MAR C2D LP", "OEM C2D LP", "OEM C2D DK", "OEM AMD DK", "OEM AMD LP", "MAR AMD DK", "MAR AMD LP" };
+
+            //  return Json(new { oem_i3_DK = oem_i3_DK, oem_i3_LP  = oem_i3_LP , oem_i5_LP = oem_i5_LP , oem_i5_DK = oem_i5_DK, oem_i7_LP = oem_i7_LP , oem_i7_DK = oem_i7_DK , mar_i3_LP = mar_i3_LP , mar_i3_DK = mar_i3_DK , mar_i5_LP= mar_i5_LP, mar_i5_DK= mar_i5_DK, mar_i7_LP= mar_i7_LP, mar_i7_DK = mar_i7_DK, mar_c2d_DK = mar_c2d_DK, mar_c2d_LP= mar_c2d_LP, oem_c2d_LP = oem_c2d_LP, oem_c2d_DK = oem_c2d_DK, mar_amd_DK= mar_amd_DK, mar_amd_LP= mar_amd_LP,oem_amd_LP = oem_amd_LP, oem_amd_DK = oem_amd_DK },JsonRequestBehavior.AllowGet);
+
+            return Json( new { cpu_total = cpu_total,cpu_name = cpu_name}, JsonRequestBehavior.AllowGet);
+        }
+            
+        public ActionResult inventory_report()
+        {
+            
+            
+            return View();
+        }
+
+        public ActionResult return_stock ()
+        {
+            return View();
+        }
+
+
+
+       public JsonResult full_product_list()
+        {
+            mage mage = new mage();
+
+            var result = mage.get_all_product();
+
+            return Json(result,JsonRequestBehavior.AllowGet);
+        }
+        
+
+
+        //retail pulling asset
+        public JsonResult retail_pull(string sku, string asset, string price, string mac)
+        {
+
+
+
+            if (string.IsNullOrEmpty(price))
+            {
+                price = "0";
+            }
+
+            string message = "";
+            //format new retail sku
+            string to_be_import_sku = sku + "_retail";
+            var entry = new production_log();
+            var mac_entry = new mac_log();
+
+            if (mac == "true")
+            {
+
+                using (var ctx = new db_a094d4_icdbEntities())
+                {
+                    int temp_asset = int.Parse(asset);
+                    mac_entry = ctx.mac_log.Where(s => s.ictags == temp_asset).FirstOrDefault<mac_log>();
+                    if (mac_entry != null)
+                    {
+                        mac_entry.status = "pulled";
+                    }
+                }
+                using (var dbCtx = new db_a094d4_icdbEntities())
+                {
+                    //3. Mark entity as modified
+                    dbCtx.Entry(mac_entry).State = System.Data.Entity.EntityState.Modified;
+
+                    //4. call SaveChanges
+                    dbCtx.SaveChanges();
+                }
+                pull_logging(asset, sku, "pulled", DateTime.Now, "mac_retail");
+            }
+            else
+            {
+                using (var ctx = new db_a094d4_icdbEntities())
+                {
+                    entry = ctx.production_log.Where(s => s.ictags == asset).FirstOrDefault<production_log>();
+                    if (entry != null)
+                    {
+                        entry.status = "pulled";
+                    }
+                }
+                using (var dbCtx = new db_a094d4_icdbEntities())
+                {
+                    //3. Mark entity as modified
+                    dbCtx.Entry(entry).State = System.Data.Entity.EntityState.Modified;
+
+                    //4. call SaveChanges
+                    dbCtx.SaveChanges();
+                }
+                pull_logging(asset, sku, "pulled", DateTime.Now, "windows_retail");
+            }
+
+
+            //init a new mage object for magento operations
+            mage mage = new mage();
+
+            //get the info from original product
+            var original_product = mage.check_product(sku);
+            
+            //get the qty for original product
+            var original_qty = original_product.FirstOrDefault().qty;
+            var original_pid = original_product.FirstOrDefault().product_id;
+    
+                //update qty for inventory module
+ 
+            
+            double update_qty = double.Parse(original_qty) - 1;
+            smart_inventory(original_pid, update_qty.ToString());
+            mage.quick_update(update_qty.ToString(), original_pid, null);
+
+
+            message = "<h4 style='color:green'>Asset " + asset + " Successfully Pulled from Inventory";
+            return Json(new { message = message }, JsonRequestBehavior.AllowGet);
+        }
+
         public ActionResult bin_overview()
+        {
+            return View();
+
+        }
+        public ActionResult bin_overview_mac()
         {
             return View();
 
@@ -135,7 +384,14 @@ namespace ic_ef.Controllers
             var result = (from t in db.production_log where t.status == null && t.bin_location != null orderby t.bin_location select t).ToList();
             return Json(result,JsonRequestBehavior.AllowGet);
         }
-        
+
+        //get current Apple products inventory in bins 
+        public JsonResult get_current_inv_mac()
+        {
+            var result = (from t in db.mac_log where t.status == null && t.bin_location != null orderby t.bin_location select t).ToList();
+            return Json(result, JsonRequestBehavior.AllowGet);
+        }
+
         [HttpGet]
         //get top 50 result from production_log and post back as json format 
         public JsonResult get_productionData ()
@@ -184,229 +440,6 @@ namespace ic_ef.Controllers
             return new_sku;
         }
         
-       
-
-//        [HttpPost]
-//        public ActionResult laptop_inv_update (string qty, string laptop_listing)
-//        {
-//            MagentoService mservice = new MagentoService();
-//            String mlogin = mservice.login("admin", "Interconnection123");
-//            string message = "";
-//            catalogInventoryStockItemUpdateEntity qty_update = new catalogInventoryStockItemUpdateEntity();
-
-
-//            qty_update.qty = qty;
-  
-//            mservice.catalogInventoryStockItemUpdate(
-//mlogin, laptop_listing, qty_update);
-//            message = "Update Complete";
-//            return Json(new { result = message });
-//        }
-//        [HttpPost]
-//        public ActionResult desktop_inv_update(string qty, string desktop_listing)
-//        {
-//            MagentoService mservice = new MagentoService();
-//            String mlogin = mservice.login("admin", "Interconnection123");
-//            string message = "";
-//            catalogInventoryStockItemUpdateEntity qty_update = new catalogInventoryStockItemUpdateEntity();
-
-
-//            qty_update.qty = qty;
-
-//            mservice.catalogInventoryStockItemUpdate(
-//mlogin, desktop_listing, qty_update);
-//            message = "Update Complete";
-//            return Json(new { result = message });
-//        }
-//        [HttpPost]
-//        public ActionResult export(string qty, string price, string listingid, string tax_class,string des, string short_des, string meta_des, string soft_des,string software, string name, string create_date, string Wireless, string type, string include, string sku, string optical,string video, string serial, string screen,string model, string ram, string hdd, string cpu, string pallet, string brand,string asset, string grade,string computerType, string laptop_listing, string desktop_listing)
-//        {
-//            MagentoService mservice = new MagentoService();
-//           String mlogin = mservice.login("admin", "Interconnection123");
-
-//            //            string[] arr1 = new string[] { "1218" };
-
-//            //           // var item = mservice.catalogInventoryStockItemList(mlogin, arr1);
-            
-
-//            //working up_sell function
-//            //            //catalogProductLinkEntity assign = new catalogProductLinkEntity();
-//            //            //assign.position = "1";
-
-
-//            //            //mservice.catalogProductLinkUpdate(mlogin, "related", "1030", "1029", assign, "product_id");
-
-//           string message = "";
-
-//    //        if(laptop_listing != "" || desktop_listing != "")
-//    //        {
-//    //            catalogInventoryStockItemUpdateEntity qty_update = new catalogInventoryStockItemUpdateEntity();
-
-
-//    //            qty_update.qty = qty;
-//    //            qty_update.is_in_stock = 1;
-//    //            qty_update.manage_stock = 1;
-
-//    //            mservice.catalogInventoryStockItemUpdate(
-//    //mlogin, sku, qty_update);
-//    //            message = "Update Complete";
-//    //            return Json(new { result = message });
-//    //        }
-//            try
-//            {
-//                catalogProductCreateEntity create = new catalogProductCreateEntity();
-//                var inv = new catalogProductTierPriceEntity();
-                
-//                create.name = name;
-//                create.price = price;
-//                create.description = des;
-//                create.short_description = short_des;
-//                create.tax_class_id = tax_class;
-//                // create.meta_title = 
-//                create.visibility = "4";
-//                create.weight = "0";
-//                create.status = "2";
-//                create.meta_description = meta_des;
-//                inv.qty = int.Parse(qty);
-
-//                associativeEntity[] attributes = new associativeEntity[18];
-//                attributes[0] = new associativeEntity();
-//                attributes[0].key = "asset_tag";
-//                attributes[0].value = asset;
-
-//                attributes[1] = new associativeEntity();
-//                attributes[1].key = "sku_family";
-//                attributes[1].value = pallet;
-
-//                attributes[2] = new associativeEntity();
-//                attributes[2].key = "cpu";
-//                attributes[2].value = cpu;
-
-//                attributes[3] = new associativeEntity();
-//                attributes[3].key = "software_description";
-//                attributes[3].value = soft_des;
-
-//                attributes[4] = new associativeEntity();
-//                attributes[4].key = "ram";
-//                attributes[4].value = ram;
-
-//                attributes[5] = new associativeEntity();
-//                attributes[5].key = "hdd";
-//                attributes[5].value = hdd;
-
-//                attributes[6] = new associativeEntity();
-//                attributes[6].key = "os";
-//                attributes[6].value = software;
-
-//                attributes[7] = new associativeEntity();
-//                attributes[7].key = "creation_date";
-//                attributes[7].value = create_date;
-
-//                attributes[8] = new associativeEntity();
-//                attributes[8].key = "wireless";
-//                attributes[8].value = Wireless;
-
-//                attributes[9] = new associativeEntity();
-//                attributes[9].key = "incl";
-//                attributes[9].value = include;
-
-//                attributes[10] = new associativeEntity();
-//                attributes[10].key = "brand";
-//                attributes[10].value = brand;
-
-//                attributes[11] = new associativeEntity();
-//                attributes[11].key = "grade";
-//                attributes[11].value = grade;
-
-//                attributes[12] = new associativeEntity();
-//                attributes[12].key = "wcoa";
-//                attributes[12].value = "empty";
-
-//                attributes[13] = new associativeEntity();
-//                attributes[13].key = "ocoa";
-//                attributes[13].value = "empty";
-
-//                attributes[14] = new associativeEntity();
-//                attributes[14].key = "video";
-//                attributes[14].value = video;
-
-//                attributes[15] = new associativeEntity();
-//                attributes[15].key = "display";
-//                attributes[15].value = screen;
-
-//                attributes[16] = new associativeEntity();
-//                attributes[16].key = "computer";
-//                attributes[16].value = computerType;
-
-//                attributes[17] = new associativeEntity();
-//                attributes[17].key = "optical";
-//                attributes[17].value = optical;
-
-                
-
-//                catalogProductAdditionalAttributesEntity additionalAttributes = new catalogProductAdditionalAttributesEntity();
-//                additionalAttributes.single_data = attributes;
-//                create.additional_attributes = additionalAttributes;
-
-//                mservice.catalogProductCreate(
-//    mlogin, "simple", "4", sku, create, "1");
-
-//                mservice.Dispose();
-
-//                //update inventory 
-//                catalogInventoryStockItemUpdateEntity qty_update = new catalogInventoryStockItemUpdateEntity();
-
-               
-//                qty_update.qty = qty;
-//                qty_update.is_in_stock = 1;
-//                qty_update.manage_stock = 1;
-
-//                mservice.catalogInventoryStockItemUpdate(
-//    mlogin, sku, qty_update);
-
-//                message = "Listing Created";
-//            }
-//           catch ( Exception e) {
-//                message = "FAILED : " + e.Message.ToString();
-
-//            }
-            
-
-//            return Json(new { result =  message});
-
-
-
-//        }
-        
-        /// <summary>
-        /// 
-        /// </summary>
-        //public void get_catory_tree ()
-        //{
-           
-        //    string[] arr1 = new string[] {  };
-        //    MagentoService mservice = new MagentoService();
-        //    String mlogin = mservice.login("admin", "Interconnection123");
-        //    List<SelectListItem> cat_list = new List<SelectListItem>();
-        //  var tree = mservice.catalogCategoryTree(mlogin, "2", "1");
-        //    //var tree = mservice.catalogCategoryInfo(mlogin, 2, "1",arr1);
-
-        //    foreach (var t in tree.children)
-        //    {
-        //        cat_list.Add(new SelectListItem() { Value = t.category_id.ToString(), Text = t.name.ToString() });
-        //    }
-        //    //int childen = tree.children.Count();
-
-
-        //    //for (int i = 0; i < childen; i++)
-        //    //{
-
-
-
-        //    //}
-        //    magentoView.cat = new SelectList(cat_list, "Value", "Text");
-        //}
-
 
         public ActionResult qc()
         {
@@ -609,7 +642,7 @@ namespace ic_ef.Controllers
         {
             try
             {
-                HttpWebRequest myHttpWebRequest = (HttpWebRequest)WebRequest.Create("http://dev.interconnection.org/update.php?product_id=" +p_id + "&qty=" + qty);
+                HttpWebRequest myHttpWebRequest = (HttpWebRequest)WebRequest.Create("http://connectall.org/update.php?product_id=" +p_id + "&qty=" + qty);
                 myHttpWebRequest.ContentType = "application/x-www-form-urlencoded";
                 myHttpWebRequest.UserAgent = ".NET Framework Test Client";
                 WebResponse wr = myHttpWebRequest.GetResponse();
@@ -631,11 +664,52 @@ namespace ic_ef.Controllers
             return Json(result, JsonRequestBehavior.AllowGet);
         }
 
+        //get bin details for mac machiens
+        public JsonResult mac_get_bin_location (string id)
+        {
+            var result = (from t in db.mac_log where t.bin_location == id && t.status != "pulled" select t.ictags).ToList();
+            return Json(new { result = result }, JsonRequestBehavior.AllowGet);
+        }
+        //get bin details for windows machines
         public JsonResult get_bin_location(string id)
         {
             var result = (from t in db.production_log where t.bin_location == id && t.status != "pulled" select t.ictags).ToList();
             return Json(new { result = result},JsonRequestBehavior.AllowGet);
         }
+
+
+        public ActionResult bin_overview_gradec()
+        {
+
+
+            return View();
+        }
+
+        public JsonResult mac_reset_location(string asset)
+        {
+            string message = "";
+            int asset_int = int.Parse(asset);
+            var record = (from t in db.mac_log where t.ictags == asset_int select t.ictags).FirstOrDefault();
+            try
+            {
+                var original = db.mac_log.Find(record.ToString());
+                if (original != null)
+                {
+                    original.status = null;
+                    original.bin_location = null;
+                    db.SaveChanges();
+                    db.Dispose();
+                    message = "<p style='color:green'>Asset " + asset + " is now reset to null</p>";
+                }
+
+            }
+            catch
+            {
+                message = "<p style='color:red'>Asset " + asset + " Fail to reset</p>";
+            }
+            return Json(new { message = message }, JsonRequestBehavior.AllowGet);
+        }
+
         //reset the location of the asset tag
         public JsonResult reset_location (string asset)
         {
@@ -659,7 +733,82 @@ namespace ic_ef.Controllers
             }
             return Json(new { message = message }, JsonRequestBehavior.AllowGet);
         }
+        //create missing production_log entry for OEM machine from rediscovery 
 
+        public JsonResult oem_missing(string asset, string wcoa_id)
+        {
+            string message = "";
+            
+            int temp_asset = int.Parse(asset);
+            var asset_detail = (from t in db.rediscovery where t.ictag == temp_asset select t).FirstOrDefault();
+            var production_log = new production_log();
+            production_log.time = DateTime.Today;
+            production_log.ictags = asset;
+            production_log.wcoa = wcoa_id;
+            production_log.ocoa = "";
+            production_log.Manufacture = asset_detail.brand;
+            production_log.Model = asset_detail.model;
+            production_log.CPU = asset_detail.cpu;
+            production_log.RAM = asset_detail.ram;
+            production_log.HDD = asset_detail.hdd;
+            production_log.serial = asset_detail.serial;
+            production_log.channel = asset_detail.pallet;
+            production_log.pre_coa = "00999-999-000-999";
+
+            using (var dbCtx = new db_a094d4_icdbEntities())
+            {
+                //Add Student object into Students DBseta
+                dbCtx.production_log.Add(production_log);
+
+                // call SaveChanges method to save student into database
+                dbCtx.SaveChanges();
+            }
+            message = "Completed";
+
+            return Json(new { message = message }, JsonRequestBehavior.AllowGet);
+        }
+
+
+        //create missing production_log entry from rediscovery table and coas_history table
+        public JsonResult missing (string asset,string wcoa_id, string ocoa_id)
+        {
+            string message = "";
+            string ocoa_pk = "";
+            var wcoa_detail = (from t in db.coas_history where t.COA_ID == wcoa_id select t).FirstOrDefault();
+            if (!string.IsNullOrEmpty(ocoa_id))
+            {
+                var ocoa_detail = (from t in db.coas_history where t.COA_ID == ocoa_id select t).FirstOrDefault();
+                ocoa_pk = ocoa_detail.PK;
+            }
+            
+            int temp_asset = int.Parse(asset);
+            var asset_detail = (from t in db.rediscovery where t.ictag == temp_asset select t).FirstOrDefault();
+            var production_log = new production_log();
+            production_log.time = DateTime.Today;
+            production_log.ictags = asset;
+            production_log.wcoa = wcoa_detail.PK;
+            production_log.ocoa = ocoa_pk;
+            production_log.Manufacture = asset_detail.brand;
+            production_log.Model = asset_detail.model;
+            production_log.CPU = asset_detail.cpu;
+            production_log.RAM = asset_detail.ram;
+            production_log.HDD = asset_detail.hdd;
+            production_log.serial = asset_detail.serial;
+            production_log.channel = asset_detail.pallet;
+            production_log.pre_coa = "00999-999-000-999";
+
+            using (var dbCtx = new db_a094d4_icdbEntities())
+            {
+                //Add Student object into Students DBseta
+                dbCtx.production_log.Add(production_log);
+
+                // call SaveChanges method to save student into database
+                dbCtx.SaveChanges();
+            }
+            message = "Completed";
+
+            return Json(new { message = message }, JsonRequestBehavior.AllowGet);
+        }
 
         public JsonResult asso (string asset, string serial)
         {
@@ -685,6 +834,61 @@ namespace ic_ef.Controllers
             return Json(new { message = message }, JsonRequestBehavior.AllowGet);
         }
 
+
+
+        public JsonResult mac_write_bin_location(string asset, string id)
+
+        {
+            string sku = "";
+            string message = "";
+            if (!String.IsNullOrEmpty(asset))
+            {
+
+                try
+                {
+
+               
+                int asset_int = int.Parse(asset);
+
+                var entry = new mac_log();
+                using (var ctx = new db_a094d4_icdbEntities())
+                {
+                    entry = ctx.mac_log.Where(s => s.ictags == asset_int).FirstOrDefault<mac_log>();
+                        sku = entry.pallet;
+                    if (entry != null)
+                    {
+                        entry.bin_location = id;
+                    }
+                }
+                using (var dbCtx = new db_a094d4_icdbEntities())
+                {
+                    //3. Mark entity as modified
+                    dbCtx.Entry(entry).State = System.Data.Entity.EntityState.Modified;
+
+                    //4. call SaveChanges
+                    dbCtx.SaveChanges();
+                }
+
+                //now write to magento 
+                
+
+                message = "<p style='color:green'>Asset " + asset + " is now assigned to Bin " + id + "</p>";
+                }
+
+                catch
+                {
+                    message = "<p style='color:red'>Cant Find Asset " + asset + " Please check Data Inputed or try to Associate Serial # with Asset tag Below. If Problem Still Occur, please Contact your Supervisor" + "</p>";
+                }
+            }
+
+
+
+
+            return Json(new { message = message }, JsonRequestBehavior.AllowGet);
+        }
+
+
+        //scan asset to bin 
         public JsonResult write_bin_location (string asset,string id)
 
         {
@@ -697,6 +901,7 @@ namespace ic_ef.Controllers
                     var original = db.production_log.Find(record.ToString());
                     if (original != null)
                     {
+                        original.status = null;
                         original.bin_location = id;
                         db.SaveChanges();
                         db.Dispose();
@@ -716,10 +921,27 @@ namespace ic_ef.Controllers
            
             return Json(new { message = message}, JsonRequestBehavior.AllowGet);
         }
+        
+
+        
 
         public ActionResult bin_location(string id)
-        {
-
+      {
+            ViewData["is_mac"] = false;
+            int letter_count = Regex.Matches(id, @"[a-zA-Z]").Count;
+            if (letter_count > 0)
+            {
+                id = id.ToUpper();
+                if (id.Contains("MAC"))
+                {
+                    ViewData["is_mac"] = true;
+                }
+                ViewData["is_desktop"] = true;
+            }
+           else
+            {
+                ViewData["is_desktop"] = false;
+            }
             ViewData["id"] = id;
             return View();
         }
@@ -769,25 +991,102 @@ namespace ic_ef.Controllers
             }
         }
 
+        private filters addFilter(filters filtresIn, string key, string op, string value)
+        {
+            filters filtres = filtresIn;
+            if (filtres == null)
+                filtres = new filters();
+
+            complexFilter compfiltres = new complexFilter();
+            compfiltres.key = key;
+            associativeEntity ass = new associativeEntity();
+            ass.key = op;
+            ass.value = value;
+            compfiltres.value = ass;
+
+            List<complexFilter> tmpLst;
+            if (filtres.complex_filter != null)
+                tmpLst = filtres.complex_filter.ToList();
+            else tmpLst = new List<complexFilter>();
+
+            tmpLst.Add(compfiltres);
+
+            filtres.complex_filter = tmpLst.ToArray();
+
+            return filtres;
+        }
+
+        public List<string> order_list(filters filter)
+        {
+            MagentoService mservice = new MagentoService();
+            String mlogin = mservice.login("admin", "Interconnection123!");
+
+            var result = mservice.salesOrderList(mlogin, filter);
+            var list = new List<string>();
+            foreach (var item in result)
+            {
+
+                mlogin = mservice.login("admin", "Interconnection123!");
+                var order_sku = mservice.salesOrderInfo(mlogin, item.increment_id);
+                for (int i = 0; i < order_sku.items.Count(); i++)
+                {
+                    
+                    if (!string.IsNullOrEmpty(order_sku.items[i].sku) &&!order_sku.items[i].sku.Contains("ICM")  )
+                    {
+                        list.Add(order_sku.items[i].sku);
+                    }
+                    
+                }
+
+
+            }
+
+            return list;
+        }
+
+        public JsonResult current_order_list ()
+        {
+
+            var oneWeekAgo = DateTime.Today.AddDays(-7).ToString("yyyy-MM-dd hh:mm:ss");
+            var today = DateTime.Today.AddDays(1).ToString("yyyy-MM-dd hh:mm:ss");
+            filters filtres = new filters();
+            filtres = addFilter(filtres, "status", "eq", "processing");
+            filtres = addFilter(filtres, "created_at", "from", oneWeekAgo);
+            filtres = addFilter(filtres, "created_at", "to", today);
+            filtres = addFilter(filtres, "store_id", "eq", "1");
+            var processing_list = order_list(filtres);
+            filters filtres2 = new filters();
+            filtres2 = addFilter(filtres2, "status", "eq", "pending");
+            filtres2 = addFilter(filtres2, "created_at", "from", oneWeekAgo);
+            filtres2 = addFilter(filtres2, "created_at", "to", today);
+            filtres2 = addFilter(filtres2, "store_id", "eq", "1");
+            var pending_list = order_list(filtres2);
+            filters filtres3 = new filters();
+            filtres2 = addFilter(filtres3, "status", "eq", "pending");
+            filtres2 = addFilter(filtres3, "created_at", "from", oneWeekAgo);
+            filtres2 = addFilter(filtres3, "created_at", "to", today);
+            filtres2 = addFilter(filtres3, "store_id", "eq", "3");
+            var retail_pending_list = order_list(filtres3);
+            filters filtres4 = new filters();
+            filtres2 = addFilter(filtres4, "status", "eq", "pending");
+            filtres2 = addFilter(filtres4, "created_at", "from", oneWeekAgo);
+            filtres2 = addFilter(filtres4, "created_at", "to", today);
+            filtres2 = addFilter(filtres4, "store_id", "eq", "3");
+            var retail_processing_list = order_list(filtres4);
+           // var arr = processing_list.Union(pending_list).ToList();
+            var arr = processing_list.Concat(pending_list)
+                                    .Concat(retail_pending_list).Concat(retail_processing_list)
+                                    .ToList();
+            return Json( new { order_list = arr}, JsonRequestBehavior.AllowGet);
+        }
 
         //import sku for retail POS
         //update QTY in main website 
-        public JsonResult retail_quick_import(string price, string name, string sku, string weight, string desc, string short_desc, string qty, string[] websites, string stock, string status, string visible, string attr, string type, string tax, string img_path)
+        public int retail_quick_import(string price, string name, string sku, string weight, string desc, string short_desc, string qty, string[] websites, string stock, string status, string visible, string attr, string type, string tax, string img_path)
         {
             string message = "";
             //check to see if inventory has that item before adding it to the list
-            var quick_check = (from t in db.production_log where t.channel == sku && t.bin_location != null select t).ToList();
-
-            if(quick_check.Count == 0)
-            {
-                message = "<h3 style='color:red'>" + sku + " is not yet avaiable in Inventory, please contact administrator for more information</h3>";
-                return Json(new { message = message }, JsonRequestBehavior.AllowGet);
-            }
-
-
            
-           
-               
             Models.retail_quick_import retail_model = new Models.retail_quick_import();
             retail_model.price = price;
             retail_model.name = name;
@@ -805,113 +1104,135 @@ namespace ic_ef.Controllers
             retail_model.type = type;
             retail_model.tax_id = tax;
 
-            //format a sku just for retail
-            string to_be_import_sku = retail_model.sku + "_retail";
-
             mage mage = new mage();
             string path = img_path;
 
-
-            //create sku if product is not exisited
-            var original_product = mage.check_product(retail_model.sku);
-            var added_retail_product = mage.check_product(to_be_import_sku);
-            if (added_retail_product.Length == 0)
-            {
-                //if product not exisit create a new listing and set qty to 0
-                retail_model.sku = to_be_import_sku;
-                mage.retail_quick_import(retail_model);
-                added_retail_product = mage.check_product(retail_model.sku);
-                //get the product id for the new retail listing 
-                retail_model.p_id = added_retail_product[0].product_id;
-                //set the QTY to 1
-                retail_model.qty = "1";
-                double temp_qty = double.Parse(retail_model.qty);
-                
-                retail_model.qty = temp_qty.ToString();
-                //update qty for inventory module
-                smart_inventory(retail_model.p_id, retail_model.qty);
-
-                //update qty for classic magento inventory entity
-                mage.quick_update(retail_model.qty, retail_model.p_id,path);
-            }
-            else
-            {
-                //if sku is exisited
-                //just update the qty
-                double temp_added_retail_qty = double.Parse(added_retail_product[0].qty);
-                temp_added_retail_qty += 1;
-                added_retail_product[0].qty = temp_added_retail_qty.ToString();
-
-
-                //update qty for inventory module
-                smart_inventory(added_retail_product[0].product_id, added_retail_product[0].qty);
-
-                //update qty for classic magento inventory entity
-                mage.quick_update(added_retail_product[0].qty, added_retail_product[0].product_id,path);
-            }
-
-
-                //qty -1 on the original sku
-                double update_qty = double.Parse(original_product[0].qty);
-                update_qty -= 1;
-            //update inventroy module
-            smart_inventory(original_product[0].product_id, update_qty.ToString());
-                //update the core magento table
-                mage.quick_update(update_qty.ToString(), original_product[0].product_id, path);
-
-            //assign one asset to user
-            var location = (from t in db.production_log where t.channel == original_sku && t.status !="pulled" && t.bin_location != null  select t).FirstOrDefault();
-            //update the asset to sold
-            if (location != null)
-            {
-                var original = db.production_log.Find(location.wcoa);
-                if (original != null)
-                {
-                    original.status = "pulled";
-                    db.SaveChanges();
-                    db.Dispose();
-                    message = "<h3 style='color:green'>Product Imported Successfully</h3>";
-                }
-            }
-            else { message = "<h3 style='color:red'>Magento Inventory and Warehouse Inventory does not match, Contact your Supervisor</h3>"; }
-
-
-
             
-            
-            //catch (Exception e)
-            //{
-            //    message = "<h3 style='color:red'>Product Imported Fail </p><p style='red'>" + e.Message + "</h3>";
-            //}
+            //create sku 
+            int pid = mage.retail_quick_import(retail_model);
 
-            return Json(new { message = message , location = location.bin_location,asset = location.ictags }, JsonRequestBehavior.AllowGet);
+         
+            return pid;
         }
 
-        public JsonResult online_store_picklist(string sku)
-        {
-         
-            string result = "";
-            var location = (from t in db.production_log where t.channel == sku && t.status != "pulled" && t.bin_location != null select t).FirstOrDefault();
-            //update the asset to sold
-            if (location != null)
-            {
-                var original = db.production_log.Find(location.wcoa);
-                if (original != null)
-                {
-                    original.status = "pulled";
-                    db.SaveChanges();
-                    db.Dispose();
-                    result = "<div class='ui positive icon message'><i class='inbox icon'></i><div class='content'><div class='header'>Asset :" + location.ictags+"</div><p>Location : "+location.bin_location+"</p></div></div>";
-                    
-                }
-            }
-            else {
-                result = "<div class='ui negative message'><i class='inbox icon'></i><div class='content'><div class='header'><p style='color:red'>Magento Inventory and Warehouse Inventory does not match, Contact your Supervisor</p></div></div></div>";
-                    }
+    
 
+
+
+        //function for online store user to pull asset out from the inventory 
+        public JsonResult online_store_picklist(string sku,string asset,string mac)
+        {
+            string result = "";
+          
+
+            
+                try
+            {
+
+                if (mac == "true")
+                {
+                    int temp_asset = int.Parse(asset);
+                    
+                    var mac_entry = new mac_log();
+                    using (var ctx = new db_a094d4_icdbEntities())
+                    {
+                        
+                        mac_entry = ctx.mac_log.Where(s => s.ictags == temp_asset).FirstOrDefault<mac_log>();
+                        if(mac_entry !=null)
+                        {
+                            mac_entry.status = "pulled";
+                            
+                        }
+                    }
+                    using (var dbCtx = new db_a094d4_icdbEntities())
+                    {
+                        //3. Mark entity as modified
+                        dbCtx.Entry(mac_entry).State = System.Data.Entity.EntityState.Modified;
+                        
+                        //4. call SaveChanges
+                        dbCtx.SaveChanges();
+                    }
+                    pull_logging(asset, sku, "pulled", DateTime.Now, "mac_online");
+                }
+                else
+                {
+                    
+                    var entry = new production_log();
+                    using (var ctx = new db_a094d4_icdbEntities())
+                    {
+                      
+                        entry = ctx.production_log.Where(s => s.ictags == asset).FirstOrDefault<production_log>();
+                        if (entry != null)
+                        {
+                            entry.status = "pulled";
+                           
+                        }
+                    }
+                    using (var dbCtx = new db_a094d4_icdbEntities())
+                    {
+                        
+                        //3. Mark entity as modified
+                        dbCtx.Entry(entry).State = System.Data.Entity.EntityState.Modified;
+
+                        //4. call SaveChanges
+                        dbCtx.SaveChanges();
+                    }
+                    pull_logging(asset, sku, "pulled", DateTime.Now, "windows_online");
+                }
+                
+                result = "<h3 style='color:green'>Asset "+asset+" is now Pulled from Inventory</h3>";
+            }
+                 
+    catch(Exception e)
+            {
+                pull_logging(asset, sku, e.ToString(), DateTime.Now, "error");
+                using (var dbCtx = new db_a094d4_icdbEntities())
+                {
+                    
+                    //4. call SaveChanges
+                    dbCtx.SaveChanges();
+                }
+                result = "<h3 style='color:red'>Failed, Please Check Data Input</h3>";
+            }
             return Json(new {result = result} ,JsonRequestBehavior.AllowGet);
         }
 
+
+        //log for all pull activity
+        public void pull_logging (string ictag, string sku, string action, DateTime time, string channel)
+        {
+            var pull_log = new pull_log();
+            using (var ctx = new db_a094d4_icdbEntities())
+            {
+                
+                pull_log.time = DateTime.Now;
+                pull_log.ictag = ictag;
+                pull_log.sku = sku;
+                pull_log.action = action;
+                pull_log.channel = channel;
+                
+
+            }
+            using (var dbCtx = new db_a094d4_icdbEntities())
+            {
+                //3. Mark entity as modified
+               
+                dbCtx.pull_log.Add(pull_log);
+                //4. call SaveChanges
+                dbCtx.SaveChanges();
+            }
+
+           
+
+        }
+
+        public JsonResult get_serial (int asset)
+        {
+
+            var serial_result = (from t in db.rediscovery where t.ictag == asset select t.serial).FirstOrDefault();
+
+            return Json(serial_result, JsonRequestBehavior.AllowGet);
+        }
 
         public ActionResult asset_locator ()
         {
@@ -1165,7 +1486,7 @@ namespace ic_ef.Controllers
         }
         public JsonResult retail_inv ()
         {
-            var url = "http://dev.interconnection.org/get_product.php";
+            var url = "http://connectall.org/get_product.php";
             var retail_inv = json_to_list(url);
             return Json(retail_inv, JsonRequestBehavior.AllowGet);
         }
@@ -1350,7 +1671,7 @@ namespace ic_ef.Controllers
         public ActionResult mage_order_import ()
         {
             
-           string url = "http://www.dev.interconnection.org/qbjson.json";
+           string url = "http://www.connectall.org/qbjson.json";
          //   var retail_inv = json_to_customer(url);
             mage mage = new mage();
            // mage.create_customer(retail_inv);
@@ -1412,7 +1733,7 @@ namespace ic_ef.Controllers
           var url = "http://connectall.org/desktop.php";
            // ViewBag.desktop = read_json(url);
 
-            fetch_latest_sku();
+            
             List<SelectListItem> grade_list = new List<SelectListItem>()
             {
                 new SelectListItem(){ Value="1", Text="Grade A"},

@@ -49,5 +49,8 @@ namespace ic_ef
         public virtual DbSet<temp_label> temp_label { get; set; }
         public virtual DbSet<users> users { get; set; }
         public virtual DbSet<picklist> picklist { get; set; }
+        public virtual DbSet<pull_log> pull_log { get; set; }
+        public virtual DbSet<retail_report> retail_report { get; set; }
+        public virtual DbSet<magento_validation_log> magento_validation_log { get; set; }
     }
 }

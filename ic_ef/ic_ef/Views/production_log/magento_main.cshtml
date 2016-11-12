@@ -24,40 +24,61 @@
         </div>
         <div class="six column centered row">
             <div class="column"><a href="@Url.Action("magento_retail", "production_log")">
-    <div class="ui huge primary button">TS/G360 Quick SKU Import<i class="right arrow icon"></i></div>
+    <div class="ui huge primary button">TS/G360 Quick SKU Import</div>
 </a></div>
             <div class="column"><a href="@Url.Action("mage_order_import", "production_log")">
-    <div class="ui huge primary button">Upload Orders csv for TS/G360<i class="right arrow icon"></i></div>
+    <div class="ui huge primary button">Upload Orders csv for TS/G360</div>
 </a></div>
-            <div class="column">
+            @*<div class="column">
                 <a href="@Url.Action("magento_retail_view", "production_log")">
                     <div class="ui huge primary button">Retail Pick List<i class="right arrow icon"></i></div>
                 </a>
-            </div>
+            </div>*@
         </div>
         <div class="four column centered row">
         
             <div class="column"><a href="@Url.Action("magento_create", "production_log")">
-    <div class="ui huge primary button">Create Listing(Advance Mode)<i class="right arrow icon"></i></div>
+    <div class="ui huge primary button">Create Listing(Advance Mode)</div>
 </a></div>
             <div class="column">
                 <a href="@Url.Action("qc", "production_log")">
-                    <div class="ui huge primary button">Production QC Tool<i class="right arrow icon"></i></div>
+                    <div class="ui huge primary button">Production QC Tool</div>
+                </a>
+            </div>
+            <div class="column">
+                <a href="@Url.Action("return_stock", "production_log")">
+                    <div class="ui huge primary button"><i class="big black repeat icon"></i>Return Asset to Stock</div>
                 </a>
             </div>
         </div>
         <div class="four column centered row">
             <div class="column">
                 <a href="@Url.Action("bin_overview", "production_log")">
-                    <div class="ui huge primary button">Inventory Overview<i class="right arrow icon"></i></div>
+                    <div class="ui huge primary button"><i class="big black windows icon"></i>Inventory Overview(Windows)</div>
                 </a>
             </div>
             <div class="column">
-                <a href="@Url.Action("asset_locator", "production_log")">
-                    <div class="ui huge primary button">Pull Assets from ICDB<i class="right arrow icon"></i></div>
+                <a href="@Url.Action("bin_overview_mac", "production_log")">
+                    <div class="ui huge primary button"><i class="big black apple icon"></i>Inventory Overview (MAC)</div>
                 </a>
             </div>
+            <div class="column">
+                <a href="@Url.Action("bin_overview_gradec", "production_log")">
+                    <div class="ui huge primary button">Inventory Overview (Grade C Assets)</div>
+                </a>
             </div>
+
+            </div>
+        <div class="four column centered row">
+            <div class="column">
+                <a href="@Url.Action("inventory_report", "production_log")">
+                    <div class="ui huge primary button"><i class="big black edit icon"></i>Inventory Report</div>
+                </a>
+            </div>
+
+            </div>
+
+
         </div>
 
     

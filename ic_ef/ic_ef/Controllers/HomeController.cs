@@ -95,6 +95,67 @@ namespace ic_ef.Controllers
             return View();
         }
 
+        [HttpPost]
+        public ActionResult magento_validation()
+        {
+            return View();   
+        }
+        [HttpGet]
+        public ActionResult magento_validation(string id)
+        {
+            List<Models.magento_validation.Class1> response = new List<Models.magento_validation.Class1>();
+            if (id == "interconnection123")
+            {
+                var result = (from t in db.production_log where t.bin_location != null && t.status != null select t.channel).ToList();
+                
+                using (WebClient wc = new WebClient())
+                {
+                    var json = new WebClient().DownloadString("http://www.connectall.org/get_enable.php");
+                    JavaScriptSerializer ser = new JavaScriptSerializer();
+                    response = ser.Deserialize<IList<Models.magento_validation.Class1>>(json.ToString()).ToList();
+                   
+                }
+
+                foreach (var item in response)
+                {
+                    var mage = new mage();
+                    
+                    
+                    bool contain = result.Contains(item.sku);
+                    if (contain == true)
+                    {
+                        
+                        var bin_qty = (from t in db.production_log where t.channel == item.sku && t.status == null && t.bin_location != null select t).Count();
+                        decimal decimal_bin_qty = decimal.Parse(bin_qty.ToString());
+                        decimal mage_qty = decimal.Parse(item.qty);
+                        if (decimal_bin_qty != mage_qty)
+                        {
+                      
+                            //update qty
+                            var result_code = mage.update_qty(item.sku, bin_qty.ToString(), item.entity_id);
+                            //enable product
+                            var db = new db_a094d4_icdbEntities();
+                            var insert = new magento_validation_log();
+                            insert.time = DateTime.Today.Date;
+                            insert.SKU = item.sku;
+                            insert.mage_qty = mage_qty;
+                            insert.bin_qty = bin_qty;
+                            insert.successful = result_code.ToString();
+                            db.SaveChanges();
+
+                            var result_status = mage.enable_product(item.sku);
+                           
+                        }
+                     
+                        
+                           
+                        
+                    }
+                }
+            }
+            return View();
+        }
+
         public JsonResult small_graph()
         {
             var result = sql_output.small_graph("select Count(time) as items from discovery where time >= DATE_SUB(CURDATE(), INTERVAL 7 day) group by date_format(time,'%Y-%m-%d') limit 7");
@@ -310,18 +371,24 @@ namespace ic_ef.Controllers
 
         public JsonResult asset_result (string asset)
         {
-           
+           string rediscovery_time = "";
                 int temp_asset = int.Parse(asset);
                 var discovery = (from t in db.discovery
                                  where (t.ictag == temp_asset)
                                  select t).FirstOrDefault();
             string discovery_time = discovery.time.ToString();
-                var rediscovery = (from t in db.rediscovery
-                                   where (t.ictag == temp_asset)
-                                   select t).FirstOrDefault();
-            string rediscovery_time = rediscovery.time.ToString();
+
+            var rediscovery = (from t in db.rediscovery
+                               where (t.ictag == temp_asset)
+                               select t).FirstOrDefault();
+
+
             try
             {
+              
+
+                rediscovery_time = rediscovery.time.ToString();
+
                 var img = (from t in db.production_log
                            where (t.serial == rediscovery.serial)
                            select t).FirstOrDefault();

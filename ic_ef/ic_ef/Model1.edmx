@@ -149,6 +149,19 @@
           <Property Name="cpu" Type="char" MaxLength="100" />
           <Property Name="ram" Type="char" MaxLength="100" />
           <Property Name="hdd" Type="char" MaxLength="100" />
+          <Property Name="bin_location" Type="char" MaxLength="50" />
+          <Property Name="status" Type="char" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="magento_validation_log">
+          <Key>
+            <PropertyRef Name="row_id" />
+          </Key>
+          <Property Name="time" Type="date" />
+          <Property Name="SKU" Type="char" MaxLength="50" />
+          <Property Name="bin_qty" Type="decimal" Precision="10" Scale="0" />
+          <Property Name="mage_qty" Type="decimal" Precision="10" Scale="0" />
+          <Property Name="successful" Type="char" MaxLength="50" />
+          <Property Name="row_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
         </EntityType>
         <!--Errors Found During Generation:
 warning 6013: The table/view 'def.db_a094d4_icdb.misc_setting' does not have a primary key defined and no valid primary key could be inferred. This table/view has been excluded. To use the entity, you will need to review your schema, add the correct keys, and uncomment it.
@@ -222,6 +235,17 @@ warning 6013: The table/view 'def.db_a094d4_icdb.misc_setting' does not have a p
           <Property Name="bin_location" Type="char" MaxLength="100" />
           <Property Name="status" Type="char" MaxLength="50" />
         </EntityType>
+        <EntityType Name="pull_log">
+          <Key>
+            <PropertyRef Name="record_id" />
+          </Key>
+          <Property Name="time" Type="datetime" Precision="0" />
+          <Property Name="record_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="action" Type="char" MaxLength="50" Nullable="false" />
+          <Property Name="ictag" Type="char" MaxLength="50" />
+          <Property Name="sku" Type="char" MaxLength="50" />
+          <Property Name="channel" Type="char" MaxLength="50" />
+        </EntityType>
         <EntityType Name="rediscovery">
           <Key>
             <PropertyRef Name="ictag" />
@@ -255,6 +279,18 @@ warning 6013: The table/view 'def.db_a094d4_icdb.misc_setting' does not have a p
           <Property Name="hdd" Type="char" MaxLength="50" />
           <Property Name="model" Type="char" MaxLength="50" />
           <Property Name="sold" Type="char" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="retail_report">
+          <Key>
+            <PropertyRef Name="row_id" />
+          </Key>
+          <Property Name="row_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="date_sold" Type="date" Nullable="false" />
+          <Property Name="ictag" Type="char" MaxLength="50" Nullable="false" />
+          <Property Name="price_sold" Type="char" MaxLength="50" Nullable="false" />
+          <Property Name="name" Type="char" MaxLength="50" Nullable="false" />
+          <Property Name="receipt" Type="char" MaxLength="50" Nullable="false" />
+          <Property Name="type" Type="char" MaxLength="50" />
         </EntityType>
         <EntityType Name="setting">
           <Key>
@@ -372,14 +408,17 @@ warning 6013: The table/view 'def.db_a094d4_icdb.misc_setting' does not have a p
           <EntitySet Name="ebay" EntityType="Self.ebay" Schema="db_a094d4_icdb" store:Type="Tables" />
           <EntitySet Name="label_menu" EntityType="Self.label_menu" Schema="db_a094d4_icdb" store:Type="Tables" />
           <EntitySet Name="mac_log" EntityType="Self.mac_log" Schema="db_a094d4_icdb" store:Type="Tables" />
+          <EntitySet Name="magento_validation_log" EntityType="Self.magento_validation_log" Schema="db_a094d4_icdb" store:Type="Tables" />
           <EntitySet Name="monitor_log" EntityType="Self.monitor_log" Schema="db_a094d4_icdb" store:Type="Tables" />
           <EntitySet Name="monitor_setting" EntityType="Self.monitor_setting" Schema="db_a094d4_icdb" store:Type="Tables" />
           <EntitySet Name="pallet" EntityType="Self.pallet" Schema="db_a094d4_icdb" store:Type="Tables" />
           <EntitySet Name="pallet_master" EntityType="Self.pallet_master" Schema="db_a094d4_icdb" store:Type="Tables" />
           <EntitySet Name="picklist" EntityType="Self.picklist" Schema="db_a094d4_icdb" store:Type="Tables" />
           <EntitySet Name="production_log" EntityType="Self.production_log" Schema="db_a094d4_icdb" store:Type="Tables" />
+          <EntitySet Name="pull_log" EntityType="Self.pull_log" Schema="db_a094d4_icdb" store:Type="Tables" />
           <EntitySet Name="rediscovery" EntityType="Self.rediscovery" Schema="db_a094d4_icdb" store:Type="Tables" />
           <EntitySet Name="retail" EntityType="Self.retail" Schema="db_a094d4_icdb" store:Type="Tables" />
+          <EntitySet Name="retail_report" EntityType="Self.retail_report" Schema="db_a094d4_icdb" store:Type="Tables" />
           <EntitySet Name="setting" EntityType="Self.setting" Schema="db_a094d4_icdb" store:Type="Tables" />
           <EntitySet Name="setting_bol" EntityType="Self.setting_bol" Schema="db_a094d4_icdb" store:Type="Tables" />
           <EntitySet Name="station_setting" EntityType="Self.station_setting" Schema="db_a094d4_icdb" store:Type="Tables" />
@@ -548,6 +587,8 @@ warning 6013: The table/view 'def.db_a094d4_icdb.misc_setting' does not have a p
           <Property Name="cpu" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
           <Property Name="ram" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
           <Property Name="hdd" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="bin_location" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="status" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
         </EntityType>
         <EntityType Name="monitor_log">
           <Key>
@@ -756,6 +797,9 @@ warning 6013: The table/view 'def.db_a094d4_icdb.misc_setting' does not have a p
             <End Role="aspnetroles" EntitySet="aspnetroles" />
           </AssociationSet>
           <EntitySet Name="picklist" EntityType="db_a094d4_icdbModel.picklist" />
+          <EntitySet Name="pull_log" EntityType="db_a094d4_icdbModel.pull_log" />
+          <EntitySet Name="retail_report" EntityType="db_a094d4_icdbModel.retail_report" />
+          <EntitySet Name="magento_validation_log" EntityType="db_a094d4_icdbModel.magento_validation_log" />
         </EntityContainer>
         <EntityType Name="picklist">
           <Key>
@@ -765,6 +809,40 @@ warning 6013: The table/view 'def.db_a094d4_icdb.misc_setting' does not have a p
           <Property Name="date" Type="DateTime" />
           <Property Name="name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="item" Type="String" />
+        </EntityType>
+        <EntityType Name="pull_log">
+          <Key>
+            <PropertyRef Name="record_id" />
+          </Key>
+          <Property Name="time" Type="DateTime" />
+          <Property Name="record_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ictag" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="sku" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="channel" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="action" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="retail_report">
+          <Key>
+            <PropertyRef Name="row_id" />
+          </Key>
+          <Property Name="row_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="date_sold" Type="DateTime" Nullable="false" />
+          <Property Name="ictag" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="price_sold" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="name" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="receipt" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="type" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="magento_validation_log">
+          <Key>
+            <PropertyRef Name="row_id" />
+          </Key>
+          <Property Name="time" Type="DateTime" />
+          <Property Name="SKU" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="bin_qty" Type="Decimal" />
+          <Property Name="mage_qty" Type="Decimal" />
+          <Property Name="successful" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="row_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
         </EntityType>
       </Schema>
     </edmx:ConceptualModels>
@@ -905,6 +983,8 @@ warning 6013: The table/view 'def.db_a094d4_icdb.misc_setting' does not have a p
           <EntitySetMapping Name="mac_log">
             <EntityTypeMapping TypeName="db_a094d4_icdbModel.mac_log">
               <MappingFragment StoreEntitySet="mac_log">
+                <ScalarProperty Name="status" ColumnName="status" />
+                <ScalarProperty Name="bin_location" ColumnName="bin_location" />
                 <ScalarProperty Name="hdd" ColumnName="hdd" />
                 <ScalarProperty Name="ram" ColumnName="ram" />
                 <ScalarProperty Name="cpu" ColumnName="cpu" />
@@ -1083,6 +1163,43 @@ warning 6013: The table/view 'def.db_a094d4_icdb.misc_setting' does not have a p
                 <ScalarProperty Name="name" ColumnName="name" />
                 <ScalarProperty Name="date" ColumnName="date" />
                 <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="pull_log">
+            <EntityTypeMapping TypeName="db_a094d4_icdbModel.pull_log">
+              <MappingFragment StoreEntitySet="pull_log">
+                <ScalarProperty Name="action" ColumnName="action" />
+                <ScalarProperty Name="channel" ColumnName="channel" />
+                <ScalarProperty Name="sku" ColumnName="sku" />
+                <ScalarProperty Name="ictag" ColumnName="ictag" />
+                <ScalarProperty Name="record_id" ColumnName="record_id" />
+                <ScalarProperty Name="time" ColumnName="time" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="retail_report">
+            <EntityTypeMapping TypeName="db_a094d4_icdbModel.retail_report">
+              <MappingFragment StoreEntitySet="retail_report">
+                <ScalarProperty Name="type" ColumnName="type" />
+                <ScalarProperty Name="receipt" ColumnName="receipt" />
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="price_sold" ColumnName="price_sold" />
+                <ScalarProperty Name="ictag" ColumnName="ictag" />
+                <ScalarProperty Name="date_sold" ColumnName="date_sold" />
+                <ScalarProperty Name="row_id" ColumnName="row_id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="magento_validation_log">
+            <EntityTypeMapping TypeName="db_a094d4_icdbModel.magento_validation_log">
+              <MappingFragment StoreEntitySet="magento_validation_log">
+                <ScalarProperty Name="row_id" ColumnName="row_id" />
+                <ScalarProperty Name="successful" ColumnName="successful" />
+                <ScalarProperty Name="mage_qty" ColumnName="mage_qty" />
+                <ScalarProperty Name="bin_qty" ColumnName="bin_qty" />
+                <ScalarProperty Name="SKU" ColumnName="SKU" />
+                <ScalarProperty Name="time" ColumnName="time" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

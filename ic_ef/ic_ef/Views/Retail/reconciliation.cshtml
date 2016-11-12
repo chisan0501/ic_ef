@@ -1,0 +1,289 @@
+﻿
+@{
+    ViewBag.Title = "reconciliation";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<script src="~/js/jquery.tabletoCSV.js"></script>
+
+<h2>Retail Inventory Reconciliation</h2>
+
+
+
+<div class="ui basic modal">
+    <i class="close icon"></i>
+    <div class="header">
+        Scan Current Inventory Assets:
+    </div>
+    <div class="ui raised very padded text container segment">
+        <h2 class="ui header"></h2>
+       
+
+       
+            <textarea class="form-control" rows="15" id="mytextarea"></textarea>
+            <p></p>
+           
+        
+        
+    </div>
+    <div class="actions">
+        <button class="fluid ui positive button" id="submit">Submit</button>
+        <button class="fluid ui button" id="clear">Clear</button>
+    </div>
+</div>
+
+<div class="ui raised very padded text fluid container segment">
+    
+    <div class="ui info message transition show">
+        <i class="close icon"></i>
+       
+        <ul class="list">
+            <li>Data are updated after 7:30pm daily</li>
+          
+        </ul>
+    </div>
+    <div id="main"></div>
+    <h2 class="ui header">Current Retail Inventory</h2>
+     
+            <div class="ui three statistics">
+                <a href="#" id="store_now">
+                    <div class="statistic">
+                        <div class="value" id="phy">
+                            0
+                        </div>
+                        <div class="label">
+                            PHYSICAL STOCK
+                        </div>
+                    </div>
+                </a>
+                    <a href="#" id="click_sold">
+                        <div class="statistic">
+                            <div class="value" id="sold">
+                                0
+                            </div>
+                            <div class="label">
+                                Sold Yesterday
+                            </div>
+                        </div>
+                    </a>
+                    <a href="#" id="click_return">
+                        <div class="statistic">
+                            <div class="value" id="return">
+                                0
+                            </div>
+                            <div class="label">
+                                Return Yesterday
+                            </div>
+                        </div>
+                    </a>
+
+</div>
+
+
+    <p></p>
+
+    
+
+    <div class="ui center aligned basic segment">
+       
+        <div class="ui horizontal divider">
+            Or
+        </div>
+        <button class="ui primary button" id="inv_recon">Perform Physical Count</button>
+    </div>
+
+
+    
+    <div id="result"></div>
+</div>
+
+
+
+<script>
+    $('.message .close')
+  .on('click', function() {
+    $(this)
+      .closest('.message')
+      .transition('fade')
+    ;
+  })
+;
+</script>
+<script>
+    $(document).ready(function () {
+
+
+        $('#result').on('click', 'button', function () {
+            $("#result_table").tableToCSV();
+
+        });
+
+
+        $.getJSON("@Url.Action("current_inv_retail")", function (data) {
+            $('#phy').text(data.in_store);
+            $('#sold').text(data.sold_ytd);
+            
+            $('#return').text(data.return_ytd);
+        });
+        $('#inv_recon').click(function () {
+            $('.ui.basic.modal')
+      .modal('show')
+            ;
+        });
+        $('#clear').click(function () {
+            $('#mytextarea').val('');
+        });
+
+
+        $('#store_now').click(function () {
+
+            var jsonObject = {
+                request: "current"
+            };
+
+            $.ajax({
+                url: "@Url.Action("get_request")",
+                type: "POST",
+
+            data: JSON.stringify(jsonObject),
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            success: function (data) {
+
+                $('#main').html("");
+
+                var table_front = "<table class='ui celled striped stackable table'><thead><tr><th>Asset Tag</th><th>SKU</th></tr></thead><tbody>";
+
+                var table_end = "</tbody></table>";
+
+
+                var table_content = "";
+
+                for (i=0;i<data.length;i++) {
+                    table_content += "<tr><td><h4 class='ui image header'><div class='content'>" + data[i].ictag + "</div></h4></td><td>" + data[i].sku + "</td></tr>"
+                }
+
+                $('#main').append("<div class='ui right attached rail'><div class='ui basic segment'>" + table_front + table_content + table_end + "</div></div>");
+              
+            }
+            });
+
+        });
+
+        $('#click_sold').click(function () {
+
+
+            var jsonObject = {
+                request: "sold"
+            };
+
+            $.ajax({
+                url: "@Url.Action("get_request")",
+                type: "POST",
+
+            data: JSON.stringify(jsonObject),
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            success: function (data) {
+
+                $('#main').html("");
+
+                var table_front = "<table class='ui celled striped table'><thead><tr><th>Asset Tag</th><th>Name</th><th>Price</th></tr></thead><tbody>";
+
+                var table_end = "</tbody></table>";
+
+
+                var table_content = "";
+
+                for (i=0;i<data.length;i++) {
+                    table_content += "<tr><td><h4 class='ui image header'><i class='tag icon'></i><div class='content'>" + data[i].ictag + "</div></h4></td><td>" + data[i].name + "</td><td>" + data[i].price_sold + "</td></tr>"
+                }
+
+                $('#main').append("<div class='ui right rail'><div class='ui basic segment'>"+table_front+table_content+table_end+"</div></div>");
+              
+            }
+        });
+
+
+
+
+        });
+
+        $('#click_return').click(function () {
+
+
+            var jsonObject = {
+                request : "return"
+            };
+
+            $.ajax({
+                url: "@Url.Action("get_request")",
+                type: "POST",
+
+            data: JSON.stringify(jsonObject),
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            success: function (data) {
+
+                $('#main').html("");
+
+                var table_front = "<table class='ui celled striped table'><thead><tr><th>Asset Tag</th><th>Receipt</th><th>Name</th></tr></thead><tbody>";
+
+                var table_end = "</tbody></table>";
+
+
+                var table_content = "";
+
+                for (i=0;i<data.length;i++) {
+                    table_content += "<tr><td><h4 class='ui image header'><i class='tag icon'></i><div class='content'>" + data[i].ictag + "</div></h4></td><td>" + data[i].receipt + "</td><td>" + data[i].name + "</td></tr>"
+                }
+
+                $('#main').append("<div class='ui right rail'><div class='ui basic segment'>"+table_front+table_content+table_end+"</div></div>");
+              
+            }
+        });
+
+          
+        });
+        $('#submit').click(function () {
+
+            $('#top').progress({
+                percent: 50
+            });
+            $('#bot').progress({
+                percent: 50
+            });
+            var lines = $('#mytextarea').val().split(/\n/);
+            var texts = [];
+            for (var i = 0; i < lines.length; i++) {
+                // only push this line if it contains a non whitespace character.
+                if (/\S/.test(lines[i])) {
+                    texts.push($.trim(lines[i]));
+                }
+            }
+
+            var jsonObject = {
+                input: texts
+            };
+
+            $.ajax({
+                url: "@Url.Action("process_array")",
+                type: "POST",
+
+                data: JSON.stringify(jsonObject),
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: function (data) {
+                   
+                    $('#result').html("<h4 class='ui horizontal divider header'>Here is the Result</h4><div class='ui five statistics'><div class='statistic'><div class='label'>You Scanned</div><div class='value' id='input'>" + data.input_count + "</div> </div> <div class='statistic'> <div class='label'>In Stock</div><div class='value' id='instock'>" + data.in_store_count + "</div></div><div class='statistic'><div class='label'>Assets Matched</div><div class='value' id='input'><i class='green check icon'></i>" + data.same_count + "</div> </div> <div class='statistic'><div class='label'>Assets Unresolved</div><div class='value' id='input'><i class='red warning sign icon'></i>" + data.diff_count + "</div> </div></div><p></p><button class='ui fluid basic green button' id='download_csv'><i class='icon download'></i>Download result as CSV</button>");
+
+                    $('#result').append(data.table_html);
+              
+                }
+            });
+
+
+        });
+
+    });
+
+</script>

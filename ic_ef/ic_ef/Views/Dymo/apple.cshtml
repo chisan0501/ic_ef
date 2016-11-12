@@ -48,6 +48,7 @@
                 <option value="0">IDK105-109</option>
                 <option value="1">MB105-109</option>
                 <option value="2">MBP105-109</option>
+                <option value="3">MAC-ebay</option>
             </select>
             <select id="user_dropdown" class="ui dropdown">
                 <option value="">Mike</option>
@@ -65,7 +66,14 @@
         <textarea id="txtarea_p" rows="20" cols="50">
             
         </textarea>
-     <p><button id="txtarea_b">Parse and save to DB</button></p>
+       <p></p>
+        <div class="ui slider checkbox">
+            <input type="checkbox" name="newsletter" id="hdd_check">
+            <label>No HDD</label>
+        </div>
+
+<button id="txtarea_b">Parse and save to DB</button>
+      
         <p id="result"></p>
     </div>
    
@@ -145,6 +153,7 @@
             });
         });
         $("#txtarea_b").click(function () {
+            var hddChecked = $('#hdd_check').is(':checked');
             var lines = $("#txtarea_p").val().split('\n');
             var channel = $("#channel_dropdown option:selected").text();
             var user = $("#user_dropdown option:selected").text();
@@ -154,7 +163,7 @@
                 type: "POST",
                 traditional: true,
                 url: "readapple",
-                data: { arr: lines, is_db: true, asset_tag: asset_tag, channel: channel, user: user },
+                data: { arr: lines, is_db: true, asset_tag: asset_tag, channel: channel, user: user, hddChecked: hddChecked },
                 success: function (data) {
                     $("#result").html("<p style='color:green'>Product Import Success</p>");
                 },

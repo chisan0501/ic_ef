@@ -4,146 +4,253 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
+<div class="ui action input">
+    <input id="bin_num" type="text" placeholder="Switch to Bin #">
+    <button id="switch_bin" class="ui button">Search</button>
+</div>
 
 
+<script>
+    $("#switch_bin").on('click', function () {
+        var num = $("#bin_num").val();
+        window.location = "http://ic.icdb.name/production_log/bin_location?id="+num;
+    });
+</script>
 
 <div class="ui two column centered grid">
-    <div class="column">
-
-
-
-        <div id="input">
-            <h3>Scan Asset Tag to Assign Location to Bin : @ViewData["id"]</h3>
-            <div class="ui compact segments">
-                <div class="ui segment">
-                    <div class="ui input">
-                        <input type="text" id="box0" class="insert">
-                    </div>
-                </div>
-                <div class="ui segment">
-                    <div class="ui input">
-                        <input type="text" id="box1" class="insert">
-                    </div>
-                </div>
-                <div class="ui segment">
-                    <div class="ui input">
-                        <input type="text" id="box2" class="insert">
-                    </div>
-                </div>
-                <div class="ui segment">
-                    <div class="ui input">
-                        <input type="text" id="box3" class="insert">
-                    </div>
-                </div>
-                <div class="ui segment">
-                    <div class="ui input">
-                        <input id="box4" class="insert">
-                    </div>
-                </div>
-            </div>
-            <p id="message"></p>
-        </div>
-    </div>
-    <div class="two column centered row">
+    <div class="three column centered row">
         <div class="column">
 
-            <div class="ui segment">
-               
-                        <h3>Reset Bin Location</h3>
+
+            <div id="input">
+                <h3>Scan Asset Tag to Assign Location to Bin : @ViewData["id"]</h3>
+                <div class="ui compact segments" id="box_begin">
+
+                </div>
+                
+            </div>
+        </div>
+        
+            <div class="column">
+                <p id="message"></p>
+                <div class="ui segment">
                     
-                    <div class="active content">
+                    <h3>Reset Bin Location</h3>
+
+                    
                         <p>Scan the Asset Tag to reset the bin location</p>
-                        <input type="text" id="reset_field" />
-                        <button type="button" id="reset_btn">Reset</button>
+                        <div class="ui action input">
+                            <input type="text" id="reset_field" placeholder="Enter Asset # to Reset">
+                            <button id="reset_btn" class="ui button"><i class="search icon"></i></button>
+                        </div>
+                  
+                    <p id="message2"></p>
+                </div>
+           
+
+       
+                
+
+
+                    <div class="ui segment">
+
+                        <h3>Associate Serial with Asset Tag</h3>
+
+                        <div class="active content">
+                            <p>Scan the Asset Tag and Serial</p>
+                            <input type="text" id="asset_field" placeholder="Asset Tag" />
+                            <input type="text" id="serial_field" placeholder="Serial #" />
+                            <button type="button" id="asso_btn">Associate</button>
+                        </div>
+                        <p id="message3"></p>
                     </div>
-                <p id="message2"></p>
+               <div class="ui segment">
+                   <h3>Missing (MAR) Data from Production_log</h3>
+                   <div class="active content">
+                       <p>Scan the Asset Tag</p>
+                       <input type="text" id="asset_field_missing" placeholder="Asset Tag" />
+                       <input type="text" id="wcoa_missing" placeholder="windwos COA ID" />
+                       <input type="text" id="ocoa_missing" placeholder="office COA ID" />
+                       <button type="button" id="missing_btn">Associate</button>
+                   </div>
+               </div>
+                <div class="ui segment">
+                    <h3>Missing (OEM) Data from Production_log</h3>
+                    <div class="active content">
+                        <p>Scan the Asset Tag</p>
+                        <input type="text" id="oem_asset_field_missing" placeholder="Asset Tag" />
+                        <input type="text" id="oem_wcoa_missing" placeholder="windwos COA" />
+               
+                        <button type="button" id="oem_missing_btn">Associate</button>
+                    </div>
                 </div>
-            </div>
-
         </div>
-    <div class="two column centered row">
-        <div class="column">
-
-            <div class="ui segment">
-
-                <h3>Associate Serial with Asset Tag</h3>
-
-                <div class="active content">
-                    <p>Scan the Asset Tag and Serial</p>
-                    <input type="text" id="serial_field" placeholder="Serial #"/>
-                    <input type="text" id="asset_field" placeholder="Asset Tag" />
-                    <button type="button" id="asso_btn">Associate</button>
-                </div>
-                <p id="message3"></p>
-            </div>
         </div>
-
-    </div>
     </div>
 
 
 
 <script>
-   
     var currentBoxNumber = 0;
-    $(".insert").keyup(function (event) {
-        textboxes = $("input.insert");
+    $("body").on("keyup", ".insert", function () {
+        textboxes = $(".insert");
         currentBoxNumber = textboxes.index(this);
-
-        //last input box hit enter and focus out
         if (event.keyCode == 13 && currentBoxNumber == 4) {
             thisBox = textboxes[currentBoxNumber];
 
             thisBox.blur();
         }
-        else if (event.keyCode == 13 && currentBoxNumber != 4){
+        else if (event.keyCode == 13 && currentBoxNumber != 4) {
             if (textboxes[currentBoxNumber + 1] != null) {
                 nextBox = textboxes[currentBoxNumber + 1];
                 nextBox.focus();
                 nextBox.select();
                 event.preventDefault();
-                
+
                 return false;
             }
-        }   
-            
-            
-            
         }
-    );
+
+    });
+
+    
+   
+    
 
     $(document).ready(function () {
-        var id = @ViewData["id"];
+        var is_desktop = "@ViewData["is_desktop"]" ;
+        var is_mac = "@ViewData["is_mac"]";
+
+        if (is_desktop == "True") {
+            for (var i = 0; i < 15 ; i++) {
+                $("#box_begin").append(" <div class='ui segment'><div class='ui input'><input type='text' id='box"+i+"' class='insert'  ></div></div>");
+            }
+           
+        }
+        else if (is_desktop == "False") {
+            for (var i = 0; i < 5 ; i++) {
+                $("#box_begin").append(" <div class='ui segment'><div class='ui input'><input type='text' id='box" + i + "' class='insert'></div></div>");
+            }
+        }
+        var id = "@ViewData["id"]";
         var jsonObject = {
             id : id
         };
-        $.ajax({
-            url: "@Url.Action("get_bin_location")",
-            type: "POST",
+     
+        if (is_mac == "True") {
 
-        data: JSON.stringify(jsonObject),
-        contentType: "application/json; charset=utf-8",
-        dataType: "json",
+            $.ajax({
+                url: "@Url.Action("mac_get_bin_location")",
+                type: "POST",
 
-        success: function (data) {
+            data: JSON.stringify(jsonObject),
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+
+            success: function (data) {
             
-            for (i = 0; i < data.result.length ; i++){
+                for (i = 0; i < data.result.length ; i++){
                 
-                $('#box'+i).val(data.result[i]);
-                $('#box'+i).attr("disabled","");
+                    $('#box'+i).val(data.result[i]);
+                    $('#box'+i).attr("disabled","");
 
               
 
-            }
+                }
             
                        
-        },
-        error: function (data) {
+            },
+            error: function (data) {
            
  
-        }
+            }
         });
-     
+
+        }
+
+        else {
+
+            $.ajax({
+                url: "@Url.Action("get_bin_location")",
+                type: "POST",
+
+            data: JSON.stringify(jsonObject),
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+
+            success: function (data) {
+            
+                for (i = 0; i < data.result.length ; i++){
+                
+                    $('#box'+i).val(data.result[i]);
+                    $('#box'+i).attr("disabled","");
+
+              
+
+                }
+            
+                       
+            },
+            error: function (data) {
+           
+ 
+            }
+        });
+
+        }
+
+        $('#oem_missing_btn').click(function(){
+        
+        
+            var asset_id = $('#oem_asset_field_missing').val();
+            var wcoa_id = $('#oem_wcoa_missing').val();
+          
+            var jsonObject = {
+                asset: asset_id,
+                wcoa_id: wcoa_id,
+               
+            };
+            $.ajax({
+                url: "@Url.Action("oem_missing")",
+                type: "POST",
+
+            data: JSON.stringify(jsonObject),
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+
+            success: function (data) {
+                
+                $('#message3').append(data.message);
+                
+            },
+            });
+    });
+        $('#missing_btn').click(function(){
+        
+        
+            var asset_id = $('#asset_field_missing').val();
+            var wcoa_id = $('#wcoa_missing').val();
+            var ocoa_id = $('#ocoa_missing').val();
+            var jsonObject = {
+                asset: asset_id,
+                wcoa_id: wcoa_id,
+                ocoa_id : ocoa_id
+            };
+            $.ajax({
+                url: "@Url.Action("missing")",
+                type: "POST",
+
+            data: JSON.stringify(jsonObject),
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+
+            success: function (data) {
+                
+                $('#message3').append(data.message);
+                
+            },
+            });
+    });
 
         $('#asso_btn').click(function(){
         
@@ -164,19 +271,66 @@
             success: function (data) {
                 
                 $('#message3').append(data.message);
-                
+                var serial_id = $('#serial_field').val('');
+                var asset_id = $('#asset_field').val('');
             },
             });
         });
 
+        //reset function
         $('#reset_btn').click(function(){
             var reset_id = $('#reset_field').val();
             var jsonObject = {
                 asset : reset_id,
             };
         
+
+            if (is_mac == "True") {
+
+                $.ajax({
+                    url: "@Url.Action("mac_reset_location")",
+                    type: "POST",
+
+                data: JSON.stringify(jsonObject),
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+
+                success: function (data) {
+                    $('#reset_field').val('') ;
+                    $('#message2').append(data.message);
+            
+                },
+                });
+            }
+
+            else {
+                $.ajax({
+                    url: "@Url.Action("reset_location")",
+                    type: "POST",
+
+                data: JSON.stringify(jsonObject),
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+
+                success: function (data) {
+                    $('#reset_field').val('') ;
+                    $('#message2').append(data.message);
+            
+                },
+                });
+            }
+            
+
+            });
+
+        //auto fill serial #
+        $("#asset_field").focusout(function () {
+            var asset =  $(this).val() ;
+            var jsonObject = {
+                asset: asset,
+            }
             $.ajax({
-                url: "@Url.Action("reset_location")",
+                url: "@Url.Action("get_serial")",
                 type: "POST",
 
             data: JSON.stringify(jsonObject),
@@ -184,13 +338,14 @@
             dataType: "json",
 
             success: function (data) {
-                $('#reset_field').val('') ;
-                $('#message2').append(data.message);
+               
+                $('#serial_field').val(data);
             
             },
             });
+            
 
-            });
+        });
 
         $( ".insert" ).focusout(function() {
             var asset =  $(this).val() ;
@@ -201,19 +356,40 @@
                     id : id
                 };
            
-                $.ajax({
-                    url: "@Url.Action("write_bin_location")",
-                    type: "POST",
+                if (is_mac == "True") {
 
-                data: JSON.stringify(jsonObject),
-                contentType: "application/json; charset=utf-8",
-                dataType: "json",
+                    $.ajax({
+                        url: "@Url.Action("mac_write_bin_location")",
+                        type: "POST",
 
-                success: function (data) {
-                    $('#message').append(data.message);
+                    data: JSON.stringify(jsonObject),
+                    contentType: "application/json; charset=utf-8",
+                    dataType: "json",
+
+                    success: function (data) {
+                        $('#message').append(data.message);
             
-                },
-                });
+                    },
+                    });
+                }
+
+                else {
+                    $.ajax({
+                        url: "@Url.Action("write_bin_location")",
+                        type: "POST",
+
+                    data: JSON.stringify(jsonObject),
+                    contentType: "application/json; charset=utf-8",
+                    dataType: "json",
+
+                    success: function (data) {
+                        $('#message').append(data.message);
+            
+                    },
+                    });
+
+                }
+            
             }
            
            

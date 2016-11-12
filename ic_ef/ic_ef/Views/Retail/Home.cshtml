@@ -1,0 +1,18 @@
+﻿
+@{
+    ViewBag.Title = "Home";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Retail - Home </h2>
+
+<div class="ui raised very padded text container segment">
+    <h2 class="ui header">I want to....</h2>
+   
+        <div class="three ui buttons">
+            <button class="ui blue basic button"><a href="@Url.Action("reconciliation", "retail")">Perform Inventory Reconciliation</a></button>
+            <button class="ui blue basic button"><a href="@Url.Action("report", "retail")">Run Retail Report</a></button>
+
+        </div>
+    
+

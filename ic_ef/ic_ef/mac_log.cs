@@ -24,5 +24,7 @@ namespace ic_ef
         public string cpu { get; set; }
         public string ram { get; set; }
         public string hdd { get; set; }
+        public string bin_location { get; set; }
+        public string status { get; set; }
     }
 }

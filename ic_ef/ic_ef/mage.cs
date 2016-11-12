@@ -6,6 +6,7 @@ using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Net;
+using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
 
@@ -130,6 +131,48 @@ namespace ic_ef
             var pallet_list = (from t in db.label_menu where (t.name == "Mar (Desktop)" || t.name == "Mar (Laptop)" || t.name == "OEM (Desktop)" || t.name == "OEM (Laptop)") select t.product).ToList();
             return pallet_list;
         }
+        public bool enable_product (string sku)
+        {
+            bool result;
+            try
+            {
+                MagentoService mservice = new MagentoService();
+                String mlogin = mservice.login("admin", "Interconnection123!");
+                var item_to_edit = new catalogProductCreateEntity();
+                item_to_edit.status = "1";
+                result = mservice.catalogProductUpdate(mlogin, sku, item_to_edit, "", "SKU");
+                
+            }
+            catch
+            {
+                result = false;
+            }
+            return result;
+        }
+
+        public int update_qty(string sku,string qty,string pid)
+        {
+            MagentoService mservice = new MagentoService();
+            String mlogin = mservice.login("admin", "Interconnection123!");
+            var item_to_update = new catalogInventoryStockItemUpdateEntity();
+            item_to_update.qty = qty;
+            var result =  mservice.catalogInventoryStockItemUpdate(mlogin, sku, item_to_update);
+
+            try
+            {
+                HttpWebRequest myHttpWebRequest = (HttpWebRequest)WebRequest.Create("http://connectall.org/update.php?product_id=" + pid + "&qty=" + qty);
+                myHttpWebRequest.ContentType = "application/x-www-form-urlencoded";
+                myHttpWebRequest.UserAgent = ".NET Framework Test Client";
+                WebResponse wr = myHttpWebRequest.GetResponse();
+            }
+            catch (WebException wex)
+            {
+                var pageContent = new StreamReader(wex.Response.GetResponseStream())
+                                      .ReadToEnd();
+            }
+
+            return result;
+        }
 
         //this is currently connect to the dev site's SOAP Api
         //*** remeber to change it back to connect all SOAP API after live***
@@ -143,6 +186,10 @@ namespace ic_ef
 
             qty_update.manage_stock = 1;
             qty_update.qty = qty;
+            if (qty == "0")
+            {
+                qty_update.is_in_stock = 0;
+            }
             qty_update.is_in_stock = 1;
             qty_update.is_in_stockSpecified = true;
             mservice.catalogInventoryStockItemUpdate(
@@ -164,15 +211,32 @@ namespace ic_ef
             //mservice.catalogProductAttributeMediaCreate(mlogin, retail.p_id, photo, "", "ID");
         }
 
-        public catalogInventoryStockItemEntity [] check_product (string sku)
+
+        public catalogProductEntity[] get_all_product()
         {
             MagentoService mservice = new MagentoService();
             String mlogin = mservice.login("admin", "Interconnection123!");
+
+            var result = mservice.catalogProductList(mlogin,null,"");
+           
+            return result;
+        }
+
+
+        
+
+        public catalogInventoryStockItemEntity[] check_product (string sku)
+        {
+            
+            MagentoService mservice = new MagentoService();
+            
+            String mlogin = mservice.login("admin", "Interconnection123!");
             string[] sku_arr = { sku };
-            catalogInventoryStockItemEntity [] result = null;
+            catalogInventoryStockItemEntity[] result = null;
             
             try
             {
+               
                result = mservice.catalogInventoryStockItemList(mlogin, sku_arr);
                 return result;
             }
@@ -473,15 +537,20 @@ namespace ic_ef
         }
 
         //use for retail picklist
-        public void retail_quick_import (Models.retail_quick_import retail)
+        public int retail_quick_import (Models.retail_quick_import retail)
         {
+
             MagentoService mservice = new MagentoService();
             String mlogin = mservice.login("admin", "Interconnection123!");
 
             catalogProductCreateEntity create = new catalogProductCreateEntity();
             catalogCategoryEntity add_cat = new catalogCategoryEntity();
-            
-           
+            catalogInventoryStockItemUpdateEntity stock_data = new catalogInventoryStockItemUpdateEntity();
+
+            stock_data.qty = "1";
+            stock_data.manage_stock = 1;
+            stock_data.use_config_manage_stock = 0;
+            stock_data.is_in_stock = 1;
             create.description = retail.desc;
             create.name = retail.name;
             create.price = retail.price;
@@ -492,20 +561,33 @@ namespace ic_ef
             create.website_ids = retail.webistes;
             create.tax_class_id = retail.tax_id;
             
+            create.stock_data = stock_data;
+
+            associativeEntity[] attributes = new associativeEntity[3];
+            attributes[0] = new associativeEntity();
+            attributes[0].key = "vendor_id";
+            attributes[0].value = "11";
+            attributes[1] = new associativeEntity();
+            attributes[1].key = "approval";
+            attributes[1].value = "2";
+            attributes[2] = new associativeEntity();
+            attributes[2].key = "vendor_sku";
+            attributes[2].value = retail.sku + "_vendor";
             catalogProductAdditionalAttributesEntity additionalAttributes = new catalogProductAdditionalAttributesEntity();
-            
+           
+            additionalAttributes.single_data = attributes;
             create.additional_attributes = additionalAttributes;
-            mservice.catalogProductCreate(
+            int p_id = mservice.catalogProductCreate(
     mlogin, retail.type, retail.attr, retail.sku, create, "5");
-            
             mservice.catalogCategoryAssignProduct(mlogin, 2, retail.sku, "0", "SKU");
 
-          
-          
 
 
 
-           
+
+
+
+            return p_id;
 
         }
     }

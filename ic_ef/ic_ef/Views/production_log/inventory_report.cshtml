@@ -1,0 +1,79 @@
+﻿
+@{
+    ViewBag.Title = "inventory_report";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+
+<div class="ui grid container">
+    <div class="column">
+        <div id="chart_div" style="width: 1400px; height: 500px;"></div>
+    </div>
+
+</div>
+
+
+
+ 
+
+<h3>Bins Map</h3> 
+<div class="ui grid" id="bin_grid">
+    
+  
+</div> 
+    
+
+<script>
+    $(document).ready(function () {
+        $.getJSON("@Url.Action("get_inventrory_report")", function (Data) {
+
+            google.charts.load('visualization', '1', { 'packages': ['corechart'] });
+            google.charts.setOnLoadCallback(drawStuff);
+
+            function drawStuff() {
+
+                var google_data = {
+                    "cols": [{
+                        "type": "string"
+                    }, {
+                        "type": "number"
+                    }],
+                    rows: []
+                };
+
+                for (var i = 0; i < Data.cpu_name.length; i++) {
+                    google_data.rows.push({ c: [{ v: Data.cpu_name[i] }, { v: Data.cpu_total[i] }] });
+                }
+                var data = new google.visualization.DataTable(google_data);
+
+                var chart = new google.visualization.ColumnChart(document.getElementById('chart_div'));
+                chart.draw(data, { title : 'Inventory Level',width: 1200, height: 400 });
+            }
+
+
+        });
+
+        $.getJSON("@Url.Action("get_bin_report")", function (Data) {
+
+            for (i = 0; i < Data.length; i++) {
+                
+                var toWrite = "";
+                for (j = 0; j < Data[i].pc.length; j++) {
+
+                    toWrite +='<div class="ui segment"><p class="indiv">' + Data[i].pc[j].ictags + '</p></div>';
+                }
+                $('#bin_grid').append('<div class="two wide column"><div class="ui segments"><div class="ui segment"><p>Bin ' + Data[i].ictag + ' ('+Data[i].pc.length+')</p></div><div class="ui segments">' + toWrite + '</div></div></div>');
+            }
+
+        });
+
+    });
+    //need work on
+
+    $('body').on('click', 'p.indiv', function () {
+        $(this).css("background-color", "lightblue");
+    });
+    
+</script>
+

@@ -1,0 +1,86 @@
+﻿
+@{
+    ViewBag.Title = "return_stock";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div id="table_loader" class="ui disabled inverted dimmer">
+
+    <div class="ui text loader">Processing now......</div>
+
+</div>
+
+
+<div class="ui two column centered grid">
+    <div class="column">
+        <h2>Return Asset(s) to Stock</h2>
+        <div class="ui raised segment">
+
+            <h3>Regular Assets</h3>
+            <div class="ui action input">
+                <input id="bin_regular" type="text" placeholder="Assign a Bin Location"></div>
+                <div class="ui action input">
+                    <input id="asset_regular" type="text" placeholder="Enter Asset Number">
+                    <input id="sku_regular" type="text" placeholder="Enter SKU">
+                    <select id="source_select" class="ui compact selection dropdown">
+                        <option selected="" value="">Select Source</option>
+                        <option value="retail">Retail</option>
+                        <option value="online">Online Store</option>
+                    </select>
+                    <button id="return_btn" class="ui button">Return Asset</button>
+                </div>
+
+                <div id="output"></div>
+            </div>
+            <div class="ui horizontal divider">
+                Or
+            </div>
+        <div class="ui raised segment">
+            <h3>Damaged(Grade C) Assets</h3>
+            
+        </div>
+        <div class="column">
+            <a href="@Url.Action("bin_overview", "production_log")">
+                <div class="ui huge primary button">Inventory Overview<i class="right arrow icon"></i></div>
+            </a>
+        </div>
+        </div>
+
+    </div>
+   
+
+<script>
+    $("#return_btn").click(function () {
+        $('#table_loader').attr('class', 'ui active inverted dimmer');
+        var asset_regular = $("#asset_regular").val();
+        var sku_regular = $("#sku_regular").val();
+        var source = $("#source_select").val();
+        var bin_regular = $("#bin_regular").val();
+        var jsonObject = {
+            asset: asset_regular,
+            sku: sku_regular,
+            source: source,
+            bin: bin_regular
+        };
+
+        $.ajax({
+            url: "@Url.Action("return_stock_json")",
+            type: "POST",
+
+        data: JSON.stringify(jsonObject),
+        contentType: "application/json; charset=utf-8",
+        dataType: "json",
+        success: function (data) {
+            
+            $('#table_loader').attr('class', 'ui disabled inverted dimmer');
+            $("#output").html(data.message);
+            var asset_regular = $("#asset_regular").val("");
+            var sku_regular = $("#sku_regular").val("");
+            var source = $("#source_select").val("");
+            var bin = $("#bin_regular").val("");
+        }
+    });
+
+    });
+
+</script>

@@ -7,53 +7,295 @@
 <script src="~/js/jquery.dataTables.min.js"></script>
 
 
-
-
-<div class="ui two column centered grid">
-    <div class="column">
-        <h2>Inventory Overview</h2>
-        <div id="item_total"></div>
+<div class="ui grid" id="loader">
+    <div class="three wide column">
+        <div ><div class="ui active inline loader"></div><a style="color:red" id="status">Fetching Data From magento......</a> </div>
     </div>
-    <div class="two column centered row">
-        <div class="column">
-            <table id="table_reminder" class="stripe" cellspacing="0" width="100%">
-                <thead>
-                    <tr>
-                        <th>Asset Tag</th>
-                        <th>SKU</th>
-                        <th>Bin Location</th>
-                 
-
-                    </tr>
-                </thead>
-                <tbody></tbody>
-
-            </table>
+    <div class="twelve wide column">
+        <div class="ui teal progress" id="example4">
+            <div class="bar">
+                <div class="progress"></div>
+            </div>
+            <div class="label">Adding Photos</div>
         </div>
-       
     </div>
 </div>
 
-
-
-<script>
-    $(document).ready(function () {
-        $.getJSON("@Url.Action("get_current_inv")", function (data) {
-            $("#item_total").append("<h3># of Items : "+data.length+"</h3>")
-            $('#table_reminder').DataTable({
-                destroy: true,
-                data: data,
-              
-                columns: [
-                                { data: "ictags" },
-                               { data: "channel" },
-                               { data: "bin_location" },
-                             
-                ]
-
-            });
-        }
-                );
-    });
+           
+                
     
-</script>
+    
+   
+            <div id="table_loader" class="ui disabled inverted dimmer">
+
+                <div class="ui text loader">Please be Patient while we are creating a new listing, update the QTY for the original listing, update QTY for the new retail listing, prepare infomration for the WEBPOS.........</div>
+
+            </div>
+
+            <div class="ui two column padded grid">
+                <div class="streched row">
+                    <div class="one wide column">
+                    </div>
+                    <div class="three wide column">
+                        <div class="ui segment">
+                            <h2>Inventory Overview</h2>
+                            <h4 id="last_update"></h4>
+                            <div id="item_total"></div>
+                        </div>
+                        <div class="ui segment">
+                            <p>Dont Like What you picked? Click the button below to return it</p>
+                            <a href="@Url.Action("return_stock", "production_log")">
+                                <div class="ui huge primary button">Return Asset to Stock<i class="right arrow icon"></i></div>
+                            </a>
+                        </div>
+                        <div class="ui segment">
+                            <p>Hardware Spec</p>
+                            <table id="hardware_table" class="ui very basic collapsing celled table"></table>
+                        </div>
+                    </div>
+                    <div class="one wide column">
+                    </div>
+                    <div class="seven wide column">
+
+
+
+                        <div class="row">
+
+                            <div class="ten wide column">
+
+                                <div id="output"></div>
+                                <table id="table_reminder" class="stripe" cellspacing="0" width="100%">
+                                    <thead>
+                                        <tr>
+                                            <th>Asset Tag</th>
+                                            <th>SKU</th>
+                                            <th>Bin Location</th>
+                                            <th>Action</th>
+                                            <th> </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody></tbody>
+
+                                </table>
+
+
+
+                            </div>
+                        </div>
+
+
+
+                    </div>
+
+                </div>
+
+
+
+
+            </div>
+            <div class="ui two column centered grid">
+
+                <div class="two column centered row">
+                    <div class="column">
+
+                    </div>
+                </div>
+            </div>
+
+
+
+            <script>
+
+
+                var temp_inv;
+                var data_arr = new Array();
+
+                function load_table() {
+                    $("#loader").show();
+                    $('#example4').progress({
+                        percent: 15
+                    });
+                    $.getJSON("@Url.Action("current_order_list")", function (data) {
+
+                        for (i = 0; i < data.order_list.length; i++) {
+                            if (!data.order_list[i].includes("ICMC")) {
+                                data_arr[i] = data.order_list[i];
+
+                            }
+                        }
+
+                    });
+
+                    //generate inventory table
+                    var table = $.getJSON("@Url.Action("get_current_inv")", function (data) {
+                        $("#item_total").html("<h3># of Items in Stock: " + data.length + "</h3>")
+                        $('#table_reminder').DataTable({
+                            destroy: true,
+                            data: data,
+                            columnDefs: [{
+                                targets: 3,
+                                data: null,
+                                defaultContent: "<button class='ui teal button' id='add_btn_retail'>For Retail Store</button>"
+                            },
+
+                            {
+                                targets: 4,
+                                data: null,
+                                defaultContent: "<button class='ui blue button' id='add_btn_online'>For Online Store</button>"
+                            }
+                            ],
+                            columns: [
+                                            { data: "ictags" },
+                                           { data: "channel" },
+                                           { data: "bin_location" },
+
+                            ]
+
+                        });
+                    });
+                    var timer = setInterval(myMethod, 1000);
+
+                    function myMethod() {
+                            $('#example4').progress('increment');
+
+                    }
+
+                    var timer2 = setInterval(myMethod2, 25000);
+
+                    function myMethod2() {
+                        clearInterval(timer);
+                        clearInterval(timer2);
+                        $("#loader").hide();
+                    }
+
+
+
+                }
+
+                $(document).ready(function () {
+                    setInterval(function () { cache_clear() }, 1800000);
+
+                    function cache_clear() {
+                        window.location.reload(true);
+
+                    }
+                    var x = document.lastModified;
+                    $("#last_update").html("Last Update at " + x + " (Page refreshes every 30min)");
+                    load_table();
+
+                    var table = $.getJSON("@Url.Action("full_product_list")", function (data) {
+                        temp_inv = data;
+                    });
+
+                    
+
+                    //function for mouseover and fetch hardware spec
+                    $('#table_reminder tbody').on('mouseover', "td", function () {
+
+
+                        var asset_tag = $('td:first', $(this).parents('tr')).text();
+                        var jsonObject = {
+                            asset: asset_tag,
+                        };
+                        $.ajax({
+                            url: "@Url.Action("get_production_data")",
+                            type: "POST",
+                            data: JSON.stringify(jsonObject),
+                            contentType: "application/json; charset=utf-8",
+                            dataType: "json",
+                            success: function (data) {
+                                $("#hardware_table").html("<tbody><tr><td>Asset Tag</td><td>" + data.production.ictags + "</td></tr><tr><td>CPU</td><td>" + data.production.CPU + "</td></tr><tr><td>RAM</td><td>" + data.production.RAM + "</td></tr><tr><td>HDD</td><td>" + data.production.HDD + "</td></tr><tr><td>Screen Size</td><td>" + data.production.screen_size + "</td></tr><tr><td>Video Card</td><td>" + data.production.video_card + "</td></tr><tr><td>Optical Drive</td><td>" + data.discovery.optical_drive + "</td></tr></tbody>");
+                            }
+                        });
+
+                    });
+
+
+                    //event after clicking button for online store
+                    $('#table_reminder tbody').on('click', '#add_btn_online', function () {
+                        var asset_tag = $(this).closest('td').siblings(':nth-child(1)').text();
+                        var sku = $(this).closest('td').siblings(':nth-child(2)').text();
+
+
+                        var r = confirm("are you sure you want to Pull Asset " + asset_tag + " for Online Store");
+                        if (r == true) {
+                            var jsonObject = {
+                                asset: asset_tag,
+                                sku: sku
+                            };
+                            $.ajax({
+                                url: "@Url.Action("online_store_picklist")",
+                                type: "POST",
+
+                                data: JSON.stringify(jsonObject),
+                                contentType: "application/json; charset=utf-8",
+                                dataType: "json",
+                                success: function (data) {
+
+
+                                    $('#table_loader').attr('class', 'ui disabled inverted dimmer');
+                                    $("#output").html(data.result);
+
+
+                                }
+                            });
+                        }
+                        else {
+                            return;
+                        }
+                    });
+
+                    //button event for retail store
+                    $('#table_reminder tbody').on('click', '#add_btn_retail', function () {
+                        var asset_tag = $(this).closest('td').siblings(':nth-child(1)').text();
+                        var sku = $(this).closest('td').siblings(':nth-child(2)').text();
+
+                        var found = $.inArray(sku, data_arr) > -1;
+                        if (found == true) {
+                            alert("This Computer is assoicated with an Online Order")
+                            return;
+                        }
+
+
+                        var r = confirm("are you sure you want to Pull Asset " + asset_tag + " for Retail Store");
+                        if (r == true) {
+                            var price = prompt("Do you want to Price the Item now?", "Enter Price here WITHOUT the $ sign");
+
+
+
+                            $('#table_loader').attr('class', 'ui active inverted dimmer');
+
+                            var jsonObject = {
+                                asset: asset_tag,
+                                sku: sku,
+                                price: price
+                            };
+
+                            $.ajax({
+                                url: "@Url.Action("retail_pull")",
+                                type: "POST",
+
+                                data: JSON.stringify(jsonObject),
+                                contentType: "application/json; charset=utf-8",
+                                dataType: "json",
+                                success: function (data) {
+
+                                    $('#table_loader').attr('class', 'ui disabled inverted dimmer');
+                                    $("#output").html(data.message);
+
+                                }
+                            });
+                        } else {
+                            return;
+                        }
+
+
+
+
+
+
+                    });
+
+                });
+
+            </script>

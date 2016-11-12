@@ -32,6 +32,9 @@
         <AssociationConnector Association="db_a094d4_icdbModel.ApplicationUser_Logins" ManuallyRouted="false" />
         <AssociationConnector Association="db_a094d4_icdbModel.aspnetuserroles" ManuallyRouted="false" />
         <EntityTypeShape EntityType="db_a094d4_icdbModel.picklist" Width="1.5" PointX="0.75" PointY="13.75" />
+        <EntityTypeShape EntityType="db_a094d4_icdbModel.pull_log" Width="1.5" PointX="14.375" PointY="3.75" />
+        <EntityTypeShape EntityType="db_a094d4_icdbModel.retail_report" Width="1.5" PointX="14.375" PointY="6.75" />
+        <EntityTypeShape EntityType="db_a094d4_icdbModel.magento_validation_log" Width="1.5" PointX="13.375" PointY="14.75" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>
