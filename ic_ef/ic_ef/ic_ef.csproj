@@ -601,7 +601,9 @@
     <Content Include="css\themes\default\assets\images\flags.png" />
     <Content Include="css\vex-theme-os.css" />
     <Content Include="images\aprovecha-procesador-core-2-duo-e8400-al-mejor-precio-D_NQ_NP_861911-MLV20659060107_042016-F.jpg" />
+    <Content Include="images\dymo.svg" />
     <Content Include="images\interconnection-logo.png" />
+    <Content Include="images\magento.svg" />
     <Content Include="images\sort_asc.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
