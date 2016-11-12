@@ -49,7 +49,9 @@ namespace ic_ef.Controllers
                 var alltime_i3LP_result = (from t in db.retail_report where t.name.Contains("MARLPi3") && t.type == "sale" select t).Count();
                 var alltime_i5LP_result = (from t in db.retail_report where t.name.Contains("MARLPi5") && t.type == "sale" select t).Count();
                 var alltime_i7LP_result = (from t in db.retail_report where t.name.Contains("MARLPi7") && t.type == "sale" select t).Count();
-
+                var alltime_mbp_result = (from t in db.retail_report where t.name.Contains("MBP105-109") && t.type == "sale" select t).Count();
+                var alltime_mb_result = (from t in db.retail_report where t.name.Contains("MB105-109") && t.type == "sale" select t).Count();
+                var alltime_idk_result = (from t in db.retail_report where t.name.Contains("IDK105-109") && t.type == "sale" select t).Count();
 
                 var result = db.Database.SqlQuery<date_result>("SELECT DISTINCT(date(date_sold)) as date ,count( * ) AS count FROM retail_report where type = 'sale' GROUP BY date_sold ORDER BY date_sold ASC ").ToArray();
                 var return_result = db.Database.SqlQuery<date_result>("SELECT DISTINCT(date(date_sold)) as date ,count( * ) AS count FROM retail_report where type = 'return' GROUP BY date_sold ORDER BY date_sold ASC ").ToArray();
@@ -99,7 +101,7 @@ namespace ic_ef.Controllers
                 avg_alltime = (avg_alltime / result.Length);
                 avg_year = (avg_year / avg_year_counter);
                 avg_return = (avg_return / return_result.Length);
-                return Json(new { C2Dlp_all = alltime_C2DLP_result,i3lp_all = alltime_i3LP_result, i5lp_all = alltime_i5LP_result, i7lp_all = alltime_i7LP_result, C2DDK_all = alltime_C2DDK_result,i3dk_all = alltime_i3DK_result,i5dk_all = alltime_i5DK_result,i7dk_all = alltime_i7DK_result,return_result= return_result,avg_return =  avg_return,alltime_result = result, month_result = month,year_result=year,avg_month = avg_month,avg_alltime = avg_alltime,avg_year=avg_year },JsonRequestBehavior.AllowGet);
+                return Json(new { C2Dlp_all = alltime_C2DLP_result,i3lp_all = alltime_i3LP_result, i5lp_all = alltime_i5LP_result, i7lp_all = alltime_i7LP_result, C2DDK_all = alltime_C2DDK_result,i3dk_all = alltime_i3DK_result,i5dk_all = alltime_i5DK_result,i7dk_all = alltime_i7DK_result,return_result= return_result,avg_return =  avg_return,alltime_result = result, month_result = month,year_result=year,avg_month = avg_month,avg_alltime = avg_alltime,avg_year=avg_year, alltime_mbp = alltime_mbp_result, alltime_mb = alltime_mb_result, alltime_idk =  alltime_idk_result },JsonRequestBehavior.AllowGet);
             }
                  
 

@@ -110,7 +110,7 @@ namespace ic_ef.Controllers
                 
                 using (WebClient wc = new WebClient())
                 {
-                    var json = new WebClient().DownloadString("http://www.connectall.org/get_enable.php");
+                    var json = new WebClient().DownloadString("http://connectall.org/get_enable.php");
                     JavaScriptSerializer ser = new JavaScriptSerializer();
                     response = ser.Deserialize<IList<Models.magento_validation.Class1>>(json.ToString()).ToList();
                    
@@ -141,8 +141,9 @@ namespace ic_ef.Controllers
                             insert.mage_qty = mage_qty;
                             insert.bin_qty = bin_qty;
                             insert.successful = result_code.ToString();
+                            db.magento_validation_log.Add(insert);
                             db.SaveChanges();
-
+                            db.Dispose();
                             var result_status = mage.enable_product(item.sku);
                            
                         }

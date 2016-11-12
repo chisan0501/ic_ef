@@ -7,6 +7,9 @@
 
 <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
 
+<div id="loader" class="ui active large inline text loader">Loading...</div>
+
+
 <div class="ui large modal" id="alltime_modal">
     <i class="close icon"></i>
     <div class="header">
@@ -96,7 +99,7 @@
                     0
                 </div>
                 <div class="label">
-                    Current Month
+                    Month to Date
                 </div>
             </div>
             </a>
@@ -135,108 +138,163 @@
 <div class="ui raised very padded text container segment">
 
     <h2 class="ui dividing header">Data By Machine Type :</h2>
+
+    <button class="ui primary basic button">Primary</button>
+    <button class="ui secondary basic button">Secondary</button>
+    <button class="ui positive basic button">Positive</button>
+    <button class="ui negative basic button">Negative</button>
+
     <h3 class="ui header">
         <i class="windows icon"></i>Windows : Mar
     </h3>
   
 
-    <h2 class="ui sub block header">
+
 
         <div class="ui accordion">
             <div class="title">
                 <i class="dropdown icon"></i>
                 Desktop
             </div>
-            <div class="content">
-                <button class="ui primary basic button">Primary</button>
-                <button class="ui secondary basic button">Secondary</button>
-                <button class="ui positive basic button">Positive</button>
-                <button class="ui negative basic button">Negative</button>
+            <div class="active content">
+                <div class="ui Four statistics">
+
+                    <div class="statistic">
+                        <div class="value" id="c2ddk_all_value">
+                            0
+                        </div>
+                        <div class="label">
+                            Core 2 Duo
+                        </div>
+                    </div>
+
+                    <div class="statistic">
+                        <div class="value" id="i3dk_all_value">
+                            0
+                        </div>
+                        <div class="label">
+                            Core i3
+                        </div>
+                    </div>
+
+                    <div class="statistic">
+                        <div class="value" id="i5dk_all_value">
+                            0
+                        </div>
+                        <div class="label">
+                            Core i5
+                        </div>
+                    </div>
+
+                    <div class="statistic">
+                        <div class="value" id="i7dk_all_value">
+                            0
+                        </div>
+                        <div class="label">
+                            Core i7
+                        </div>
+                    </div>
+                </div>
+
+              
+
+                
             </div>
+           
 </div>
 
-</h2>
-        <div class="ui Four statistics">
-           
-                <div class="statistic">
-                    <div class="value" id="c2ddk_all_value">
-                        0
-                    </div>
-                    <div class="label">
-                        Core 2 Duo
-                    </div>
-                </div>
-          
-                <div class="statistic">
-                    <div class="value" id="i3dk_all_value">
-                        0
-                    </div>
-                    <div class="label">
-                        Core i3
-                    </div>
-                </div>
-           
-                <div class="statistic">
-                    <div class="value" id="i5dk_all_value">
-                        0
-                    </div>
-                    <div class="label">
-                      Core i5
-                    </div>
-                </div>
-           
-                <div class="statistic">
-                    <div class="value" id="i7dk_all_value">
-                        0
-                    </div>
-                    <div class="label">
-                        Core i7
-                    </div>
-                </div>
-        </div>
-    <button class="ui primary basic button">Show Graph</button>
+       
     
-    <h2 class="ui sub block header"></i>Laptops</h2>
+    
 
-    <div class="ui Four statistics">
-
-        <div class="statistic">
-            <div class="value" id="c2dlp_all_value">
-                0
+        <div class="ui accordion">
+            <div class="title">
+                <i class="dropdown icon"></i>
+                Laptop
             </div>
-            <div class="label">
-                Core 2 Duo
+            <div class="active content">
+
+                <div class="ui Four statistics">
+
+                    <div class="statistic">
+                        <div class="value" id="c2dlp_all_value">
+                            0
+                        </div>
+                        <div class="label">
+                            Core 2 Duo
+                        </div>
+                    </div>
+
+                    <div class="statistic">
+                        <div class="value" id="i3lp_all_value">
+                            0
+                        </div>
+                        <div class="label">
+                            Core i3
+                        </div>
+                    </div>
+
+                    <div class="statistic">
+                        <div class="value" id="i5lp_all_value">
+                            0
+                        </div>
+                        <div class="label">
+                            Core i5
+                        </div>
+                    </div>
+
+                    <div class="statistic">
+                        <div class="value" id="i7lp_all_value">
+                            0
+                        </div>
+                        <div class="label">
+                            Core i7
+                        </div>
+                    </div>
+                </div>
+                
             </div>
         </div>
 
-        <div class="statistic">
-            <div class="value" id="i3lp_all_value">
-                0
+
+    
+    
+    <h3 class="ui header">
+        <i class="apple icon"></i>Mac
+    </h3>
+
+        <div class="ui three statistics">
+
+
+            <div class="statistic">
+                <div class="value" id="mbp_all_value">
+                    0
+                </div>
+                <div class="label">
+                    MacBook Pro
+                </div>
             </div>
-            <div class="label">
-                Core i3
+
+            <div class="statistic">
+                <div class="value" id="mb_all_value">
+                    0
+                </div>
+                <div class="label">
+                    MacBook
+                </div>
+            </div>
+
+            <div class="statistic">
+                <div class="value" id="idk_all_value">
+                    0
+                </div>
+                <div class="label">
+                    IMac 
+                </div>
             </div>
         </div>
 
-        <div class="statistic">
-            <div class="value" id="i5lp_all_value">
-                0
-            </div>
-            <div class="label">
-                Core i5
-            </div>
-        </div>
-
-        <div class="statistic">
-            <div class="value" id="i7lp_all_value">
-                0
-            </div>
-            <div class="label">
-                Core i7
-            </div>
-        </div>
-    </div>
-
+    
 
 </div>
     <script>
@@ -246,7 +304,10 @@
    .accordion()
          ;
          $.getJSON("@Url.Action("get_yTd_report")", function (Data) {
-
+            
+             $("#mbp_all_value").text(Data.alltime_mbp);
+             $("#mb_all_value").text(Data.alltime_mb);
+             $("#idk_all_value").text(Data.alltime_idk);
             $('#alltime_value').text(Data.avg_alltime);
             $('#month_value').text(Data.avg_month);
             $('#year_value').text(Data.avg_year);
@@ -344,6 +405,7 @@
                 var chart = new google.visualization.LineChart(document.getElementById('chart_div4'));
                 chart.draw(data, { title : 'All Time Returns',vAxis: {title: '# of Assets Return', titleTextStyle: {color: 'red'}},width: 1100, height: 400 });
             }
+            $('#loader').attr("class", "ui disabled large inline loader");
         });
 
 
