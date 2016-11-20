@@ -1180,6 +1180,7 @@
     <Content Include="Views\discoveries\asset_detail.cshtml" />
     <Content Include="Views\ShipStation\main.cshtml" />
     <Content Include="Views\ShipStation\get_shipment.cshtml" />
+    <Content Include="Views\Home\dashboard.cshtml" />
     <None Include="Web References\org.connectall\item.xsd">
       <SubType>Designer</SubType>
     </None>
