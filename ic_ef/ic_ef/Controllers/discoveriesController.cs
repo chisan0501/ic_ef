@@ -16,6 +16,11 @@ namespace ic_ef.Controllers
         private db_a094d4_icdbEntities db = new db_a094d4_icdbEntities();
 
 
+        public ActionResult asset_detail ()
+        {
+            return View();
+        }
+
         // GET: discoveries
         public ActionResult Index(string sortOrder, string currentFilter, string searchString, int? page)
         {

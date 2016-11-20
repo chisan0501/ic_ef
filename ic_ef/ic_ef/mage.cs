@@ -110,6 +110,8 @@ namespace ic_ef
 
         }
 
+      
+
         public static string image_to_64 (string Path)
         {
             using (Image image = Image.FromFile(Path))
@@ -131,6 +133,9 @@ namespace ic_ef
             var pallet_list = (from t in db.label_menu where (t.name == "Mar (Desktop)" || t.name == "Mar (Laptop)" || t.name == "OEM (Desktop)" || t.name == "OEM (Laptop)") select t.product).ToList();
             return pallet_list;
         }
+
+      
+
         public bool enable_product (string sku)
         {
             bool result;

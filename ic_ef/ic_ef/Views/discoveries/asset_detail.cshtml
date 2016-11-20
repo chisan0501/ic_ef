@@ -1,0 +1,224 @@
+﻿
+@{
+    ViewBag.Title = "asset_detail";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+
+
+
+
+        <div class="ui center aligned container">
+            <div class="ui ordered steps">
+                <div class="completed step">
+                    <div class="content">
+                        <div class="title">Discovery</div>
+                        <div class="description"></div>
+                    </div>
+                </div>
+                <div class="completed step">
+                    <div class="content">
+                        <div class="title">Refurb</div>
+                        <div class="description"></div>
+                    </div>
+                </div>
+                <div class="completed step">
+                    <div class="content">
+                        <div class="title">Imaging</div>
+                        <div class="description">Verify order details</div>
+                    </div>
+                </div>
+                <div class="step">
+                    <div class="content">
+                        <div class="title">Assigned to Bin</div>
+                        <div class="description">Verify order details</div>
+                    </div>
+                </div>
+                <div class=" step">
+                    <div class="content">
+                        <div class="title">Sold</div>
+                        <div class="description">Verify order details</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    
+
+
+
+
+    <h4 class="ui horizontal divider header">
+    <i class="bar chart icon"></i>
+    Hardware Specifications
+</h4>
+
+<div class="ui three column doubling stackable grid container">
+    <div class="column">
+        <div class="ui raised segment">
+            <table class="ui very basic collapsing celled table">
+                <thead>
+                    <tr>
+                        <th colspan="2">
+                            <strong><i class="info circle icon"></i>Discovery</strong>
+                        </th>
+                <tbody>
+                    <tr>
+                        <td class="four wide column">Model</td>
+                        <td id="discovery_model_content"></td>
+                    </tr>
+                    <tr>
+                        <td>Serial</td>
+                        <td id="discovery_serial_content"></td>
+                    </tr>
+                    <tr>
+                        <td>CPU</td>
+                        <td id="discovery_cpu_content"></td>
+                    </tr>
+                    <tr>
+                        <td>RAM</td>
+                        <td id="discovery_ram_content"></td>
+                    </tr>
+                    <tr>
+                        <td>HDD</td>
+                        <td id="discovery_hdd_content"></td>
+                    </tr>
+                    <tr>
+                        <td>Time</td>
+                        <td id="discovery_time_content"></td>
+                    </tr>
+                    <tr>
+                        <td>Brand</td>
+                        <td id="discovery_brand_content"></td>
+                    </tr>
+                    <tr>
+                        <td>Optical Drive</td>
+                        <td id="discovery_optical_content"></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="column">
+        <div class="ui raised segment">
+            <table class="ui very basic collapsing celled table">
+                <thead>
+                    <tr>
+                        <th colspan="2">
+                            <strong><i class="info circle icon"></i>ReDiscovery</strong>
+                        </th>
+                <tbody>
+                <tbody>
+                    <tr>
+                        <td class="two wide column">Model</td>
+                        <td id="rediscovery_model_content"></td>
+                    </tr>
+                    <tr>
+                        <td>Serial</td>
+                        <td id="rediscovery_serial_content"></td>
+                    </tr>
+                    <tr>
+                        <td>CPU</td>
+                        <td id="rediscovery_cpu_content"></td>
+                    </tr>
+                    <tr>
+                        <td>RAM</td>
+                        <td id="rediscovery_ram_content"></td>
+                    </tr>
+                    <tr>
+                        <td>HDD</td>
+                        <td id="rediscovery_hdd_content"></td>
+                    </tr>
+                    <tr>
+                        <td>Time</td>
+                        <td id="rediscovery_time_content"></td>
+                    </tr>
+                    <tr>
+                        <td>Brand</td>
+                        <td id="rediscovery_brand_content"></td>
+                    </tr>
+                    <tr>
+                        <td>Refurbisher</td>
+                        <td id="rediscovery_user_content"></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="column">
+        <div class="ui raised segment">
+            <table class="ui very basic collapsing celled table">
+                <thead>
+                    <tr>
+                        <th colspan="2">
+                            <strong><i class="info circle icon"></i>Imaging</strong>
+                        </th>
+                <tbody>
+                <tbody>
+                    <tr>
+                        <td class="two wide column">Model</td>
+                        <td id="img_model_content"></td>
+                    </tr>
+                    <tr>
+                        <td>Serial</td>
+                        <td id="img_serial_content"></td>
+                    </tr>
+                    <tr>
+                        <td>CPU</td>
+                        <td id="img_cpu_content"></td>
+                    </tr>
+                    <tr>
+                        <td>RAM</td>
+                        <td id="img_ram_content"></td>
+                    </tr>
+                    <tr>
+                        <td>HDD</td>
+                        <td id="img_hdd_content"></td>
+                    </tr>
+                    <tr>
+                        <td>Time</td>
+                        <td id="img_time_content"></td>
+                    </tr>
+                    <tr>
+                        <td>Screen Size</td>
+                        <td id="img_screen_content"></td>
+                    </tr>
+
+                    <tr>
+                        <td>Channel</td>
+                        <td id="img_channel_content"></td>
+                    </tr>
+                    <tr>
+                        <td>wcoa</td>
+                        <td id="img_wcoa_content"></td>
+                    </tr>
+                    <tr>
+                        <td>ocoa</td>
+                        <td id="img_ocoa_content"></td>
+                    </tr>
+
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+</div>
+
+
+<h4 class="ui horizontal divider header">
+    <i class="unhide icon"></i>
+    Location Tracking
+</h4>
+<div class="ui three column doubling stackable grid container">
+    <div class="row">
+        <div class="ui floating message">
+            <p>last seen for this asset wasDSDSDSDSDSSDDSSSSSSSSSSSSSSSSSSSSSSSSSSSSSDDS aT Way to go!</p>
+        </div>
+    </div>
+    <div class="row">
+        <div class="ui floating message">
+            <p>last seen for this asset wasDSDSDSDSDSSDDSSSSSSSSSSSSSSSSSSSSSSSSSSSSSDDS aT Way to go!</p>
+        </div>
+    </div>
+
+</div>

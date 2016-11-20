@@ -4,7 +4,7 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="f1d427bef0c04d9f83ec1bca28d32c62" Name="Diagram1">
+      <Diagram DiagramId="f1d427bef0c04d9f83ec1bca28d32c62" Name="Diagram1" ShowGrid="true">
         <EntityTypeShape EntityType="db_a094d4_icdbModel.aspnetroles" Width="1.5" PointX="3" PointY="1.125" IsExpanded="true" />
         <EntityTypeShape EntityType="db_a094d4_icdbModel.aspnetuserclaims" Width="1.5" PointX="3" PointY="3.5" IsExpanded="true" />
         <EntityTypeShape EntityType="db_a094d4_icdbModel.aspnetuserlogins" Width="1.5" PointX="3" PointY="6.25" IsExpanded="true" />
@@ -35,6 +35,8 @@
         <EntityTypeShape EntityType="db_a094d4_icdbModel.pull_log" Width="1.5" PointX="14.375" PointY="3.75" />
         <EntityTypeShape EntityType="db_a094d4_icdbModel.retail_report" Width="1.5" PointX="14.375" PointY="6.75" />
         <EntityTypeShape EntityType="db_a094d4_icdbModel.magento_validation_log" Width="1.5" PointX="13.375" PointY="14.75" />
+        <EntityTypeShape EntityType="db_a094d4_icdbModel.shipstation_log" Width="1.5" PointX="3.375" PointY="15.75" />
+        <EntityTypeShape EntityType="db_a094d4_icdbModel.shipstation_shipment_log" Width="1.5" PointX="5.375" PointY="15.75" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

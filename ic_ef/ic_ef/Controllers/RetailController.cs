@@ -28,7 +28,9 @@ namespace ic_ef.Controllers
 
             }
         //get year to date report
-        public JsonResult get_yTd_report ()
+
+   
+        public JsonResult get_yTd_report (string start, string end)
         {
 
             using (var db = new db_a094d4_icdbEntities())
@@ -39,19 +41,40 @@ namespace ic_ef.Controllers
                 int avg_year_counter = 0;
                 int avg_month = 0;
                 int avg_month_counter = 0;
+                DateTime date_start;
+                DateTime date_end;
+               if (start == null && end == null)
+                {
+                    date_start = new DateTime(2015, 1, 1);
+                    date_end = DateTime.Now.Date;
+                }
+               else
+                {
+                    date_start = DateTime.Parse(start);
+                    date_end = DateTime.Parse(end);
+                }
+
+                var alltime_C2DDK_result = (from t in db.retail_report where t.name.Contains("MARDKC2D") && t.type == "sale" && (t.date_sold >= date_start && t.date_sold <= date_end) select t).Count();
+                var alltime_i3DK_result = (from t in db.retail_report where t.name.Contains("MARDKi3") && t.type == "sale" && (t.date_sold >= date_start && t.date_sold <= date_end) select t).Count();
+                var alltime_i5DK_result = (from t in db.retail_report where t.name.Contains("MARDKi5") && t.type == "sale" && (t.date_sold >= date_start && t.date_sold <= date_end) select t).Count();
+                var alltime_i7DK_result = (from t in db.retail_report where t.name.Contains("MARDKi7") && t.type == "sale" && (t.date_sold >= date_start && t.date_sold <= date_end) select t).Count();
+                var alltime_C2DLP_result = (from t in db.retail_report where t.name.Contains("MARLPC2D") && t.type == "sale" && (t.date_sold >= date_start && t.date_sold <= date_end) select t).Count();
+                var alltime_i3LP_result = (from t in db.retail_report where t.name.Contains("MARLPi3") && t.type == "sale" && (t.date_sold >= date_start && t.date_sold <= date_end) select t).Count();
+                var alltime_i5LP_result = (from t in db.retail_report where t.name.Contains("MARLPi5") && t.type == "sale" && (t.date_sold >= date_start && t.date_sold <= date_end) select t).Count();
+                var alltime_i7LP_result = (from t in db.retail_report where t.name.Contains("MARLPi7") && t.type == "sale" && (t.date_sold >= date_start && t.date_sold <= date_end) select t).Count();
+                var alltime_mbp_result = (from t in db.retail_report where t.name.Contains("MBP105-109") && t.type == "sale" && (t.date_sold >= date_start && t.date_sold <= date_end) select t).Count();
+                var alltime_mb_result = (from t in db.retail_report where t.name.Contains("MB105-109") && t.type == "sale" && (t.date_sold >= date_start && t.date_sold <= date_end) select t).Count();
+                var alltime_idk_result = (from t in db.retail_report where t.name.Contains("IDK105-109") && t.type == "sale" && (t.date_sold >= date_start && t.date_sold <= date_end) select t).Count();
+                var alltime_oem_c2ddk_result = (from t in db.retail_report where t.name.Contains("OEMDKC2D") && t.type == "sale" && (t.date_sold >= date_start && t.date_sold <= date_end) select t).Count(); 
+                var alltime_oem_i3DK_result = (from t in db.retail_report where t.name.Contains("OEMDKi3") && t.type == "sale" && (t.date_sold >= date_start && t.date_sold <= date_end) select t).Count();
+                var alltime_oem_i5DK_result = (from t in db.retail_report where t.name.Contains("OEMDKi5") && t.type == "sale" && (t.date_sold >= date_start && t.date_sold <= date_end) select t).Count();
+                var alltime_oem_i7DK_result = (from t in db.retail_report where t.name.Contains("OEMDKi7") && t.type == "sale" && (t.date_sold >= date_start && t.date_sold <= date_end) select t).Count();
+                var alltime_oem_C2DLP_result = (from t in db.retail_report where t.name.Contains("OEMLPC2D") && t.type == "sale" && (t.date_sold >= date_start && t.date_sold <= date_end) select t).Count();
+                var alltime_oem_i3LP_result = (from t in db.retail_report where t.name.Contains("OEMLPi3") && t.type == "sale" && (t.date_sold >= date_start && t.date_sold <= date_end) select t).Count();
+                var alltime_oem_i5LP_result = (from t in db.retail_report where t.name.Contains("OEMLPi5") && t.type == "sale" && (t.date_sold >= date_start && t.date_sold <= date_end) select t).Count();
+                var alltime_oem_i7LP_result = (from t in db.retail_report where t.name.Contains("OEMLPi7") && t.type == "sale" && (t.date_sold >= date_start && t.date_sold <= date_end) select t).Count();
 
 
-                var alltime_C2DDK_result = (from t in db.retail_report where t.name.Contains("MARDKC2D") && t.type == "sale" select t).Count();
-                var alltime_i3DK_result = (from t in db.retail_report where t.name.Contains("MARDKi3") && t.type == "sale" select t).Count();
-                var alltime_i5DK_result = (from t in db.retail_report where t.name.Contains("MARDKi5") && t.type == "sale" select t).Count();
-                var alltime_i7DK_result = (from t in db.retail_report where t.name.Contains("MARDKi7") && t.type == "sale" select t).Count();
-                var alltime_C2DLP_result = (from t in db.retail_report where t.name.Contains("MARLPC2D") && t.type == "sale" select t).Count();
-                var alltime_i3LP_result = (from t in db.retail_report where t.name.Contains("MARLPi3") && t.type == "sale" select t).Count();
-                var alltime_i5LP_result = (from t in db.retail_report where t.name.Contains("MARLPi5") && t.type == "sale" select t).Count();
-                var alltime_i7LP_result = (from t in db.retail_report where t.name.Contains("MARLPi7") && t.type == "sale" select t).Count();
-                var alltime_mbp_result = (from t in db.retail_report where t.name.Contains("MBP105-109") && t.type == "sale" select t).Count();
-                var alltime_mb_result = (from t in db.retail_report where t.name.Contains("MB105-109") && t.type == "sale" select t).Count();
-                var alltime_idk_result = (from t in db.retail_report where t.name.Contains("IDK105-109") && t.type == "sale" select t).Count();
 
                 var result = db.Database.SqlQuery<date_result>("SELECT DISTINCT(date(date_sold)) as date ,count( * ) AS count FROM retail_report where type = 'sale' GROUP BY date_sold ORDER BY date_sold ASC ").ToArray();
                 var return_result = db.Database.SqlQuery<date_result>("SELECT DISTINCT(date(date_sold)) as date ,count( * ) AS count FROM retail_report where type = 'return' GROUP BY date_sold ORDER BY date_sold ASC ").ToArray();
@@ -101,7 +124,7 @@ namespace ic_ef.Controllers
                 avg_alltime = (avg_alltime / result.Length);
                 avg_year = (avg_year / avg_year_counter);
                 avg_return = (avg_return / return_result.Length);
-                return Json(new { C2Dlp_all = alltime_C2DLP_result,i3lp_all = alltime_i3LP_result, i5lp_all = alltime_i5LP_result, i7lp_all = alltime_i7LP_result, C2DDK_all = alltime_C2DDK_result,i3dk_all = alltime_i3DK_result,i5dk_all = alltime_i5DK_result,i7dk_all = alltime_i7DK_result,return_result= return_result,avg_return =  avg_return,alltime_result = result, month_result = month,year_result=year,avg_month = avg_month,avg_alltime = avg_alltime,avg_year=avg_year, alltime_mbp = alltime_mbp_result, alltime_mb = alltime_mb_result, alltime_idk =  alltime_idk_result },JsonRequestBehavior.AllowGet);
+                return Json(new { oem_C2Dlp_all = alltime_oem_C2DLP_result, oem_i3lp_all = alltime_oem_i3LP_result, oem_i5lp_all = alltime_oem_i5LP_result, oem_i7lp_all = alltime_oem_i7LP_result, oem_C2DDK_all = alltime_oem_c2ddk_result, oem_i3dk_all = alltime_oem_i3DK_result, oem_i5dk_all = alltime_oem_i5DK_result, oem_i7dk_all = alltime_oem_i7DK_result, C2Dlp_all = alltime_C2DLP_result,i3lp_all = alltime_i3LP_result, i5lp_all = alltime_i5LP_result, i7lp_all = alltime_i7LP_result, C2DDK_all = alltime_C2DDK_result,i3dk_all = alltime_i3DK_result,i5dk_all = alltime_i5DK_result,i7dk_all = alltime_i7DK_result,return_result= return_result,avg_return =  avg_return,alltime_result = result, month_result = month,year_result=year,avg_month = avg_month,avg_alltime = avg_alltime,avg_year=avg_year, alltime_mbp = alltime_mbp_result, alltime_mb = alltime_mb_result, alltime_idk =  alltime_idk_result },JsonRequestBehavior.AllowGet);
             }
                  
 

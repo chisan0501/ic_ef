@@ -41,16 +41,33 @@ namespace ic_ef.Controllers
         private db_a094d4_icdbEntities db = new db_a094d4_icdbEntities();
         Models.magentoViewModel magentoView = new Models.magentoViewModel();
 
+        public JsonResult get_overall_data ()
+        {
 
+            var bin_overall = (from t in db.production_log where t.bin_location != null && t.status == null select t).Count();
+            DateTime now = DateTime.Now;
+            DateTime pass24 = now.AddHours(-24);
+            var windows_pull = (from t in db.pull_log where t.time > pass24 && t.time <= now && t.channel.Contains("windows") select t).Count();
+            var mac_pull = (from t in db.pull_log where t.time > pass24 && t.time <= now && t.channel.Contains( "mac") select t).Count();
+            var missing = (from t in db.pull_log where t.action == "missing" select t.ictag).Count();
+            var validated = (from t in db.magento_validation_log where t.time > pass24 && t.time <= now select t).Count();
+
+
+
+
+            return Json(new {validated = validated ,missing = missing, bin_overall = bin_overall, windows_pull = windows_pull,mac_pull = mac_pull},   JsonRequestBehavior.AllowGet);
+        }
         
 
         public JsonResult get_production_data(string asset)
         {
+            
             int int_asset = int.Parse(asset);
             var result = (from t in db.production_log where t.ictags == asset select t).FirstOrDefault();
+            var os_version = (from t in db.coas_history where t.PK == result.wcoa select t.Product_Name).FirstOrDefault();
             var discovery = (from t in db.discovery where t.ictag == int_asset select t).FirstOrDefault();
 
-            return Json(new { production = result, discovery = discovery},JsonRequestBehavior.AllowGet);
+            return Json(new { production = result, discovery = discovery, os = os_version},JsonRequestBehavior.AllowGet);
         }
 
         //read json object from the web
@@ -1044,39 +1061,144 @@ namespace ic_ef.Controllers
             return list;
         }
 
-        public JsonResult current_order_list ()
+
+        public void update_bin_to_magento()
         {
 
-            var oneWeekAgo = DateTime.Today.AddDays(-7).ToString("yyyy-MM-dd hh:mm:ss");
-            var today = DateTime.Today.AddDays(1).ToString("yyyy-MM-dd hh:mm:ss");
-            filters filtres = new filters();
-            filtres = addFilter(filtres, "status", "eq", "processing");
-            filtres = addFilter(filtres, "created_at", "from", oneWeekAgo);
-            filtres = addFilter(filtres, "created_at", "to", today);
-            filtres = addFilter(filtres, "store_id", "eq", "1");
-            var processing_list = order_list(filtres);
-            filters filtres2 = new filters();
-            filtres2 = addFilter(filtres2, "status", "eq", "pending");
-            filtres2 = addFilter(filtres2, "created_at", "from", oneWeekAgo);
-            filtres2 = addFilter(filtres2, "created_at", "to", today);
-            filtres2 = addFilter(filtres2, "store_id", "eq", "1");
-            var pending_list = order_list(filtres2);
-            filters filtres3 = new filters();
-            filtres2 = addFilter(filtres3, "status", "eq", "pending");
-            filtres2 = addFilter(filtres3, "created_at", "from", oneWeekAgo);
-            filtres2 = addFilter(filtres3, "created_at", "to", today);
-            filtres2 = addFilter(filtres3, "store_id", "eq", "3");
-            var retail_pending_list = order_list(filtres3);
-            filters filtres4 = new filters();
-            filtres2 = addFilter(filtres4, "status", "eq", "pending");
-            filtres2 = addFilter(filtres4, "created_at", "from", oneWeekAgo);
-            filtres2 = addFilter(filtres4, "created_at", "to", today);
-            filtres2 = addFilter(filtres4, "store_id", "eq", "3");
-            var retail_processing_list = order_list(filtres4);
-           // var arr = processing_list.Union(pending_list).ToList();
-            var arr = processing_list.Concat(pending_list)
-                                    .Concat(retail_pending_list).Concat(retail_processing_list)
-                                    .ToList();
+            var result_count = from s in db.production_log where s.bin_location != null && s.status != null group s by s.channel into groupValue select new { SKU = groupValue.Key, total = groupValue.Count(), };
+            //update magento for each SKU with right QTY
+            var mage = new mage();
+            var all_list = mage.get_all_product().ToList();
+            
+            foreach (var item in result_count)
+            {
+                var pid = (from t in all_list where t.sku == item.SKU select t.product_id).FirstOrDefault();
+            
+            }
+          
+
+        }
+
+        [AllowAnonymous]
+        [HttpGet]
+        public ActionResult magento_validation(string id)
+        {
+            var mage = new mage();
+
+            
+            if (id == "interconnection123")
+            {
+                List<string> item_to_remove = new List<string>();
+
+                var sold_list = current_order_list_arr();
+                var result = (from t in db.production_log where t.bin_location != null && t.status == null select t.channel).ToList();
+
+              foreach (var item in sold_list)
+                {
+                    result.Remove(item);
+                }
+
+
+
+
+                var response = mage.get_all_product().ToList();
+
+                foreach (var item in response)
+                {
+                    db_a094d4_icdbEntities dbb = new db_a094d4_icdbEntities();
+
+
+                    bool contain = result.Contains(item.sku);
+                    if (contain == true)
+                    {
+                        
+                        var bin_qty = (from t in dbb.production_log where t.channel == item.sku && t.status == null && t.bin_location != null select t).Count();
+
+                        decimal decimal_bin_qty = decimal.Parse(bin_qty.ToString());
+                        //decimal mage_qty = decimal.Parse(item.qty);
+                       
+
+                            //update qty
+                            var result_code = mage.update_qty(item.sku, bin_qty.ToString(), item.product_id);
+                            //enable product
+                            var db = new db_a094d4_icdbEntities();
+                            var insert = new magento_validation_log();
+                            insert.time = DateTime.Today.Date;
+                            insert.SKU = item.sku;
+                            insert.mage_qty = bin_qty;
+                            insert.bin_qty = bin_qty;
+                            insert.successful = result_code.ToString();
+                            db.magento_validation_log.Add(insert);
+                            db.SaveChanges();
+                            db.Dispose();
+                            var result_status = mage.enable_product(item.sku);
+
+                        
+
+
+
+
+                    }
+                }
+                ViewBag.message = "Validated, Thank You";
+            }
+            else
+            {
+                ViewBag.message = "ID Incorrect!!!";
+            }
+            return View();
+        }
+
+        [AllowAnonymous]
+        public List<string> current_order_list_arr()
+        {
+            List<string> response = new List<string>();
+            using (WebClient wc = new WebClient())
+            {
+                var json = new WebClient().DownloadString("http://connectall.org/get_order.php");
+                JavaScriptSerializer ser = new JavaScriptSerializer();
+                response = ser.Deserialize<IList<string>>(json.ToString()).ToList();
+
+            }
+
+            //var oneWeekAgo = DateTime.Today.AddDays(-7).ToString("yyyy-MM-dd hh:mm:ss");
+            //var today = DateTime.Today.AddDays(1).ToString("yyyy-MM-dd hh:mm:ss");
+            //filters filtres = new filters();
+            //filtres = addFilter(filtres, "status", "eq", "processing");
+            //filtres = addFilter(filtres, "created_at", "from", oneWeekAgo);
+            //filtres = addFilter(filtres, "created_at", "to", today);
+            //filtres = addFilter(filtres, "store_id", "eq", "1");
+            //var processing_list = order_list(filtres);
+            //filters filtres2 = new filters();
+            //filtres2 = addFilter(filtres2, "status", "eq", "pending");
+            //filtres2 = addFilter(filtres2, "created_at", "from", oneWeekAgo);
+            //filtres2 = addFilter(filtres2, "created_at", "to", today);
+            //filtres2 = addFilter(filtres2, "store_id", "eq", "1");
+            //var pending_list = order_list(filtres2);
+            //filters filtres3 = new filters();
+            //filtres2 = addFilter(filtres3, "status", "eq", "pending");
+            //filtres2 = addFilter(filtres3, "created_at", "from", oneWeekAgo);
+            //filtres2 = addFilter(filtres3, "created_at", "to", today);
+            //filtres2 = addFilter(filtres3, "store_id", "eq", "3");
+            //var retail_pending_list = order_list(filtres3);
+            //filters filtres4 = new filters();
+            //filtres2 = addFilter(filtres4, "status", "eq", "pending");
+            //filtres2 = addFilter(filtres4, "created_at", "from", oneWeekAgo);
+            //filtres2 = addFilter(filtres4, "created_at", "to", today);
+            //filtres2 = addFilter(filtres4, "store_id", "eq", "3");
+            //var retail_processing_list = order_list(filtres4);
+            // var arr = processing_list.Union(pending_list).ToList();
+            //var arr = processing_list.Concat(pending_list)
+            //                       .Concat(retail_pending_list).Concat(retail_processing_list)
+            //                       .ToList();
+
+            return response;
+        }
+
+        public JsonResult current_order_list ()
+        {
+            var arr = current_order_list_arr();
+           
             return Json( new { order_list = arr}, JsonRequestBehavior.AllowGet);
         }
 
@@ -1549,7 +1671,7 @@ namespace ic_ef.Controllers
         [HttpPost]
         public async Task<JsonResult> order_json_ts(Models.ts_order[] tsorder)
         {
-            await shipstation(tsorder);
+          //  await shipstation(tsorder);
             foreach (var item in tsorder)
             {
                 //split full name into first and last
@@ -1565,95 +1687,7 @@ namespace ic_ef.Controllers
             return Json(new { scuess = true, message = result }, JsonRequestBehavior.AllowGet);
         }
 
-        public static async Task shipstation(Models.ts_order[] tsorder)
-        {
-
-            var baseAddress = new Uri("https://ssapi.shipstation.com/");
-
-            foreach (var csv_item in tsorder)
-            {
-
-           
-           
-
-            using (var httpClient = new HttpClient { BaseAddress = baseAddress })
-            {
-                httpClient.DefaultRequestHeaders.TryAddWithoutValidation("authorization", "Basic ZmU3YzE2MGMyZjE0NDc1ZDljNWQ0ZWI2ZmMzYmRhOWU6YzRiM2RhMjlkZWZlNDgyOWJlZmRlYTExNmU1N2Q5ZTY=");
-
-
-                shipstation_order_model order = new shipstation_order_model();
-                shipstation_order_model.Billto billto = new shipstation_order_model.Billto();
-                shipstation_order_model.Shipto shipto = new shipstation_order_model.Shipto();
-                shipstation_order_model.Item item = new shipstation_order_model.Item();
-                shipstation_order_model.Advancedoptions option = new shipstation_order_model.Advancedoptions();
-                    //order info
-                    //parse current ts order number to int
-                    int ts_order_number = int.Parse(csv_item.TS_Order_Number);
-                    order.orderId = ts_order_number;
-                order.orderNumber = csv_item.TS_Order_Number ;
-                var date = DateTime.UtcNow.ToString("yyyy'-'MM'-'dd'T'HH':'mm':'ss'.'fff");
-
-                order.orderDate = date;
-                order.createDate = date;
-                order.modifyDate = date;
-                order.paymentDate = date;
-                order.shipByDate = date;
-                order.orderStatus = "awaiting_shipment";
-                order.customerEmail = csv_item.Org_Email;
-
-                //bill to info required
-                order.billTo = billto;
-                    billto.name = csv_item.Org_Contact_Name;
-                    billto.street1 = csv_item.Org_Street_Address;
-                    //billto.city = "Seattle";
-                    //billto.state = "WA";
-                    //billto.country = "US";
-                    billto.company = csv_item.Org_Name;
-
-                    //ship to info
-                    order.shipTo = shipto;
-                    shipto.name = csv_item.Org_Contact_Name;
-                    shipto.street1 = csv_item.Org_Street_Address;
-                    shipto.postalCode = csv_item.Org_Zip_Code;
-                    shipto.city = csv_item.Org_City;
-                    shipto.state = csv_item.Org_State;
-                    shipto.country = csv_item.Org_Country;
-                    shipto.company = csv_item.Org_Name;
-
-                    //item info
-                    shipstation_order_model.Item[] items = new shipstation_order_model.Item[] {
-                    item
-                };
-                    item.sku = csv_item.Item_ID;
-                    item.name = csv_item.Product_Name;
-                    item.quantity = csv_item.Total_Product_Quantity;
-                
-
-                
-                order.items = items;
-                order.advancedOptions = option;
-                    //store id for TechSoup
-                    option.storeId = 12171;
-                option.warehouseId = 11239;
-
-
-                var order_json = new JavaScriptSerializer().Serialize(order);
-               
-
-                using (var content = new StringContent(order_json, System.Text.Encoding.Default, "application/json"))
-
-               
-                {
-                    using (var response = await httpClient.PostAsync("orders/createorder", content))
-                    {
-                        string responseData = await response.Content.ReadAsStringAsync();
-                    }
-                }
-
-            }
-            }
-        }
-
+      
         [HttpPost]
         public JsonResult order_json_g360(Models.g360_order[] g360order)
         {

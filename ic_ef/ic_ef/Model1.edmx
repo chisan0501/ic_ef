@@ -156,12 +156,12 @@
           <Key>
             <PropertyRef Name="row_id" />
           </Key>
+          <Property Name="row_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="time" Type="date" />
           <Property Name="SKU" Type="char" MaxLength="50" />
           <Property Name="bin_qty" Type="decimal" Precision="10" Scale="0" />
           <Property Name="mage_qty" Type="decimal" Precision="10" Scale="0" />
           <Property Name="successful" Type="char" MaxLength="50" />
-          <Property Name="row_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
         </EntityType>
         <!--Errors Found During Generation:
 warning 6013: The table/view 'def.db_a094d4_icdb.misc_setting' does not have a primary key defined and no valid primary key could be inferred. This table/view has been excluded. To use the entity, you will need to review your schema, add the correct keys, and uncomment it.
@@ -308,6 +308,34 @@ warning 6013: The table/view 'def.db_a094d4_icdb.misc_setting' does not have a p
           <Property Name="driver_det" Type="varchar" MaxLength="30" />
           <Property Name="server_address" Type="varchar" MaxLength="120" Nullable="false" />
         </EntityType>
+        <EntityType Name="shipstation_log">
+          <Key>
+            <PropertyRef Name="row_id" />
+          </Key>
+          <Property Name="order_id" Type="char" MaxLength="200" />
+          <Property Name="order_status" Type="char" MaxLength="200" />
+          <Property Name="note1" Type="char" MaxLength="200" />
+          <Property Name="note2" Type="char" MaxLength="200" />
+          <Property Name="note3" Type="char" MaxLength="200" />
+          <Property Name="item_name" Type="varchar" MaxLength="2000" />
+          <Property Name="create_date" Type="datetime" Precision="6" />
+          <Property Name="row_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+        </EntityType>
+        <EntityType Name="shipstation_shipment_log">
+          <Key>
+            <PropertyRef Name="row_id" />
+          </Key>
+          <Property Name="row_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="store_id" Type="int" />
+          <Property Name="shipment_id" Type="int" />
+          <Property Name="order_id" Type="int" />
+          <Property Name="order_number" Type="char" MaxLength="100" />
+          <Property Name="ship_date" Type="datetime" Precision="0" />
+          <Property Name="item_name" Type="char" MaxLength="255" />
+          <Property Name="item_sku" Type="char" MaxLength="255" />
+          <Property Name="image_url" Type="char" MaxLength="255" />
+          <Property Name="item_qty" Type="int" />
+        </EntityType>
         <EntityType Name="station_setting">
           <Key>
             <PropertyRef Name="station_dropdown_value" />
@@ -421,6 +449,8 @@ warning 6013: The table/view 'def.db_a094d4_icdb.misc_setting' does not have a p
           <EntitySet Name="retail_report" EntityType="Self.retail_report" Schema="db_a094d4_icdb" store:Type="Tables" />
           <EntitySet Name="setting" EntityType="Self.setting" Schema="db_a094d4_icdb" store:Type="Tables" />
           <EntitySet Name="setting_bol" EntityType="Self.setting_bol" Schema="db_a094d4_icdb" store:Type="Tables" />
+          <EntitySet Name="shipstation_log" EntityType="Self.shipstation_log" Schema="db_a094d4_icdb" store:Type="Tables" />
+          <EntitySet Name="shipstation_shipment_log" EntityType="Self.shipstation_shipment_log" Schema="db_a094d4_icdb" store:Type="Tables" />
           <EntitySet Name="station_setting" EntityType="Self.station_setting" Schema="db_a094d4_icdb" store:Type="Tables" />
           <EntitySet Name="temp_label" EntityType="Self.temp_label" Schema="db_a094d4_icdb" store:Type="Tables" />
           <EntitySet Name="users" EntityType="Self.users" Schema="db_a094d4_icdb" store:Type="Tables" />
@@ -800,6 +830,8 @@ warning 6013: The table/view 'def.db_a094d4_icdb.misc_setting' does not have a p
           <EntitySet Name="pull_log" EntityType="db_a094d4_icdbModel.pull_log" />
           <EntitySet Name="retail_report" EntityType="db_a094d4_icdbModel.retail_report" />
           <EntitySet Name="magento_validation_log" EntityType="db_a094d4_icdbModel.magento_validation_log" />
+          <EntitySet Name="shipstation_log" EntityType="db_a094d4_icdbModel.shipstation_log" />
+          <EntitySet Name="shipstation_shipment_log" EntityType="db_a094d4_icdbModel.shipstation_shipment_log" />
         </EntityContainer>
         <EntityType Name="picklist">
           <Key>
@@ -843,6 +875,34 @@ warning 6013: The table/view 'def.db_a094d4_icdb.misc_setting' does not have a p
           <Property Name="mage_qty" Type="Decimal" />
           <Property Name="successful" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="row_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+        </EntityType>
+        <EntityType Name="shipstation_log">
+          <Key>
+            <PropertyRef Name="row_id" />
+          </Key>
+          <Property Name="order_id" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="order_status" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="note1" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="note2" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="note3" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="item_name" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="create_date" Type="DateTime" />
+          <Property Name="row_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+        </EntityType>
+        <EntityType Name="shipstation_shipment_log">
+          <Key>
+            <PropertyRef Name="row_id" />
+          </Key>
+          <Property Name="row_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="store_id" Type="Int32" />
+          <Property Name="shipment_id" Type="Int32" />
+          <Property Name="order_id" Type="Int32" />
+          <Property Name="order_number" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="ship_date" Type="DateTime" />
+          <Property Name="item_name" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="item_sku" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="image_url" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="item_qty" Type="Int32" />
         </EntityType>
       </Schema>
     </edmx:ConceptualModels>
@@ -1200,6 +1260,36 @@ warning 6013: The table/view 'def.db_a094d4_icdb.misc_setting' does not have a p
                 <ScalarProperty Name="bin_qty" ColumnName="bin_qty" />
                 <ScalarProperty Name="SKU" ColumnName="SKU" />
                 <ScalarProperty Name="time" ColumnName="time" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="shipstation_log">
+            <EntityTypeMapping TypeName="db_a094d4_icdbModel.shipstation_log">
+              <MappingFragment StoreEntitySet="shipstation_log">
+                <ScalarProperty Name="row_id" ColumnName="row_id" />
+                <ScalarProperty Name="create_date" ColumnName="create_date" />
+                <ScalarProperty Name="item_name" ColumnName="item_name" />
+                <ScalarProperty Name="note3" ColumnName="note3" />
+                <ScalarProperty Name="note2" ColumnName="note2" />
+                <ScalarProperty Name="note1" ColumnName="note1" />
+                <ScalarProperty Name="order_status" ColumnName="order_status" />
+                <ScalarProperty Name="order_id" ColumnName="order_id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="shipstation_shipment_log">
+            <EntityTypeMapping TypeName="db_a094d4_icdbModel.shipstation_shipment_log">
+              <MappingFragment StoreEntitySet="shipstation_shipment_log">
+                <ScalarProperty Name="item_qty" ColumnName="item_qty" />
+                <ScalarProperty Name="image_url" ColumnName="image_url" />
+                <ScalarProperty Name="item_sku" ColumnName="item_sku" />
+                <ScalarProperty Name="item_name" ColumnName="item_name" />
+                <ScalarProperty Name="ship_date" ColumnName="ship_date" />
+                <ScalarProperty Name="order_number" ColumnName="order_number" />
+                <ScalarProperty Name="order_id" ColumnName="order_id" />
+                <ScalarProperty Name="shipment_id" ColumnName="shipment_id" />
+                <ScalarProperty Name="store_id" ColumnName="store_id" />
+                <ScalarProperty Name="row_id" ColumnName="row_id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

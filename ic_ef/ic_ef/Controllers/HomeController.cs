@@ -100,62 +100,7 @@ namespace ic_ef.Controllers
         {
             return View();   
         }
-        [HttpGet]
-        public ActionResult magento_validation(string id)
-        {
-            List<Models.magento_validation.Class1> response = new List<Models.magento_validation.Class1>();
-            if (id == "interconnection123")
-            {
-                var result = (from t in db.production_log where t.bin_location != null && t.status != null select t.channel).ToList();
-                
-                using (WebClient wc = new WebClient())
-                {
-                    var json = new WebClient().DownloadString("http://connectall.org/get_enable.php");
-                    JavaScriptSerializer ser = new JavaScriptSerializer();
-                    response = ser.Deserialize<IList<Models.magento_validation.Class1>>(json.ToString()).ToList();
-                   
-                }
-
-                foreach (var item in response)
-                {
-                    var mage = new mage();
-                    
-                    
-                    bool contain = result.Contains(item.sku);
-                    if (contain == true)
-                    {
-                        
-                        var bin_qty = (from t in db.production_log where t.channel == item.sku && t.status == null && t.bin_location != null select t).Count();
-                        decimal decimal_bin_qty = decimal.Parse(bin_qty.ToString());
-                        decimal mage_qty = decimal.Parse(item.qty);
-                        if (decimal_bin_qty != mage_qty)
-                        {
-                      
-                            //update qty
-                            var result_code = mage.update_qty(item.sku, bin_qty.ToString(), item.entity_id);
-                            //enable product
-                            var db = new db_a094d4_icdbEntities();
-                            var insert = new magento_validation_log();
-                            insert.time = DateTime.Today.Date;
-                            insert.SKU = item.sku;
-                            insert.mage_qty = mage_qty;
-                            insert.bin_qty = bin_qty;
-                            insert.successful = result_code.ToString();
-                            db.magento_validation_log.Add(insert);
-                            db.SaveChanges();
-                            db.Dispose();
-                            var result_status = mage.enable_product(item.sku);
-                           
-                        }
-                     
-                        
-                           
-                        
-                    }
-                }
-            }
-            return View();
-        }
+       
 
         public JsonResult small_graph()
         {

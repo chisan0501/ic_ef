@@ -52,5 +52,7 @@ namespace ic_ef
         public virtual DbSet<pull_log> pull_log { get; set; }
         public virtual DbSet<retail_report> retail_report { get; set; }
         public virtual DbSet<magento_validation_log> magento_validation_log { get; set; }
+        public virtual DbSet<shipstation_log> shipstation_log { get; set; }
+        public virtual DbSet<shipstation_shipment_log> shipstation_shipment_log { get; set; }
     }
 }

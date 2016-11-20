@@ -5,6 +5,8 @@
 }
 
 
+<link href="~/css/bootstrap-datepicker.css" rel="stylesheet" />
+<script src="~/js/bootstrap-datepicker.js"></script>
 <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
 
 <div id="loader" class="ui active large inline text loader">Loading...</div>
@@ -137,12 +139,22 @@
 
 <div class="ui raised very padded text container segment">
 
-    <h2 class="ui dividing header">Data By Machine Type :</h2>
+    <h2 class="ui dividing header">Assets Sold By Machine Type :</h2>
+    <a>Search By Date</a>
+    <div class="input-daterange input-group" id="datepicker">
+        <input type="text" class="input-sm form-control" id="date_start" name="start" />
+        <span class="input-group-addon">to</span>
+        <input type="text" class="input-sm form-control" id="date_end" name="end" />
+       
+    </div>
+    <button id="searchbydate" class="ui primary basic button">Search</button>
 
-    <button class="ui primary basic button">Primary</button>
-    <button class="ui secondary basic button">Secondary</button>
-    <button class="ui positive basic button">Positive</button>
-    <button class="ui negative basic button">Negative</button>
+    <script>
+        $('#datepicker').datepicker({
+        });
+    </script>
+    
+   
 
     <h3 class="ui header">
         <i class="windows icon"></i>Windows : Mar
@@ -257,8 +269,110 @@
         </div>
 
 
+    <h3 class="ui header">
+        <i class="windows icon"></i>Windows : OEM
+    </h3>
     
-    
+    <div class="ui accordion">
+        <div class="title">
+            <i class="dropdown icon"></i>
+            Desktop
+        </div>
+        <div class="active content">
+            <div class="ui Four statistics">
+
+                <div class="statistic">
+                    <div class="value" id="oem_c2ddk_all_value">
+                        0
+                    </div>
+                    <div class="label">
+                        Core 2 Duo
+                    </div>
+                </div>
+
+                <div class="statistic">
+                    <div class="value" id="oem_i3dk_all_value">
+                        0
+                    </div>
+                    <div class="label">
+                        Core i3
+                    </div>
+                </div>
+
+                <div class="statistic">
+                    <div class="value" id="oem_i5dk_all_value">
+                        0
+                    </div>
+                    <div class="label">
+                        Core i5
+                    </div>
+                </div>
+
+                <div class="statistic">
+                    <div class="value" id="oem_i7dk_all_value">
+                        0
+                    </div>
+                    <div class="label">
+                        Core i7
+                    </div>
+                </div>
+            </div>
+
+
+
+
+        </div>
+
+    </div>
+
+    <div class="ui accordion">
+        <div class="title">
+            <i class="dropdown icon"></i>
+            Laptop
+        </div>
+        <div class="active content">
+
+            <div class="ui Four statistics">
+
+                <div class="statistic">
+                    <div class="value" id="oem_c2dlp_all_value">
+                        0
+                    </div>
+                    <div class="label">
+                        Core 2 Duo
+                    </div>
+                </div>
+
+                <div class="statistic">
+                    <div class="value" id="oem_i3lp_all_value">
+                        0
+                    </div>
+                    <div class="label">
+                        Core i3
+                    </div>
+                </div>
+
+                <div class="statistic">
+                    <div class="value" id="oem_i5lp_all_value">
+                        0
+                    </div>
+                    <div class="label">
+                        Core i5
+                    </div>
+                </div>
+
+                <div class="statistic">
+                    <div class="value" id="oem_i7lp_all_value">
+                        0
+                    </div>
+                    <div class="label">
+                        Core i7
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
     <h3 class="ui header">
         <i class="apple icon"></i>Mac
     </h3>
@@ -298,7 +412,52 @@
 
 </div>
     <script>
+        $('#searchbydate').click(function () {
+            $('#loader').attr("class", "ui active large inline loader");
+            var start_date = $('#date_start').val();
+            var end_date = $('#date_end').val();
+           
+            var jsonObject = {
+                start: start_date,
+                end: end_date
+            };
+            $.ajax({
+                url: "@Url.Action("get_yTd_report")",
+                type: "POST",
 
+            data: JSON.stringify(jsonObject),
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+
+            success: function (Data) {
+              
+                $("#mbp_all_value").text(Data.alltime_mbp);
+                $("#mb_all_value").text(Data.alltime_mb);
+                $("#idk_all_value").text(Data.alltime_idk);
+                $('#alltime_value').text(Data.avg_alltime);
+                $('#month_value').text(Data.avg_month);
+                $('#year_value').text(Data.avg_year);
+                $('#return_value').text(Data.avg_return);
+                $('#c2ddk_all_value').text(Data.C2DDK_all);
+                $('#i3dk_all_value').text(Data.i3dk_all);
+                $('#i5dk_all_value').text(Data.i5dk_all);
+                $('#i7dk_all_value').text(Data.i7dk_all);
+                $('#c2dlp_all_value').text(Data.C2Dlp_all);
+                $('#i3lp_all_value').text(Data.i3lp_all);
+                $('#i5lp_all_value').text(Data.i5lp_all);
+                $('#i7lp_all_value').text(Data.i7lp_all);
+                $('#oem_c2ddk_all_value').text(Data.oem_C2DDK_all);
+                $('#oem_i3dk_all_value').text(Data.oem_i3dk_all);
+                $('#oem_i5dk_all_value').text(Data.oem_i5dk_all);
+                $('#oem_i7dk_all_value').text(Data.oem_i7dk_all);
+                $('#oem_c2dlp_all_value').text(Data.oem_C2Dlp_all);
+                $('#oem_i3lp_all_value').text(Data.oem_i3lp_all);
+                $('#oem_i5lp_all_value').text(Data.oem_i5lp_all);
+                $('#oem_i7lp_all_value').text(Data.oem_i7lp_all);
+                $('#loader').attr("class", "ui disabled large inline loader");
+            },
+            });
+        });
      $(document).ready(function () {
          $('.ui.accordion')
    .accordion()
@@ -320,6 +479,14 @@
             $('#i3lp_all_value').text(Data.i3lp_all);
             $('#i5lp_all_value').text(Data.i5lp_all);
             $('#i7lp_all_value').text(Data.i7lp_all);
+            $('#oem_c2ddk_all_value').text(Data.oem_C2DDK_all);
+            $('#oem_i3dk_all_value').text(Data.oem_i3dk_all);
+            $('#oem_i5dk_all_value').text(Data.oem_i5dk_all);
+            $('#oem_i7dk_all_value').text(Data.oem_i7dk_all);
+            $('#oem_c2dlp_all_value').text(Data.oem_C2Dlp_all);
+            $('#oem_i3lp_all_value').text(Data.oem_i3lp_all);
+            $('#oem_i5lp_all_value').text(Data.oem_i5lp_all);
+            $('#oem_i7lp_all_value').text(Data.oem_i7lp_all);
             google.charts.load('visualization', '1', { 'packages': ['corechart'] });
             google.charts.setOnLoadCallback(drawStuff);
 
@@ -408,7 +575,7 @@
             $('#loader').attr("class", "ui disabled large inline loader");
         });
 
-
+        
         $('#alltime_graph').click(function() {
 
     $('#alltime_modal')

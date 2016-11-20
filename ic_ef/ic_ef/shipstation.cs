@@ -98,24 +98,24 @@ namespace ic_ef
                 }
             }
         }
-        public static async Task list_all_Order()
+        static async Task list_all_Order()
         {
-            //var baseAddress = new Uri("https://ssapi.shipstation.com/");
-            //using (var httpClient = new HttpClient { BaseAddress = baseAddress })
-            //{
+            var baseAddress = new Uri("https://ssapi.shipstation.com/");
+            using (var httpClient = new HttpClient { BaseAddress = baseAddress })
+            {
 
-            //    httpClient.DefaultRequestHeaders.TryAddWithoutValidation("authorization", "Basic ZmU3YzE2MGMyZjE0NDc1ZDljNWQ0ZWI2ZmMzYmRhOWU6YzRiM2RhMjlkZWZlNDgyOWJlZmRlYTExNmU1N2Q5ZTY=");
+                httpClient.DefaultRequestHeaders.TryAddWithoutValidation("authorization", "Basic ZmU3YzE2MGMyZjE0NDc1ZDljNWQ0ZWI2ZmMzYmRhOWU6YzRiM2RhMjlkZWZlNDgyOWJlZmRlYTExNmU1N2Q5ZTY=");
 
-            //    using (var response = await httpClient.GetAsync("orders"))
-            //    {
-            //        string responseData = await response.Content.ReadAsStringAsync();
-            //        JavaScriptSerializer oJS = new JavaScriptSerializer();
-            //        Models.shipstationAllOrder.RootObject oRootObject = new Models.shipstationAllOrder.RootObject();
-            //        oRootObject = oJS.Deserialize<Models.shipstationAllOrder.RootObject>(responseData);
+                using (var response = await httpClient.GetAsync("orders"))
+                {
+                    string responseData = await response.Content.ReadAsStringAsync();
+                    JavaScriptSerializer oJS = new JavaScriptSerializer();
+                    Models.shipstationOrder.RootObject oRootObject = new Models.shipstationOrder.RootObject();
+                    oRootObject = oJS.Deserialize<Models.shipstationOrder.RootObject>(responseData);
 
-                   
-            //    }
-            //}
+
+                }
+            }
 
         }
         public static async Task list_Order_options()
