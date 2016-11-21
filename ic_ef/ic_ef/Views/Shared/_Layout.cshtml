@@ -50,6 +50,7 @@
                     <div class="item">Refurbish</div>
                     <div class="item" id="imaging">Imaging</div>
                     <div class="item">Monitor Discovery</div>
+                    <div class="item" id="mac">Mac</div>
                 </div>
             </div>
         </a>
@@ -57,6 +58,9 @@
             $('#prod_menu').dropdown();
             $('#imaging').on('click', function () {
                 window.location = 'http://ic.icdb.name/production_log/Index';
+            });
+            $('#mac').on('click', function () {
+                window.location = 'http://ic.icdb.name/production_log/mac';
             });
         </script>
         <a class="item" href="@Url.Action("home", "retail")">

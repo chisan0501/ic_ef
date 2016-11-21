@@ -24,9 +24,10 @@ using Magento.RestApi;
 namespace ic_ef.Controllers
 {
 
-
+    
     public class production_logController : AsyncController
     {
+        db_a094d4_icdbEntities db = new db_a094d4_icdbEntities();
         public string oem_des = "";
         public string mar_lap = "";
         public string mar_des = "";
@@ -38,7 +39,7 @@ namespace ic_ef.Controllers
         public string oem_lap_current = "";
         public string apple_current = "";
 
-        private db_a094d4_icdbEntities db = new db_a094d4_icdbEntities();
+      
         Models.magentoViewModel magentoView = new Models.magentoViewModel();
 
         public JsonResult get_overall_data ()
@@ -1193,6 +1194,24 @@ namespace ic_ef.Controllers
             //                       .ToList();
 
             return response;
+        }
+
+        public ActionResult mac ()
+        {
+
+            return View();
+        }
+
+
+        public JsonResult get_macData ()
+        {
+            DateTime now = DateTime.Today;
+            DateTime pass24 = now.AddHours(+24);
+            
+            var result = (from t in db.mac_log where t.Time > pass24 && t.Time <= now select t).Count();
+            var table_data = (from t in db.mac_log select t).ToList();
+            return Json(new { today = result,table_data = table_data} ,JsonRequestBehavior.AllowGet);
+
         }
 
         public JsonResult current_order_list ()

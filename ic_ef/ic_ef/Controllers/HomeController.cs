@@ -283,7 +283,7 @@ namespace ic_ef.Controllers
         }
         public ActionResult dashboard()
         {
-            ViewBag.something = "1";
+            
             return View();
         }
         public DotNet.Highcharts.Highcharts discover_weekly_graph(graphViewModel model, List<DateTime> allDates)
