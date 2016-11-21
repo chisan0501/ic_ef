@@ -281,9 +281,33 @@ namespace ic_ef.Controllers
 
           
         }
+        public JsonResult get_dashboard_data()
+        {
+            var ts_wcoa_s1 = (from t in db.coas where t.Recipient_Organization_Name == "TechSoup.org" && t.location == "wcoa_s1" select t).Count();
+            var ts_wcoa_s2 = (from t in db.coas where t.Recipient_Organization_Name == "TechSoup.org" && t.location == "wcoa_s2" select t).Count();
+            var mar_wcoa_s1 = (from t in db.coas where t.Recipient_Organization_Name == "Interconnection" && t.location == "wcoa_s1" select t).Count();
+            var mar_wcoa_s2 = (from t in db.coas where t.Recipient_Organization_Name == "Interconnection" && t.location == "wcoa_s2" select t).Count();
+            var g360_wcoa_s1 = (from t in db.coas where t.Recipient_Organization_Name == "Good360" && t.location == "wcoa_s1" select t).Count();
+            var g360_wcoa_s2 = (from t in db.coas where t.Recipient_Organization_Name == "Good360" && t.location == "wcoa_s2" select t).Count();
+            var ts_ocoa_s1 = (from t in db.coas where t.Recipient_Organization_Name == "TechSoup.org" && t.location == "ocoa_s1" select t).Count();
+            var ts_ocoa_s2 = (from t in db.coas where t.Recipient_Organization_Name == "TechSoup.org" && t.location == "ocoa_s2" select t).Count();
+            var mar_ocoa_s1 = (from t in db.coas where t.Recipient_Organization_Name == "Interconnection" && t.location == "ocoa_s1" select t).Count();
+            var mar_ocoa_s2 = (from t in db.coas where t.Recipient_Organization_Name == "Interconnection" && t.location == "ocoa_s2" select t).Count();
+            var g360_ocoa_s1 = (from t in db.coas where t.Recipient_Organization_Name == "Good360" && t.location == "ocoa_s1" select t).Count();
+            var g360_ocoa_s2 = (from t in db.coas where t.Recipient_Organization_Name == "Good360" && t.location == "ocoa_s2" select t).Count();
+
+            var ts_wcoa_graph
+
+
+            return Json(new { ts_wcoa_s1 = ts_wcoa_s1, ts_wcoa_s2 = ts_wcoa_s2, mar_wcoa_s1 = mar_wcoa_s1 , mar_wcoa_s2 = mar_wcoa_s2 , g360_wcoa_s1 = g360_wcoa_s1 , g360_wcoa_s2 = g360_wcoa_s2, ts_ocoa_s1 = ts_ocoa_s1, ts_ocoa_s2 = ts_ocoa_s2, mar_ocoa_s1 = mar_ocoa_s1, mar_ocoa_s2 = mar_ocoa_s2, g360_ocoa_s1 = g360_ocoa_s1, g360_ocoa_s2 = g360_ocoa_s2 }, JsonRequestBehavior.AllowGet);
+        }
+
         public ActionResult dashboard()
         {
-            
+
+         
+
+
             return View();
         }
         public DotNet.Highcharts.Highcharts discover_weekly_graph(graphViewModel model, List<DateTime> allDates)
