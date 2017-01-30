@@ -130,10 +130,17 @@
                     $.getJSON("@Url.Action("current_order_list")", function (data) {
 
                         for (i = 0; i < data.order_list.length; i++) {
-                            var n = data.order_list[i].length;
-                            if (n > 10) {
-                                $('#sold_list_item').append("<a class='header'>" + data.order_list[i] + "</a>");
+                            if (data.order_list[i] != null) {
+
+                                var n = data.order_list[i].length;
+
+                                if (n > 10) {
+                                    $('#sold_list_item').append("<a class='header'>" + data.order_list[i] + "</a>");
+                                }
                             }
+                           
+                            
+                           
                            
                                 data_arr[i] = data.order_list[i];
 

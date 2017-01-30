@@ -1,0 +1,62 @@
+﻿
+@{
+    ViewBag.Title = "pallet_home";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+
+
+
+<div class="ui two column centered grid">
+    <div class="column">
+
+        <div class="ui teal raised segment">
+         <h3 class="center header">
+             Manage Pallets
+         </h3>
+          
+        </div>
+
+
+    </div>
+    <div class="four column centered row">
+        <div class="column">
+            <div class="ui blue raised segment">
+                <a href="@Url.Action("pallet_view", "manage")">
+                    <div class="ui blue statistic">
+                        <div id="pallet_count" class="value">
+                            0
+                        </div>
+                        <div class="label">
+                            Pallets
+                        </div>
+                    </div>
+                </a>
+            </div>
+
+        </div>
+        <div class="column">
+            <div class="ui blue raised segment">
+                <a href="@Url.Action("createPallet", "manage")">
+                    <h3 class="center header">
+                        <i><img src="~/images/pallet_black.svg" style="height:80px;width:80px" /></i>
+                        Create Pallet
+                    </h3>
+                </a>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<script>
+    $.getJSON("@Url.Action("get_pallet_detail")", function (data) { 
+        
+        $('#pallet_count').text(data.pallet_count.length);
+    
+    
+    });
+    
+
+</script>

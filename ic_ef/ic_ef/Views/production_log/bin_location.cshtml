@@ -60,7 +60,7 @@
                             <p>Scan the Asset Tag and Serial</p>
                             <input type="text" id="asset_field" placeholder="Asset Tag" />
                             <input type="text" id="serial_field" placeholder="Serial #" />
-                            <button type="button" id="asso_btn">Associate</button>
+                            <button type="button" id="asso_btn" disabled>Associate</button>
                         </div>
                         <p id="message3"></p>
                     </div>
@@ -340,7 +340,7 @@
             success: function (data) {
                
                 $('#serial_field').val(data);
-            
+                $('#asso_btn').prop('disabled', false);
             },
             });
             

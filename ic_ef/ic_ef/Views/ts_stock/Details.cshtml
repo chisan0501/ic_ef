@@ -1,0 +1,51 @@
+﻿@model ic_ef.ts_stock
+
+@{
+    ViewBag.Title = "Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>ts_stock</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.last_manual_count)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.last_manual_count)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.last_auto_count)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.last_auto_count)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.qty)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.qty)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.sku)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.sku)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.ictag }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

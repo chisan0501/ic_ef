@@ -14,12 +14,19 @@ namespace ic_ef
     
     public partial class ebay
     {
-        public int listID { get; set; }
-        public Nullable<int> title { get; set; }
-        public Nullable<System.DateTime> time { get; set; }
-        public Nullable<double> start_price { get; set; }
-        public Nullable<double> end_price { get; set; }
-        public Nullable<System.DateTime> end_time { get; set; }
-        public Nullable<System.DateTime> start_time { get; set; }
+        public int row_id { get; set; }
+        public string order_id { get; set; }
+        public System.DateTime ship_date { get; set; }
+        public string order_status { get; set; }
+        public string payment_method { get; set; }
+        public System.DateTime order_date { get; set; }
+        public string order_total { get; set; }
+        public string ship_name { get; set; }
+        public string ship_address { get; set; }
+        public string ship_city { get; set; }
+        public string ship_state { get; set; }
+        public string ship_zip { get; set; }
+        public string carrier { get; set; }
+        public string tax { get; set; }
     }
 }

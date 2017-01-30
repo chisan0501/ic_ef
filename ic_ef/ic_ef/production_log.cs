@@ -31,5 +31,6 @@ namespace ic_ef
         public string screen_size { get; set; }
         public string bin_location { get; set; }
         public string status { get; set; }
+        public Nullable<System.DateTime> assign_time { get; set; }
     }
 }

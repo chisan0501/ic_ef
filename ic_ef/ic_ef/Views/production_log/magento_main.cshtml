@@ -6,29 +6,20 @@
 <html>
 <head>
     <meta name="viewport" content="width=device-width" />
-  
+    <script src="~/js/countdown.min.js"></script>
+    <script src="~/js/moment.js"></script>
     <title>Magento Web App</title>
     
 </head>
 <body>
 
+    <div class="ui small breadcrumb">
+        <a href="@Url.Action("index", "home")" class="section">Home</a>
+        <i class="right chevron icon divider"></i>
+        <div class="active section">Magento Web APP</div>
+    </div>
 
-    <div class="ui stackable one column centered grid">
-        <div class="column">
-            <h2 class="ui header">
-                <i class="cart icon"></i>
-                <div class="content">
-                    Magento Web APP
-                </div>
-            </h2>
-        </div>
-        
-        
-        
-        
-
-
-        </div>
+    
 
 
     <div class="ui three column doubling stackable grid container">
@@ -129,13 +120,14 @@
                     <p>
                         <i class="big black resize horizontal icon"></i>Validate Magento DB vs ICDB
                     </p>
-                    <div class="ui statistic">
+                    
                         <div class="value" id="validate_value">
                             0
                         </div>
                         <div class="label">
-                            Listing Adjusted < 24 Hours
+                            
                         </div>
+                    <p>Til Next Run Time</p>
                     </div>
                 </div>
             </a>
@@ -151,8 +143,16 @@
         $('#windows_value').text(data.windows_pull);
         $('#mac_value').text(data.mac_pull);
         $('#missing_value').text(data.missing);
-        $('#validate_value').text(data.validated);
+        var now = moment();
+        var then = moment(data.validated);
+      
+        (function timerLoop() {
+            $('#validate_value').text(countdown(then).toString());
+            requestAnimationFrame(timerLoop);
+        })();
+        
 
     });
 
+   
 </script>

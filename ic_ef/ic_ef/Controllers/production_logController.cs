@@ -42,6 +42,17 @@ namespace ic_ef.Controllers
       
         Models.magentoViewModel magentoView = new Models.magentoViewModel();
 
+
+        public JsonResult get_missing_asset()
+        {
+
+            var result = (from t in db.pull_log where t.action == "missing" select t).ToList();
+
+
+            return Json(new { result = result},JsonRequestBehavior.AllowGet);
+
+        }
+
         public JsonResult get_overall_data ()
         {
 
@@ -51,14 +62,17 @@ namespace ic_ef.Controllers
             var windows_pull = (from t in db.pull_log where t.time > pass24 && t.time <= now && t.channel.Contains("windows") select t).Count();
             var mac_pull = (from t in db.pull_log where t.time > pass24 && t.time <= now && t.channel.Contains( "mac") select t).Count();
             var missing = (from t in db.pull_log where t.action == "missing" select t.ictag).Count();
-            var validated = (from t in db.magento_validation_log where t.time > pass24 && t.time <= now select t).Count();
+            //var validated = (from t in db.magento_validation_log where t.time > pass24 && t.time <= now select t).Count();
+            var validated = (from t in db.process_run_time where t.process == "Magento" orderby t.time descending select t.time).FirstOrDefault();
 
+            validated = validated.AddMinutes(150);
+            
 
-
-
-            return Json(new {validated = validated ,missing = missing, bin_overall = bin_overall, windows_pull = windows_pull,mac_pull = mac_pull},   JsonRequestBehavior.AllowGet);
+            return Json(new {validated = validated, missing = missing, bin_overall = bin_overall, windows_pull = windows_pull,mac_pull = mac_pull},   JsonRequestBehavior.AllowGet);
         }
-        
+
+     
+
 
         public JsonResult get_production_data(string asset)
         {
@@ -104,6 +118,7 @@ namespace ic_ef.Controllers
                     entry.status = null;
                     entry.bin_location = bin;
                 }
+                ctx.Database.ExecuteSqlCommand("Delete from pull_log where ictag ='" + asset + "'");
             }
             using (var dbCtx = new db_a094d4_icdbEntities())
             {
@@ -964,28 +979,8 @@ namespace ic_ef.Controllers
             return View();
         }
 
-        [HttpGet]
-        public ActionResult get_list(string id)
-        {
-            var list_item = (from t in db.picklist where t.id == id select t).ToList();
-            ViewBag.item = MvcHtmlString.Create(list_item[0].item);
-            return View();
-        }
-    
-        public JsonResult write_list (string id, string name, string item, DateTime date)
-        {
-          // item =  System.Web.HttpUtility.HtmlEncode(item);
-            var write_table = new picklist();
-            write_table.id = id;
-            write_table.name = name ;
-            write_table.item = item;
-            write_table.date = date;
-            db.picklist.Add(write_table);
-            db.SaveChanges();
-            db.Dispose();
-
-            return Json(new { success = true }, JsonRequestBehavior.AllowGet);
-        }
+     
+      
 
         [HttpPost]
         public JsonResult Upload()
@@ -1080,6 +1075,8 @@ namespace ic_ef.Controllers
 
         }
 
+
+        //background process to validate magento inventory vs bin 
         [AllowAnonymous]
         [HttpGet]
         public ActionResult magento_validation(string id)
@@ -1089,30 +1086,50 @@ namespace ic_ef.Controllers
             
             if (id == "interconnection123")
             {
+
+                //create a list for all vendor listing 
+
+                var vendor = current_vendor_list_arr();
+
+
+                //create a list for all the magento pending order
                 List<string> item_to_remove = new List<string>();
 
                 var sold_list = current_order_list_arr();
+                //query the database for the item that's in the bin now
                 var result = (from t in db.production_log where t.bin_location != null && t.status == null select t.channel).ToList();
 
+
+                //remove the items that is on the current order list
               foreach (var item in sold_list)
                 {
                     result.Remove(item);
                 }
+          
 
 
-
-
+              //get all products on magento
                 var response = mage.get_all_product().ToList();
+            
+
+
 
                 foreach (var item in response)
                 {
+                  
+
+                    if(sold_list.Contains(item.sku))
+                    {
+                        continue;
+                    }
+
                     db_a094d4_icdbEntities dbb = new db_a094d4_icdbEntities();
 
 
                     bool contain = result.Contains(item.sku);
                     if (contain == true)
                     {
-                        
+                        //get a total number of the sku that is found in magento and in bin
                         var bin_qty = (from t in dbb.production_log where t.channel == item.sku && t.status == null && t.bin_location != null select t).Count();
 
                         decimal decimal_bin_qty = decimal.Parse(bin_qty.ToString());
@@ -1131,8 +1148,19 @@ namespace ic_ef.Controllers
                             insert.successful = result_code.ToString();
                             db.magento_validation_log.Add(insert);
                             db.SaveChanges();
-                            db.Dispose();
-                            var result_status = mage.enable_product(item.sku);
+
+                            
+
+
+                        db.Dispose();
+
+                        using (var db2 = new db_a094d4_icdbEntities())
+                        {
+                            db2.Database.ExecuteSqlCommand(
+                         "insert into process_run_time (process) values ('Magento')");
+                        }
+
+                        var result_status = mage.enable_product(item.sku);
 
                         
 
@@ -1150,6 +1178,22 @@ namespace ic_ef.Controllers
             return View();
         }
 
+
+
+        public List<vendor.Class1> current_vendor_list_arr()
+        {
+            // List<string> response = new List<string>();
+            List<vendor.Class1> response = new List<vendor.Class1>();
+            using (WebClient wc = new WebClient())
+            {
+                var json = new WebClient().DownloadString("http://connectall.org/get_vendor.php");
+                JavaScriptSerializer ser = new JavaScriptSerializer();
+               response = ser.Deserialize<List<vendor.Class1>>(json.ToString());
+
+            }
+            return response;
+        }
+
         [AllowAnonymous]
         public List<string> current_order_list_arr()
         {
@@ -1157,9 +1201,11 @@ namespace ic_ef.Controllers
             using (WebClient wc = new WebClient())
             {
                 var json = new WebClient().DownloadString("http://connectall.org/get_order.php");
+              
                 JavaScriptSerializer ser = new JavaScriptSerializer();
+                
                 response = ser.Deserialize<IList<string>>(json.ToString()).ToList();
-
+             //  var respose2 = JsonConvert.DeserializeObject<List<Models.magento_sold_list.Rootobject>>(json);
             }
 
             //var oneWeekAgo = DateTime.Today.AddDays(-7).ToString("yyyy-MM-dd hh:mm:ss");
@@ -1783,7 +1829,7 @@ namespace ic_ef.Controllers
             //var url = "http://connectall.org/get_enable.php";
             //for all enabled latop product
             // ViewBag.laptop =  read_json(url);
-          var url = "http://connectall.org/desktop.php";
+         // var url = "http://connectall.org/desktop.php";
            // ViewBag.desktop = read_json(url);
 
             

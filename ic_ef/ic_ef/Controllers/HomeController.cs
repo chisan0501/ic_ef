@@ -295,11 +295,13 @@ namespace ic_ef.Controllers
             var mar_ocoa_s2 = (from t in db.coas where t.Recipient_Organization_Name == "Interconnection" && t.location == "ocoa_s2" select t).Count();
             var g360_ocoa_s1 = (from t in db.coas where t.Recipient_Organization_Name == "Good360" && t.location == "ocoa_s1" select t).Count();
             var g360_ocoa_s2 = (from t in db.coas where t.Recipient_Organization_Name == "Good360" && t.location == "ocoa_s2" select t).Count();
+            DateTime startDateTime = DateTime.Today; //Today at 00:00:00
+            DateTime endDateTime = DateTime.Today.AddDays(1).AddTicks(-1);
+            var station1 = (from t in db.production_log where t.location == "Station 1" && t.time >= startDateTime && t.time <= endDateTime select t).ToList();
+            var station2 = (from t in db.production_log where t.location == "Station 2" && t.time >= startDateTime && t.time <= endDateTime select t).ToList();
+            
 
-            var ts_wcoa_graph
-
-
-            return Json(new { ts_wcoa_s1 = ts_wcoa_s1, ts_wcoa_s2 = ts_wcoa_s2, mar_wcoa_s1 = mar_wcoa_s1 , mar_wcoa_s2 = mar_wcoa_s2 , g360_wcoa_s1 = g360_wcoa_s1 , g360_wcoa_s2 = g360_wcoa_s2, ts_ocoa_s1 = ts_ocoa_s1, ts_ocoa_s2 = ts_ocoa_s2, mar_ocoa_s1 = mar_ocoa_s1, mar_ocoa_s2 = mar_ocoa_s2, g360_ocoa_s1 = g360_ocoa_s1, g360_ocoa_s2 = g360_ocoa_s2 }, JsonRequestBehavior.AllowGet);
+            return Json(new { ts_wcoa_s1 = ts_wcoa_s1, ts_wcoa_s2 = ts_wcoa_s2, mar_wcoa_s1 = mar_wcoa_s1 , mar_wcoa_s2 = mar_wcoa_s2 , g360_wcoa_s1 = g360_wcoa_s1 , g360_wcoa_s2 = g360_wcoa_s2, ts_ocoa_s1 = ts_ocoa_s1, ts_ocoa_s2 = ts_ocoa_s2, mar_ocoa_s1 = mar_ocoa_s1, mar_ocoa_s2 = mar_ocoa_s2, g360_ocoa_s1 = g360_ocoa_s1, g360_ocoa_s2 = g360_ocoa_s2, station1 = station1,station2 = station2 }, JsonRequestBehavior.AllowGet);
         }
 
         public ActionResult dashboard()

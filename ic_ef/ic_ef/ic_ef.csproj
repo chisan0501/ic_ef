@@ -78,6 +78,10 @@
       <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.SqlServer.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="Google.GData.Client, Version=2.2.0.0, Culture=neutral, PublicKeyToken=04a59ca9b0273830, processorArchitecture=MSIL">
+      <HintPath>..\packages\Google.GData.Client.2.2.0.0\lib\Google.GData.Client.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="HtmlAgilityPack, Version=1.4.9.5, Culture=neutral, PublicKeyToken=bd319b19eaf3b43a, processorArchitecture=MSIL">
       <HintPath>..\packages\HtmlAgilityPack.1.4.9.5\lib\Net45\HtmlAgilityPack.dll</HintPath>
       <Private>True</Private>
@@ -227,6 +231,10 @@
       <HintPath>..\packages\Rotativa.1.6.4\lib\net40\Rotativa.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="Semantics3, Version=1.0.0.27, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Semantics3.1.0.0.27\lib\net40\Semantics3.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="ServiceStack.Text, Version=4.0.42.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\ServiceStack.Text.4.0.42\lib\net40\ServiceStack.Text.dll</HintPath>
       <Private>True</Private>
@@ -254,6 +262,7 @@
       <HintPath>..\packages\System.Spatial.5.6.4\lib\net40\System.Spatial.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="System.Transactions" />
     <Reference Include="System.Web.DynamicData" />
     <Reference Include="System.Web.Entity" />
     <Reference Include="System.Web.ApplicationServices" />
@@ -342,22 +351,28 @@
     <Compile Include="Controllers\AspNetUsersController.cs" />
     <Compile Include="Controllers\discoveriesController.cs" />
     <Compile Include="Controllers\DymoController.cs" />
-    <Compile Include="Controllers\ebaysController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\label_menuController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
+    <Compile Include="Controllers\ManualDataEntryController.cs" />
     <Compile Include="Controllers\monitor_logController.cs" />
     <Compile Include="Controllers\palletsController.cs" />
     <Compile Include="Controllers\pallet_masterController.cs" />
     <Compile Include="Controllers\production_logController.cs" />
     <Compile Include="Controllers\rediscoveriesController.cs" />
     <Compile Include="Controllers\RetailController.cs" />
+    <Compile Include="Controllers\rmaController.cs" />
     <Compile Include="Controllers\settingsController.cs" />
     <Compile Include="Controllers\ShipStationController.cs" />
+    <Compile Include="Controllers\ship_logController.cs" />
     <Compile Include="Controllers\station_settingController.cs" />
+    <Compile Include="Controllers\ts_stockController.cs" />
     <Compile Include="Controllers\usersController.cs" />
     <Compile Include="Core\BarCodeHandler.cs" />
     <Compile Include="Core\BarCodeToHTML.cs" />
+    <Compile Include="create_asset_menu.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
     <Compile Include="discovery.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
@@ -375,6 +390,12 @@
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
     <Compile Include="mage.cs" />
+    <Compile Include="magento_html.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="magento_sku_brand.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
     <Compile Include="magento_validation_log.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
@@ -399,12 +420,16 @@
     <Compile Include="Models\latestsku.cs" />
     <Compile Include="Models\magento_importModel.cs" />
     <Compile Include="Models\Magento_sold_items.cs" />
+    <Compile Include="Models\magento_sold_list.cs" />
     <Compile Include="Models\magento_validation.cs">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Compile>
     <Compile Include="Models\ManageViewModels.cs" />
+    <Compile Include="Models\ProductViewModel.cs" />
     <Compile Include="Models\shipstationModel.cs" />
+    <Compile Include="Models\ShipStation_orderID.cs" />
     <Compile Include="Models\shipstation_order_model.cs" />
+    <Compile Include="Models\Techsoup_Model.cs" />
     <Compile Include="monitor_log.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
@@ -418,10 +443,10 @@
     <Compile Include="pallet_master.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
-    <Compile Include="picklist.cs">
+    <Compile Include="price.cs" />
+    <Compile Include="process_run_time.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
-    <Compile Include="price.cs" />
     <Compile Include="production_log.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
@@ -443,6 +468,9 @@
     <Compile Include="retail_report.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
+    <Compile Include="rma.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
     <Compile Include="setting.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
@@ -453,7 +481,7 @@
     <Compile Include="shipstation_log.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
-    <Compile Include="shipstation_shipment_log.cs">
+    <Compile Include="ship_log.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
     <Compile Include="sql_output.cs" />
@@ -465,10 +493,18 @@
     <Compile Include="temp_label.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
+    <Compile Include="ts_stock.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
     <Compile Include="users.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
     <Compile Include="Web References\org.connectall\Reference.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.map</DependentUpon>
+    </Compile>
+    <Compile Include="Web References\SFWebReference\Reference.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Reference.map</DependentUpon>
@@ -608,6 +644,7 @@
     <Content Include="css\bootstrap-datepicker3.standalone.css" />
     <Content Include="css\bootstrap-datepicker3.standalone.min.css" />
     <Content Include="css\cards.css" />
+    <Content Include="css\chartist.min.css" />
     <Content Include="css\filedrop.css" />
     <Content Include="css\icomoon.css" />
     <Content Include="css\magnific-popup.css" />
@@ -640,9 +677,14 @@
     <Content Include="js\base.js" />
     <Content Include="js\bootstrap-datepicker.js" />
     <Content Include="js\bootstrap-datepicker.min.js" />
+    <Content Include="js\chartist.min.js" />
+    <Content Include="js\countdown.min.js" />
     <Content Include="js\filedrop.js" />
     <Content Include="js\jquery-barcode.min.js" />
+    <Content Include="js\jquery.csv.min.js" />
+    <Content Include="js\jquery.sparkline.min.js" />
     <Content Include="js\jquery.tabletoCSV.js" />
+    <Content Include="js\morris.min.js" />
     <Content Include="js\prefixfree.min.js" />
     <Content Include="Content\retail_sample.png" />
     <Content Include="Content\simple_csv.jpg" />
@@ -721,7 +763,7 @@
     <Content Include="css\monthpicker.css" />
     <Content Include="js\monthpicker.js" />
     <Content Include="js\PrintLabel.js" />
-    <Content Include="js\PrintLabel_mac.js">
+    <Content Include="js\PrintLabel_mac2.js">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="js\PrintLabel_retail_custom.js" />
@@ -786,6 +828,8 @@
     <Content Include="css\bootstrap-datepicker3.min.css.map" />
     <Content Include="css\bootstrap-datepicker3.standalone.css.map" />
     <Content Include="css\bootstrap-datepicker3.standalone.min.css.map" />
+    <Content Include="images\ycufhwJBPw.svg" />
+    <Content Include="images\pallet_black.svg" />
     <None Include="Properties\PublishProfiles\ic.pubxml" />
     <None Include="Properties\PublishProfiles\icdb.pubxml" />
     <None Include="Properties\PublishProfiles\icmvc.pubxml" />
@@ -991,7 +1035,7 @@
     <Content Include="Views\users\Edit.cshtml" />
     <Content Include="Views\users\Index.cshtml" />
     <Content Include="Views\Manage\report.cshtml" />
-    <Content Include="Views\Manage\inventoryManage.cshtml" />
+    <Content Include="Views\Manage\createPallet.cshtml" />
     <Content Include="Views\pallet_master\Create.cshtml" />
     <Content Include="Views\pallet_master\Delete.cshtml" />
     <Content Include="Views\pallet_master\Details.cshtml" />
@@ -1182,6 +1226,35 @@
     <Content Include="Views\ShipStation\get_shipment.cshtml" />
     <Content Include="Views\Home\dashboard.cshtml" />
     <Content Include="Views\production_log\mac.cshtml" />
+    <Content Include="Views\Manage\pallet_home.cshtml" />
+    <Content Include="Views\Manage\pallet_view.cshtml" />
+    <Content Include="Views\ShipStation\search.cshtml" />
+    <Content Include="Views\ts_stock\Create.cshtml" />
+    <Content Include="Views\ts_stock\Delete.cshtml" />
+    <Content Include="Views\ts_stock\Details.cshtml" />
+    <Content Include="Views\ts_stock\Edit.cshtml" />
+    <Content Include="Views\ts_stock\Index.cshtml" />
+    <Content Include="Views\ship_log\Create.cshtml" />
+    <Content Include="Views\ship_log\Delete.cshtml" />
+    <Content Include="Views\ship_log\Details.cshtml" />
+    <Content Include="Views\ship_log\Edit.cshtml" />
+    <Content Include="Views\ship_log\Index.cshtml" />
+    <Content Include="Views\ts_stock\stock_recon.cshtml" />
+    <Content Include="Views\ts_stock\add_stock.cshtml" />
+    <Content Include="Views\Manage\inventory.cshtml" />
+    <Content Include="Views\ts_stock\open_order.cshtml" />
+    <Content Include="Views\ManualDataEntry\Index.cshtml" />
+    <Content Include="Views\ManualDataEntry\insert_asset.cshtml" />
+    <Content Include="Views\ManualDataEntry\edit_asset.cshtml" />
+    <Content Include="Views\ManualDataEntry\edit_asset_mac.cshtml" />
+    <Content Include="Views\ts_stock\stock.cshtml" />
+    <Content Include="Views\ts_stock\all_time.cshtml" />
+    <Content Include="Views\rma\Create.cshtml" />
+    <Content Include="Views\rma\Delete.cshtml" />
+    <Content Include="Views\rma\Details.cshtml" />
+    <Content Include="Views\rma\Edit.cshtml" />
+    <Content Include="Views\rma\Index.cshtml" />
+    <Content Include="Views\rma\fetch_rma.cshtml" />
     <None Include="Web References\org.connectall\item.xsd">
       <SubType>Designer</SubType>
     </None>
@@ -1226,6 +1299,161 @@
     <Content Include="Web References\org.connectall\storeEntity.datasource">
       <DependentUpon>Reference.map</DependentUpon>
     </Content>
+    <Content Include="Web References\SFWebReference\DeleteResult.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </Content>
+    <Content Include="Web References\SFWebReference\DescribeAppMenuItem.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </Content>
+    <Content Include="Web References\SFWebReference\DescribeApprovalLayout.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </Content>
+    <Content Include="Web References\SFWebReference\DescribeAvailableQuickActionResult.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </Content>
+    <Content Include="Web References\SFWebReference\DescribeCompactLayout.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </Content>
+    <Content Include="Web References\SFWebReference\DescribeCompactLayoutsResult.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </Content>
+    <Content Include="Web References\SFWebReference\DescribeDataCategoryGroupResult.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </Content>
+    <Content Include="Web References\SFWebReference\DescribeDataCategoryGroupStructureResult.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </Content>
+    <Content Include="Web References\SFWebReference\DescribeFlexiPageResult.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </Content>
+    <Content Include="Web References\SFWebReference\DescribeGlobalResult.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </Content>
+    <Content Include="Web References\SFWebReference\DescribeGlobalTheme.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </Content>
+    <Content Include="Web References\SFWebReference\DescribeLayoutResult.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </Content>
+    <Content Include="Web References\SFWebReference\DescribeNounResult.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </Content>
+    <Content Include="Web References\SFWebReference\DescribePathAssistant.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </Content>
+    <Content Include="Web References\SFWebReference\DescribeQuickActionResult.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </Content>
+    <Content Include="Web References\SFWebReference\DescribeSearchableEntityResult.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </Content>
+    <Content Include="Web References\SFWebReference\DescribeSearchLayoutResult.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </Content>
+    <Content Include="Web References\SFWebReference\DescribeSearchScopeOrderResult.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </Content>
+    <Content Include="Web References\SFWebReference\DescribeSObjectResult.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </Content>
+    <Content Include="Web References\SFWebReference\DescribeSoftphoneLayoutResult.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </Content>
+    <Content Include="Web References\SFWebReference\DescribeSoqlListView.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </Content>
+    <Content Include="Web References\SFWebReference\DescribeTab.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </Content>
+    <Content Include="Web References\SFWebReference\DescribeTabSetResult.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </Content>
+    <Content Include="Web References\SFWebReference\DescribeThemeItem.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </Content>
+    <Content Include="Web References\SFWebReference\DescribeVisualForceResult.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </Content>
+    <Content Include="Web References\SFWebReference\EmptyRecycleBinResult.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </Content>
+    <Content Include="Web References\SFWebReference\ExecuteListViewResult.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </Content>
+    <Content Include="Web References\SFWebReference\FindDuplicatesResult.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </Content>
+    <Content Include="Web References\SFWebReference\GetDeletedResult.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </Content>
+    <Content Include="Web References\SFWebReference\GetServerTimestampResult.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </Content>
+    <Content Include="Web References\SFWebReference\GetUpdatedResult.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </Content>
+    <Content Include="Web References\SFWebReference\GetUserInfoResult.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </Content>
+    <Content Include="Web References\SFWebReference\InvalidateSessionsResult.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </Content>
+    <Content Include="Web References\SFWebReference\KnowledgeSettings.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </Content>
+    <Content Include="Web References\SFWebReference\LeadConvertResult.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </Content>
+    <Content Include="Web References\SFWebReference\LoginResult.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </Content>
+    <Content Include="Web References\SFWebReference\MergeResult.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </Content>
+    <Content Include="Web References\SFWebReference\PerformQuickActionResult.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </Content>
+    <Content Include="Web References\SFWebReference\ProcessResult.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </Content>
+    <Content Include="Web References\SFWebReference\QueryResult.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </Content>
+    <Content Include="Web References\SFWebReference\QuickActionTemplateResult.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </Content>
+    <Content Include="Web References\SFWebReference\Reference.map">
+      <Generator>MSDiscoCodeGenerator</Generator>
+      <LastGenOutput>Reference.cs</LastGenOutput>
+    </Content>
+    <Content Include="Web References\SFWebReference\RenderEmailTemplateResult.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </Content>
+    <Content Include="Web References\SFWebReference\ResetPasswordResult.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </Content>
+    <Content Include="Web References\SFWebReference\SaveResult.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </Content>
+    <Content Include="Web References\SFWebReference\SearchResult.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </Content>
+    <Content Include="Web References\SFWebReference\SendEmailResult.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </Content>
+    <Content Include="Web References\SFWebReference\SetPasswordResult.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </Content>
+    <Content Include="Web References\SFWebReference\sObject.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </Content>
+    <Content Include="Web References\SFWebReference\UndeleteResult.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </Content>
+    <Content Include="Web References\SFWebReference\UpsertResult.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </Content>
+    <None Include="Web References\SFWebReference\wsdl.wsdl" />
     <None Include="web.Debug.config">
       <DependentUpon>web.config</DependentUpon>
     </None>
@@ -1260,6 +1488,17 @@
     <TypeScriptCompile Include="Scripts\typings\dymo-label-framework\dymo-label-framework.d.ts" />
   </ItemGroup>
   <ItemGroup>
+    <WebReferenceUrl Include="D:\wsdl.jsp.xml">
+      <UrlBehavior>Dynamic</UrlBehavior>
+      <RelPath>Web References\SFWebReference\</RelPath>
+      <UpdateFromURL>D:\wsdl.jsp.xml</UpdateFromURL>
+      <ServiceLocationURL>
+      </ServiceLocationURL>
+      <CachedDynamicPropName>
+      </CachedDynamicPropName>
+      <CachedAppSettingsObjectName>Settings</CachedAppSettingsObjectName>
+      <CachedSettingsPropName>ic_ef_SFWebReference_SforceService</CachedSettingsPropName>
+    </WebReferenceUrl>
     <WebReferenceUrl Include="http://connectall.org/index.php/api/v2_soap/%3fwsdl">
       <UrlBehavior>Dynamic</UrlBehavior>
       <RelPath>Web References\org.connectall\</RelPath>

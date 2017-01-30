@@ -1,0 +1,40 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="ui two column centered grid">
+    
+    <div class="six column centered row">
+        <div class="column">
+            <a href=@Url.Action("insert_asset","ManualDataEntry") id="add"><div class="ui green raised segment"><h4 class="ui header">Add new Asset</h4><i class="ui huge write icon"></i></div></a>
+           
+               
+           
+          
+        </div>
+        <div class="column"><a href=@Url.Action("edit_asset","ManualDataEntry") id="edit"><div class="ui green raised segment"><h4 class="ui header">Edit Exisiting Asset</h4><i class="ui huge edit icon"></i></div> </a></div>
+        <div class="column"><a href=@Url.Action("edit_asset_mac","ManualDataEntry") id="add_mac"><div class="ui green raised segment"><h4 class="ui header">Edit Exisiting Asset (Mac)</h4><i class="ui huge apple icon"></i></div></a href="#"></div>
+</div>
+</div>
+
+<script>
+
+    $('#add').on('click', function () {
+
+
+
+    })
+    $('#edit').on('click', function () {
+
+
+
+    })
+    $('#add_mac').on('click', function () {
+
+
+
+    })
+
+</script>

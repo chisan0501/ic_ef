@@ -1,0 +1,160 @@
+﻿
+@{
+    ViewBag.Title = "all_time";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<link href="~/css/bootstrap-datepicker.css" rel="stylesheet" />
+<script src="~/js/bootstrap-datepicker.js"></script>
+<script src="~/js/morris.min.js"></script>
+<link href="~/css/morris.css" rel="stylesheet" />
+<script src="http://cdnjs.cloudflare.com/ajax/libs/raphael/2.1.0/raphael-min.js"></script>
+
+
+
+
+<div class="ui small breadcrumb">
+    <a href="@Url.Action("index", "home")" class="section">Home</a>
+    <i class="right chevron icon divider"></i>
+    <a href="@Url.Action("index", "ts_stock")" class="section">Manage TechSoup Inventory</a>
+    <i class="right chevron icon divider"></i>
+    <div class="active section">Report</div>
+</div>
+
+
+<div class="ui raised very padded text container segment">
+    
+
+    <h2 class="ui header">
+        <i class="bar chart icon"></i>
+        <div class="content">
+           Monthly Graph
+           
+        </div>
+    </h2>
+
+    <div class="ui three statistics">
+        <div class="statistic">
+            <div class="label">
+                Average
+            </div>
+            <div id="avg_value" class="value">
+                0
+            </div>
+            <div class="label">
+                Machines
+            </div>
+        </div>
+        <div class="statistic">
+            <div class="label">
+                Compare to
+            </div>
+            <div id="diff" class="value">
+                0
+            </div>
+            <div class="label">
+                Orders Last Month
+            </div>
+        </div>
+        <div class="statistic">
+            <div class="label">
+                Daily
+            </div>
+            <div id="daily_avg" class="value">
+                0
+            </div>
+            <div class="label">
+                Average
+            </div>
+        </div>
+    </div>
+    <div id="month_graph"></div>
+
+
+    <h2 class="ui header">
+        <i class="calendar icon"></i>
+        <div class="content">
+           Graph  by time range
+
+        </div>
+    </h2>
+
+   <div class="input-daterange input-group" id="datepicker">
+    <input id="date_from" type="text" class="input-sm form-control" name="start" />
+    <span class="input-group-addon">to</span>
+    <input id="date_to" type="text" class="input-sm form-control" name="end" />
+</div>
+    
+    <button id="search_btn" class="ui fluid primary button">Submit</button>
+  
+    <div id="bar_graph"></div>
+
+</div>
+
+
+<script>
+
+    $.getJSON("@Url.Action("get_month_data")", function (data) {
+
+        var month_arr = [];
+        for (var i = 0; i < data.result.length; i++) {
+
+            month_arr.push({ y: data.result[i].date, a: data.result[i].numberofitem });
+        }
+
+
+        Morris.Bar({
+            element: 'month_graph',
+            data: month_arr,
+            xkey: 'y',
+            ykeys: ['a'],
+            labels: ['# of Machines Shipped'],
+            resize: true
+        });
+        $('#avg_value').text(data.average);
+        if (data.diff < 0) {
+            var diff_content = "<a style='color:red'>" + data.diff + "</a>";
+        }
+        else {
+            var diff_content = "<a style='color:green'>" + data.diff + "</a>"
+        }
+        $('#diff').html(diff_content);
+        $('#daily_avg').text(data.daily);
+    });
+
+    $('.input-daterange input').each(function () {
+        $(this).datepicker("clearDates");
+    });
+
+    
+
+    $('#search_btn').on('click',function(){
+        $('#bar_graph').html("");
+        var from = $('#date_from').val();
+        var to = $('#date_to').val();
+
+        var jsonobject = { date_from: from, date_to: to };
+
+        $.getJSON("@Url.Action("time_data")",jsonobject, function (data) { 
+
+
+        var graph_arr = [];
+        for (var i = 0; i < data.length; i++) {
+            
+            graph_arr.push({ y: data[i].sku, a: data[i].count_qty });
+        }
+        
+
+        Morris.Bar({
+            element: 'bar_graph',
+            data: graph_arr,
+            xkey: 'y',
+            ykeys: ['a'],
+            labels: ['# of Machines Shipped'],
+           resize : true
+        });
+        });
+    });
+
+</script>

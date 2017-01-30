@@ -4,12 +4,12 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 <script src="~/js/DYMO.Label.Framework_2.0.js"></script>
-<script src="~/js/PrintLabel_mac.js"></script>
+<script src="~/js/PrintLabel_mac2.js"></script>
 
 
-<h2>Discovery Tool for Mac</h2>
+<h3 class="ui center aligned header">Dymo Web APP for <i class="ui apple icon"></i>MAC</h3>
 
-<div class="ui steps">
+<h3 class="ui center aligned header"><div class="ui steps">
     <div class="step">
         <i class="info icon"></i>
         <div class="content">
@@ -31,107 +31,123 @@
             <div class="description">Upload Info to DB</div>
         </div>
     </div>
+</div></h3>
+<div class="ui two column stackable grid container">
+    <div class="column">
+        <div class="ui segment">
+            
+            <h4 class="ui horizontal divider header">
+                <i class="print icon"></i>
+                Print
+            </h4>
+            <div class="ui input">
+                <input id="asset_print" type="text" placeholder="Asset Tag to Print"><button id="search_print">Search</button>
+            </div>
+            <h4 class="ui horizontal divider header">
+                <i class="bar chart icon"></i>
+                Specifications
+            </h4>
+
+            <table class="ui definition table">
+                <tbody>
+                    <tr>
+                        <td class="two wide column">Model</td>
+                        <td id="model_content"></td>
+                    </tr>
+                    <tr>
+                        <td>Serial</td>
+                        <td id="serial_content"></td>
+                    </tr>
+                    <tr>
+                        <td>CPU</td>
+                        <td id="cpu_content"></td>
+                    </tr>
+                    <tr>
+                        <td>RAM</td>
+                        <td id="ram_content"></td>
+                    </tr>
+                    <tr>
+                        <td>HDD</td>
+                        <td id="hdd_content"></td>
+                    </tr>
+                    <tr>
+                        <td>Time</td>
+                        <td id="time_content"></td>
+                    </tr>
+                    <tr>
+                        <td>Channel</td>
+                        <td id="channel_content"></td>
+                    </tr>
+                    <tr>
+                        <td>Refurbisher</td>
+                        <td id="user_content"></td>
+                    </tr>
+                </tbody>
+            </table>
+            <select id="printersSelect" class="form-control"></select>
+            <button id="print_label" class="ui primary button">Print Label</button>
+        </div>
+        <div class="ui bottom attached warning message">
+            <i class="icon help"></i>
+            Want to Edit Asset Infomation <a href="@Url.Action("edit_asset_mac","ManualDataEntry")">Click here</a>.
+        </div>
+    </div>
+    <div class="column">
+        <div class="ui segment">
+            <div id="content">
+                <h4 class="ui horizontal divider header">
+                    <i class="tag icon"></i>
+                    Basic Info
+                </h4>
+                <select id="channel_dropdown" class="ui dropdown">
+                    <option value="">Channel</option>
+                    <option value="0">IDK105-109</option>
+                    <option value="1">MB105-109</option>
+                    <option value="2">MBP105-109</option>
+                    <option value="3">MAC-ebay</option>
+                    <option value="0">IDK105-109_GradeC</option>
+                    <option value="1">MB105-109_GradeC</option>
+                    <option value="2">MBP105-109_GradeC</option>
+                </select>
+                <select id="user_dropdown" class="ui dropdown">
+                    <option value="">Mike</option>
+
+                </select>
+                <div class="ui input">
+                    <input id="asset" type="text" placeholder="Asset Tag">
+                </div>
+
+
+            </div>
+        
+        <p>Copy and Paste hardware spec to below textarea</p>
+<textarea id="txtarea_p" rows="20" cols="50"></textarea>
+<p></p>
+<div class="ui slider checkbox">
+    <input type="checkbox" name="newsletter" id="hdd_check">
+    <label>No HDD</label>
 </div>
+
+<button id="txtarea_b">Parse and save to DB</button>
+
+<p id="result"></p></div>
+
+
+
+    </div>
+  
+</div>
+
+
+
+
+
+
 <br />
 
 
 
-<div class="ui grid">
-    <div class="six wide column">
-        <div id="content">
-            <h4 class="ui horizontal divider header">
-                <i class="tag icon"></i>
-                Basic Info
-            </h4>
-            <select id="channel_dropdown" class="ui dropdown">
-                <option value="">Channel</option>
-                <option value="0">IDK105-109</option>
-                <option value="1">MB105-109</option>
-                <option value="2">MBP105-109</option>
-                <option value="3">MAC-ebay</option>
-            </select>
-            <select id="user_dropdown" class="ui dropdown">
-                <option value="">Mike</option>
-
-            </select>
-            <div class="ui input">
-                <input id="asset" type="text" placeholder="Asset Tag">
-            </div>
-            
-          
-        </div>
-    </div>
-    <div class="six wide column">
-        <p>Copy and Paste hardware spec to below textarea</p>
-        <textarea id="txtarea_p" rows="20" cols="50">
-            
-        </textarea>
-       <p></p>
-        <div class="ui slider checkbox">
-            <input type="checkbox" name="newsletter" id="hdd_check">
-            <label>No HDD</label>
-        </div>
-
-<button id="txtarea_b">Parse and save to DB</button>
-      
-        <p id="result"></p>
-    </div>
-   
-</div>
-<div class="ui grid">
-    <div class="six wide column">
-        <h4 class="ui horizontal divider header">
-            <i class="print icon"></i>
-            Print
-        </h4>
-        <div class="ui input">
-            <input id="asset_print" type="text" placeholder="Asset Tag to Print"><button id="search_print">Search</button>
-        </div>
-        <h4 class="ui horizontal divider header">
-            <i class="bar chart icon"></i>
-            Specifications
-        </h4>
-
-        <table class="ui definition table">
-            <tbody>
-                <tr>
-                    <td class="two wide column">Model</td>
-                    <td id="model_content"></td>
-                </tr>
-                <tr>
-                    <td>Serial</td>
-                    <td id="serial_content"></td>
-                </tr>
-                <tr>
-                    <td>CPU</td>
-                    <td id="cpu_content"></td>
-                </tr>
-                <tr>
-                    <td>RAM</td>
-                    <td id="ram_content"></td>
-                </tr>
-                <tr>
-                    <td>HDD</td>
-                    <td id="hdd_content"></td>
-                </tr>
-                <tr>
-                    <td>Time</td>
-                    <td id="time_content"></td>
-                </tr>
-                <tr>
-                    <td>Channel</td>
-                    <td id="channel_content"></td>
-                </tr>
-                <tr>
-                    <td>Refurbisher</td>
-                    <td id="user_content"></td>
-                </tr>
-            </tbody>
-        </table>
-        <select id="printersSelect" class="form-control"></select>
-        <button id="print_label">Print Label</button>
-    </div>
-    </div>
+    
     <script>
         $("#search_print").click(function () {
             var asset_tag = document.getElementById('asset_print').value;

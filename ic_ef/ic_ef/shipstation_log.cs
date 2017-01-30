@@ -14,13 +14,18 @@ namespace ic_ef
     
     public partial class shipstation_log
     {
-        public string order_id { get; set; }
-        public string order_status { get; set; }
-        public string note1 { get; set; }
-        public string note2 { get; set; }
-        public string note3 { get; set; }
-        public string item_name { get; set; }
-        public Nullable<System.DateTime> create_date { get; set; }
         public int row_id { get; set; }
+        public Nullable<System.DateTime> shipment_date { get; set; }
+        public Nullable<int> order_id { get; set; }
+        public string order_num { get; set; }
+        public string item_name { get; set; }
+        public Nullable<int> item_qty { get; set; }
+        public string item_url { get; set; }
+        public string custom_field_1 { get; set; }
+        public string custom_field_2 { get; set; }
+        public string custom_field_3 { get; set; }
+        public string status { get; set; }
+        public int store_id { get; set; }
+        public string sku { get; set; }
     }
 }

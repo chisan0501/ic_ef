@@ -1,0 +1,400 @@
+﻿
+@{
+    ViewBag.Title = "edit_asset";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<script src="~/js/moment.js"></script>
+
+
+<div class="ui two column centered grid">
+    <div class="column">
+        <div class="ui raised segment">
+
+            <h2 class="ui header">Edit Asset</h2>
+
+
+
+
+        </div>
+
+    </div>
+    <div class="row">
+        <div class="ui raised segment">
+            <div id="loader" class="ui disabled dimmer">
+                <div class="ui text loader">Loading</div>
+            </div>
+            <div class="ui input focus">
+                <input id="edit_asset" type="text" placeholder="Search Asset">
+            </div>
+            <div id="search_edit_asset" class="ui secondary button">Search</div>
+
+
+
+
+        </div>
+
+    </div>
+    <div class="four column centered row">
+        <div class="column">
+
+          <!--discovery data-->
+
+            <div class="ui blue raised segment">
+                <div id="discovery_missing" class="ui disabled inverted dimmer">
+                    <h2 class="ui center aligned header" style="color:red">
+                        Discovery Data is missing
+                    </h2>
+                </div>
+               
+                @using (@Html.BeginForm("edit_discovery_asset", "ManualDataEntry", FormMethod.Post, new { @class = "ui form segment" }))
+                {
+
+
+                    <h4 class="ui subheader">Discovery Data</h4>
+
+                    <div class="field">
+
+                        <div class="field">
+                            <label>Asset Tag</label>
+                            <input id="discovery_asset" placeholder="Asset Tag" name="asset" type="text" readonly>
+                        </div>
+                        <div class="field">
+                            <label>Time</label>
+                            <input id="discovery_time" placeholder="Discovery Time" name="time" type="text" disabled>
+                        </div>
+                    </div>
+
+                    <div class="field">
+                        <label>Brand</label>
+                        <input id='discovery_brand' placeholder="brand" name="brand" type="text" disabled>
+                    </div>
+                    <div class="field">
+                        <label>Model</label>
+                        <input id='discovery_model' placeholder="model" name="model" type="text" disabled>
+                    </div>
+
+                        <div class="field">
+
+                            <div class="field">
+                                <label>CPU</label>
+                                <input id="discovery_cpu" placeholder="CPU" name="cpu" type="text" disabled>
+                            </div>
+
+                        </div>
+                        <div class="two fields">
+
+                            <div class="field">
+                                <label>RAM</label>
+                                <input id="discovery_ram" placeholder="RAM" name="ram" type="text">
+                            </div>
+                            <div class="field">
+                                <label>HDD</label>
+                                <input id="discovery_hdd" placeholder="HDD" name="hdd" type="text">
+                            </div>
+                        </div>
+                        <div class="field">
+
+                            <div class="field">
+                                <label>Serial</label>
+                                <input id="discovery_serial" placeholder="Serial Number" name="serial" type="text" disabled>
+                            </div>
+
+                        </div>
+                        <div class="field">
+
+                            <div class="field">
+                                <label>Optical Drive</label>
+                                <input id="discovery_optical" placeholder="Optical Drive" name="optical_drive" type="text" disabled>
+                            </div>
+
+                        </div>
+                     
+                      
+                        <button type="submit" class="ui primary button " value="Submit">Submit</button>
+                        <div class="ui error message"></div>
+                        <p>@TempData["message"]</p>
+                }
+
+
+
+            </div>
+        </div>
+        <div class="column">
+
+            <!--this is for rediscovery-->
+
+            <div class="ui teal raised segment">
+                <div id="rediscovery_missing" class="ui disabled inverted dimmer">
+                    <h2 class="ui center aligned header" style="color:red">
+                        Rediscovery Data is missing
+                    </h2>
+                </div>
+              
+                @using (@Html.BeginForm("edit_rediscovery_asset", "ManualDataEntry", FormMethod.Post, new { @class = "ui form segment" }))
+                {
+
+
+                    <h4 class="ui subheader">Rediscovery Data</h4>
+                    <div class="field">
+
+                        <div class="field">
+                            <label>Asset Tag</label>
+                            <input id="rediscovery_asset" placeholder="Please Scan Asset Tag here" name="asset" type="text" readonly>
+                        </div>
+                        <div class="field">
+                            <label>Time</label>
+                            <input id="rediscovery_time" placeholder="reDiscovery Time" name="rediscovery_time" type="text" disabled>
+                        </div>
+                    </div>
+                    <div class="field">
+                        <label>Brand</label>
+                        <input id='rediscovery_brand' placeholder="brand" name="brand" type="text" disabled>
+                    </div>
+                    <div class="field">
+                        <label>Model</label>
+                        <input id='rediscovery_model' placeholder="model" name="model" type="text" disabled>
+                    </div>
+
+                    <div class="field">
+
+                        <div class="field">
+                            <label>CPU</label>
+                            <input id="rediscovery_cpu" placeholder="CPU" name="cpu" type="text" disabled>
+                        </div>
+
+                    </div>
+                        <div class="two fields">
+
+                            <div class="field">
+                                <label>RAM</label>
+                                <input id="rediscovery_ram" placeholder="RAM" name="ram" type="text">
+                            </div>
+                            <div class="field">
+                                <label>HDD</label>
+                                <input id="rediscovery_hdd" placeholder="HDD" name="hdd" type="text">
+                            </div>
+                        </div>
+                        <div class="field">
+
+                            <div class="field">
+                                <label>Serial</label>
+                                <input id="rediscovery_serial" placeholder="Serial Number" name="serial" type="text" disabled>
+                            </div>
+
+                        </div>
+                        <div class="field">
+
+                            <div class="field">
+                                <label>SKU</label>
+                                <input id="rediscovery_sku" placeholder="SKU" name="sku" type="text" >
+                            </div>
+
+                        </div>
+                        <div class="field">
+
+                            <div class="field">
+                                <label>Pre-COA</label>
+                                <input id="rediscovery_precoa" placeholder="Pre COA" name="pre_coa" type="text">
+                            </div>
+
+                        </div>
+                        <div class="field">
+
+                            <div class="field">
+                                <label>Refurbisher</label>
+                                <input id="rediscovery_refurbisher" placeholder="Refurbisher Name" name="refurbisher" type="text">
+                            </div>
+
+                        </div>
+                        <button type="submit" class="ui primary button " value="Submit">Submit</button>
+                        <div class="ui error message"></div>
+                        <p>@TempData["message"]</p>
+                }
+
+
+
+            </div>
+        </div>
+        <div class="column">
+
+            <!-- this is for imaging-->
+
+            <div class="ui green raised segment">
+                <div id="img_missing" class="ui disabled inverted dimmer">
+                    <h2 class="ui center aligned header" style="color:red">
+                        Imaging Data is missing
+                    </h2>
+                </div>
+               
+                @using (@Html.BeginForm("edit_img_asset", "ManualDataEntry", FormMethod.Post, new { @class = "ui form segment" }))
+                {
+
+
+                    <h4 class="ui subheader">Imaging Data</h4>
+
+                    <div class="field">
+
+                        <div class="field">
+                            <label>Asset Tag</label>
+                            <input id="img_asset" placeholder="Please Scan Asset Tag here" name="asset" type="text" readonly>
+                        </div>
+                       
+                    </div>
+                    <div class="field">
+                        <label>Time</label>
+                        <input id="img_time" placeholder="Imaging Time" name="img_time" type="text" disabled>
+                    </div>
+                    <div class="field">
+                        <label>Windows COA</label>
+                        <input id="img_wcoa" placeholder="Windows COA" name="img_wcoa" type="text" disabled>
+                    </div>
+                    <div class="field">
+                        <label>Office COA</label>
+                        <input id="img_ocoa" placeholder="Office COA" name="img_ocoa" type="text" disabled>
+                    </div>
+                    <div class="field">
+                        <label>Brand</label>
+                        <input id='img_brand' placeholder="brand" name="brand" type="text" disabled>
+                    </div>
+                    <div class="field">
+                        <label>Model</label>
+                        <input id='img_model' placeholder="model" name="model" type="text" disabled>
+                    </div>
+
+                    <div class="field">
+
+                        <div class="field">
+                            <label>CPU</label>
+                            <input id="img_cpu" placeholder="CPU" name="cpu" type="text" disabled>
+                        </div>
+
+                    </div>
+                        <div class="two fields">
+
+                            <div class="field">
+                                <label>RAM</label>
+                                <input id="img_ram" placeholder="RAM" name="ram" type="text">
+                            </div>
+                            <div class="field">
+                                <label>HDD</label>
+                                <input id="img_hdd" placeholder="HDD" name="hdd" type="text">
+                            </div>
+                        </div>
+                        <div class="field">
+
+                            <div class="field">
+                                <label>Serial</label>
+                                <input id="img_serial" placeholder="Serial Number" name="serial" type="text" readonly>
+                            </div>
+
+                        </div>
+                        <div class="field">
+
+                            <div class="field">
+                                <label>SKU</label>
+                                <input id="img_sku" placeholder="SKU" name="sku" type="text">
+                            </div>
+
+                        </div>
+                        <div class="field">
+
+                            <div class="field">
+                                <label>Video Card</label>
+                                <input id="img_video" placeholder="Video Card" name="video" type="text" disabled>
+                            </div>
+
+                        </div>
+                        <div class="field">
+
+                            <div class="field">
+                                <label>Screen Size</label>
+                                <input id="img_ss" placeholder="Screen Size" name="ss" type="text" disabled>
+                            </div>
+
+                        </div>
+
+                        <button type="submit" class="ui primary button " value="Submit">Submit</button>
+                        <div class="ui error message"></div>
+                        <p>@TempData["message"]</p>
+                }
+
+
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script>
+    
+    $('#search_edit_asset').on('click', function () {
+        $('#loader').attr('class', 'ui active dimmer');
+        var asset = $('#edit_asset').val();
+        var table = $.getJSON("@Url.Action("get_asset_data")", { asset: asset }, function (data) {
+        
+
+            try {
+                $('#discovery_time').val(moment(data.discovery.time).format("MMMM Do YYYY"));
+                $('#discovery_optical').val(data.discovery.optical_drive);
+                $('#discovery_asset').val(data.discovery.ictag)
+                $('#discovery_cpu').val(data.discovery.cpu);
+                $('#discovery_model').val(data.discovery.model);
+                $('#discovery_ram').val(data.discovery.ram);
+                $('#discovery_hdd').val(data.discovery.hdd);
+                $('#discovery_serial').val(data.discovery.serial);
+                $('#discovery_brand').val(data.discovery.brand);
+                $('#rediscovery_time').val(moment(data.rediscovery.time).format("MMMM Do YYYY"));
+                $('#rediscovery_asset').val(data.rediscovery.ictag)
+                $('#rediscovery_cpu').val(data.rediscovery.cpu);
+                $('#rediscovery_model').val(data.rediscovery.model);
+                $('#rediscovery_ram').val(data.rediscovery.ram);
+                $('#rediscovery_hdd').val(data.rediscovery.hdd);
+                $('#rediscovery_serial').val(data.rediscovery.serial);
+                $('#rediscovery_brand').val(data.rediscovery.brand);
+                $('#rediscovery_sku').val(data.rediscovery.pallet);
+                $('#rediscovery_precoa').val(data.rediscovery.pre_coa);
+                $('#rediscovery_refurbisher').val(data.rediscovery.refurbisher);
+                $('#img_time').val(moment(data.img.time).format("MMMM Do YYYY"));
+                $('#img_asset').val(data.img.ictags)
+                $('#img_wcoa').val(data.img.wcoa);
+                $('#img_ocoa').val(data.img.ocoa);
+                $('#img_cpu').val(data.img.CPU);
+                $('#img_model').val(data.img.Model);
+                $('#img_ram').val(data.img.RAM);
+                $('#img_hdd').val(data.img.HDD);
+                $('#img_serial').val(data.img.serial);
+                $('#img_brand').val(data.img.Manufacture);
+                $('#img_sku').val(data.img.channel);
+                $('#img_video').val(data.img.video_card);
+                $('#img_ss').val(data.img.screen_size);
+
+                $('#loader').attr('class', 'ui disabled dimmer');
+
+            }
+            
+            
+            catch(err){
+
+                if (data.discovery == null) {
+
+                    $('#discovery_missing').attr('class', 'ui active inverted dimmer');
+                }
+                if (data.rediscovery == null) {
+
+                    $('#rediscovery_missing').attr('class', 'ui active inverted dimmer');
+                }
+                if (data.img == null) {
+
+                    $('#img_missing').attr('class', 'ui active inverted dimmer');
+                }
+            }
+
+           
+       
+    });
+        
+    });
+
+</script>

@@ -7,6 +7,13 @@ using System.Web.Mvc;
 namespace ss_order
 {
 
+    public class weekly_order
+    {
+
+        public DateTime date { get; set; }
+        public string numberofitem { get; set; }
+
+    }
     public class ss_order_detail
     {
 

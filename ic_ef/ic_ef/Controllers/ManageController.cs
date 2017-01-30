@@ -18,6 +18,7 @@ using System.Configuration;
 using MySql.Data.MySqlClient;
 using System.Text;
 using System.Reflection;
+using System.Transactions;
 
 namespace ic_ef.Controllers
 {
@@ -40,6 +41,178 @@ namespace ic_ef.Controllers
             UserManager = userManager;
             SignInManager = signInManager;
         }
+
+        public JsonResult validate_pallet(int[] assets)
+        {
+            
+            List<string> unresloved = new List<string>();
+            try
+            {
+
+               
+                var check = (from t in db.pallet select t.ictags).ToArray();
+
+                int[] diff = check.Intersect(assets).ToArray(); 
+
+               // int[] diff = assets.Union(same).Except(same).ToArray();
+               
+                return Json(diff, JsonRequestBehavior.AllowGet);
+            }
+
+            catch (Exception e)
+            {
+
+                return Json(unresloved, JsonRequestBehavior.AllowGet);
+            }
+
+
+           
+
+        }
+
+
+
+        public ActionResult pallet_home()
+        {
+            return View();
+        }
+
+        public JsonResult insert_pallet(string pallet, string[] assets, string note)
+        {
+
+            //  assets = assets.Where(x => !string.IsNullOrEmpty(x)).ToArray();
+            //  assets = assets.Distinct().ToArray();
+
+            string message = "";
+            if (String.IsNullOrEmpty(note))
+            {
+                note = "";
+            }
+
+            for (int i = 0; i < assets.Length; i++)
+            {
+                try
+                {
+                    using (var tran = new TransactionScope())
+                    {
+                        var entry = new pallet();
+
+                        entry.ictags = int.Parse(assets[i]);
+                        entry.pallet_name = pallet;
+                        entry.note = note;
+                        db.pallet.Add(entry);
+                        tran.Complete();
+
+
+                    }
+                    
+                    
+                }
+                catch (Exception e)
+                {
+                    message += assets[i] + ":" + e.InnerException.InnerException.Message;
+                    continue;
+                }
+            }
+            db.SaveChanges();
+            message += "Complete";
+
+
+
+
+            return Json(message, JsonRequestBehavior.AllowGet);
+        }
+        public JsonResult get_pallet_hardware_detail(string pallet)
+        {
+
+            var result = (from o in db.pallet where o.pallet_name == pallet from h in db.discovery where h.ictag == o.ictags select new Models.detailViewModel { ictags = o.ictags, pallet_name = o.pallet_name, note = o.note, brand = h.brand, model = h.model, cpu = h.cpu, ram = h.ram, hdd = h.hdd }).ToList();
+            var cpu_count = from l in result group l by l.cpu into g select new { cpu = g.Key, Count = (from l in g select l.cpu).Count() };
+            var ram_count = from l in result group l by l.ram into g select new { ram = g.Key, Count = (from l in g select l.ram).Count() };
+            var made_count = from l in result group l by l.brand into g select new { brand = g.Key, Count = (from l in g select l.brand).Count() };
+            //  var hdd_count = from l in result group l by l.hdd into g select new { hdd = g.Key, Count = (from l in g select l.hdd).Count() };
+            var model_count = from l in result group l by l.model into g select new { model = g.Key, Count = (from l in g select l.model).Count() };
+            var pallet_count = (from t in db.pallet where t.pallet_name == pallet select t).Count();
+
+
+
+            return Json(new { result = result, pallet_count = pallet_count, ram_count = ram_count, made_count = made_count, cpu_count = cpu_count, model_count = model_count }, JsonRequestBehavior.AllowGet);
+        }
+
+        public JsonResult get_pallet_detail(string pallet)
+        {
+
+            var total_asset = (from o in db.pallet where o.pallet_name == pallet select o).Count();
+            var pallet_count = from l in db.pallet group l by l.pallet_name into g select new { pallet_name = g.Key, Count = (from l in g select l.pallet_name).Distinct().Count() };
+            var pallet_item_count = from l in db.pallet group l by l.pallet_name into g select new { pallet_name = g.Key, Count = (from l in g select l.pallet_name).Count() };
+
+            //var pallet_count = (from t in db.pallet select t).Count();
+            //  var pallet_name = (from t in db.pallet_master select t);
+            // var result = (from t in db.pallet join spec in db.rediscovery on t.ictags equals spec.ictag select t).ToList();
+            //   var result = (from t in db.pallet where t.pallet_name == pallet select t.ictags).ToList();
+
+            return Json(new { count = total_asset, pallet_count = pallet_count, pallet_item_count = pallet_item_count }, JsonRequestBehavior.AllowGet);
+        }
+
+        public JsonResult get_pallet()
+        {
+            var result = (from t in db.pallet_master select t).ToList();
+
+
+            return Json(result, JsonRequestBehavior.AllowGet);
+        }
+
+        public JsonResult create_pallet(string pallet_name)
+        {
+
+            string message = "";
+
+            var entry = new pallet_master();
+            entry.pallet_id = pallet_name;
+            db.pallet_master.Add(entry);
+            try
+            {
+                db.SaveChanges();
+                message = "pallet " + pallet_name + " created.";
+            }
+            catch (Exception e)
+            {
+                message = e.InnerException.InnerException.Message;
+            }
+
+
+
+            return Json(message, JsonRequestBehavior.AllowGet);
+        }
+
+
+
+        public JsonResult delete_pallet(string pallet) {
+
+            pallet item_to_delete;
+            string message = "";
+
+
+            using (var remove = new db_a094d4_icdbEntities()) {
+
+
+                remove.Database.ExecuteSqlCommand(
+        "Delete from pallet where pallet_name = '" + pallet + "'");
+            }
+
+
+            message = pallet + " Has Been Deleted";
+
+
+
+            return Json(message, JsonRequestBehavior.AllowGet);
+        }
+
+        public ActionResult inventory() {
+
+
+            return View();
+        }
+
 
         public ActionResult coa()
         {
@@ -128,11 +301,14 @@ namespace ic_ef.Controllers
         }
 
 
- 
 
+        public ActionResult pallet_view() {
+
+            return View();
+        }
       //  GET: /Manage/palletmanager
       // [HttpPost]
-        public ActionResult inventoryManage()
+        public ActionResult createPallet()
         {
             db_a094d4_icdbEntities db = new db_a094d4_icdbEntities();
 

@@ -1,0 +1,212 @@
+﻿
+@{
+    ViewBag.Title = "Home";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<script src="~/js/moment/moment.min.js"></script>
+
+
+
+
+<div class="ui two column centered grid">
+    <div id="loader" class="ui disabled dimmer">
+        <div class="ui text loader">Loading</div>
+    </div>
+    <p></p>
+    <div class="column">
+        <div id="message_main" class="ui message" style="display:none">
+            <div class="header">
+                Message :
+            </div>
+            <a id="message"></a>
+        </div>
+       <h3 class="ui header">RMA Web Application</h3> 
+
+        <div class="ui action input">
+            <input type="text" id="search_rma" placeholder="Enter Asset Tag to Begin..">
+            <button id="search_rma_btn" class="ui icon button">
+                <i class="search icon"></i>
+            </button>
+        </div>
+    </div>
+    <div class="four column centered row">
+        <div class="column">
+            <div class="ui form">
+                <div class="fields">
+                    <div class="inline field">
+                        <label>Channel</label>
+                        <input type="text" id="rma_channel" placeholder="Channel" readonly>
+                    </div>
+                    <div class="inline field">
+                        <label>RMA #</label>
+                        <input type="text" id="rma_num" placeholder="RMA #" readonly>
+                    </div>
+                </div>
+                <div class="field">
+                    <label>Date Requested</label>
+                    <input type="text" id="rma_date" placeholder="Date" readonly>
+                </div>
+                <div class="fields">
+                    <div class="inline field">
+                        <label>Asset Tag</label>
+                        <input type="text" id="rma_asset" placeholder="Asset Tag #" readonly>
+                    </div>
+                    <div class="inline field">
+                        <label>Serial</label>
+                        <input type="text" id="rma_serial" placeholder="Seriall" readonly>
+                    </div>
+                </div>
+                <div class="field">
+                    <label>RMA Description</label>
+                    <textarea id="rma_desc" readonly></textarea>
+                </div>
+                <div class="field">
+                    <label>Production Fiding</label>
+                    <textarea id="rma_finding" readonly></textarea>
+                </div>
+            </div>
+            
+        </div>
+        <div class="column">
+            <div id="submit_form" class="ui form">
+                <div class="fields">
+                    <div class="inline field">
+                        <label>Refrubisher</label>
+                        <input name="name" type="text" id="finding_name" placeholder="Enter Name ">
+                    </div>
+                    <div class="inline field">
+                        <label>Date</label>
+                        <input type="text" id="finding_date" placeholder="Date" readonly>
+                    </div>
+                    </div>
+                <div class="inline fields">
+                    <label for="next">Next Process</label>
+                    <div class="field">
+                        <div class="ui radio checkbox">
+                            <input type="radio" name="next" tabindex="0" value="Refurbishment" class="hidden">
+                            <label>Refurbishment</label>
+                        </div>
+                    </div>
+                    <div class="field">
+                        <div class="ui radio checkbox">
+                            <input type="radio" name="next" tabindex="0" value="Recycled" class="hidden">
+                            <label>Recycled</label>
+                        </div>
+                    </div>
+                    <div class="field">
+                        <div class="ui radio checkbox">
+                            <input type="radio" name="next" tabindex="0" value="Send to Ebay" class="hidden">
+                            <label>Sent to Ebay</label>
+                        </div>
+                    </div>
+                  
+                </div>
+                <div class="field">
+                    <label>Refrubisher Comment</label>
+                    <textarea name="finding" id="finding_comment" rows="2"></textarea>
+                </div>
+                <button disabled class="ui button" id="finding_submit" type="submit">Submit Production Findings</button>
+                </div>
+
+
+                
+
+            </div>
+    </div>
+</div>
+
+
+<script>
+    var today = moment().format("MMM Do YY");
+    $('.ui.radio.checkbox')
+  .checkbox()
+    ;
+    $('#finding_date').val(today);
+
+
+    $('#finding_submit').click(function () {
+        $('#loader').attr("class", "ui active dimmer");
+        var asset = $('#search_rma').val();
+        var name = $('#finding_name').val();
+        var date = $('#finding_date').val();
+        var comment = $('#finding_comment').val();
+        var next = $('input[name="next"]:checked').val();
+
+        var finding = "Refrubisher: " + name + "\r\nDate received: " + date + "\r\nDiagnostic finding: " + comment + "\r\nNext process: " + next;
+        var jsonobject = { finding:finding,asset:asset };
+        $.getJSON("@Url.Action("insert_finding")", jsonobject, function (data) {
+            $('#loader').attr("class", "ui disabled dimmer");
+            $('#message').text(data.message);
+            $('#finding_comment').val('');
+            $('input[name="next"]:checked').prop('checked', false);
+            $(':input[type="submit"]').prop('disabled', true);
+            $('#rma_finding').val(data.finding);
+        });
+    });
+    
+
+    $('#submit_form')
+  .form({
+      on: 'blur',
+      fields: {
+          empty: {
+              identifier: 'finding',
+              rules: [
+                {
+                    type: 'empty',
+                    prompt: 'Finding cant be empty'
+                }
+              ]
+          },
+          name: {
+              identifier: 'name',
+              rules: [
+                {
+                    type: 'empty',
+                    prompt: 'name cant be empty'
+                }
+              ]
+          }
+        
+      }
+  }
+  
+     
+         
+
+      
+  )
+    ;
+
+    $('#search_rma_btn').click(function () {
+
+        var asset_tag = $('#search_rma').val();
+        var jsonobject = { asset_tag: asset_tag };
+            
+        $.getJSON("@Url.Action("get_rma")", jsonobject, function (data) {
+
+            $('#message_main').attr('style', '');
+            if (data.result != null) {
+                data.result.date_requested = moment(data.result.date_requested).format('MMMM Do YYYY, h:mm:ss a');
+            }
+                
+                $('#message').text(data.message);
+                $('#rma_channel').val(data.result.channel);
+                $('#rma_desc').val(data.result.description);
+                $('#rma_serial').val(data.result.serial);
+                $('#rma_asset').val(data.result.ictag);
+                $('#rma_date').val(data.result.date_requested);
+                $('#rma_num').val(data.result.rma_number);
+                $('#rma_finding').val(data.result.production_finding);
+              
+
+                $('#finding_submit').prop('disabled', false);
+
+        });
+
+    });
+
+
+
+</script>

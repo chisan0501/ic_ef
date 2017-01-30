@@ -104,14 +104,14 @@ namespace ic_ef.Controllers
                     DateTime dt = Convert.ToDateTime(item.date);
                     item.date = dt.ToString("yyyy-MM-dd");
                     var test_year = DateTime.Now.Year.ToString();
-                    var test_month = DateTime.Now.Month.ToString();
+                    var test_month = DateTime.Now.ToString("MM");
                     avg_alltime += int.Parse(item.count);
                     if (item.date.Contains(DateTime.Now.Year.ToString()))
                     {
                         avg_year += int.Parse(item.count);
                         avg_year_counter++;
                     }
-                    if (item.date.Contains(DateTime.Now.Year.ToString() +"-" +DateTime.Now.Month.ToString()))
+                    if (item.date.Contains(test_year +"-" +test_month))
                     {
                         avg_month += int.Parse(item.count);
                         avg_month_counter++;
@@ -177,6 +177,7 @@ namespace ic_ef.Controllers
             var return_ytd_num = return_ytd.Length;
             return Json(new { in_store = distinct_in_store_num, sold_ytd = sold_ytd_num, overall = total, return_ytd = return_ytd_num },JsonRequestBehavior.AllowGet);
         }
+
         //compare both array and return the result that was and wasnt found 
         public JsonResult process_array (string[] input)
         { 

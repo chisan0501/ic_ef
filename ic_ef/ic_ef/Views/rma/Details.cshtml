@@ -1,0 +1,75 @@
+﻿@model ic_ef.rma
+
+@{
+    ViewBag.Title = "Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>rma</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.serial)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.serial)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.rma_number)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.rma_number)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.production_finding)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.production_finding)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.channel)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.channel)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.date_requested)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.date_requested)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.ictag)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ictag)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.description)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.description)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.row_id }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

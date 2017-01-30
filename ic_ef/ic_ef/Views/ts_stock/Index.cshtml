@@ -1,0 +1,173 @@
+﻿@model IEnumerable<ic_ef.ts_stock>
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<script src="~/js/morris.min.js"></script>
+<link href="~/css/morris.css" rel="stylesheet" />
+<script src="http://cdnjs.cloudflare.com/ajax/libs/raphael/2.1.0/raphael-min.js"></script>
+<script src="~/js/countdown.min.js"></script>
+<script src="~/js/moment.js"></script>
+
+
+
+<div class="ui small breadcrumb">
+    <a href="@Url.Action("index", "home")" class="section">Home</a>
+    <i class="right chevron icon divider"></i>
+    <div class="active section">Manage TechSoup Inventory</div>
+</div>
+
+
+
+
+<div id="try" class="ui two column center aligned grid" >
+    <div id="loader" class="ui disabled dimmer">
+        <div class="ui text loader">The Process Might take up to 10-15minutes, close the page to stop the operation</div>
+    </div>
+    
+    <div class="column"><div class="ui raised blue segment">
+                            <button id="refresh" class="ui right floated button"><i class="refresh icon"></i></button>
+        <p id="validate_value"></p>
+                           
+        </div></div>
+    <div class="ui two column row">
+
+        <div class="column">
+            <div class="ui raised blue segment">
+                <h2 class="ui hdead">Items Shipped</h2>
+                <div id="ts_graph" style="height:120px"></div>
+
+            </div>
+        </div>
+
+    </div>
+    <div class="four column centered row">
+        <div class="column">
+            <a href="@Url.Action("all_time","ts_stock")">
+                <div class="ui raised blue segment">
+                    <h3 class="ui header">TechSoup Machine</h3>
+                    <div class="ui statistic">
+                        <div id="shipped_value" class="value">
+                            0
+                        </div>
+                        <div class="label">
+                            Shipped (All Time)
+                        </div>
+                    </div>
+                </div>
+            </a>
+
+        </div>
+        <div class="column">
+            <a href="@Url.Action("stock", "ts_stock")">
+                <div class="ui raised blue segment">
+                    <h3 class="ui header">TechSoup Machine</h3>
+                    <div class="ui statistic">
+                        <div id="instock_value" class="value">
+                            0
+                        </div>
+                        <div class="label">
+                            In Stock
+                        </div>
+                    </div>
+                </div>
+            </a>
+        </div>
+        
+    </div>
+    <div class="six column centered row">
+        
+        <div class="column"><div class="ui blue raised segment">
+                                <div class="ui statistic">
+                                    <div id="ship_today" class="value">
+                                       0
+                                    </div>
+                                    <div class="label">
+                                       Shipped Today
+                                    </div>
+                                </div></div></div>
+        <div class="column"><a href="@Url.Action("add_stock", "ts_stock")">
+    <div class="ui blue raised segment">
+
+        <div class="ui statistic">
+            <div id="add_today" class="value">
+                0
+            </div>
+            <div class="label">
+                Added Today
+            </div>
+        </div>
+    </div></a>
+</div>
+        <div class="column"><div class="ui blue raised segment">
+                                <a href="@Url.Action("open_order", "ts_stock")">
+                                    <div class="ui statistic">
+                                        <div id="orders" class="value">
+                                            0
+                                        </div>
+                                        <div class="label">
+                                            Open Orders
+                                        </div>
+                                    </div></a>
+</div></div>
+        </div>
+</div>
+
+
+
+<script>
+    $(window).load(function () {
+
+
+    });
+   
+
+    $('#refresh').on('click', function () {
+        $("#loader").attr('class', 'ui active dimmer');
+        $.getJSON("@Url.Action("refresh_now","shipstation")", function (data) {
+            $("#loader").attr('class', 'ui disabled dimmer');
+            location.reload();
+        });
+    });
+
+    $.getJSON("@Url.Action("get_ts_stat")", function (data) {
+
+
+        
+
+        $('#orders').text(data.orders);
+        $('#ship_toady').text(data.ship_today);
+        $('#add_today').text(data.add_today);
+        $('#shipped_value').text(data.shipped);
+        $('#instock_value').text(data.instock);
+
+
+        var ts_data = [];
+        for (var i = 0; i < data.weekly.length; i++) {
+            data.weekly[i].date = moment(data.weekly[i].date).format("MMM Do YY");
+            ts_data.push({ y: data.weekly[i].date, a: data.weekly[i].numberofitem });
+        }
+        Morris.Bar({
+            element: 'ts_graph',
+            data: ts_data,
+            xkey: 'y',
+            ykeys: ['a'],
+            labels: ['# of Machine'],
+            resize:true
+
+        });
+
+        var now = moment();
+        var then = moment(data.validated);
+        (function timerLoop() {
+            $('#validate_value').html("<h2>" +countdown(then).toString() + "</h2> till next Ship Station Status Update");
+            requestAnimationFrame(timerLoop);
+        })();
+
+
+    });
+
+
+</script>

@@ -5,6 +5,21 @@ using System.Web;
 
 namespace ic_ef.Models
 {
+    public class vendor
+    {
+
+
+        public class Rootobject
+        {
+            public Class1[] Property1 { get; set; }
+        }
+
+        public class Class1
+        {
+            public string sku { get; set; }
+        }
+
+    }
     public class magento_validation
     {
 

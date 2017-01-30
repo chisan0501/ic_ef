@@ -1,0 +1,433 @@
+﻿@model ic_ef.Models.inventoryManageViewModel
+@{
+    ViewBag.Title = "Manage Pallets";
+}
+<script src="~/js/jquery.csv.min.js"></script>
+<link href="~/js/jquery.dataTables.min.css" rel="stylesheet" />
+<script src="~/js/jquery.dataTables.min.js"></script>
+
+
+
+<div class="ui small breadcrumb">
+    <a href="@Url.Action("index", "home")" class="section">Home</a>
+    <i class="right chevron icon divider"></i>
+    <a href="@Url.Action("pallet_home", "manage")" class="section">Manage Pallet</a>
+    <i class="right chevron icon divider"></i>
+    <div class="active section">Create Pallet</div>
+</div>
+<div class="ui teal very padded text container segment">
+    <div id="loader" class="ui disabled dimmer">
+        <div class="ui text loader">Loading</div>
+    </div>
+    <h3>Add New Pallets</h3>
+    <div class="ui ordered three steps">
+        
+        <div id="step1" class="active step">
+            
+            <div class="content">
+                <div class="title">Create Pallet</div>
+                <div class="description"></div>
+            </div>
+        </div>
+        <div id="step2" class="step">
+            
+            <div class="content">
+                <div class="title">Scan Asset #</div>
+                <div class="description"></div>
+            </div>
+        </div>
+        <div id="step3" class="step">
+            
+            <div class="content">
+                <div class="title">Validate</div>
+                <div class="description"></div>
+            </div>
+        </div>
+    </div>
+    <div id="first">
+        <h4 class="ui center aligned header">
+
+            <div id="first_div" class="ui input focus">
+                <input type="text" id=pallet_name placeholder="Enter Pallet Name">
+            </div>  
+        </h4>
+        <h4 class="ui center aligned header">
+            <div id="first_message"></div>
+            <p id="create_message"></p>
+            <h4>
+                <h3 class="ui right aligned header">
+                    <button class="ui primary button" id="first_btn">Next</button>
+                </h3>
+
+    </div>
+     <div id="second" style="display: none">
+         <h4 class="ui center aligned header">
+             <p id="second_title"></p>
+            
+            
+
+             <textarea id="txt_area_input" rows="20" cols="30"></textarea>
+            
+             
+             
+             <p id="txt_area_message"></p>
+           
+         </h4>
+         <h3 class="ui right aligned header">
+             <button class="ui primary button" id="second_btn_back">Back</button>
+             <button id="validate_input" class="ui primarty button">Validate</button>
+            
+         </h3>
+     </div>
+ <div id="third" style="display: none">
+     
+     <textarea id="pallet_note" rows="3" cols="40" placeholder="Note(optional)"></textarea>
+     <div id="third_message"></div>
+     <div id="validate_message"></div>
+     <h3 class="ui right aligned header">
+         <button class="ui primary button" id="third_btn_back">Back</button>
+         <button id="input_modal" class="ui primarty button" disabled>Submit</button>
+
+     </h3>
+ </div>
+    
+    
+</div>
+
+            
+      
+    
+    
+
+
+
+<script>
+
+    $(document).ready(function () {
+        $('.ui.dropdown')
+  .dropdown()
+        ;
+        if (isAPIAvailable()) {
+            $('#files').bind('change', handleFileSelect);
+        }
+    });
+    $('#third_btn_back').click(function () {
+        $("#step2").attr('class', 'active step');
+        $("#step3").attr('class', 'step');
+        $('#third').toggle();
+        $('#second').toggle();
+    });
+    $('#second_btn_back').click(function () {
+        $("#step1").attr('class', 'active step');
+        $("#step2").attr('class', 'step');
+        $('#first').toggle();
+        $('#second').toggle();
+    });
+    $('#first_message').on('click', 'button', function () {
+        $("#step2").attr('class', 'active step');
+        $("#step1").attr('class', 'step');
+        $('#first').toggle();
+        $('#second').toggle();
+
+    });
+    $('#first_btn').click(function () {
+        if ($('#pallet_name').val() == "") {
+            $('#first_div').attr('class', "ui input error");
+            return;
+        }
+        $('#first_div').attr('class', "ui input");
+        var pallet = $("#pallet_name").val();
+        $.ajax({
+            type: "POST",
+            traditional: true,
+            url: "@Url.Action("get_pallet_detail", "Manage")",
+            data: {pallet : pallet },
+        success: function (data) {
+           
+            if (data.count > 0) {
+                $('#first_message').html("<div class='ui negative message'><div class='header'>we found an exisiting Pallet matched: " + pallet + "(" + data.count + ")Assets</div><p>All Assets scanned will be added to this Pallet</p><p style='color:green'>Continue?</p><button class='ui primary button' id='yes'>Yes</button></div>");
+                return;
+            }
+            else {
+                $("#step2").attr('class', 'active step');
+                $("#step1").attr('class', 'step');
+                $('#first').toggle();
+                $('#second').toggle();
+                $('#second_title').html("Scan or Enter Asset # for Pallet: " + pallet);
+            }
+        }
+    });
+       
+        
+       
+    });
+
+    function isAPIAvailable() {
+        // Check for the various File API support.
+        if (window.File && window.FileReader && window.FileList && window.Blob) {
+            // Great success! All the File APIs are supported.
+            return true;
+        } else {
+            
+            document.writeln('The HTML5 APIs used in this form are only available in the following browsers:<br />');
+            // 6.0 File API & 13.0 <output>
+            document.writeln(' - Google Chrome: 13.0 or later<br />');
+            // 3.6 File API & 6.0 <output>
+            document.writeln(' - Mozilla Firefox: 6.0 or later<br />');
+            // 10.0 File API & 10.0 <output>
+            document.writeln(' - Internet Explorer: Not supported (partial support expected in 10.0)<br />');
+            // ? File API & 5.1 <output>
+            document.writeln(' - Safari: Not supported<br />');
+            // ? File API & 9.2 <output>
+            document.writeln(' - Opera: Not supported');
+            return false;
+        }
+    }
+    function handleFileSelect(evt) {
+        var files = evt.target.files; // FileList object
+        var file = files[0];
+        // read the file metadata
+        var output = ''
+        output += '<span style="font-weight:bold;">' + escape(file.name) + '</span><br />\n';
+        output += ' - FileType: ' + (file.type || 'n/a') + '<br />\n';
+        output += ' - FileSize: ' + file.size + ' bytes<br />\n';
+        output += ' - LastModified: ' + (file.lastModifiedDate ? file.lastModifiedDate.toLocaleDateString() : 'n/a') + '<br />\n';
+        // read the file contents
+        printTable(file);
+        // post the results
+        $('#list').append(output);
+    }
+    function printTable(file) {
+        var reader = new FileReader();
+        reader.readAsText(file);
+        reader.onload = function (event) {
+            var csv = event.target.result;
+            var data = $.csv.toArrays(csv);
+            var html = '';
+            for (var row in data) {
+                
+                for (var item in data[row]) {
+                    
+                    $('#txt_area_input').append(data[row][item] + "\r\n");
+                }
+               
+            }
+           
+        };
+        reader.onerror = function () { alert('Unable to read ' + file.fileName); };
+    }
+</script>
+
+
+
+
+
+
+
+
+
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+
+    <script type="text/javascript">
+
+        $(document).ready(function () {
+            $.getJSON("@Url.Action("get_pallet")", function (data) {
+                for (var i = 0; i < data.length; i++) {
+
+                    $('#pallet_select').append('<option value="' + data[i].pallet_id + '">' + data[i].pallet_id + '</option>');
+                    $('#pallet_menu').append('<option value="' + data[i].pallet_id + '">' + data[i].pallet_id + '</option>')
+                }
+
+               
+
+            });
+        });
+        $("#pallet_menu").on('change', function() {
+            var pallet = $("#pallet_menu option:selected").text();
+
+            $.ajax({
+                type: "POST",
+                traditional: true,
+                url: "@Url.Action("get_pallet_detail", "Manage")",
+                data: {pallet : pallet },
+                success: function (data) {
+                
+                $('#example').DataTable({
+                    destroy: true,
+                    "pageLength": 20,
+                    data: data,
+                    columns: [
+                        { data: "ictags" },
+                        { data: "pallet_name" },
+                        { data: "brand" },
+                        { data: "model" },
+                    { data: "cpu" },
+                     { data: "ram" },
+                      { data: "hdd" }
+                    ]
+
+                });
+              
+
+            }
+        });
+
+        });
+
+        $('#validate_input').click(function () {
+            $('#validate_message').html('');
+            var assets = $('#txt_area_input').val().split('\n');
+
+            //var sorted_arr = assets.slice().sort();
+            //var results = [];
+            //for (var i = 0; i < assets.length - 1; i++) {
+            //    if (sorted_arr[i + 1] == sorted_arr[i]) {
+            //        results.push(sorted_arr[i]);
+            //    }
+            //}
+            function unique(list) {
+                var result = [];
+                $.each(list, function (i, e) {
+                    if ($.inArray(e, result) == -1) result.push(e);
+                });
+                return result;
+            }
+
+            var correct = unique(assets);
+           // assets = results;
+            for (var i = 0; i < correct.length; i++) {
+                if (correct[i] === "")
+                    return alert("Empty Line Found in Input");
+            }
+
+            if (!correct.some(isNaN)) {
+
+            }
+            else {
+
+                return alert("Asset # can only contain numeric values");
+            }
+            
+            $.ajax({
+                type: "POST",
+                traditional: true,
+                url: "@Url.Action("validate_pallet", "Manage")",
+                data: { assets: correct },
+            success: function (data) {
+                   
+                if (data.length > 0) {
+                    for (var i = 0; i < data.length; i++) {
+                        $('#validate_message').append("<p style='color:red'>" + data[i] + " is assoicated with another pallet</p>")
+                    }
+                }
+                else {
+                    $('#third_message').html("<p style='color:green'><i class='ui check icon'></i>all assets are ready to submit</p>")
+                    $('#input_modal').prop("disabled", false);
+                }
+                
+
+            }
+            });
+            $("#step3").attr('class', 'active step');
+            $("#step2").attr('class', 'step');
+            $('#third').toggle();
+            $('#second').toggle();
+
+        });
+
+        //submit button
+        $('#input_modal').click(function () {
+            $('#loader').attr('class', 'ui active dimmer');
+
+            var note = $('#pallet_note').val();
+            var assets = $('#txt_area_input').val().split('\n');
+            function unique(list) {
+                var result = [];
+                $.each(list, function (i, e) {
+                    if ($.inArray(e, result) == -1) result.push(e);
+                });
+                return result;
+            }
+
+            var assets = unique(assets);
+            var pallet = $("#pallet_name").val();
+            $.ajax({
+                type: "POST",
+                traditional: true,
+                url: "@Url.Action("insert_pallet", "Manage")",
+                data: { pallet : pallet, assets : assets,note:note },
+                success: function (data) {
+                    $('#third_message').html("<div class='ui success message'><div class='header'>Assets Successfully Imported to Pallet : " + pallet + "</div></div>");
+                    $('#input_modal').prop("disabled", true);
+                    $('#loader').attr('class', 'ui disabled dimmer');
+                }
+            });
+
+        });
+        $('#create_pallet_btn').click(function () {
+            
+            var pallet_name = document.getElementById('pallet_name').value;
+
+            $.ajax({
+                type: "POST",
+                traditional: true,
+                url: "@Url.Action("create_pallet", "Manage")",
+                data: { pallet_name: pallet_name },
+                success: function (data) {
+                $('#create_message').css('color', 'red');
+                $('#create_message').text(data);
+                $('#validate_message').html("");
+            },
+            error: function (data) {
+
+                $('#create_message').css('color', 'red');
+                $('#create_message').text("an error has occour");
+                
+            }
+        });
+
+        });
+        $('.menu .item')
+  .tab()
+        ;
+        var counter = 1;
+        $(function () {
+            
+            
+
+            $('#addButton').click(function () 
+            {
+                $("input[Name='pallet_name[0]'").val($("#MultipleTables :selected").text())
+
+                $('<tr id="tablerow' + counter + '"><td>' +
+                    '<input class="text-box single-line" name="ictag[' + counter + ']" type="text" value="" required="required" />' +
+                    '</td>' +
+                    '<td>' +
+                    '<input type="text" class="text-box single-line" name="pallet_name[' + counter + ']" value="' + $("#MultipleTables :selected").text() + '" required="required" />' +
+                    '</td>' +
+                   '<td>' +
+                '<input class="text-box single-line" name="note[' + counter + ']" type="text" value="" />' +
+                '</td>' +
+                    '<td>' +
+                    '<button type="button" class="btn btn-primary" onclick="removeTr(' + counter + ');">Delete</button>' +
+                    '</td>' +
+                    '</tr>').appendTo('#clientTable');
+                $("input[Name='ictag[" + counter + "]']").focus()
+ 
+                counter++;
+                return false;
+            });
+        });
+
+        function removeTr(index) {
+            if (counter > 1) {
+                $('#tablerow' + index).remove();
+                counter--;
+            }
+            return false;
+        }
+    </script>
+}
+

@@ -1,0 +1,154 @@
+﻿
+@{
+    ViewBag.Title = "add_stock";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<link href="~/Content/DataTables/css/jquery.dataTables.min.css" rel="stylesheet" />
+<script src="~/Scripts/DataTables/jquery.dataTables.min.js"></script>
+
+<div class="ui small breadcrumb">
+    <a href="@Url.Action("index", "home")" class="section">Home</a>
+    <i class="right chevron icon divider"></i>
+    <a href="@Url.Action("index", "ts_stock")" class="section">Manage TechSoup Inventory</a>
+    <i class="right chevron icon divider"></i>
+    <div class="active section">Add TechSoup Stock</div>
+</div>
+
+
+
+<div class="ui raised very padded text container segment">
+    <div id="loader" class="ui disabled dimmer">
+        <div class="ui text loader">Loading</div>
+    </div>
+    <h3 class="ui header">Add TechSoup Stock</h3>
+
+
+    
+    <select id="channel" name="channel_dropdown"  class="ui search dropdown">
+       
+            <option value="">Select Channel</option>
+
+        </select>
+        <div class="form-group">
+            <label for="comment"></label>
+            <textarea id="asset_textarea" style="width : 400px" class="form-control" rows="8" placeholder='Scan or Enter Assets'></textarea>
+        </div>
+
+        <div class="ui basic segment">
+            <h3 class="ui right floated header">
+                <button id="submit" class="ui primary button">Submit</button>
+            </h3>
+            <h3 class="ui left floated header"></h3>
+        </div>
+
+        <h3 class="ui right aligned header"></h3>
+
+        <div id="message"></div>
+
+</div>
+<div class="ui raised very padded text container segment">
+    <h3 class="ui header">Assets Added to Inventory Today</h3>
+    <table id="table_reminder" class="stripe" cellspacing="0" width="100%">
+        <thead>
+            <tr>
+                <th>Asset Tag</th>
+                <th>SKU</th>
+                <th>Status</th>
+                
+               
+                
+            </tr>
+        </thead>
+        <tbody></tbody>
+
+    </table>
+
+
+
+   
+
+    <div id="message"></div>
+
+</div>
+
+        <script>
+
+
+            $(document).ready(function () {
+
+                $.getJSON("@Url.Action("get_addstcok")",function (data) {
+                
+                    $('#table_reminder').DataTable({
+                        destroy: true,
+                        data: data,
+                        
+                        columns: [
+                                       
+                                       
+                                       
+                                        { data: "ictag" },
+                        { data: "sku" },
+                        { data: "status" }
+                        ]
+
+                    });
+                
+                });
+
+                $.getJSON("@Url.Action("get_channel_dropdown")", function (data) {
+
+                    for (var i = 0; i < data.length ; i++) {
+
+
+                        $('#channel').append($("<option></option>")
+                                    .attr("value", data[i])
+                                    .text(data[i]));
+                    }
+
+
+
+                });
+
+            });
+            $('.ui.dropdown')
+          .dropdown()
+            ;
+
+
+
+            $('#submit').click(function () {
+
+                $("#loader").attr('class', 'ui active dimmer');
+                var channel = $('#channel option:selected').text();
+                var lines = $('#asset_textarea').val().split(/\n/);
+
+                var texts = [];
+                for (var i = 0; i < lines.length; i++) {
+                    // only push this line if it contains a non whitespace character.
+                    if (/\S/.test(lines[i])) {
+                        texts.push($.trim(lines[i]));
+                    }
+                }
+                var jsonObject = {
+                    asset: texts,
+                    channel: channel,
+                };
+
+                $.ajax({
+                    url: "@Url.Action("ts_add_stock")",
+                    type: "POST",
+
+                    data: JSON.stringify(jsonObject),
+                    contentType: "application/json; charset=utf-8",
+                    dataType: "json",
+                    success: function (data) {
+                        $("#loader").attr('class', 'ui disabled dimmer');
+                        $('#message').html(data);
+                        $('#asset_textarea').val("");
+                        location.reload();
+                    }
+                });
+
+            });
+
+        </script>

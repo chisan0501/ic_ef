@@ -3,84 +3,185 @@
     ViewBag.Title = "return_stock";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
+<link href="~/js/jquery.dataTables.min.css" rel="stylesheet" />
+<script src="~/js/jquery.dataTables.min.js"></script>
 
-<div id="table_loader" class="ui disabled inverted dimmer">
 
-    <div class="ui text loader">Processing now......</div>
+<div class="ui two column doubling stackable grid container">
+    <div class="column">
+        <div class="ui raised segment">
+            <h3>Downgrade Assets</h3>
+            <div class="ui ordered fluid vertical steps">
+                <div class="next step">
 
+                    <div class="content">
+                        <div class="title">Reprint Label</div>
+                        <div class="description">Use the Label Software to reprint the label with the correct grading on it</div>
+                        
+                    </div>
+                </div>
+                <div class="next step">
+
+                    <div class="content">
+                        <div class="title">Assign Asset to Bin -></div>
+                        <div class="description">Fill out all Info on the form and press Return Asset Button</div>
+                      
+                    </div>
+                </div>
+                
+                
+                
+
+            </div>
+
+            <h3>Missing Assets</h3>
+            <table id="example" class="display" cellspacing="0" width="100%">
+                <thead>
+                    <tr>
+                        <th>Asset Tag</th>
+                        <th>SKU</th>
+
+                    </tr>
+                </thead>
+
+            </table>
+
+        </div>
+    </div>
+    <div class="column">
+      
+        <form id="return_form" class="ui form segment error">
+            <h3>Return Asset to Bin</h3>
+            <div class="ui ordered fluid vertical steps">
+               
+                <div class="next step">
+
+                    <div class="content">
+                        <div class="title">Enter Bin Location</div>
+                        <div class="description">Choose the bin you would like the asset to be assigned</div>
+                        <div class="ui input">
+                            <input id="bin_regular" type="text" placeholder="Assign a Bin Location">
+                        </div>
+                    </div>
+                </div>
+                <div class="next step">
+
+                    <div class="content">
+                        <div class="title">Asset Tag</div>
+                        <div class="description">Enter or Scan Asset Tag</div>
+                        <div class="ui input">
+                            <input id="asset_regular" type="text" placeholder="Enter Asset Number">
+                        </div>
+                    </div>
+                </div>
+                <div class="next step">
+
+
+                    <div class="content">
+                        <div class="title">Barcode</div>
+                        <div class="description">Enter or Scan barcode</div>
+                        <div class="ui input">
+                            <input id="sku_regular" type="text" placeholder="Enter SKU">
+                        </div>
+                    </div>
+                </div>
+                <div class="next step">
+
+                    <div class="content">
+                        <div class="title">Select Source</div>
+                        <div class="description">Select the Source of the Asset (Retail?/Online Store?)</div>
+                        <div class="ui input">
+                            <select id="source_select" class="ui compact selection dropdown">
+                                <option selected="" value="">Select Source</option>
+                                <option value="retail">Retail</option>
+                                <option value="online">Online Store</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="next step">
+
+                    <div class="content">
+                        <div class="title">Submit</div>
+                        <div class="description">Return Asset to Stock</div>
+
+                        <div class="uiinput">
+
+                            <button id="return_btn" class="ui button">Return Asset</button>
+
+                        </div>
+                        <div id="output"></div>
+                    </div>
+                </div>
+
+            </div>
+            </form>
+        
+
+
+</div>
+    
+   
 </div>
 
 
-<div class="ui two column centered grid">
-    <div class="column">
-        <h2>Return Asset(s) to Stock</h2>
-        <div class="ui raised segment">
 
-            <h3>Regular Assets</h3>
-            <div class="ui action input">
-                <input id="bin_regular" type="text" placeholder="Assign a Bin Location"></div>
-                <div class="ui action input">
-                    <input id="asset_regular" type="text" placeholder="Enter Asset Number">
-                    <input id="sku_regular" type="text" placeholder="Enter SKU">
-                    <select id="source_select" class="ui compact selection dropdown">
-                        <option selected="" value="">Select Source</option>
-                        <option value="retail">Retail</option>
-                        <option value="online">Online Store</option>
-                    </select>
-                    <button id="return_btn" class="ui button">Return Asset</button>
-                </div>
 
-                <div id="output"></div>
-            </div>
-            <div class="ui horizontal divider">
-                Or
-            </div>
-        <div class="ui raised segment">
-            <h3>Damaged(Grade C) Assets</h3>
-            
-        </div>
-        <div class="column">
-            <a href="@Url.Action("bin_overview", "production_log")">
-                <div class="ui huge primary button">Inventory Overview<i class="right arrow icon"></i></div>
-            </a>
-        </div>
-        </div>
 
-    </div>
-   
+    <script>
+        $(document).ready(function () {
+            $.getJSON("@Url.Action("get_missing_asset")", function (data) {
 
-<script>
-    $("#return_btn").click(function () {
-        $('#table_loader').attr('class', 'ui active inverted dimmer');
-        var asset_regular = $("#asset_regular").val();
-        var sku_regular = $("#sku_regular").val();
-        var source = $("#source_select").val();
-        var bin_regular = $("#bin_regular").val();
-        var jsonObject = {
-            asset: asset_regular,
-            sku: sku_regular,
-            source: source,
-            bin: bin_regular
-        };
 
-        $.ajax({
-            url: "@Url.Action("return_stock_json")",
-            type: "POST",
+                $('#example').DataTable({
+                    "pageLength": 10,
+                    data: data.result,
+                    columns: [
+                        { data: "ictag" },
+                        { data: "sku" }
 
-        data: JSON.stringify(jsonObject),
-        contentType: "application/json; charset=utf-8",
-        dataType: "json",
-        success: function (data) {
-            
-            $('#table_loader').attr('class', 'ui disabled inverted dimmer');
-            $("#output").html(data.message);
-            var asset_regular = $("#asset_regular").val("");
-            var sku_regular = $("#sku_regular").val("");
-            var source = $("#source_select").val("");
-            var bin = $("#bin_regular").val("");
-        }
-    });
+                    ]
 
-    });
+                });
+            });
 
-</script>
+           
+
+        });
+
+
+
+        $("#return_btn").click(function () {
+            $('#table_loader').attr('class', 'ui active inverted dimmer');
+            var asset_regular = $("#asset_regular").val();
+            var sku_regular = $("#sku_regular").val();
+            var source = $("#source_select").val();
+            var bin_regular = $("#bin_regular").val();
+            var jsonObject = {
+                asset: asset_regular,
+                sku: sku_regular,
+                source: source,
+                bin: bin_regular
+            };
+
+            $.ajax({
+                url: "@Url.Action("return_stock_json")",
+                type: "POST",
+
+                data: JSON.stringify(jsonObject),
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: function (data) {
+
+                    $('#table_loader').attr('class', 'ui disabled inverted dimmer');
+                    $("#output").html(data.message);
+                    var asset_regular = $("#asset_regular").val("");
+                    var sku_regular = $("#sku_regular").val("");
+                    var source = $("#source_select").val("");
+                    var bin = $("#bin_regular").val("");
+                }
+            });
+
+        });
+
+    </script>

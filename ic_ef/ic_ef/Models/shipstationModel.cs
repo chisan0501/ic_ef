@@ -5,6 +5,29 @@ using System.Web;
 
 namespace ic_ef.Models
 {
+
+   public class sku_qty
+    {
+
+        public string sku { get; set; }
+        public int qty { get; set; }
+    }
+
+    public class get_open_order
+    {
+
+        
+        public int orderID { get; set; }
+        public string orderDate { get; set; }
+        public string orderStatus { get; set; }
+        public int item_num { get; set; }
+        public string item_name { get; set; }
+        public string qty { get; set; }
+        public int count_qty { get; set; }
+        public string sku { get; set; }
+    }
+
+    
     public class shipstationModel
     {
 

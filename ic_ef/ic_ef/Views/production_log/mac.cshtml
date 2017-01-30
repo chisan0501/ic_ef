@@ -46,6 +46,7 @@
 
             $('#mac_today').text(Data.today);
             $('#example').DataTable({
+                destroy: true,
                 "pageLength": 50,
                 data: Data.table_data,
                 columns: [

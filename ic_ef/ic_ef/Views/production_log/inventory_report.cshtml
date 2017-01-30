@@ -6,6 +6,18 @@
 
 <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
 
+
+<div class="ui small breadcrumb">
+    <a href="@Url.Action("index", "home")" class="section">Home</a>
+    <i class="right chevron icon divider"></i>
+    <a href="@Url.Action("magento_main", "production_log")" class="section">Magento WebApp</a>
+    <i class="right chevron icon divider"></i>
+    <div class="active section">Inventory Report</div>
+</div>
+
+
+
+
 <div class="ui grid container">
     <div class="column">
         <div id="chart_div" style="width: 1400px; height: 500px;"></div>
@@ -25,7 +37,11 @@
     
 
 <script>
+
+   
+
     $(document).ready(function () {
+        
         $.getJSON("@Url.Action("get_inventrory_report")", function (Data) {
 
             google.charts.load('visualization', '1', { 'packages': ['corechart'] });
@@ -70,8 +86,9 @@
 
     });
     //need work on
-
+        
     $('body').on('click', 'p.indiv', function () {
+        
         $(this).css("background-color", "lightblue");
     });
     

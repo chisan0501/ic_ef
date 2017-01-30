@@ -1,0 +1,168 @@
+﻿
+@{
+    ViewBag.Title = "insert_asset_mac";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<script src="~/js/moment.js"></script>
+
+<div class="ui two column centered grid">
+    <div class="column">
+        <div class="ui raised segment">
+
+            <h2 class="ui header">Edit Asset (MAC only)</h2>
+
+
+
+
+        </div>
+
+    </div>
+    <div class="row">
+        <div class="ui raised segment">
+            <div id="loader" class="ui disabled dimmer">
+                <div class="ui text loader">Loading</div>
+            </div>
+            <div class="ui input focus">
+                <input id="edit_asset" type="text" placeholder="Search Asset">
+            </div>
+            <div id="search_edit_asset" class="ui secondary button">Search</div>
+
+
+
+
+        </div>
+
+    </div>
+    <div class="two column centered row">
+        <div class="column">
+
+            <!--discovery data-->
+
+            <div class="ui blue raised segment">
+                <div id="discovery_missing" class="ui disabled inverted dimmer">
+                    <h2 class="ui center aligned header" style="color:red">
+                        Discovery Data is missing
+                    </h2>
+                </div>
+
+                @using (@Html.BeginForm("edit_asset_mac", "ManualDataEntry", FormMethod.Post, new { @class = "ui form segment" }))
+                {
+
+
+                    <h4 class="ui subheader">Mac Assets Data</h4>
+
+                    <div class="field">
+
+                        <div class="field">
+                            <label>Asset Tag</label>
+                            <input id="mac_asset" placeholder="Asset Tag" name="asset" type="text" readonly>
+                        </div>
+                        <div class="field">
+                            <label>Time</label>
+                            <input id="mac_time" placeholder="Discovery Time" name="time" type="text" disabled>
+                        </div>
+                    </div>
+
+                 
+                    <div class="field">
+                        <label>Model</label>
+                        <input id='mac_model' placeholder="model" name="model" type="text" disabled>
+                    </div>
+
+                    <div class="field">
+
+                        <div class="field">
+                            <label>CPU</label>
+                            <input id="mac_cpu" placeholder="CPU" name="cpu" type="text" disabled>
+                        </div>
+
+                    </div>
+                        <div class="two fields">
+
+                            <div class="field">
+                                <label>RAM</label>
+                                <input id="mac_ram" placeholder="RAM" name="ram" type="text">
+                            </div>
+                            <div class="field">
+                                <label>HDD</label>
+                                <input id="mac_hdd" placeholder="HDD" name="hdd" type="text">
+                            </div>
+                        </div>
+                        <div class="field">
+
+                            <div class="field">
+                                <label>Serial</label>
+                                <input id="mac_serial" placeholder="Serial Number" name="serial" type="text" readonly>
+                            </div>
+
+                        </div>
+                        <div class="field">
+
+                            <div class="field">
+                                <label>Refurbisher</label>
+                                <input id="mac_refurbisher" placeholder="Refurbisher" name="refurbisher" type="text">
+                            </div>
+
+                        </div>
+                        <div class="field">
+
+                            <div class="field">
+                                <label>SKU</label>
+                                <input id="mac_sku" placeholder="SKU" name="sku" type="text">
+                            </div>
+
+                        </div>
+                        <button type="submit" class="ui primary button " value="Submit">Edit</button>
+                        <div class="ui error message"></div>
+                        <p>@TempData["message"]</p>
+                }
+
+
+
+            </div>
+        </div>
+     
+    </div>
+</div>
+
+<script>
+
+    $('#search_edit_asset').on('click', function () {
+        $('#loader').attr('class', 'ui active dimmer');
+        var asset = $('#edit_asset').val();
+        var table = $.getJSON("@Url.Action("get_asset_data_mac")", { asset: asset }, function (data) {
+        
+
+            try {
+                $('#mac_time').val(moment(data.time).format("MMMM Do YYYY"));
+               
+                $('#mac_asset').val(data.ictags)
+                $('#mac_cpu').val(data.cpu);
+                $('#mac_model').val(data.Model);
+                $('#mac_ram').val(data.ram);
+                $('#mac_hdd').val(data.hdd);
+                $('#mac_serial').val(data.serial);
+                $('#mac_refurbisher').val(data.refurbisher);
+                $('#mac_sku').val(data.pallet);
+                $('#loader').attr('class', 'ui disabled dimmer');
+
+            }
+            
+            
+            catch(err){
+
+                if (data.discovery == null) {
+
+                    $('#discovery_missing').attr('class', 'ui active inverted dimmer');
+                }
+              
+            }
+
+           
+       
+        });
+        
+    });
+
+</script>

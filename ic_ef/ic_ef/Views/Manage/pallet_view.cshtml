@@ -1,0 +1,336 @@
+﻿
+@{
+    ViewBag.Title = "pallet_view";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<script src="~/js/morris.min.js"></script>
+<link href="~/css/morris.css" rel="stylesheet" />
+<script src="//cdnjs.cloudflare.com/ajax/libs/raphael/2.1.0/raphael-min.js"></script>
+<script src="~/js/jquery.tabletoCSV.js"></script>
+    
+
+<div class="ui small breadcrumb">
+    <a href="@Url.Action("index", "home")" class="section">Home</a>
+    <i class="right chevron icon divider"></i>
+    <a href="@Url.Action("pallet_home", "manage")" class="section">Manage Pallet</a>
+    <i class="right chevron icon divider"></i>
+    <div class="active section">View Pallet</div>
+   
+</div>
+
+<div id="main" class="ui raised very padded text container segment">
+    <div class='ui left rail'>
+        <div class='ui segment'>
+            <h3 class="ui header">Pallets</h3>
+           
+            <div id="pallet_list_body" class="ui middle aligned selection list">
+             
+               
+            </div>
+        </div>
+    </div>
+
+    <h3 class="ui header" id="pallet_title"></h3>
+    <div class='ui horizontal statistic'><div id="asset_count" class='value'>0</div><div class='label'>Assets</div></div>
+    <p id="pallet_note"></p>
+    <div>
+
+        <a id="create_table" href="#"><i id="detail_pallet" class="circular edit large icon"></i></a>
+        <a id="export_csv" href="#">
+            <i id="save_csv" class="circular download large icon"></i>
+        </a>
+        <a href="#">
+            <i id="delete_pal" class="circular remove large icon"></i>
+        </a>
+
+                <div id="message"></div>
+
+</div>
+   
+
+    <h4 class="ui horizontal divider header">
+        Quick Overview</h4>
+    <div id="detail">
+      
+        <div class="ui horizontal segments">
+            <div class="ui teal basic segment">
+                <div class="chart-container">
+
+                    <div class="chart-title">Ram Size (in MB)</div>
+                    <div id="ram_chart" style="height: 150px;width:150px"></div>
+                </div>
+            </div>
+            <div class="ui teal basic segment">
+                <div class="chart-container">
+
+                    <div class="chart-title">Made</div>
+                    <div id="made_chart" style="height: 150px;width:150px"></div>
+                </div>
+            </div>
+            
+        </div>
+        
+        
+          
+        
+        <div class="ui raised segment">
+
+            <div class="chart-container">
+                <div class="chart-title">CPU Type</div>
+                <div id="cpu_chart" style="height: 150px;width:600px"></div>
+
+            </div>
+        </div>
+
+        <div class="ui raised segment">
+            <div class="chart-container">
+
+                <div class="chart-title">Model</div>
+                <div id="model_chart" style="height: 150px;width:600px"></div>
+            </div>
+
+        </div>
+          
+           
+
+
+
+
+        </div>
+
+  
+   
+</div>
+
+<div class="ui long modal">
+    <i class="close icon"></i>
+    <div id="modal_header" class="header">
+        
+    </div>
+    <div class="image content">
+    
+        <table id="result_table"class="ui striped table">
+            <thead>
+                <tr>
+                    <th>Asset Tag</th>
+                    <th>Make</th>
+                    <th>Model</th>
+                    <th>CPU</th>
+                    <th>RAM</th>
+                    <th>HDD</th>
+                </tr>
+            </thead>
+            <tbody id="result_body"></tbody>
+        </table>
+    </div>
+   
+</div>
+
+
+<script>
+
+    $('#delete_pal').on("click", function () {
+
+        var pallet_name = $('#pallet_title').text();
+
+
+        var txt;
+        var r = confirm("Are you sure you want to Delete " + pallet_name);
+        if (r == true) {
+            var jsonObject = {pallet : pallet_name}
+
+            $.ajax({
+                url: "@Url.Action("delete_pallet")",
+                type: "POST",
+
+            data: JSON.stringify(jsonObject),
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            success: function (data) {
+
+                $('#message').html("<div class='ui negative message'><i class='close icon'></i><div class='header'>" + data + "</div></div>");
+                location.reload();
+            }
+        });
+    } else {
+            return;
+        }
+
+    });
+    $('#export_csv').on("click", function () {
+
+        $("#result_table").tableToCSV();
+
+    });
+
+
+
+    $('#detail_pallet').on("mouseover", function () {
+        $('#message').html("Edit this pallet");
+    });
+    $('#save_csv').on("mouseover", function () {
+        $('#message').html("Save Pallet info as CSV");
+    });
+    $('#delete_pal').on("mouseover", function () {
+        $('#message').html("Delete this Pallet");
+    });
+
+
+
+    $.getJSON("@Url.Action("get_pallet_detail")", function (data) {
+
+        for (var i = 0; i < data.pallet_count.length; i++) {
+            //$('#data_body').append("<tr><td><h2 class='ui center aligned header'>" + data.pallet_item_count[i].Count + "</h2></td><td class='single line'>" + data.pallet_item_count[i].pallet_name + "</td><td><div class='ui star rating'><button class='ui positive basic button'>View</button></div></td><td><button class='ui primary basic button'>Export CSV</button><button class='ui negative basic button'>Delete</button></td>");
+            $('#pallet_list_body').append("<div class='item'><div class='right floated content'><div class='ui button'>View</div></div><div class='content'><div class='header'>" + data.pallet_item_count[i].pallet_name + "</div>" + data.pallet_item_count[i].Count + "</div></div>")
+
+        }
+
+
+    });
+
+
+    $('#detail_pallet').on('click', function () {
+
+              
+
+        $('.ui.long.modal')
+      .modal('show')
+        ;
+
+
+    });
+
+    //view button event
+    $('#pallet_list_body').on('click', '.item', function () {
+
+       
+
+        $('#made_chart').empty();
+        $('#model_chart').empty();
+        $('#ram_chart').empty();
+        $('#cpu_chart').empty();
+
+        var pallet_name = $(this).closest('div').find('.header').text();
+
+       
+        
+
+        $('#pallet_title').text(pallet_name);
+        
+        var jsonObject = { pallet: pallet_name }
+        $.ajax({
+            url: "@Url.Action("get_pallet_hardware_detail")",
+            type: "POST",
+
+        data: JSON.stringify(jsonObject),
+        contentType: "application/json; charset=utf-8",
+        dataType: "json",
+        success: function (data) {
+
+
+            $('#pallet_note').text("Pallet Note : " + data.result[0].note);
+            $('#asset_count').text(data.pallet_count);
+
+
+            var ram_data = [];
+            var cpu_data = [];
+            var model_data = [];
+            var made_data = [];
+
+            for (var i = 0; i < data.model_count.length; i++) {
+                model_data.push({ y: data.model_count[i].model, a: data.model_count[i].Count });
+            }
+            for (var i = 0; i < data.ram_count.length; i++) {
+               ram_data.push( { label: data.ram_count[i].ram ,  value: data.ram_count[i].Count } );
+            }
+            for (var i = 0; i < data.cpu_count.length; i++) {
+                cpu_data.push({ y: data.cpu_count[i].cpu, a: data.cpu_count[i].Count });
+            }
+            for (var i = 0; i < data.made_count.length; i++) {
+                made_data.push({ label: data.made_count[i].brand, value: data.made_count[i].Count });
+            }
+             Morris.Donut({
+                element: 'ram_chart',
+                data: ram_data,
+            });
+             Morris.Bar({
+                 element: 'cpu_chart',
+                 data: cpu_data,
+                 xkey: 'y',
+                 ykeys: ['a'],
+                 labels: ['']
+             });
+             Morris.Bar({
+                 element: 'model_chart',
+                 data: model_data,
+                 xkey: 'y',
+                 ykeys: ['a'],
+                 labels: ['']
+             });
+             Morris.Donut({
+                 element: 'made_chart',
+                 data: made_data, 
+             });
+            //for (var i = 0; i < data.ram_count.length ; i++) {
+
+            //    $('#dynamic_detail').append("<div class='ui horizontal statistic'><div class='value'>"+data.ram_count[i].Count+"</div><div class='label'>Assets w/ "+data.ram_count[i].ram+" MB RAM</div></div>")
+            //}
+             $('#modal_header').text("Pallet : " + pallet_name);
+             $('#result_body').html("");
+             for (var i = 0; i < data.result.length; i++) {
+
+                 $('#result_body').append("<tr><td>" + data.result[i].ictags + "</td><td>" + data.result[i].brand + "</td><td>" + data.result[i].model + "</td><td>" + data.result[i].cpu + "</td><td>" + data.result[i].ram + "</td><td>" + data.result[i].hdd + "</td></tr>");
+             }
+
+        }
+    });
+
+
+    });
+
+    //view button
+    $('#maintable').on('click', '.ui.positive.basic.button', function () {
+
+        var $row = $(this).closest("tr");
+        var pallet_name = $row.find("td:nth-child(2)").text();
+        var jsonObject = {pallet : pallet_name}
+
+        $.ajax({
+            url: "@Url.Action("get_pallet_hardware_detail")",
+            type: "POST",
+
+        data: JSON.stringify(jsonObject),
+        contentType: "application/json; charset=utf-8",
+        dataType: "json",
+        success: function (data) {
+
+
+
+        }
+    });
+
+    });
+    //export button
+    $('#maintable').on('click', '.ui.primary.basic.button', function () {
+
+        var $row = $(this).closest("tr");
+        var pallet_name = $row.find("td:nth-child(2)").text();
+    });
+    //delete button
+    $('#maintable').on('click', '.ui.negative.basic.button', function () {
+
+
+        var $row = $(this).closest("tr");
+        
+
+
+
+
+
+
+
+
+    });
+
+
+</script>

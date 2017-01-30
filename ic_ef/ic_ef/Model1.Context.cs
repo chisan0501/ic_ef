@@ -33,7 +33,6 @@ namespace ic_ef
         public virtual DbSet<coas> coas { get; set; }
         public virtual DbSet<coas_history> coas_history { get; set; }
         public virtual DbSet<discovery> discovery { get; set; }
-        public virtual DbSet<ebay> ebay { get; set; }
         public virtual DbSet<label_menu> label_menu { get; set; }
         public virtual DbSet<mac_log> mac_log { get; set; }
         public virtual DbSet<monitor_log> monitor_log { get; set; }
@@ -48,11 +47,17 @@ namespace ic_ef
         public virtual DbSet<station_setting> station_setting { get; set; }
         public virtual DbSet<temp_label> temp_label { get; set; }
         public virtual DbSet<users> users { get; set; }
-        public virtual DbSet<picklist> picklist { get; set; }
         public virtual DbSet<pull_log> pull_log { get; set; }
         public virtual DbSet<retail_report> retail_report { get; set; }
         public virtual DbSet<magento_validation_log> magento_validation_log { get; set; }
+        public virtual DbSet<process_run_time> process_run_time { get; set; }
+        public virtual DbSet<ts_stock> ts_stock { get; set; }
+        public virtual DbSet<create_asset_menu> create_asset_menu { get; set; }
+        public virtual DbSet<ship_log> ship_log { get; set; }
         public virtual DbSet<shipstation_log> shipstation_log { get; set; }
-        public virtual DbSet<shipstation_shipment_log> shipstation_shipment_log { get; set; }
+        public virtual DbSet<magento_html> magento_html { get; set; }
+        public virtual DbSet<magento_sku_brand> magento_sku_brand { get; set; }
+        public virtual DbSet<ebay> ebay { get; set; }
+        public virtual DbSet<rma> rma { get; set; }
     }
 }

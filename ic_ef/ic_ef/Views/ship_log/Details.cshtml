@@ -1,0 +1,75 @@
+﻿@model ic_ef.ship_log
+
+@{
+    ViewBag.Title = "Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>ship_log</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.shipdate)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.shipdate)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.status)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.status)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.order_id)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.order_id)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.order_num)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.order_num)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.row_id)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.row_id)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.store_id)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.store_id)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.sku)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.sku)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.ictag }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

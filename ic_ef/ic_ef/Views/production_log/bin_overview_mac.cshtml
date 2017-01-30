@@ -6,6 +6,16 @@
 <link href="~/js/jquery.dataTables.min.css" rel="stylesheet" />
 <script src="~/js/jquery.dataTables.min.js"></script>
 
+
+
+<div class="ui small breadcrumb">
+    <a href="@Url.Action("index", "home")" class="section">Home</a>
+    <i class="right chevron icon divider"></i>
+    <a href="@Url.Action("magento_main", "production_log")" class="section">Magento WebApp</a>
+    <i class="right chevron icon divider"></i>
+    <div class="active section">Inventory OverView(Windows)</div>
+</div>
+
 <div id="table_loader" class="ui disabled inverted dimmer">
 
     <div class="ui text loader">Please be Patient while we are creating a new listing, update the QTY for the original listing, update QTY for the new retail listing, prepare infomration for the WEBPOS.........</div>
@@ -54,6 +64,7 @@
                 $('#table_reminder').DataTable({
                     destroy: true,
                     data: data,
+
                     columnDefs: [{
                         targets: 3,
                         data: null,

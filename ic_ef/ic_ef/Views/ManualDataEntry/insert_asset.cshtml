@@ -1,0 +1,559 @@
+﻿
+@{
+    ViewBag.Title = "insert_asset";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<div class="ui two column centered grid">
+    <div class="column">
+        <div class="ui raised segment">
+
+            <h2 class="ui header">Data Entry</h2>
+
+
+
+
+        </div>
+
+    </div>
+    <div class="two column centered row">
+        <div class="column">
+            <div class="ui raised segment">
+            
+
+                    @using (@Html.BeginForm("insert_asset", "ManualDataEntry", FormMethod.Post, new { @class = "ui form segment" }))
+                    {
+
+
+                        <h4 class="ui subheader">Manual Input Data</h4>
+
+                        <div class="field">
+                            <label>Brand</label>
+                            <input id='brand' placeholder="brand" name="brand" type="text">
+                        </div>
+                        <div class="field">
+                            <label>Model</label>
+                            <input id='model' placeholder="model" name="model" type="text">
+                        </div>
+
+                        <div class="three fields">
+                            <div class="field">
+                                <label>CPU Brand</label>
+                                <select class="ui dropdown" name="cpu_brand">
+
+                                    <option value="Intel(R)">Intel(R)</option>
+                                    <option value="AMD">AMD</option>
+                                </select>
+                            </div>
+                            <div class="field">
+                                <label>CPU Type</label>
+                                <select id="cpu" class="ui dropdown" name="cpu_type">
+                                   
+                                </select>
+                            </div>
+
+                           
+                            <div class="field">
+
+                                <label>Speed</label>
+                                <div class="ui search">
+                                    <div class="ui icon input">
+                                        <input class="prompt" id="cpu_speed" placeholder="Speed" name="cpu_speed" type="text">
+                                    </div>
+                                    <div class="results"></div>
+                                </div>
+                               
+                            </div>
+                       
+                        </div>
+                            <div class="two fields">
+
+                                <div class="field">
+                                    <label>RAM</label>
+                                    <select id="ram" class="ui dropdown" name="ram"></select>
+                                </div>
+                                <div class="field">
+                                    <label>HDD</label>
+                                    <select id="hdd" class="ui dropdown" name="hdd"></select>
+                                </div>
+                            </div>
+                            <div class="field">
+
+                                <div class="field">
+                                    <label>Serial</label>
+                                    <input id="serial" placeholder="Serial Number" name="serial" type="text">
+                                </div>
+
+                            </div>
+                            <div class="field">
+
+                                <div class="field">
+                                    <label>Asset Tag</label>
+                                    <input id="asset" placeholder="Please Scan Asset Tag here" name="asset" type="text">
+                                </div>
+
+                            </div>
+                            <div class="ui slider checkbox">
+                                <input type="checkbox" name="refrub">
+                                <label>Write Data to refrub</label>
+                            </div>
+                            <div class="ui slider checkbox">
+                                <input type="checkbox" name="download">
+                                <label>Download XML?</label>
+                            </div>
+                            <button type="submit" class="ui primary button " value="Submit">Submit</button>
+                            <div class="ui error message"></div>
+                            <p>@TempData["message"]</p>
+                    }
+
+
+
+                </div>
+        </div>
+
+
+    </div>
+</div>
+
+
+<script>
+
+    var content = [
+  { title: '@Html.Raw("@")1.00 GHz' },
+{ title: '@Html.Raw("@")1.01 GHz' },
+{ title: '@Html.Raw("@")1.02 GHz' },
+{ title: '@Html.Raw("@")1.03 GHz' },
+{ title: '@Html.Raw("@")1.04 GHz' },
+{ title: '@Html.Raw("@")1.05 GHz' },
+{ title: '@Html.Raw("@")1.06 GHz' },
+{ title: '@Html.Raw("@")1.07 GHz' },
+{ title: '@Html.Raw("@")1.08 GHz' },
+{ title: '@Html.Raw("@")1.09 GHz' },
+{ title: '@Html.Raw("@")1.10 GHz' },
+{ title: '@Html.Raw("@")1.11 GHz' },
+{ title: '@Html.Raw("@")1.12 GHz' },
+{ title: '@Html.Raw("@")1.13 GHz' },
+{ title: '@Html.Raw("@")1.14 GHz' },
+{ title: '@Html.Raw("@")1.15 GHz' },
+{ title: '@Html.Raw("@")1.16 GHz' },
+{ title: '@Html.Raw("@")1.17 GHz' },
+{ title: '@Html.Raw("@")1.18 GHz' },
+{ title: '@Html.Raw("@")1.19 GHz' },
+{ title: '@Html.Raw("@")1.20 GHz' },
+{ title: '@Html.Raw("@")1.21 GHz' },
+{ title: '@Html.Raw("@")1.22 GHz' },
+{ title: '@Html.Raw("@")1.23 GHz' },
+{ title: '@Html.Raw("@")1.24 GHz' },
+{ title: '@Html.Raw("@")1.25 GHz' },
+{ title: '@Html.Raw("@")1.26 GHz' },
+{ title: '@Html.Raw("@")1.27 GHz' },
+{ title: '@Html.Raw("@")1.28 GHz' },
+{ title: '@Html.Raw("@")1.29 GHz' },
+{ title: '@Html.Raw("@")1.30 GHz' },
+{ title: '@Html.Raw("@")1.31 GHz' },
+{ title: '@Html.Raw("@")1.32 GHz' },
+{ title: '@Html.Raw("@")1.33 GHz' },
+{ title: '@Html.Raw("@")1.34 GHz' },
+{ title: '@Html.Raw("@")1.35 GHz' },
+{ title: '@Html.Raw("@")1.36 GHz' },
+{ title: '@Html.Raw("@")1.37 GHz' },
+{ title: '@Html.Raw("@")1.38 GHz' },
+{ title: '@Html.Raw("@")1.39 GHz' },
+{ title: '@Html.Raw("@")1.40 GHz' },
+{ title: '@Html.Raw("@")1.41 GHz' },
+{ title: '@Html.Raw("@")1.42 GHz' },
+{ title: '@Html.Raw("@")1.43 GHz' },
+{ title: '@Html.Raw("@")1.44 GHz' },
+{ title: '@Html.Raw("@")1.45 GHz' },
+{ title: '@Html.Raw("@")1.46 GHz' },
+{ title: '@Html.Raw("@")1.47 GHz' },
+{ title: '@Html.Raw("@")1.48 GHz' },
+{ title: '@Html.Raw("@")1.49 GHz' },
+{ title: '@Html.Raw("@")1.50 GHz' },
+{ title: '@Html.Raw("@")1.51 GHz' },
+{ title: '@Html.Raw("@")1.52 GHz' },
+{ title: '@Html.Raw("@")1.53 GHz' },
+{ title: '@Html.Raw("@")1.54 GHz' },
+{ title: '@Html.Raw("@")1.55 GHz' },
+{ title: '@Html.Raw("@")1.56 GHz' },
+{ title: '@Html.Raw("@")1.57 GHz' },
+{ title: '@Html.Raw("@")1.58 GHz' },
+{ title: '@Html.Raw("@")1.59 GHz' },
+{ title: '@Html.Raw("@")1.60 GHz' },
+{ title: '@Html.Raw("@")1.61 GHz' },
+{ title: '@Html.Raw("@")1.62 GHz' },
+{ title: '@Html.Raw("@")1.63 GHz' },
+{ title: '@Html.Raw("@")1.64 GHz' },
+{ title: '@Html.Raw("@")1.65 GHz' },
+{ title: '@Html.Raw("@")1.66 GHz' },
+{ title: '@Html.Raw("@")1.67 GHz' },
+{ title: '@Html.Raw("@")1.68 GHz' },
+{ title: '@Html.Raw("@")1.69 GHz' },
+{ title: '@Html.Raw("@")1.70 GHz' },
+{ title: '@Html.Raw("@")1.71 GHz' },
+{ title: '@Html.Raw("@")1.72 GHz' },
+{ title: '@Html.Raw("@")1.73 GHz' },
+{ title: '@Html.Raw("@")1.74 GHz' },
+{ title: '@Html.Raw("@")1.75 GHz' },
+{ title: '@Html.Raw("@")1.76 GHz' },
+{ title: '@Html.Raw("@")1.77 GHz' },
+{ title: '@Html.Raw("@")1.78 GHz' },
+{ title: '@Html.Raw("@")1.79 GHz' },
+{ title: '@Html.Raw("@")1.80 GHz' },
+{ title: '@Html.Raw("@")1.81 GHz' },
+{ title: '@Html.Raw("@")1.82 GHz' },
+{ title: '@Html.Raw("@")1.83 GHz' },
+{ title: '@Html.Raw("@")1.84 GHz' },
+{ title: '@Html.Raw("@")1.85 GHz' },
+{ title: '@Html.Raw("@")1.86 GHz' },
+{ title: '@Html.Raw("@")1.87 GHz' },
+{ title: '@Html.Raw("@")1.88 GHz' },
+{ title: '@Html.Raw("@")1.89 GHz' },
+{ title: '@Html.Raw("@")1.90 GHz' },
+{ title: '@Html.Raw("@")1.91 GHz' },
+{ title: '@Html.Raw("@")1.92 GHz' },
+{ title: '@Html.Raw("@")1.93 GHz' },
+{ title: '@Html.Raw("@")1.94 GHz' },
+{ title: '@Html.Raw("@")1.95 GHz' },
+{ title: '@Html.Raw("@")1.96 GHz' },
+{ title: '@Html.Raw("@")1.97 GHz' },
+{ title: '@Html.Raw("@")1.98 GHz' },
+{ title: '@Html.Raw("@")1.99 GHz' },
+{ title: '@Html.Raw("@")2.00 GHz' },
+{ title: '@Html.Raw("@")2.01 GHz' },
+{ title: '@Html.Raw("@")2.02 GHz' },
+{ title: '@Html.Raw("@")2.03 GHz' },
+{ title: '@Html.Raw("@")2.04 GHz' },
+{ title: '@Html.Raw("@")2.05 GHz' },
+{ title: '@Html.Raw("@")2.06 GHz' },
+{ title: '@Html.Raw("@")2.07 GHz' },
+{ title: '@Html.Raw("@")2.08 GHz' },
+{ title: '@Html.Raw("@")2.09 GHz' },
+{ title: '@Html.Raw("@")2.10 GHz' },
+{ title: '@Html.Raw("@")2.11 GHz' },
+{ title: '@Html.Raw("@")2.12 GHz' },
+{ title: '@Html.Raw("@")2.13 GHz' },
+{ title: '@Html.Raw("@")2.14 GHz' },
+{ title: '@Html.Raw("@")2.15 GHz' },
+{ title: '@Html.Raw("@")2.16 GHz' },
+{ title: '@Html.Raw("@")2.17 GHz' },
+{ title: '@Html.Raw("@")2.18 GHz' },
+{ title: '@Html.Raw("@")2.19 GHz' },
+{ title: '@Html.Raw("@")2.20 GHz' },
+{ title: '@Html.Raw("@")2.21 GHz' },
+{ title: '@Html.Raw("@")2.22 GHz' },
+{ title: '@Html.Raw("@")2.23 GHz' },
+{ title: '@Html.Raw("@")2.24 GHz' },
+{ title: '@Html.Raw("@")2.25 GHz' },
+{ title: '@Html.Raw("@")2.26 GHz' },
+{ title: '@Html.Raw("@")2.27 GHz' },
+{ title: '@Html.Raw("@")2.28 GHz' },
+{ title: '@Html.Raw("@")2.29 GHz' },
+{ title: '@Html.Raw("@")2.30 GHz' },
+{ title: '@Html.Raw("@")2.31 GHz' },
+{ title: '@Html.Raw("@")2.32 GHz' },
+{ title: '@Html.Raw("@")2.33 GHz' },
+{ title: '@Html.Raw("@")2.34 GHz' },
+{ title: '@Html.Raw("@")2.35 GHz' },
+{ title: '@Html.Raw("@")2.36 GHz' },
+{ title: '@Html.Raw("@")2.37 GHz' },
+{ title: '@Html.Raw("@")2.38 GHz' },
+{ title: '@Html.Raw("@")2.39 GHz' },
+{ title: '@Html.Raw("@")2.40 GHz' },
+{ title: '@Html.Raw("@")2.41 GHz' },
+{ title: '@Html.Raw("@")2.42 GHz' },
+{ title: '@Html.Raw("@")2.43 GHz' },
+{ title: '@Html.Raw("@")2.44 GHz' },
+{ title: '@Html.Raw("@")2.45 GHz' },
+{ title: '@Html.Raw("@")2.46 GHz' },
+{ title: '@Html.Raw("@")2.47 GHz' },
+{ title: '@Html.Raw("@")2.48 GHz' },
+{ title: '@Html.Raw("@")2.49 GHz' },
+{ title: '@Html.Raw("@")2.50 GHz' },
+{ title: '@Html.Raw("@")2.51 GHz' },
+{ title: '@Html.Raw("@")2.52 GHz' },
+{ title: '@Html.Raw("@")2.53 GHz' },
+{ title: '@Html.Raw("@")2.54 GHz' },
+{ title: '@Html.Raw("@")2.55 GHz' },
+{ title: '@Html.Raw("@")2.56 GHz' },
+{ title: '@Html.Raw("@")2.57 GHz' },
+{ title: '@Html.Raw("@")2.58 GHz' },
+{ title: '@Html.Raw("@")2.59 GHz' },
+{ title: '@Html.Raw("@")2.60 GHz' },
+{ title: '@Html.Raw("@")2.61 GHz' },
+{ title: '@Html.Raw("@")2.62 GHz' },
+{ title: '@Html.Raw("@")2.63 GHz' },
+{ title: '@Html.Raw("@")2.64 GHz' },
+{ title: '@Html.Raw("@")2.65 GHz' },
+{ title: '@Html.Raw("@")2.66 GHz' },
+{ title: '@Html.Raw("@")2.67 GHz' },
+{ title: '@Html.Raw("@")2.68 GHz' },
+{ title: '@Html.Raw("@")2.69 GHz' },
+{ title: '@Html.Raw("@")2.70 GHz' },
+{ title: '@Html.Raw("@")2.71 GHz' },
+{ title: '@Html.Raw("@")2.72 GHz' },
+{ title: '@Html.Raw("@")2.73 GHz' },
+{ title: '@Html.Raw("@")2.74 GHz' },
+{ title: '@Html.Raw("@")2.75 GHz' },
+{ title: '@Html.Raw("@")2.76 GHz' },
+{ title: '@Html.Raw("@")2.77 GHz' },
+{ title: '@Html.Raw("@")2.78 GHz' },
+{ title: '@Html.Raw("@")2.79 GHz' },
+{ title: '@Html.Raw("@")2.80 GHz' },
+{ title: '@Html.Raw("@")2.81 GHz' },
+{ title: '@Html.Raw("@")2.82 GHz' },
+{ title: '@Html.Raw("@")2.83 GHz' },
+{ title: '@Html.Raw("@")2.84 GHz' },
+{ title: '@Html.Raw("@")2.85 GHz' },
+{ title: '@Html.Raw("@")2.86 GHz' },
+{ title: '@Html.Raw("@")2.87 GHz' },
+{ title: '@Html.Raw("@")2.88 GHz' },
+{ title: '@Html.Raw("@")2.89 GHz' },
+{ title: '@Html.Raw("@")2.90 GHz' },
+{ title: '@Html.Raw("@")2.91 GHz' },
+{ title: '@Html.Raw("@")2.92 GHz' },
+{ title: '@Html.Raw("@")2.93 GHz' },
+{ title: '@Html.Raw("@")2.94 GHz' },
+{ title: '@Html.Raw("@")2.95 GHz' },
+{ title: '@Html.Raw("@")2.96 GHz' },
+{ title: '@Html.Raw("@")2.97 GHz' },
+{ title: '@Html.Raw("@")2.98 GHz' },
+{ title: '@Html.Raw("@")2.99 GHz' },
+{ title: '@Html.Raw("@")3.00 GHz' },
+{ title: '@Html.Raw("@")3.01 GHz' },
+{ title: '@Html.Raw("@")3.02 GHz' },
+{ title: '@Html.Raw("@")3.03 GHz' },
+{ title: '@Html.Raw("@")3.04 GHz' },
+{ title: '@Html.Raw("@")3.05 GHz' },
+{ title: '@Html.Raw("@")3.06 GHz' },
+{ title: '@Html.Raw("@")3.07 GHz' },
+{ title: '@Html.Raw("@")3.08 GHz' },
+{ title: '@Html.Raw("@")3.09 GHz' },
+{ title: '@Html.Raw("@")3.10 GHz' },
+{ title: '@Html.Raw("@")3.11 GHz' },
+{ title: '@Html.Raw("@")3.12 GHz' },
+{ title: '@Html.Raw("@")3.13 GHz' },
+{ title: '@Html.Raw("@")3.14 GHz' },
+{ title: '@Html.Raw("@")3.15 GHz' },
+{ title: '@Html.Raw("@")3.16 GHz' },
+{ title: '@Html.Raw("@")3.17 GHz' },
+{ title: '@Html.Raw("@")3.18 GHz' },
+{ title: '@Html.Raw("@")3.19 GHz' },
+{ title: '@Html.Raw("@")3.20 GHz' },
+{ title: '@Html.Raw("@")3.21 GHz' },
+{ title: '@Html.Raw("@")3.22 GHz' },
+{ title: '@Html.Raw("@")3.23 GHz' },
+{ title: '@Html.Raw("@")3.24 GHz' },
+{ title: '@Html.Raw("@")3.25 GHz' },
+{ title: '@Html.Raw("@")3.26 GHz' },
+{ title: '@Html.Raw("@")3.27 GHz' },
+{ title: '@Html.Raw("@")3.28 GHz' },
+{ title: '@Html.Raw("@")3.29 GHz' },
+{ title: '@Html.Raw("@")3.30 GHz' },
+{ title: '@Html.Raw("@")3.31 GHz' },
+{ title: '@Html.Raw("@")3.32 GHz' },
+{ title: '@Html.Raw("@")3.33 GHz' },
+{ title: '@Html.Raw("@")3.34 GHz' },
+{ title: '@Html.Raw("@")3.35 GHz' },
+{ title: '@Html.Raw("@")3.36 GHz' },
+{ title: '@Html.Raw("@")3.37 GHz' },
+{ title: '@Html.Raw("@")3.38 GHz' },
+{ title: '@Html.Raw("@")3.39 GHz' },
+{ title: '@Html.Raw("@")3.40 GHz' },
+{ title: '@Html.Raw("@")3.41 GHz' },
+{ title: '@Html.Raw("@")3.42 GHz' },
+{ title: '@Html.Raw("@")3.43 GHz' },
+{ title: '@Html.Raw("@")3.44 GHz' },
+{ title: '@Html.Raw("@")3.45 GHz' },
+{ title: '@Html.Raw("@")3.46 GHz' },
+{ title: '@Html.Raw("@")3.47 GHz' },
+{ title: '@Html.Raw("@")3.48 GHz' },
+{ title: '@Html.Raw("@")3.49 GHz' },
+{ title: '@Html.Raw("@")3.50 GHz' },
+{ title: '@Html.Raw("@")3.51 GHz' },
+{ title: '@Html.Raw("@")3.52 GHz' },
+{ title: '@Html.Raw("@")3.53 GHz' },
+{ title: '@Html.Raw("@")3.54 GHz' },
+{ title: '@Html.Raw("@")3.55 GHz' },
+{ title: '@Html.Raw("@")3.56 GHz' },
+{ title: '@Html.Raw("@")3.57 GHz' },
+{ title: '@Html.Raw("@")3.58 GHz' },
+{ title: '@Html.Raw("@")3.59 GHz' },
+{ title: '@Html.Raw("@")3.60 GHz' },
+{ title: '@Html.Raw("@")3.61 GHz' },
+{ title: '@Html.Raw("@")3.62 GHz' },
+{ title: '@Html.Raw("@")3.63 GHz' },
+{ title: '@Html.Raw("@")3.64 GHz' },
+{ title: '@Html.Raw("@")3.65 GHz' },
+{ title: '@Html.Raw("@")3.66 GHz' },
+{ title: '@Html.Raw("@")3.67 GHz' },
+{ title: '@Html.Raw("@")3.68 GHz' },
+{ title: '@Html.Raw("@")3.69 GHz' },
+{ title: '@Html.Raw("@")3.70 GHz' },
+{ title: '@Html.Raw("@")3.71 GHz' },
+{ title: '@Html.Raw("@")3.72 GHz' },
+{ title: '@Html.Raw("@")3.73 GHz' },
+{ title: '@Html.Raw("@")3.74 GHz' },
+{ title: '@Html.Raw("@")3.75 GHz' },
+{ title: '@Html.Raw("@")3.76 GHz' },
+{ title: '@Html.Raw("@")3.77 GHz' },
+{ title: '@Html.Raw("@")3.78 GHz' },
+{ title: '@Html.Raw("@")3.79 GHz' },
+{ title: '@Html.Raw("@")3.80 GHz' },
+{ title: '@Html.Raw("@")3.81 GHz' },
+{ title: '@Html.Raw("@")3.82 GHz' },
+{ title: '@Html.Raw("@")3.83 GHz' },
+{ title: '@Html.Raw("@")3.84 GHz' },
+{ title: '@Html.Raw("@")3.85 GHz' },
+{ title: '@Html.Raw("@")3.86 GHz' },
+{ title: '@Html.Raw("@")3.87 GHz' },
+{ title: '@Html.Raw("@")3.88 GHz' },
+{ title: '@Html.Raw("@")3.89 GHz' },
+{ title: '@Html.Raw("@")3.90 GHz' },
+{ title: '@Html.Raw("@")3.91 GHz' },
+{ title: '@Html.Raw("@")3.92 GHz' },
+{ title: '@Html.Raw("@")3.93 GHz' },
+{ title: '@Html.Raw("@")3.94 GHz' },
+{ title: '@Html.Raw("@")3.95 GHz' },
+{ title: '@Html.Raw("@")3.96 GHz' },
+{ title: '@Html.Raw("@")3.97 GHz' },
+{ title: '@Html.Raw("@")3.98 GHz' },
+{ title: '@Html.Raw("@")3.99 GHz' },
+{ title: '@Html.Raw("@")4.00' }
+  // etc
+    ];
+
+    $('.ui.search')
+.search({
+    source: content
+})
+    ;
+    var table = $.getJSON("@Url.Action("get_setting")", function (data) {
+
+        for (var i = 0; i < data.cpu_menu.length; i++) {
+
+
+            $('#cpu').append($("<option></option>").attr("value", data.cpu_menu[i].value).text(data.cpu_menu[i].name));
+
+        }
+        for (var i=0;i<data.hdd_menu.length;i++) {
+
+
+            $('#hdd').append($("<option></option>").attr("value", data.hdd_menu[i].value).text(data.hdd_menu[i].name));
+
+        }
+        for (var i = 0; i < data.ram_menu.length; i++) {
+
+
+            $('#ram').append($("<option></option>").attr("value", data.ram_menu[i].value).text(data.ram_menu[i].name));
+
+        }
+
+    });
+
+    $('#online_search').on('click', function () {
+
+        var model = $('#search_word').val();
+        var vendor = "newegg.com"
+
+        var jsonObject = {
+            search: model,
+            vendor : vendor
+        };
+        $.ajax({
+            url: "@Url.Action("fetch_data")",
+            type: "POST",
+
+            data: JSON.stringify(jsonObject),
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            success: function (data) {
+
+            }
+        });
+    });
+
+
+    @*$('#submit').on('click', function () {
+
+       var brand =  $('#brand').val();
+       var model =  $('#model').val();
+       var cpu =  $('#cpu').val();
+       var ram =  $('#ram').val();
+      var hdd =  $('#hdd').val();
+      var asset = $('#asset').val();
+      var serial = $('#serial').val();
+
+        var jsonObject = {
+            brand: brand,
+            model: model,
+            cpu: cpu,
+            ram: ram,
+            hdd: hdd,
+            asset: asset,
+            serial : serial
+        };
+
+        $.ajax({
+            url: "@Url.Action("add_entry")",
+            type: "POST",
+
+        data: JSON.stringify(jsonObject),
+        contentType: "application/json; charset=utf-8",
+        dataType: "json",
+        success: function (data) {
+            $('#profile_select').html("");
+            arr = $.map(data, function (el) { return el; })
+
+            for (var i = 0 ; i < data.length ; i++) {
+
+                $('#profile_select').append($("<option></option>").attr("value", [i]).text(data[i].seller));
+
+            }
+
+
+
+
+
+        }
+    });
+        $('#profile_select').on('change', function () {
+            var valueAtIndex1 = arr[this.value];
+            $('#brand').val(valueAtIndex1.brand);
+            $('#model').val(valueAtIndex1.model);
+            $('#cpu').val(valueAtIndex1.cpu);
+            $('#ram').val(valueAtIndex1.ram);
+            $('#hdd').val(valueAtIndex1.hdd);
+
+        })
+
+    });*@
+
+    $('.message .close')
+  .on('click', function () {
+      $(this)
+        .closest('.message')
+        .transition('fade')
+      ;
+  })
+    ;
+
+    $('.ui.form.segment')
+  .form({
+      on: 'blur',
+      fields: {
+          cpu_speed: 'empty',
+          asset: 'empty',
+          serial: 'empty',
+          hdd: 'empty',
+          cpu: 'empty',
+          model: 'empty',
+          brand: 'empty'
+      }
+  });
+
+
+
+
+</script>

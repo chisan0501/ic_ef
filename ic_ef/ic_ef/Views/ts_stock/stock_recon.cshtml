@@ -1,0 +1,96 @@
+﻿
+@{
+    ViewBag.Title = "stock_recon";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+
+<div class="ui raised very padded text container segment">
+
+    <h3 class="ui header">TechSoup Inventory Reconciliation</h3>
+
+    <select id="channel" name="channel_dropdown" class="ui dropdown">
+        <option value="">Select Channel</option>
+        
+    </select>
+    <div class="form-group">
+        <label for="comment"></label>
+        <textarea id="asset_textarea" style="width : 400px" class="form-control" rows="8" placeholder='Scan or Enter Assets'></textarea>
+    </div>
+
+    <div class="ui basic segment">
+        <h3 class="ui right floated header">
+            <button id="submit" class="ui primary button">Submit</button>
+        </h3>
+        <h3 class="ui left floated header"></h3>
+    </div>
+
+    <h3 class="ui right aligned header"></h3>
+
+
+
+</div>
+
+
+
+<script>
+
+
+    $( document ).ready(function() {
+    
+        $.getJSON("@Url.Action("get_channel_dropdown")", function (data) {
+        
+            for (var i =0; i< data.length ; i++) {
+                
+           
+                $('#channel').append($("<option></option>")
+                            .attr("value",data[i])
+                            .text(data[i])); 
+            }
+        
+        
+    
+        });
+
+    });
+        $('.ui.dropdown')
+      .dropdown()
+        ;
+
+
+
+        $('#submit').click(function () {
+            var channel = $('#channel option:selected').text();
+            var lines = $('#asset_textarea').val().split(/\n/);
+
+            var texts = [];
+            for (var i = 0; i < lines.length; i++) {
+                // only push this line if it contains a non whitespace character.
+                if (/\S/.test(lines[i])) {
+                    texts.push($.trim(lines[i]));
+                }
+            }
+            var jsonObject = {
+                asset: texts,
+                channel: channel,
+            };
+
+            $.ajax({
+                url: "@Url.Action("ts_stock_recon")",
+                type: "POST",
+
+                data: JSON.stringify(jsonObject),
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: function (data) {
+
+
+
+                }
+            });
+
+        });
+
+</script>
+

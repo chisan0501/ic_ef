@@ -3,6 +3,7 @@
     ViewBag.Title = "dashboard";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
+<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
 
 
 
@@ -200,6 +201,12 @@
     </div>
 </div>
 
+<div class="ui grid container">
+    <div class="column">
+        <div id="chart_div" style="width: 2000px; height: 500px;"></div>
+    </div>
+
+</div>
 
 <script>
 
@@ -218,9 +225,29 @@
             $("#mar_ocoa_s1").text(Data.mar_ocoa_s1);
             $("#mar_wcoa_s2").text(Data.mar_wcoa_s2);
             $("#mar_ocoa_s2").text(Data.mar_ocoa_s2);
+            google.charts.load('visualization', '1', { 'packages': ['corechart'] });
+            google.charts.setOnLoadCallback(drawStuff);
+            function drawStuff() {
+
+                var google_data = {
+                    "cols": [{
+                        "type": "string"
+                    }, {
+                        "type": "number"
+                    }],
+                    rows: []
+                };
+
+                for (var i = 0; i < Data.station1.length; i++) {
+                    google_data.rows.push({ c: [{ v: Data.station1[i].time }, { v: Data.station1[i].time.count }] });
+                }
+                var data = new google.visualization.DataTable(google_data);
+
+                var chart = new google.visualization.LineChart(document.getElementById('chart_div'));
+                chart.draw(data, { title: 'All time Sales Graph', vAxis: { title: '# of Assets Sold', titleTextStyle: { color: 'red' } }, width: 1100, height: 400 });
+            }
 
         });
-       
 
     });
 

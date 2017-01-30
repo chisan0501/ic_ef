@@ -1,0 +1,266 @@
+﻿
+@{
+    ViewBag.Title = "stock";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<script src="~/js/morris.min.js"></script>
+<link href="~/css/morris.css" rel="stylesheet" />
+<script src="//cdnjs.cloudflare.com/ajax/libs/raphael/2.1.0/raphael-min.js"></script>
+<script src="~/vendors/jquery-sparkline/dist/jquery.sparkline.js"></script>
+
+    
+   
+
+
+
+<div id="detail_table" class="ui modal">
+    <i class="close icon"></i>
+    <div class="header">
+        Detail Data
+    </div>
+    <div class="content">
+        
+        <div class="description">
+            <table class="ui celled table">
+                <thead>
+                    <tr>
+                        <th>Asset Tag</th>
+                        <th>SKU</th>
+                        <th>Manufacture</th>
+                        <th>Model</th>
+                        <th>CPU</th>
+                        <th>RAM</th>
+                        <th>HDD</th>
+                    </tr>
+                </thead>
+                <tbody id="ts_data_body">
+                   
+                </tbody>
+              
+            </table>
+        </div>
+    </div>
+</div>
+
+
+<div class="ui small breadcrumb">
+    <a href="@Url.Action("index", "home")" class="section">Home</a>
+    <i class="right chevron icon divider"></i>
+    <a href="@Url.Action("index", "ts_stock")" class="section">Manage TechSoup Inventory</a>
+    <i class="right chevron icon divider"></i>
+    <div class="active sction">Current Stock</div>
+</div>
+
+
+<div class="ui two column centered grid">
+    <div id="loader" class="ui disabled dimmer">
+        <div class="ui text loader">Loading</div>
+    </div>
+    <div class="column"><div class="ui teal teal raised segment"><h3 class="ui header">Current TechSoup Inventory<button id="refresh_btn" class="ui right floated icon button">
+    <i class="refresh icon"></i>
+</button></h3></div></div>
+    <div class="ui two column centered row">
+
+        <div class="column"><div class="ui teal raised segment"><div id="ts_graph" style="height:200px"></div></div></div>
+
+    </div>
+    <div class="four column centered row">
+
+        <div class="column">
+
+            <div class="ui raised blue segment">
+                <span class="inlinesparkline"></span>TechSoup Daily Shipping Graph (30 days)
+            </div>
+        </div>
+        <div class="column">
+
+            <div class="ui raised blue segment">
+                <span class="inlinesparkline2"></span>TechSoup Daily Shipping Graph by SKU (30 days)
+            </div>
+        </div>
+    </div>
+    <div class="two column centered row">
+
+        <div class="column"><div class="ui teal raised segment">
+            
+                                <select id="sku_drop" class="ui dropdown">
+                                    <option value="">Select SKU</option>
+                                  
+                                </select> 
+            </div></div>
+
+    </div>
+    <div class="eight column centered row">
+        <div class="column"><div class="ui teal raised segment">
+            
+                                <div class="ui statistic">
+                                    <div id="onhand" class="value">
+                                        0
+                                    </div>
+                                    <div class="label">
+                                        On Hand
+                                    </div>
+                                </div>
+            
+            </div></div>
+        <div class="column"><div class="ui teal raised segment">
+            
+                                <div class="ui statistic">
+                                    <div id="pending" class="value">
+                                        0
+                                    </div>
+                                    <div class="label">
+                                        Awaiting Shipment
+                                    </div>
+                                </div>
+            
+            </div></div>
+        <div class="column">
+            <div class="ui teal raised segment">
+
+                <a id="get_pulled" href="#">
+                    <div class="ui statistic">
+
+                        <div id="pulled" class="value">
+                            0
+
+                        </div>
+
+                        <div class="label">
+                            Pulled < 30 days
+                        </div>
+                    </div>
+                </a>
+
+            </div>
+        </div>
+        <div class="column"><div class="ui teal raised segment">
+            
+                                <a id="get_production_sku" href="#">
+                                    <div class="ui statistic">
+
+                                        <div id="production" class="value">
+                                            0
+
+                                        </div>
+
+                                        <div class="label">
+                                            Imaged < 24 Hours
+                                        </div>
+                                    </div>
+                                </a>
+            
+            </div></div>
+        
+    </div>
+    
+       
+
+    </div>
+
+
+<script>
+   
+
+    
+
+
+
+    $('#refresh_btn').on('click', function () {
+
+        location.reload();
+    });
+
+    $('#get_production_sku').on('click', function () {
+        
+        $('#detail_table')
+    .modal('show')
+        ;
+
+
+    });
+    $.getJSON("@Url.Action("get_open_order")", function (data) {
+
+        var sparklineLogin = function () {
+            $('.inlinesparkline').sparkline(data.month_graph, { width: '100%' });
+        }
+        var sparkResize;
+
+        $(window).resize(function (e) {
+            clearTimeout(sparkResize);
+            sparkResize = setTimeout(sparklineLogin, 500);
+        });
+        sparklineLogin();
+        for (i = 0; i < data.stock_breakdown.length; i++) {
+            $('#sku_drop').append($('<option>',
+            {
+                value: data.stock_breakdown[i].sku,
+                text: data.stock_breakdown[i].sku
+            }));
+        }
+        var ts_data = [];
+        for (var i = 0; i < data.stock_breakdown.length; i++) {
+           // data.weekly[i].date = moment(data.stock_breakdown[i].date).format("MMM Do YY");
+            ts_data.push({ y: data.stock_breakdown[i].sku, a: data.stock_breakdown[i].count_qtys });
+        }
+        Morris.Bar({
+            element: 'ts_graph',
+            data: ts_data,
+            xkey: 'y',
+            ykeys: ['a'],
+            labels: ['# of Machine'],
+            resize: true
+
+        });
+
+    });
+
+    $('#sku_drop').on('change', function () {
+        $('#loader').attr('class', 'ui active dimmer');
+        var sku = $("#sku_drop option:selected").text();
+
+        $.getJSON("@Url.Action("get_sku_detail")", { sku: sku }, function (data) {
+
+            if (data.pending_order == "") {
+                data.pending_order = "0";
+            }
+           
+
+            var sparklineLogin = function () {
+                $('.inlinesparkline2').sparkline(data.month_graph_sku, { width: '100%' });
+            }
+            var sparkResize;
+
+            $(window).resize(function (e) {
+                clearTimeout(sparkResize);
+                sparkResize = setTimeout(sparklineLogin, 500);
+            });
+            sparklineLogin();
+
+
+           
+            $('#pending').text(data.pending_order);
+            $('#onhand').text(data.onhand);
+            $('#production').text(data.production);
+            $('#pulled').text(data.pulled);
+            var body_html = "";
+            for (var i = 0; i < data.production_detail.length ; i++) {
+
+                body_html += "<tr><td>" + data.production_detail[i].ictags + "</td><td>" + data.production_detail[i].channel + "</td><td>" + data.production_detail[i].Manufacture + "</td><td>" + data.production_detail[i].Model + "</td><td>" + data.production_detail[i].CPU + "</td><td>" + data.production_detail[i].RAM + "</td><td>" + data.production_detail[i].HDD + "</td></tr>"
+
+            }
+
+            $('#ts_data_body').html(body_html);
+            $('#loader').attr('class', 'ui disabled dimmer');
+
+        });
+
+
+    });
+
+</script>
+
+
+

@@ -40,37 +40,81 @@
             Home
         </a>
         <a class="item">
-            <i class="cube icon"></i>
+            <i class="configure icon"></i>
             <div id="prod_menu" class="ui dropdown">
                 <div class="text">Production</div>
                 <i class="dropdown icon"></i>
                 <div class="menu">
                     <div class="item">Discovery</div>
-                  
                     <div class="item">Refurbish</div>
                     <div class="item" id="imaging">Imaging</div>
+                    <div class="item" id="rma">RMA</div>
+                    <div class="item" id="coa">Manage COA</div>
                     <div class="item">Monitor Discovery</div>
                     <div class="item" id="mac">Mac</div>
+                    <div class="item" id="manual_entry">Manage Assets</div>
+                    
                 </div>
             </div>
         </a>
         <script>
             $('#prod_menu').dropdown();
             $('#imaging').on('click', function () {
-                window.location = 'http://ic.icdb.name/production_log/Index';
+                window.location = '@Url.Action("index", "production_log")';
             });
             $('#mac').on('click', function () {
-                window.location = 'http://ic.icdb.name/production_log/mac';
+                window.location = '@Url.Action("mac", "production_log")';
             });
+            $('#coa').on('click', function () {
+                window.location.href = '@Url.Action("coa", "manage")';
+            })
+            $('#manual_entry').on('click', function () {
+                window.location.href = '@Url.Action("index", "ManualDataEntry")';
+            })
+            $('#rma').on('click', function () {
+                window.location.href = '@Url.Action("index", "rma")';
+            })
         </script>
         <a class="item" href="@Url.Action("home", "retail")">
             <i class="building outline icon"></i>
             Retail
         </a>
-        <a class="item" href="@Url.Action("inventoryManage", "manage")">
-            <i class="shipping icon"></i>
-            Bulk Processing
+        <a class="item">
+            <i class="cubes icon"></i>
+            <div id="inv_menu" class="ui dropdown">
+                <div class="text">Manage Inventory</div>
+                <i class="dropdown icon"></i>
+                <div class="menu">
+                    <div class="item" id="pallets">Pallets</div>
+                    <div class="item" id="bin">MAR & OEM</div>
+                    <div class="item" id="ts">TechSoup</div>
+                    <div class="item" id="g360">Good360</div>
+                    <div class="item" id="shipstation">ShipStation</div>
+                </div>
+            </div>
         </a>
+        <script>
+            $('#inv_menu').dropdown();
+            $('#pallets').on('click', function () {
+                window.location.href = '@Url.Action("pallet_home", "manage")';
+
+            });
+            $('#bin').on('click', function () {
+                window.location.href = '@Url.Action("magento_main", "production_log")';
+
+            });
+            $('#ts').on('click', function () {
+
+                window.location.href = '@Url.Action("Index", "ts_stock")';
+            });
+            $('#g360').on('click', function () {
+                window.location.href = '@Url.Action("index", "g360")';
+            })
+            $('#shipstation').on('click', function () {
+                window.location.href = '@Url.Action("main", "ShipStation")';
+            })
+
+        </script>
         <a class="item" href="@Url.Action("report", "manage")">
             <i class="line chart icon"></i>
             Report
@@ -90,14 +134,17 @@
             <i class="icon"> <img src="~/images/magento.svg" style="height:30px;width:30px" /></i>
             Magento Web App
         </a>
+
+        <a class="item" href="@Url.Action("main", "ShipStation")">
+            <i class="truck icon"></i>
+            Ship Station
+        </a>
+
         <a class="item" href="@Url.Action("barcode", "Home")">
             <i class="barcode icon"></i>
             Asset Tag
         </a>
-        <a class="item" href="@Url.Action("coa", "manage")">
-            <i class="windows icon"></i>
-            COA Management
-        </a>
+       
         <a class="item" target="_blank" href="https://interconnection.on.spiceworks.com/portal">
             <i class="help circle icon"></i>
             Contact us
@@ -106,7 +153,7 @@
       
     
         
-    <div class="fullscreen modal">
+    <div class="ui fullscreen modal">
         <i class="close icon"></i>
         <div class="header">
             Search Result 
