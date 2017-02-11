@@ -5475,7 +5475,7 @@
   </wsdl:binding>
   <wsdl:service name="MagentoService">
     <wsdl:port name="Port" binding="typens:Binding">
-      <soap:address location="http://connectall.org/index.php/api/v2_soap/index/" />
+      <soap:address location="https://connectall.org/index.php/api/v2_soap/index/" />
     </wsdl:port>
   </wsdl:service>
 </wsdl:definitions>

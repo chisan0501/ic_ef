@@ -26,20 +26,20 @@ namespace ic_ef.Properties {
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.SpecialSettingAttribute(global::System.Configuration.SpecialSetting.WebServiceUrl)]
-        [global::System.Configuration.DefaultSettingValueAttribute("http://connectall.org/index.php/api/v2_soap/index/")]
-        public string ic_ef_org_connectall_MagentoService {
+        [global::System.Configuration.DefaultSettingValueAttribute("https://login.salesforce.com/services/Soap/c/38.0/0DF6000000007AN")]
+        public string ic_ef_SFWebReference_SforceService {
             get {
-                return ((string)(this["ic_ef_org_connectall_MagentoService"]));
+                return ((string)(this["ic_ef_SFWebReference_SforceService"]));
             }
         }
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.SpecialSettingAttribute(global::System.Configuration.SpecialSetting.WebServiceUrl)]
-        [global::System.Configuration.DefaultSettingValueAttribute("https://login.salesforce.com/services/Soap/c/38.0/0DF6000000007AN")]
-        public string ic_ef_SFWebReference_SforceService {
+        [global::System.Configuration.DefaultSettingValueAttribute("https://connectall.org/index.php/api/v2_soap/index/")]
+        public string ic_ef_org_connectall1_MagentoService {
             get {
-                return ((string)(this["ic_ef_SFWebReference_SforceService"]));
+                return ((string)(this["ic_ef_org_connectall1_MagentoService"]));
             }
         }
     }

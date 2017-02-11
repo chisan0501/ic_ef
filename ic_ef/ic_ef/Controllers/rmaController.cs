@@ -304,8 +304,8 @@ namespace ic_ef.Controllers
             String SOQL = "";
             List<Case> case_result = new List<Case>();
          
-             SOQL = "SELECT Id,Return_Resolution__c,Description ,CaseNumber,IC_Barcodes__c,RMA_number__c,Production_Findings__c,Channel__c,CreatedDate FROM case where CreatedDate >=2017-01-01T12:00:00Z AND CreatedDate  <=2017-05-31T12:00:00Z";
-            //SOQL = "SELECT Id,Return_Resolution__c,Description,CaseNumber,IC_Barcodes__c,RMA_number__c,Production_Findings__c,Channel__c,CreatedDate FROM case where CreatedDate = YESTERDAY";
+            // SOQL = "SELECT Id,Return_Resolution__c,Description ,CaseNumber,IC_Barcodes__c,RMA_number__c,Production_Findings__c,Channel__c,CreatedDate FROM case where CreatedDate >=2017-01-01T12:00:00Z AND CreatedDate  <=2017-05-31T12:00:00Z";
+            SOQL = "SELECT Id,Return_Resolution__c,Description,CaseNumber,IC_Barcodes__c,RMA_number__c,Production_Findings__c,Channel__c,CreatedDate FROM case where CreatedDate = YESTERDAY";
             queryResult = sfdcBinding.query(SOQL);
             for (int i = 0; i < queryResult.size; i++)
             {

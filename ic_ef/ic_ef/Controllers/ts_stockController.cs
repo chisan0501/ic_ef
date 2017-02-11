@@ -116,7 +116,7 @@ namespace ic_ef.Controllers
 
 
             //in stock product
-            var stock_breakdown = (from t in db.ts_stock where t.update_time == null group t by t.sku into g select new { sku = g.Key, count_qtys = (from t in g select t.sku).Count() }).ToList();
+            var stock_breakdown = (from t in db.ts_stock where t.status == "Ready_for_Shipping" group t by t.sku into g select new { sku = g.Key, count_qtys = (from t in g select t.sku).Count() }).ToList();
 
             //open orders
             var online_breakdown = (from t in item_list_sku group t by t.sku into g select new { sku = g.Key, count_qty = (from t in g select t.count_qty).Sum() }).ToList();
@@ -175,7 +175,7 @@ namespace ic_ef.Controllers
             var yesterday_sametime = DateTime.Now.AddHours(-24);
             var now = DateTime.Now;
             var pending = (from t in online_breakdown where t.sku == sku select t.count_qty);
-            var onhand = (from t in db.ts_stock where t.sku == sku && t.update_time == null select t).Count();
+            var onhand = (from t in db.ts_stock where t.sku == sku && t.status == "Ready_for_Shipping" select t).Count();
             var avg_month = (from a in db.ship_log where a.sku == sku && a.shipdate < today && a.shipdate > month_ago select a).ToList();
             var pull_last_month = (from a in db.ts_stock where a.update_time != null && a.update_time < today && a.update_time > month_ago && a.sku == sku select a).Count();
             var item_name = (from t in item_list where t.sku == sku select t.item_name).FirstOrDefault();
