@@ -1255,6 +1255,7 @@
     <Content Include="Web References\org.connectall\giftMessageResponse1.datasource">
       <DependentUpon>Reference.map</DependentUpon>
     </Content>
+    <Content Include="Views\Home\temp_home.cshtml" />
     <None Include="Web References\org.connectall\item.xsd">
       <SubType>Designer</SubType>
     </None>
