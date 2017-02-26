@@ -15,7 +15,7 @@ namespace ic_ef
     public partial class process_run_time
     {
         public System.DateTime time { get; set; }
-        public string process { get; set; }
         public int row_id { get; set; }
+        public string process { get; set; }
     }
 }

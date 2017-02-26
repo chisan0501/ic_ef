@@ -26,7 +26,7 @@ namespace ic_ef.Properties {
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.SpecialSettingAttribute(global::System.Configuration.SpecialSetting.WebServiceUrl)]
-        [global::System.Configuration.DefaultSettingValueAttribute("https://login.salesforce.com/services/Soap/c/38.0/0DF6000000007AN")]
+        [global::System.Configuration.DefaultSettingValueAttribute("https://login.salesforce.com/services/Soap/c/39.0/0DF6000000007AX")]
         public string ic_ef_SFWebReference_SforceService {
             get {
                 return ((string)(this["ic_ef_SFWebReference_SforceService"]));

@@ -16,77 +16,114 @@
 
 
 
-<div class="ui raised very padded text container segment">
-    <div id="loader" class="ui disabled dimmer">
-        <div class="ui text loader">Loading</div>
+<div id="modals" class="ui modal">
+    <i class="close icon"></i>
+    <div class="header">
+        Message
     </div>
-    <h3 class="ui header">Add TechSoup Stock</h3>
+    <div id="message" class="content">
+      
 
+    </div>
+
+
+</div>
+
+<div class="ui grid" style="padding : 50px">
+  
+
+     
 
     
-    <select id="channel" name="channel_dropdown"  class="ui search dropdown">
        
-            <option value="">Select Channel</option>
+        <div class="four wide column">
+            <div class="ui raised very padded text segment">
+                <div id="loader" class="ui disabled dimmer">
+                    <div class="ui text loader">Loading</div>
+                </div>
+                <h3 class="ui header">Add TechSoup Stock</h3>
 
-        </select>
-        <div class="form-group">
-            <label for="comment"></label>
-            <textarea id="asset_textarea" style="width : 400px" class="form-control" rows="8" placeholder='Scan or Enter Assets'></textarea>
-        </div>
 
-        <div class="ui basic segment">
-            <h3 class="ui right floated header">
-                <button id="submit" class="ui primary button">Submit</button>
-            </h3>
-            <h3 class="ui left floated header"></h3>
-        </div>
 
-        <h3 class="ui right aligned header"></h3>
-
-        <div id="message"></div>
-
-</div>
-<div class="ui raised very padded text container segment">
-    <h3 class="ui header">Assets Added to Inventory Today</h3>
-    <table id="table_reminder" class="stripe" cellspacing="0" width="100%">
-        <thead>
-            <tr>
-                <th>Asset Tag</th>
-                <th>SKU</th>
-                <th>Status</th>
                 
+                <div class="form-group">
+                    <label for="comment"></label>
+                    <textarea id="asset_textarea" style="width : 100%" class="form-control" rows="8" placeholder='Scan or Enter Assets'></textarea>
+                </div>
+
+                <div class="ui basic segment">
+                    <h3 class="ui right floated header">
+                        <button id="submit" class="ui primary button">Submit</button>
+                    </h3>
+                    <h3 class="ui left floated header"></h3>
+                </div>
+
+                <h3 class="ui right aligned header"></h3>
+
+              
+
+            </div>
+        </div>
+        <div class="seven wide column">
+            <div class="ui raised very padded text segment">
                
-                
-            </tr>
-        </thead>
-        <tbody></tbody>
+                <h3 class="ui header">Assets Added to Inventory Today</h3>
+                <table id="table_reminder" class="stripe" cellspacing="0" width="100%">
+                    <thead>
+                        <tr>
+                            <th>Asset Tag</th>
+                            <th>SKU</th>
+                            <th>Status</th>
+                            <th>Action</th>
 
-    </table>
+
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+
+                </table>
 
 
 
-   
 
-    <div id="message"></div>
 
-</div>
+
+
+            </div>
+        </div>
+
+    </div>
+
+
+  
+    
+        
+        
+    
+
+
+
+
 
         <script>
 
-
-            $(document).ready(function () {
-
+            function get_table() {
                 $.getJSON("@Url.Action("get_addstcok")",function (data) {
                 
                     $('#table_reminder').DataTable({
                         destroy: true,
                         data: data,
-                        
+                        columnDefs: [{
+                            targets: 3,
+                            data: null,
+                            defaultContent: "<button class='ui red button' id='remove_btn'>Remove</button>"
+                        }
+                        ],
                         columns: [
                                        
                                        
                                        
-                                        { data: "ictag" },
+                        { data: "ictag" },
                         { data: "sku" },
                         { data: "status" }
                         ]
@@ -95,31 +132,56 @@
                 
                 });
 
-                $.getJSON("@Url.Action("get_channel_dropdown")", function (data) {
+            }
+            $(document).ready(function () {
 
-                    for (var i = 0; i < data.length ; i++) {
-
-
-                        $('#channel').append($("<option></option>")
-                                    .attr("value", data[i])
-                                    .text(data[i]));
-                    }
-
-
-
-                });
+             get_table();
+       
 
             });
-            $('.ui.dropdown')
-          .dropdown()
+            
             ;
 
+            $('#table_reminder tbody').on('click', '#remove_btn', function () {
+                var asset_tag = $(this).closest('td').siblings(':nth-child(1)').text();
+                var sku = $(this).closest('td').siblings(':nth-child(2)').text();
+
+
+                var r = confirm("are you sure you want to Remove Asset " + asset_tag + " from TS Inventory");
+                if (r == true) {
+                    var jsonObject = {
+                        asset: asset_tag,
+                        sku: sku
+                    };
+                    $.ajax({
+                        url: "@Url.Action("remove_ts_stock")",
+                        type: "POST",
+
+                    data: JSON.stringify(jsonObject),
+                    contentType: "application/json; charset=utf-8",
+                    dataType: "json",
+                    success: function (data) {
+                        $('#message').html(data);
+                        $('#modals').modal('show');
+                        get_table();
+                    }
+                });
+            }
+            else {
+                            return;
+            }
+            });
 
 
             $('#submit').click(function () {
 
+
+                if ($('#asset_textarea').val() == '') {
+                    return;
+                }
+
                 $("#loader").attr('class', 'ui active dimmer');
-                var channel = $('#channel option:selected').text();
+                //var channel = $('#channel option:selected').text();
                 var lines = $('#asset_textarea').val().split(/\n/);
 
                 var texts = [];
@@ -131,7 +193,7 @@
                 }
                 var jsonObject = {
                     asset: texts,
-                    channel: channel,
+                    //channel: channel,
                 };
 
                 $.ajax({
@@ -144,8 +206,10 @@
                     success: function (data) {
                         $("#loader").attr('class', 'ui disabled dimmer');
                         $('#message').html(data);
+                        $('#modals').modal('show');
                         $('#asset_textarea').val("");
-                        location.reload();
+                        get_table();
+
                     }
                 });
 

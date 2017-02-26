@@ -8,23 +8,85 @@
 }
 
 
+<div class="ui four column grid" style="padding-top: 50px;">
+    <div class="two column row">
+        <div class="column">
+            <h1 class="ui dividing huge header">ShipStation</h1>
 
-<div class="ui two column doubling stackable grid container">
-    <div class="column">
-        <div class="ui teal raised segment">
-          <i class="search link icon"></i>Search ShipStation
-          
         </div>
+
     </div>
-  
-    <div class="column">
-        <div class="ui teal raised segment">
-            <div class="ui statistic">
-                <div id="today_value" class="value">
-                    0
+    <div class="two column row">
+        <div class="column">
+            <div class="ui items">
+                <div class="item">
+
+                    <div class="middle aligned content">
+                        <div class="ui header">
+                            Mark In Store Pickup Item as Shipped
+                        </div>
+                        <div class="description">
+                            <p>Please Enter The Order Number below</p>
+                            <div class="ui icon input focus">
+                                <input id="order_id_input" type="text" placeholder="Search">
+                                <i class="circular search icon"></i>
+                            </div>
+                            <a id="detail_list" href="#">Do not have a Order # ?</a>
+                            <div id="loader" class="ui disabled inline loader"></div>
+                                <div id="submit_mark" class="ui positive right floated button">
+                                    Submit
+                                </div>
+                            
+                        </div>
+                        <div class="extra">                          
+                        </div>
+                    </div>
                 </div>
-                <div class="label">
-                    Items Shipped Today
+                <div class="ui divider"></div>
+                <div class="item">
+
+                    <div class="middle aligned content">
+                        <div class="ui header">
+                            Search ShipStation
+                        </div>
+                        <div class="description">
+                            <p>Search ShipStation</p>
+                        </div>
+                        <div class="extra">
+                        
+                                <div class="ui positive right floated button">
+                                    Create
+                                </div>
+                           
+                        </div>
+                    </div>
+                </div>
+                <div class="ui divider"></div>
+                <div class="item">
+
+                    <div class="middle aligned content">
+                        <div class="ui header">
+                            Items Shipped Today
+                        </div>
+                        <div class="description">
+                            <p>Get details of Items Shipped Today</p>
+                        </div>
+                        <div class="extra">
+                            <div class="ui statistic">
+                                <div id="today_value" class="value">
+                                    0
+                                </div>
+                                <div class="label">
+                                    Items Shipped Today
+                                </div>
+                            </div>
+                            
+                                <div class="ui positive right floated button">
+                                    View
+                                </div>
+                            
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -32,10 +94,136 @@
 </div>
 
 
+<div id="modal_message" class="ui modal">
+    <div class="ui icon header">
+        <i class="info icon"></i>
+        <div id="pmessage_p"></div>
+    </div>
+    
+</div>
+<div id="modal" class="ui modal">
+    <div class="ui icon header">
+        <i class="info icon"></i>
+        <div id="message_p"></div>
+    </div>
+    <div class="actions">
+        <div class="ui red cancel button">
+            <i class="remove icon"></i>
+            Cancel
+        </div>
+        <div id="submit_mark_btn" class="ui green ok button">
+            <i class="checkmark icon"></i>
+            Mark Order as Shipped
+        </div>
+    </div>
+</div>
+
+<div id="modal2" class="ui modal">
+    <i class="close icon"></i>
+    <div class="header">
+        Current Pending Order List
+    </div>
+    <div class="content">
+
+
+    </div>
+    <div class="actions">
+        <div class="ui black deny button">
+            Cancel
+        </div>
+      
+    </div>
+</div>
 
 <script>
 
+   
+    $('#detail_list').click(function () {
+
+
+        $.getJSON("@Url.Action("get_detail")",function (data) {
+                
+            $('#table_reminder').DataTable({
+                destroy: true,
+                data: data,
+                columnDefs: [{
+                    targets: 3,
+                    data: null,
+                    defaultContent: "<button class='ui red button' id='remove_btn'>Remove</button>"
+                }
+                ],
+                columns: [
+                                       
+                                       
+                                       
+                { data: "ictag" },
+                { data: "sku" },
+                { data: "status" }
+                ]
+
+            });
+            $('#modal2').modal('show');
+        });
+
+        
+        
+    });
+    $('#submit_mark_btn').click(function () {
+        var orderID = $('#orderID_td').text();
+        var r = confirm("Are you sure you want to mark Order " + orderID + " as shipped");
+        if (r == true) {
+            var jsonObject = { orderID: orderID }
+
+            $.ajax({
+                url: "@Url.Action("confrim_mark")",
+                type: "POST",
+
+            data: JSON.stringify(jsonObject),
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            success: function (data) {
+                $('#pmessage_p').html("<p>"+data+"<p>");
+                $('#modal_message').modal('show');
+             
+            }
+        });
+
+        } else {
+            return;
+        }
+
+
+    });
+
+    $('#submit_mark').click(function(){
+        $('#loader').attr("class", "ui active inline loader");
+        var order_num = $('#order_id_input').val();
+        
+       
+            var jsonObject = { order_num: order_num }
+
+            $.ajax({
+                url: "@Url.Action("mark_ship")",
+                type: "POST",
+
+            data: JSON.stringify(jsonObject),
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            success: function (data) {
+                $('#loader').attr("class", "ui disabled inline loader");
+                var items = "";
+                for (i = 0; i < data.orders[0].items.length; i++) {
+                    items += "<tr><td>Items</td><td>" + data.orders[0].items[i].sku + "</td></tr>"
+                }
+
+                $('#message_p').html("<table class='ui basic table'><tbody><tr><td>Order Id</td><td id='orderID_td'>" + data.orders[0].orderId + "</td></tr><tr><td>Order Number</td><td>" + data.orders[0].orderNumber + "</td></tr><tr><td>Bill to</td><td>" + data.orders[0].billTo.name + "</td></tr><tr><td>Order Status</td><td>" + data.orders[0].orderStatus + "</td></tr>" + items + "</tbody></table>");
+                $('#modal').modal('show');
+             
+            }
+        });
     
+    
+    });
 
 
 </script>

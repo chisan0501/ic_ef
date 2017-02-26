@@ -43,6 +43,32 @@ namespace ic_ef.Controllers
         Models.magentoViewModel magentoView = new Models.magentoViewModel();
 
 
+
+        public JsonResult  update_order (string order_id, string status)
+        {
+            var mage = new mage();
+            var sucess = mage.cancel_order(order_id, status);
+
+            return Json(sucess,JsonRequestBehavior.AllowGet);
+        }
+
+        public JsonResult get_order_detail (string order_id)
+        {
+
+            var mage = new mage();
+           var result   =  mage.get_order_detail(order_id);
+             
+            
+
+            return Json(result,JsonRequestBehavior.AllowGet);
+        }
+
+        public ActionResult adjust_status()
+        {
+
+            return View();
+        }
+
         public JsonResult get_missing_asset()
         {
 

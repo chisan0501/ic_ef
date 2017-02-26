@@ -14,11 +14,11 @@ namespace ic_ef
     
     public partial class magento_validation_log
     {
+        public int row_id { get; set; }
         public Nullable<System.DateTime> time { get; set; }
         public string SKU { get; set; }
         public Nullable<decimal> bin_qty { get; set; }
         public Nullable<decimal> mage_qty { get; set; }
         public string successful { get; set; }
-        public int row_id { get; set; }
     }
 }

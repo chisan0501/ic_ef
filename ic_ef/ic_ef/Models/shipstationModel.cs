@@ -27,7 +27,15 @@ namespace ic_ef.Models
         public string sku { get; set; }
     }
 
-    
+    public class mark_shipped
+    {
+        public int orderId;
+        public string carrierCode;
+        public string shipDate;
+        public string trackingNumber;
+        public bool notifyCustomer;
+        public bool notifySalesChannel;
+    }
     public class shipstationModel
     {
 

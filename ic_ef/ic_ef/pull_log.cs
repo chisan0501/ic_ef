@@ -16,9 +16,9 @@ namespace ic_ef
     {
         public Nullable<System.DateTime> time { get; set; }
         public int record_id { get; set; }
+        public string action { get; set; }
         public string ictag { get; set; }
         public string sku { get; set; }
         public string channel { get; set; }
-        public string action { get; set; }
     }
 }

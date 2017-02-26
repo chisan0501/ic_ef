@@ -22,8 +22,8 @@ namespace ic_ef
         public string id { get; set; }
         public string channel { get; set; }
         public Nullable<System.DateTime> date_requested { get; set; }
+        public string resolution_code { get; set; }
         public string ictag { get; set; }
         public string description { get; set; }
-        public string resolution_code { get; set; }
     }
 }

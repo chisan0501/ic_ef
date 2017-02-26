@@ -141,6 +141,7 @@ namespace ic_ef
             bool result;
             try
             {
+
                 MagentoService mservice = new MagentoService();
                 String mlogin = mservice.login("admin", "Interconnection123!");
                 var item_to_edit = new catalogProductCreateEntity();
@@ -153,6 +154,20 @@ namespace ic_ef
                 result = false;
             }
             return result;
+        }
+
+
+        public Boolean cancel_order(string orderID,string status)
+        {
+            bool sucess = false;
+
+            MagentoService mservice = new MagentoService();
+            String mlogin = mservice.login("admin", "Interconnection123!");
+         //  sucess = mservice.salesOrderCancel(mlogin, orderID);
+
+            sucess = mservice.salesOrderAddComment(mlogin, orderID, status, null,null);
+
+            return sucess;
         }
 
         public int update_qty(string sku,string qty,string pid)
@@ -216,7 +231,57 @@ namespace ic_ef
             //mservice.catalogProductAttributeMediaCreate(mlogin, retail.p_id, photo, "", "ID");
         }
 
+        public salesOrderListEntity[] get_open_orders()
+        {
+            MagentoService mservice = new MagentoService();
+            String mlogin = mservice.login("admin", "Interconnection123!");
 
+            filters mf = new filters();
+            complexFilter[] cpf = new complexFilter[1];
+            complexFilter mcpf = new complexFilter();
+            mcpf.key = "status";
+            associativeEntity mas = new associativeEntity();
+            mas.key = "in";
+            mas.value = "pending,processing,approved_clearsale,analysing_clearsale,pending_clearsale";
+            mcpf.value = mas;
+            cpf[0] = mcpf;
+            //mcpf = new complexFilter();
+            //mcpf.key = "status";
+            //mas = new associativeEntity();
+            
+            //mas.key = "eq";
+            //mas.value = "processing";
+            //mcpf.value = mas;
+            //cpf[1] = mcpf;
+            //mcpf = new complexFilter();
+            //mcpf.key = "status";
+            //mas = new associativeEntity();
+            
+            //mas.key = "eq";
+            //mas.value = "approved_clearsale";
+            //mcpf.value = mas;
+            //cpf[2] = mcpf;
+            //mcpf = new complexFilter();
+            //mcpf.key = "status";
+            //mas = new associativeEntity();
+            
+            //mas.key = "eq";
+            //mas.value = "analysing_clearsale";
+            //mcpf.value = mas;
+            //cpf[3] = mcpf;
+            //mcpf = new complexFilter();
+            //mcpf.key = "status";
+            //mas = new associativeEntity();
+           
+            //mas.key = "eq";
+            //mas.value = "pending_clearsale";
+            //mcpf.value = mas;
+            //cpf[4] = mcpf;
+            mf.complex_filter = cpf;
+            var soe = mservice.salesOrderList(mlogin, mf);
+            return soe;
+
+        }
         public catalogProductEntity[] get_all_product()
         {
             MagentoService mservice = new MagentoService();
@@ -227,8 +292,17 @@ namespace ic_ef
             return result;
         }
 
+        public salesOrderEntity get_order_detail(string order_id)
+        {
 
-        
+            MagentoService mservice = new MagentoService();
+            String mlogin = mservice.login("admin", "Interconnection123!");
+            var result = mservice.salesOrderInfo(mlogin, order_id);
+
+              return result;
+        }
+
+
 
         public catalogInventoryStockItemEntity[] check_product (string sku)
         {

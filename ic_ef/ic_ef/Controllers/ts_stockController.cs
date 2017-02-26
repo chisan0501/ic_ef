@@ -241,6 +241,26 @@ namespace ic_ef.Controllers
             return Json(new { weekly = weekly, orders = orders ,shipped = shipped, instock = instock, validated = validated, ship_today = ship_today, add_today = add_today }, JsonRequestBehavior.AllowGet);
         }
 
+        public JsonResult remove_ts_stock(string asset,string sku)
+        {
+            string message = "";
+
+            try
+            {
+                var ts_stock = new ts_stock { ictag = asset };
+                db.ts_stock.Attach(ts_stock);
+                db.ts_stock.Remove(ts_stock);
+                db.SaveChanges();
+                message = "Asset " + asset + " Removed";
+            }
+         catch(Exception e)
+            {
+                message = "Error";
+            }
+
+            return Json(message, JsonRequestBehavior.AllowGet);
+        }
+
         public JsonResult get_channel_dropdown()
         {
 
@@ -250,7 +270,7 @@ namespace ic_ef.Controllers
         }
 
         //add ts stock from production
-        public JsonResult ts_add_stock(string channel, string[] asset)
+        public JsonResult ts_add_stock(string[] asset)
         {
             
             string message = "";
@@ -259,7 +279,7 @@ namespace ic_ef.Controllers
 
            
                 
-                channel = channel.Replace("TSG_", "HW-");
+               // channel = channel.Replace("TSG_", "HW-");
                 
                 
 
@@ -271,6 +291,14 @@ namespace ic_ef.Controllers
 
                 if (exisit == null)
                 {
+                    int int_asset = int.Parse(temp_asset);
+                    var channel = (from t in db.rediscovery where t.ictag == int_asset select t.pallet).FirstOrDefault();
+                    if (!channel.Contains("TSG_"))
+                    {
+                        message += "<p style='color:red'>" + asset[i] + " has a non-TechSoup SKU</p>";
+                        continue;
+                    }
+                    channel = channel.Replace("TSG_", "HW-");
                     ts_stock ts = new ts_stock();
                     ts.ictag = temp_asset;
                     current_asset = temp_asset;

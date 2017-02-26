@@ -1,0 +1,127 @@
+﻿
+@{
+    ViewBag.Title = "adjust_status";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+
+<div class="ui two column centered grid" style="padding-top : 40px">
+    <div class="column">
+
+        <h2>Modify Order Status</h2>
+        <div class="ui divider"></div>
+
+    </div>
+
+    <div class="two column centered row">
+
+        <div class="column">
+
+            <div id="loader" class="ui disabled dimmer">
+                <div class="ui loader"></div>
+            </div>
+            <div class="column">
+                <div class="ui basic segment">
+                    <div class="ui icon focus large input">
+                        <input id="order_num" type="text" placeholder="Enter Order Number">
+                        <i id="submit" class="inverted circular search link icon"></i>
+                    </div>
+
+                </div>
+            </div>
+
+            <div id="order_modal" class="ui disabled modal">
+                <div id="loader2" class="ui disabled dimmer">
+                    <div class="ui loader"></div>
+                </div>
+                <i class="close icon"></i>
+                <div class="header">
+                    Order Detail
+                </div>
+                <div class="content">
+                    <table id="data_table" class="ui celled table">
+
+                        <tbody id="table_value"></tbody>
+
+                    </table>
+                    <div class="ui basic right aligned segment">
+                        <select id="status_select" class="ui float right dropdown">
+                            <option value="">Select Status</option>
+                            <option value="closed">Closed</option>
+                            <option value="store_pickup">In Store Pick up</option>
+                            <option value="complete">Shipped</option>
+                            <option value="processing">Invoiced/Processing</option>
+                            <option value="pending">Invoice Pending</option>
+                        </select>
+                    </div>
+                    <div id="message"></div>
+                </div>
+                <div class="actions">
+                    <div id="submit_update" class="ui button">Submit</div>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+        
+    </div>
+
+
+
+
+
+<script>
+
+    $('#submit_update').click(function () {
+        $('#loader2').attr('class', 'ui active dimmer');
+        var order_id = $('#orderid').text();
+         var status = $( "#status_select option:selected" ).val();
+         if (status == "") {
+             alert("Please Select Status from Dropdown");
+             $('#loader2').attr('class', 'ui disabled dimmer');
+             return;
+         }
+         $.getJSON("@Url.Action("update_order")", { order_id: order_id, status: status }, function (data) {
+            
+             if (data = 'true') {
+                 $('#message').html("<p style='color:green'>Order "+order_id+" Status Updated Successfully</p>");
+             }
+             else {
+                 $('#message').html("<p style='color:red'>Order " + order_id + " Status Updated Failed</p>");
+             }
+             $('#loader2').attr('class', 'ui disabled dimmer');
+
+         });
+
+    });
+    
+    
+    $('#submit').click(function () {
+        $('#loader').attr('class', 'ui active dimmer');
+        var order_number = $('#order_num').val();
+        if (order_number == '') {
+            alert("OrderID can't be empty");
+            $('#loader').attr('class', 'ui disabled dimmer');
+            return;
+        }
+
+        $.getJSON("@Url.Action("get_order_detail")", { order_id: order_number }, function (data) {
+            $('#loader').attr('class', 'ui disabled dimmer');
+            var item_html = "";
+            for (var i = 0; i < data.items.length;i++){
+                item_html += "<tr><td>" + data.items[i].sku + "</td><td>Qty:" + data.items[i].qty_ordered + "</td></tr>";
+            }
+
+            $('#table_value').html("<tr><td>Order Number:</td><td id='orderid'>" + data.increment_id + "</td></tr><tr><td>Order Created at:</td><td>" + data.created_at + "</td></tr><tr><td>Order Updated at:</td><td>" + data.updated_at + "</td></tr><tr><td>Status: </td><td>" + data.status + "</td></tr><tr><td>Items:</tr>" + item_html + "")
+            $('#order_modal').modal('show');
+
+        });
+
+    });
+
+
+</script>
+    

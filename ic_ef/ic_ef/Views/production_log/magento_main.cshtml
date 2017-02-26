@@ -1,17 +1,18 @@
 ﻿
 
+@{
 
-<!DOCTYPE html>
 
-<html>
-<head>
+    ViewBag.Title = "Magento Web App";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
     <meta name="viewport" content="width=device-width" />
     <script src="~/js/countdown.min.js"></script>
     <script src="~/js/moment.js"></script>
-    <title>Magento Web App</title>
-    
-</head>
-<body>
+    <title>Magento Web App</title>    
+
 
     <div class="ui small breadcrumb">
         <a href="@Url.Action("index", "home")" class="section">Home</a>
@@ -19,140 +20,196 @@
         <div class="active section">Magento Web APP</div>
     </div>
 
+
+<div class="ui raised very padded text container segment">
+    <div class="ui four column grid" style="padding-top: 50px;">
+        <div class="one column row">
+            <div class="column">
+                <h1 class="ui dividing huge header">Magento WebApp</h1>
+
+            </div>
+
+        </div>
+        <div class="one column row">
+            <div class="column">
+                <div class="ui items">
+                    <div class="ui items">
+                        <div class="item">
+                            <div class="middle aligned content">
+                                <div class="ui header">
+                                    <i class="big black bar chart icon"></i>Inventory Report
+                                </div>
+                                <div class="description">
+                                    <p>Get a Quick Overview on whats in the bin</p>
+                                    <a href="@Url.Action("inventory_report", "production_log")">
+                                        <div id="submit_mark" class="ui positive right floated button">
+                                            Go
+                                        </div>
+                                    </a>
+                                </div>
+                             
+                            </div>
+
+                        </div>
+                        <div class="ui divider"></div>
+                        <div class="item">
+                            <div class="middle aligned content">
+                                <div class="ui header">
+                                    <i class="big black windows icon"></i>Inventory Overview(Windows)
+                                </div>
+                                <div class="description">
+                                    <p>Add or Remove Assets from the bin</p>
+                                    
+
+
+                                   
+                                </div>
+                                <div class="extra">
+                                    <a class="header" href="@Url.Action("bin_overview", "production_log")">
+                                        <div id="submit_mark" class="ui positive right floated button">
+                                            Go
+                                        </div>
+                                    </a>
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="ui divider"></div>
+                        <div class="item">
+                            <div class="middle aligned content">
+                                <div class="ui header">
+                                    <i class="big black apple icon"></i>Inventory Overview(MAC)
+                                </div>
+                                <div class="description">
+                                    <p>Add or Remove Assets from the bin</p>
+                                    
+
+
+                                   
+                                </div>
+                                <div class="extra">
+                                    <a href="@Url.Action("bin_overview_mac", "production_log")">
+                                        <div id="submit_mark" class="ui positive right floated button">
+                                            Go
+                                        </div>
+                                    </a>
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="ui divider"></div>
+                        <div class="item">
+                            <div class="middle aligned content">
+                                <div class="ui header">
+                                    <i class="big black adjust icon"></i>Modify Order Status
+                                </div>
+                                <div class="description">
+                                    <p>Modify Status on Orders in Magento, Applys to any type of orders</p>
+
+
+
+
+                                </div>
+                                <div class="extra">
+                                    <a href="@Url.Action("adjust_status", "production_log")">
+                                        <div id="submit_mark" class="ui positive right floated button">
+                                            Go
+                                        </div>
+                                    </a>
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="ui divider"></div>
+                        <div class="item">
+                            <div class="middle aligned content">
+                                <div class="ui header">
+                                    <i class="big black repeat icon"></i>Return Asset to Stock
+                                </div>
+                                <div class="description">
+                                    <p>Pulled the Wrong Machine? Use this tab to assign asset back to stock</p>
+                                    
+
+
+                                   
+                                </div>
+                                <div class="extra">
+                                    <a href="@Url.Action("return_stock", "production_log")">
+                                        <div id="submit_mark" class="ui positive right floated button">
+                                            Go
+                                        </div>
+                                    </a>
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="ui divider"></div>
+                        <div class="item">
+                            <div class="middle aligned content">
+                                <div class="ui header">
+                                    <i class="big black resize horizontal icon"></i>Validate Magento DB vs ICDB
+                                </div>
+                                <div class="description">
+                                    <p>This Process Will Validate Inventory against Magento Inventory then update the Qty if needed</p>
+                                    <div class="value" id="validate_value" style="font-size : 20px">
+                                        0
+                                    </div>
+                                    <div class="label">
+
+                                    </div>
+                                    <p>Til Next Run Time</p>
+
+
+                              
+                                </div>
+                                <div class="extra">
+                                    <a href="@Url.Action("magento_validation", "production_log")">
+                                        <div id="submit_mark" class="ui positive right floated button">
+                                            Go
+                                        </div>
+                                    </a>
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="ui divider"></div>
+                    </div>
+                </div>
+
+
+            </div>
+
+        </div>
+
+    </div>
+</div>
+
     
 
 
-    <div class="ui three column doubling stackable grid container">
-        <div class="column">
-
-            <a class="head" href="@Url.Action("inventory_report", "production_log")">
-                <div class="ui blue center aligned segment">
-                    <p>
-                        <i class="big black edit icon"></i>Inventory Report
-                    </p>
-                    <div class="ui statistic">
-                        <div class="value" id="bin_value">
-                            0
-                        </div>
-                        <div class="label">
-                            Assets in Stock
-                        </div>
-                    </div>
-                </div>
-            </a>
-           
-            <p></p>
-        </div>
-        <div class="column">
-            <a class="header" href="@Url.Action("bin_overview", "production_log")">
-                <div class="ui blue center aligned segment">
-                    <p>
-                        <i class="big black windows icon"></i>Inventory Overview(Windows)
-                    </p>
-                    <div class="ui statistic">
-                        <div class="value" id="windows_value">
-                            0
-                        </div>
-                        <div class="label">
-                            Assets Pulled in last 24 hours
-                        </div>
-                    </div>
-                </div>
-            </a>
-        </div>
-        <div class="column">
-            <a href="@Url.Action("bin_overview_mac", "production_log")">
-                <div class="ui blue center aligned segment">
-                    <p>
-                        <i class="big black apple icon"></i>Inventory Overview(MAC)
-                    </p>
-                    <div class="ui statistic">
-                        <div class="value" id="mac_value">
-                            0
-                        </div>
-                        <div class="label">
-                            Assets Pulled in last 24 hours
-                        </div>
-                    </div>
-                </div>
-            </a>
-        </div>
-        
-    </div>
-    <div class="ui three column doubling stackable grid container">
-        <div class="column">
-            <a href="@Url.Action("bin_overview_gradec", "production_log")">
-                <div class="ui teal center aligned segment">
-                    <p>
-                        <i class="big black laptop icon"></i>Inventory Overview (Grade C)
-                    </p>
-                    <div class="ui statistic">
-                        <div class="value" id="mac_value">
-                            0
-                        </div>
-                        <div class="label">
-                            Assets in Stock
-                        </div>
-                    </div>
-                </div>
-            </a>
-        </div>
-        <div class="column">
-            <a href="@Url.Action("return_stock", "production_log")">
-                <div class="ui teal center aligned segment">
-                    <p>
-                        <i class="big black repeat icon"></i>Return Asset to Stock
-                    </p>
-                    <div class="ui statistic">
-                        <div class="value" id="missing_value">
-                            0
-                        </div>
-                        <div class="label">
-                            Assets Unresloved/Missing 
-                        </div>
-                    </div>
-                </div>
-            </a>
-        </div>
-        <div class="column">
-            <a href="@Url.Action("magento_validation", "production_log")">
-                <div class="ui teal center aligned segment">
-                    <p>
-                        <i class="big black resize horizontal icon"></i>Validate Magento DB vs ICDB
-                    </p>
-                    
-                        <div class="value" id="validate_value">
-                            0
-                        </div>
-                        <div class="label">
-                            
-                        </div>
-                    <p>Til Next Run Time</p>
-                    </div>
-                </div>
-            </a>
-        </div>
-        </div>
-</body>
-</html>
 
 
-<script>
-    $.getJSON("@Url.Action("get_overall_data")", function (data) {
-        $('#bin_value').text(data.bin_overall);
-        $('#windows_value').text(data.windows_pull);
-        $('#mac_value').text(data.mac_pull);
-        $('#missing_value').text(data.missing);
-        var now = moment();
-        var then = moment(data.validated);
-      
-        (function timerLoop() {
-            $('#validate_value').text(countdown(then).toString());
-            requestAnimationFrame(timerLoop);
-        })();
-        
 
-    });
+ 
 
-   
-</script>
+
+
+    <script>
+        $.getJSON("@Url.Action("get_overall_data")", function (data) {
+            $('#bin_value').text(data.bin_overall);
+            $('#windows_value').text(data.windows_pull);
+            $('#mac_value').text(data.mac_pull);
+            $('#missing_value').text(data.missing);
+            var now = moment();
+            var then = moment(data.validated);
+
+            (function timerLoop() {
+                $('#validate_value').text(countdown(then).toString());
+                requestAnimationFrame(timerLoop);
+            })();
+
+
+        });
+
+
+    </script>

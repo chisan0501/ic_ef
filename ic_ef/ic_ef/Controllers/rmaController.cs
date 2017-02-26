@@ -235,7 +235,8 @@ namespace ic_ef.Controllers
             sfdcBinding.SessionHeaderValue.sessionId = currentLoginResult.sessionId;
             var update_case = new Case();
 
-
+            update_case.Reviewed_by_Production__c = true;
+            update_case.Reviewed_by_Production__cSpecified = true;
             update_case.Id = edit_case.id;
             update_case.Production_Findings__c = finding;
 
@@ -243,7 +244,7 @@ namespace ic_ef.Controllers
 
 
             SaveResult[] saveResults = sfdcBinding.update(new sObject[] { update_case });
-
+             
             string result = "";
             if (saveResults[0].success)
             {

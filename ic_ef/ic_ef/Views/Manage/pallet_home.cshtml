@@ -6,49 +6,71 @@
 
 
 
+    <div class="ui four column grid" style="padding-top: 50px;">
+        <div class="two column row">
+            <div class="column">
+                <h1 class="ui dividing huge header">Manage Pallets</h1>
+             
+            </div>
 
-
-<div class="ui two column centered grid">
-    <div class="column">
-
-        <div class="ui teal raised segment">
-         <h3 class="center header">
-             Manage Pallets
-         </h3>
-          
         </div>
+        <div class="two column row">
+            <div class="column">
+                <div class="ui items">
+                    <div class="item">
+
+                        <div class="middle aligned content">
+                            <div class="ui huge header">
+                                Pallets Detail
+                            </div>
+                            <div class="description">
+                                <p>Click to See Details of Current Pallets</p>
+                            </div>
+                            <div class="extra">
 
 
-    </div>
-    <div class="four column centered row">
-        <div class="column">
-            <div class="ui blue raised segment">
-                <a href="@Url.Action("pallet_view", "manage")">
-                    <div class="ui blue statistic">
-                        <div id="pallet_count" class="value">
-                            0
-                        </div>
-                        <div class="label">
-                            Pallets
+                                <div class="ui blue statistic">
+                                    <div id="pallet_count" class="value">
+                                        0
+                                    </div>
+                                    <div class="label">
+                                        Pallets
+                                    </div>
+                                </div>
+
+                                <a href="@Url.Action("pallet_view", "manage")">
+                                    <div class="ui positive right floated button">
+                                        View
+                                    </div>
+                                </a>
+                            </div>
                         </div>
                     </div>
-                </a>
-            </div>
+                    <div class="ui divider"></div>
+                    <div class="item">
 
-        </div>
-        <div class="column">
-            <div class="ui blue raised segment">
-                <a href="@Url.Action("createPallet", "manage")">
-                    <h3 class="center header">
-                        <i><img src="~/images/pallet_black.svg" style="height:80px;width:80px" /></i>
-                        Create Pallet
-                    </h3>
-                </a>
-            </div>
+                        <div class="middle aligned content">
+                            <div class="ui huge header">
+                                Create Pallet
+                            </div>
+                            <div class="description">
+                                <p>Create new Pallet</p>
+                            </div>
+                            <div class="extra">
+                                <a href="@Url.Action("createPallet", "manage")">
+                                    <div class="ui positive right floated button">
+                                        Create
+                                    </div>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
 
+                </div>
+            </div>
         </div>
     </div>
-</div>
+
 
 <script>
     $.getJSON("@Url.Action("get_pallet_detail")", function (data) { 

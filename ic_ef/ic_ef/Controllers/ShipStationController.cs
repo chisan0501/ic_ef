@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Net.Http;
+using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
@@ -237,6 +238,89 @@ namespace ic_ef.Controllers
            
         }
 
+
+        public async Task<ss_order.Order_num_to_orderID.Rootobject> get_orderID(int orderNumber)
+        {
+            var result = new ss_order.Order_num_to_orderID.Rootobject();
+            int orderID = 0;
+            var baseAddress = new Uri("https://ssapi.shipstation.com/");
+
+            using (var httpClient = new HttpClient { BaseAddress = baseAddress })
+            {
+
+                httpClient.DefaultRequestHeaders.TryAddWithoutValidation("authorization", "Basic ZmU3YzE2MGMyZjE0NDc1ZDljNWQ0ZWI2ZmMzYmRhOWU6YzRiM2RhMjlkZWZlNDgyOWJlZmRlYTExNmU1N2Q5ZTY=");
+
+                using (var response = await httpClient.GetAsync("orders?orderNumber="+orderNumber))
+                {
+
+                    string responseData = await response.Content.ReadAsStringAsync();
+                    result = JsonConvert.DeserializeObject<ss_order.Order_num_to_orderID.Rootobject>(responseData);
+                   // orderID = result.orders[0].orderId;
+                }
+
+             
+
+            }
+            return result;
+        }
+        public async Task mark_as_shipped(int orderID)
+        {
+           
+            var baseAddress = new Uri("https://ssapi.shipstation.com");
+
+            using (var httpClient = new HttpClient { BaseAddress = baseAddress })
+            {
+
+                Models.mark_shipped mark = new Models.mark_shipped();
+                mark.orderId = orderID;
+                mark.carrierCode = "6";
+                mark.notifyCustomer = false;
+                mark.notifySalesChannel = true;
+                mark.trackingNumber = orderID.ToString();
+                mark.shipDate = DateTime.Today.ToString("yyyy-MM-dd");
+               // string json = new JavaScriptSerializer().Serialize(mark);
+                string json = JsonConvert.SerializeObject(mark);
+                httpClient.DefaultRequestHeaders.TryAddWithoutValidation("authorization", "Basic ZmU3YzE2MGMyZjE0NDc1ZDljNWQ0ZWI2ZmMzYmRhOWU6YzRiM2RhMjlkZWZlNDgyOWJlZmRlYTExNmU1N2Q5ZTY=");
+                
+
+                using (var content = new StringContent(json,Encoding.Default, "application/json"))
+                //using (var content = new StringContent(json, System.Text.Encoding.Default,
+                //                    "application/json")) 
+                {
+                    using (var response = await httpClient.PostAsync("orders/markasshipped", content))
+                    {
+                        string responseData = await response.Content.ReadAsStringAsync();
+                    }
+                }
+
+            }
+        }
+
+
+        //update status of orders 
+        public JsonResult cancel_order(string orderId, string status)
+        {
+
+            mage mage = new mage();
+
+            var result = mage.cancel_order(orderId,status);
+
+
+            return Json(JsonRequestBehavior.AllowGet);
+
+        }
+
+        //get detail of orders
+        public JsonResult get_detail()
+        {
+            var mage = new mage();
+           
+            var result = mage.get_open_orders();
+
+
+            return Json(JsonRequestBehavior.AllowGet);
+        }
+
         public async Task get_order_detail(int orderID)
         {
 
@@ -353,6 +437,38 @@ namespace ic_ef.Controllers
         }
 
 
+        public async Task<JsonResult> confrim_mark (int orderID)
+        {
+            string message = "";
+            try
+            {
+                await mark_as_shipped(orderID);
+                message = orderID + " have successfully mark as shipped";
+            }
+            catch
+            {
+                message = "Something went wrong with order : " + orderID;
+            }
+
+            return Json(message, JsonRequestBehavior.AllowGet);
+        }
+
+        public async Task<JsonResult> mark_ship(int order_num)
+        {
+            var result = new ss_order.Order_num_to_orderID.Rootobject();
+          
+            try
+            {
+              result =  await get_orderID(order_num);
+             
+            }
+            catch (Exception e)
+            {
+                
+            }
+
+            return Json(result,JsonRequestBehavior.AllowGet);
+        }
 
         [AllowAnonymous]
         public async Task<ActionResult> get_shipment(string id)

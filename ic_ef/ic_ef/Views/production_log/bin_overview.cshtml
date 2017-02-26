@@ -16,7 +16,7 @@
             <div class="bar">
                 <div class="progress"></div>
             </div>
-            <div class="label">Adding Photos</div>
+            <div class="label">Adding Pending Orders</div>
         </div>
     </div>
 </div>
@@ -122,7 +122,37 @@
 
                 var temp_inv;
                 var data_arr = new Array();
+                function get_table() {
 
+                    var table = $.getJSON("@Url.Action("get_current_inv")", function (data) {
+                        $("#item_total").html("<h3># of Items in Stock: " + data.length + "</h3>")
+                        $('#table_reminder').DataTable({
+                            destroy: true,
+                            data: data,
+                            columnDefs: [{
+                                targets: 3,
+                                data: null,
+                                defaultContent: "<button class='ui teal button' id='add_btn_retail'>Retail Store</button>"
+                            },
+
+                            {
+                                targets: 4,
+                                data: null,
+                                defaultContent: "<button class='ui blue button' id='add_btn_online'>Online Store</button>"
+                            }
+                            
+                            ],
+                            columns: [
+                                            { data: "ictags" },
+                                           { data: "channel" },
+                                           { data: "bin_location" },
+
+                            ]
+
+                        });
+                    });
+
+                }
                 function load_table() {
                     $("#loader").show();
                     $('#example4').progress({
@@ -151,33 +181,9 @@
                     });
 
                     //generate inventory table
-                    var table = $.getJSON("@Url.Action("get_current_inv")", function (data) {
-                        $("#item_total").html("<h3># of Items in Stock: " + data.length + "</h3>")
-                        $('#table_reminder').DataTable({
-                            destroy: true,
-                            data: data,
-                            columnDefs: [{
-                                targets: 3,
-                                data: null,
-                                defaultContent: "<button class='ui teal button' id='add_btn_retail'>Retail Store</button>"
-                            },
+                  
+                   
 
-                            {
-                                targets: 4,
-                                data: null,
-                                defaultContent: "<button class='ui blue button' id='add_btn_online'>Online Store</button>"
-                            }
-                            
-                            ],
-                            columns: [
-                                            { data: "ictags" },
-                                           { data: "channel" },
-                                           { data: "bin_location" },
-
-                            ]
-
-                        });
-                    });
                     var timer = setInterval(myMethod, 50);
 
                     function myMethod() {
@@ -206,6 +212,7 @@
                     }
                     var x = document.lastModified;
                     $("#last_update").html("Last Update at " + x + " (Page refreshes every 30min)");
+                    get_table();
                     load_table();
 
                     var table = $.getJSON("@Url.Action("full_product_list")", function (data) {
@@ -257,7 +264,7 @@
                                 dataType: "json",
                                 success: function (data) {
 
-
+                                    get_table();
                                     $('#table_loader').attr('class', 'ui disabled inverted dimmer');
                                     $("#output").html(data.result);
 
@@ -307,7 +314,7 @@
 
                                     $('#table_loader').attr('class', 'ui disabled inverted dimmer');
                                     $("#output").html(data.message);
-
+                                    get_table();
                                 }
                             });
                         } else {
