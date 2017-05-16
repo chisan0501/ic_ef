@@ -1,0 +1,100 @@
+﻿
+@{
+    ViewBag.Title = "link";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<div id="modal" class="ui smalll modal">
+    <div class="header">Message</div>
+    <div class="content">
+        <p>Operation Complete, Please Verify if Order is Updated</p>
+
+    </div>
+</div>
+
+<div class="ui two column centered grid">
+    <div class="column"><div class="ui basic segment"><h2 class="ui header">Link Account Info with Order</h2></div></div>
+    <div class="two column centered row">
+        <div class="column">
+            <div class="ui segment">
+                <div class="ui input focus">
+                    <input type="text" id="customer_id" placeholder="Customer ID">
+                </div>
+                <div class="ui input focus">
+                    <input type="text" id="entity_id" placeholder="Order Entity ID">
+                </div>
+                <button id="submit_link_btn" class="positive ui button">submit</button>
+                <div id="loader" class="ui inline loader"></div>
+                <div class="ui info message">
+                   
+                    <div class="header">
+                        <p>*Please Note : System will only updates orders with no account info linked</p>
+                        <p>*see instruction below to find ID for both field</p>
+                    </div>
+                  
+                </div>
+                <div class="ui special cards">
+                    <div class="ui card">
+                   
+                        <div class="content">
+                            <a class="header">Customer ID</a>
+                            <div class="meta">
+                                <p><a class="header">1.Click Into the Customer You Would like to find the ID for in Magento</a></p>
+                                <p><a class="header">2.Look Up to the URL</a></p>
+                                <p><a class="header">3./admin/customer/edit/id/<strong>ID HERE</strong>/key/</a> </p>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="ui card">
+
+                        <div class="content">
+                            <a class="header">Order Entity ID</a>
+                            <div class="meta">
+                                <p><a class="header">1.Click Into the Order You Would like to find the ID for in Magento</a></p>
+                                <p><a class="header">2.Look Up to the URL</a></p>
+                                <p><a class="header">3./admin/sales_order/view/order_id/<strong>ID HERE</strong>/key/</a> </p>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+           
+            </div>
+        </div>
+       
+    </div>
+</div>
+
+<script>
+
+
+
+    $('#submit_link_btn').click(function () {
+        var customer_id = $('#customer_id').val();
+        var entity_id = $('#entity_id').val();
+        $('#loader').attr('class', 'ui active inline loader');
+        var jsonObject = {
+            customer_id:customer_id,
+            entity_id:entity_id,
+        };  
+
+        $.ajax({
+            url: "@Url.Action("link_account")", 
+            type: "POST",
+        data: JSON.stringify(jsonObject),
+        contentType: "application/json; charset=utf-8",
+        dataType: "json",
+        success: function (data) {
+            $('#loader').attr('class', 'ui inline loader');
+            $('#modal').modal('show');
+        }
+    });
+
+    })
+
+  
+
+
+</script>

@@ -72,6 +72,12 @@ namespace ic_ef.Controllers
             ViewBag.Title = "InterConnection.org";
             return View();
         }
+
+        public ActionResult test()
+        {
+            return View();
+        }
+
         public ActionResult customer_support ()
         { 
             return View();

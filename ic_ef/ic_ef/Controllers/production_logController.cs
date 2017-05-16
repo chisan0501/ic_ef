@@ -697,6 +697,33 @@ namespace ic_ef.Controllers
             }
         }
 
+
+        public ActionResult link()
+        {
+            return View();
+        }
+
+        public JsonResult link_account ( string customer_id, string entity_id)
+        {
+            var response = "";
+            try
+            {
+                HttpWebRequest myHttpWebRequest = (HttpWebRequest)WebRequest.Create("http://connectall.org/link.php?customer_id=" + customer_id + "&entity_id=" + entity_id);
+                myHttpWebRequest.ContentType = "application/x-www-form-urlencoded";
+                myHttpWebRequest.UserAgent = ".NET Framework Test Client";
+                WebResponse wr = myHttpWebRequest.GetResponse();
+               
+            }
+            catch (WebException wex)
+            {
+                var pageContent = new StreamReader(wex.Response.GetResponseStream())
+                                      .ReadToEnd();
+            }
+
+
+            return Json(response,JsonRequestBehavior.AllowGet);
+        }
+
         public void smart_inventory (string p_id, string qty)
         {
             try

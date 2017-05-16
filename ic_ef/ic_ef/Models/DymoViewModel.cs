@@ -28,6 +28,8 @@ namespace ic_ef.Models
         public string cpu { get; set; }
         public string ram { get; set; }
         public string hdd { get; set; }
+
+        public string optical_drive { get; set; }
     }
 
    

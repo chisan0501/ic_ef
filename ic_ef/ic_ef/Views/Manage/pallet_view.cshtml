@@ -20,10 +20,10 @@
 
 <div id="main" class="ui raised very padded text container segment">
     <div class='ui left rail'>
-        <div class='ui segment'>
+        <div class='ui segment' style="height: 60%; overflow: scroll;">
             <h3 class="ui header">Pallets</h3>
            
-            <div id="pallet_list_body" class="ui middle aligned selection list">
+            <div id="pallet_list_body" class="ui middle aligned selection list" >
              
                
             </div>
@@ -109,7 +109,7 @@
     </div>
     <div class="image content">
     
-        <table id="result_table"class="ui striped table">
+        <table id="result_table" class="ui striped table">
             <thead>
                 <tr>
                     <th>Asset Tag</th>
@@ -118,6 +118,7 @@
                     <th>CPU</th>
                     <th>RAM</th>
                     <th>HDD</th>
+                    <th>Optical Drive</th>
                 </tr>
             </thead>
             <tbody id="result_body"></tbody>
@@ -279,7 +280,7 @@
              $('#result_body').html("");
              for (var i = 0; i < data.result.length; i++) {
 
-                 $('#result_body').append("<tr><td>" + data.result[i].ictags + "</td><td>" + data.result[i].brand + "</td><td>" + data.result[i].model + "</td><td>" + data.result[i].cpu + "</td><td>" + data.result[i].ram + "</td><td>" + data.result[i].hdd + "</td></tr>");
+                 $('#result_body').append("<tr><td>" + data.result[i].ictags + "</td><td>" + data.result[i].brand + "</td><td>" + data.result[i].model + "</td><td>" + data.result[i].cpu + "</td><td>" + data.result[i].ram + "</td><td>" + data.result[i].hdd + "</td><td>" + data.result[i].optical_drive + "</td></tr>");
              }
 
         }

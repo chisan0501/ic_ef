@@ -125,7 +125,7 @@ namespace ic_ef.Controllers
         public JsonResult get_pallet_hardware_detail(string pallet)
         {
 
-            var result = (from o in db.pallet where o.pallet_name == pallet from h in db.discovery where h.ictag == o.ictags select new Models.detailViewModel { ictags = o.ictags, pallet_name = o.pallet_name, note = o.note, brand = h.brand, model = h.model, cpu = h.cpu, ram = h.ram, hdd = h.hdd }).ToList();
+            var result = (from o in db.pallet where o.pallet_name == pallet from h in db.discovery where h.ictag == o.ictags select new Models.detailViewModel { ictags = o.ictags, pallet_name = o.pallet_name, note = o.note, brand = h.brand, model = h.model, cpu = h.cpu, ram = h.ram, hdd = h.hdd ,optical_drive = h.optical_drive }).ToList();
             var cpu_count = from l in result group l by l.cpu into g select new { cpu = g.Key, Count = (from l in g select l.cpu).Count() };
             var ram_count = from l in result group l by l.ram into g select new { ram = g.Key, Count = (from l in g select l.ram).Count() };
             var made_count = from l in result group l by l.brand into g select new { brand = g.Key, Count = (from l in g select l.brand).Count() };
