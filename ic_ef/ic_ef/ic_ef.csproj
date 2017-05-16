@@ -26,7 +26,7 @@
     <UseGlobalApplicationHostFile />
     <NuGetPackageImportStamp>
     </NuGetPackageImportStamp>
-    <TypeScriptToolsVersion>1.8</TypeScriptToolsVersion>
+    <TypeScriptToolsVersion>2.1</TypeScriptToolsVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -656,10 +656,6 @@
     <Content Include="css\tableexport.min.css" />
     <Content Include="css\themes\default\assets\images\flags.png" />
     <Content Include="css\vex-theme-os.css" />
-    <Content Include="images\1.JPG" />
-    <Content Include="images\2.JPG" />
-    <Content Include="images\3.JPG" />
-    <Content Include="images\4.JPG" />
     <Content Include="images\aprovecha-procesador-core-2-duo-e8400-al-mejor-precio-D_NQ_NP_861911-MLV20659060107_042016-F.jpg" />
     <Content Include="images\dymo.svg" />
     <Content Include="images\interconnection-logo.png" />
@@ -837,6 +833,7 @@
     <Content Include="Model.edmx.diagram">
       <DependentUpon>Model.edmx</DependentUpon>
     </Content>
+    <None Include="Properties\PublishProfiles\CustomProfile.pubxml" />
     <None Include="Properties\PublishProfiles\ic.pubxml" />
     <None Include="Properties\PublishProfiles\icdb.pubxml" />
     <None Include="Properties\PublishProfiles\icmvc.pubxml" />

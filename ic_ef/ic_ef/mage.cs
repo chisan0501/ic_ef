@@ -206,12 +206,12 @@ namespace ic_ef
 
             qty_update.manage_stock = 1;
             qty_update.qty = qty;
-            if (qty == "0")
-            {
-                qty_update.is_in_stock = 0;
-            }
-            qty_update.is_in_stock = 1;
-            qty_update.is_in_stockSpecified = true;
+            //if (qty == "0")
+            //{
+            //    qty_update.is_in_stock = 0;
+            //}
+            //qty_update.is_in_stock = 1;
+            //qty_update.is_in_stockSpecified = true;
             mservice.catalogInventoryStockItemUpdate(
  mlogin, sku, qty_update);
             //catalogProductAttributeMediaCreateEntity photo = new catalogProductAttributeMediaCreateEntity();
