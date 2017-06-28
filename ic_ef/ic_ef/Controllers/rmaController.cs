@@ -13,7 +13,7 @@ namespace ic_ef.Controllers
 {
     public class rmaController : Controller
     {
-        private db_a094d4_icdbEntities db = new db_a094d4_icdbEntities();
+        private db_a094d4_icdbEntities1 db = new db_a094d4_icdbEntities1();
 
         // GET: rma
         public ActionResult Index()
@@ -222,7 +222,7 @@ namespace ic_ef.Controllers
             SforceService sfdcBinding = null;
 
             var edit_case = (from t in db.rma where t.rma_number == rma_num select t).FirstOrDefault();
-            using (var db = new db_a094d4_icdbEntities())
+            using (var db = new db_a094d4_icdbEntities1())
             {
                 db.Database.ExecuteSqlCommand("Update rma set production_finding = '" + finding + "' where rma_number ='" + rma_num + "'");
             }

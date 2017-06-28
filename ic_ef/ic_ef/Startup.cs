@@ -4,7 +4,7 @@ using Microsoft.AspNet.Identity.EntityFramework;
 using Microsoft.Owin;
 using Owin;
 
-[assembly: OwinStartupAttribute(typeof(ic_ef.Startup))]
+[assembly: OwinStartup("ic_ef",typeof(ic_ef.Startup))]
 namespace ic_ef
 {
     public partial class Startup

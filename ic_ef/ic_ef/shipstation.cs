@@ -192,7 +192,7 @@ namespace ic_ef
             {
                 long asset_32 = long.Parse(asset);
 
-                db_a094d4_icdbEntities db = new db_a094d4_icdbEntities();
+                db_a094d4_icdbEntities1 db = new db_a094d4_icdbEntities1();
                 var redisco = new rediscovery();
                 var target = (from m in db.rediscovery where m.ictag == asset_32 select m);
 

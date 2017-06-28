@@ -64,7 +64,7 @@
                 var data = new google.visualization.DataTable(google_data);
 
                 var chart = new google.visualization.ColumnChart(document.getElementById('chart_div'));
-                chart.draw(data, { title : 'Inventory Level',width: 1200, height: 400 });
+                chart.draw(data, { title: 'Inventory Level', width: 1200, height: 400, bar: { groupWidth: "500%" },  });
             }
 
 

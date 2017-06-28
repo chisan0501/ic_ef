@@ -29,5 +29,6 @@ namespace ic_ef
         public string refurbisher { get; set; }
         public string status { get; set; }
         public string orderNum { get; set; }
+        public string has_SSD { get; set; }
     }
 }

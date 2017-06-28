@@ -27,7 +27,7 @@ namespace ic_ef.Controllers
     
     public class production_logController : AsyncController
     {
-        db_a094d4_icdbEntities db = new db_a094d4_icdbEntities();
+        db_a094d4_icdbEntities1 db = new db_a094d4_icdbEntities1();
         public string oem_des = "";
         public string mar_lap = "";
         public string mar_des = "";
@@ -136,7 +136,7 @@ namespace ic_ef.Controllers
             string to_be_import_sku = sku + "_retail";
             //update both the bin location and status to null 
             var entry = new production_log();
-            using (var ctx = new db_a094d4_icdbEntities())
+            using (var ctx = new db_a094d4_icdbEntities1())
             {
                 entry = ctx.production_log.Where(s => s.ictags == asset).FirstOrDefault<production_log>();
                 if (entry != null)
@@ -146,7 +146,7 @@ namespace ic_ef.Controllers
                 }
                 ctx.Database.ExecuteSqlCommand("Delete from pull_log where ictag ='" + asset + "'");
             }
-            using (var dbCtx = new db_a094d4_icdbEntities())
+            using (var dbCtx = new db_a094d4_icdbEntities1())
             {
                 //3. Mark entity as modified
                 dbCtx.Entry(entry).State = System.Data.Entity.EntityState.Modified;
@@ -220,99 +220,216 @@ namespace ic_ef.Controllers
             int oem_i7_DK = 0;
             int oem_c2d_DK = 0;
             int oem_amd_DK = 0;
-            
+            int ngo_i3_DK = 0;
+            int ngo_i5_DK = 0;
+            int ngo_i7_DK = 0;
+            int ngo_i3_LP = 0;
+            int ngo_i5_LP = 0;
+            int ngo_i7_LP = 0;
 
 
             var CPU = (from c in db.production_log where c.bin_location != null && c.status != "pulled" select c.channel).ToList();
 
-            
+
+            foreach (var item in CPU) {
+
+                if (item.Contains("OEM"))
+                {
+                    if (item.Contains("i3") && item.Contains("LP")) {
+                        oem_i3_LP++;
+                    }
+                    if (item.Contains("i5") && item.Contains("LP"))
+                    {
+                        oem_i5_LP++;
+                    }
+                    if (item.Contains("i7") && item.Contains("LP"))
+                    {
+                        oem_i7_LP++;
+                    }
+                    if (item.Contains("i3") && item.Contains("DK"))
+                    {
+                        oem_i3_DK++;
+                    }
+                    if (item.Contains("i5") && item.Contains("DK"))
+                    {
+                        oem_i5_DK++;
+                    }
+                    if (item.Contains("i7") && item.Contains("DK"))
+                    {
+                        oem_i7_DK++;
+                    }
+                }
+                else if (item.Contains("NGO"))
+                {
+                    if (item.Contains("i3") && item.Contains("LP"))
+                    {
+                        ngo_i3_LP++;
+                    }
+                    if (item.Contains("i5") && item.Contains("LP"))
+                    {
+                        ngo_i5_LP++;
+                    }
+                    if (item.Contains("i7") && item.Contains("LP"))
+                    {
+                        ngo_i7_LP++;
+                    }
+                    if (item.Contains("i3") && item.Contains("DK"))
+                    {
+                        ngo_i3_DK++;
+                    }
+                    if (item.Contains("i5") && item.Contains("DK"))
+                    {
+                        ngo_i5_DK++;
+                    }
+                    if (item.Contains("i7") && item.Contains("DK"))
+                    {
+                        ngo_i7_DK++;
+                    }
+                }
+                else if (item.Contains("AMD"))
+                {
+                    if (!item.Contains("OEM") && item.Contains("DK"))
+                    {
+                        mar_amd_DK++;
+                    }
+                    if (item.Contains("OEM") && item.Contains("DK"))
+                    {
+                        oem_amd_DK++;
+                    }
+                    if ( !item.Contains("OEM") && item.Contains("LP"))
+                    {
+                        mar_amd_LP++;
+                    }
+                    if ( item.Contains("OEM") && item.Contains("LP"))
+                    {
+                        oem_amd_LP++;
+                    }
+                }
+                else {
+                    if (item.Contains("i3") && item.Contains("LP"))
+                    {
+                        mar_i3_LP++;
+                    }
+                    if (item.Contains("i5")  && item.Contains("LP"))
+                    {
+                        mar_i5_LP++;
+                    }
+                    if (item.Contains("i7")  && item.Contains("LP"))
+                    {
+                        mar_i7_LP++;
+                    }
+                    if (item.Contains("i3") && item.Contains("DK"))
+                    {
+                        mar_i3_DK++;
+                    }
+                    if (item.Contains("i5")  && item.Contains("DK"))
+                    {
+                        mar_i5_DK++;
+                    }
+                    if (item.Contains("i7") && item.Contains("DK"))
+                    {
+                        mar_i7_DK++;
+                    }
+                    if (item.Contains("c2d") && item.Contains("DK"))
+                    {
+                        mar_c2d_DK++;
+                    }
+                    if (item.Contains("c2d") && item.Contains("LP"))
+                    {
+                        mar_c2d_LP++;
+                    }
+
+                }
 
 
-            foreach ( var item in CPU)
-            {
-                if (item.Contains("i3") && item.Contains("OEM") && item.Contains("LP")){
-                    oem_i3_LP++;
-                }
-                if (item.Contains("i5") && item.Contains("OEM") && item.Contains("LP"))
-                {
-                    oem_i5_LP++;
-                }
-                if (item.Contains("i7") && item.Contains("OEM") && item.Contains("LP"))
-                {
-                    oem_i7_LP++;
-                }
-                if (item.Contains("i3") && item.Contains("OEM") && item.Contains("DK"))
-                {
-                    oem_i3_DK++;
-                }
-                if (item.Contains("i5") && item.Contains("OEM") && item.Contains("DK"))
-                {
-                    oem_i5_DK++;
-                }
-                if (item.Contains("i7") && item.Contains("OEM") && item.Contains("DK"))
-                {
-                    oem_i7_DK++;
-                }
-                if (item.Contains("i3") && !item.Contains("OEM") && item.Contains("LP"))
-                {
-                    mar_i3_LP++;
-                }
-                if (item.Contains("i5") && !item.Contains("OEM") && item.Contains("LP"))
-                {
-                    mar_i5_LP++;
-                }
-                if (item.Contains("i7") && !item.Contains("OEM") && item.Contains("LP"))
-                {
-                    mar_i7_LP++;
-                }
-                if (item.Contains("i3") && !item.Contains("OEM") && item.Contains("DK"))
-                {
-                    mar_i3_DK++;
-                }
-                if (item.Contains("i5") && !item.Contains("OEM") && item.Contains("DK"))
-                {
-                    mar_i5_DK++;
-                }
-                if (item.Contains("i7") && !item.Contains("OEM") && item.Contains("DK"))
-                {
-                    mar_i7_DK++;
-                }
-                if (item.Contains("c2d") && !item.Contains("OEM") && item.Contains("DK"))
-                {
-                    mar_c2d_DK++;
-                }
-                if (item.Contains("c2d") && item.Contains("OEM") && item.Contains("DK"))
-                {
-                    oem_c2d_DK++;
-                }
-                if (item.Contains("c2d") && !item.Contains("OEM") && item.Contains("LP"))
-                {
-                    mar_c2d_LP++;
-                }
-                if (item.Contains("c2d") && item.Contains("OEM") && item.Contains("LP"))
-                {
-                    oem_c2d_LP++;
-                }
-                if (item.Contains("AMD") && !item.Contains("OEM") && item.Contains("DK"))
-                {
-                    mar_amd_DK++;
-                }
-                if (item.Contains("AMD") && item.Contains("OEM") && item.Contains("DK"))
-                {
-                    oem_amd_DK++;
-                }
-                if (item.Contains("AMD") && !item.Contains("OEM") && item.Contains("LP"))
-                {
-                    mar_amd_LP++;
-                }
-                if (item.Contains("AMD") && item.Contains("OEM") && item.Contains("LP"))
-                {
-                    oem_amd_LP++;
-                }
+
             }
 
-            int[] cpu_total = { oem_i3_DK, oem_i3_LP, oem_i5_LP , oem_i5_DK , oem_i7_LP , oem_i7_DK , mar_i3_LP , mar_i3_DK , mar_i5_DK ,mar_i5_LP, mar_i7_DK , mar_i7_LP, mar_c2d_DK , mar_c2d_LP, oem_c2d_LP , oem_c2d_DK, oem_amd_DK , oem_amd_LP, mar_amd_DK , mar_amd_LP };
-            string[] cpu_name = { "OEM i3 DK", "OEM i3 LP", "OEM i5 LP", "OEM i5 DK", "OEM i7 LP", "OEM i7 DK", "MAR i3 LP", "MAR i3 DK", "MAR i5 DK", "MAR i5 LP", "MAR i7 DK", "MAR i7 LP", "MAR C2D DK", "MAR C2D LP", "OEM C2D LP", "OEM C2D DK", "OEM AMD DK", "OEM AMD LP", "MAR AMD DK", "MAR AMD LP" };
+            //foreach ( var item in CPU)
+            //{ 
+            //    if (item.Contains("i3") && item.Contains("OEM") && item.Contains("LP")){
+            //        oem_i3_LP++;
+            //    }
+            //    if (item.Contains("i5") && item.Contains("OEM") && item.Contains("LP"))
+            //    {
+            //        oem_i5_LP++;
+            //    }
+            //    if (item.Contains("i7") && item.Contains("OEM") && item.Contains("LP"))
+            //    {
+            //        oem_i7_LP++;
+            //    }
+            //    if (item.Contains("i3") && item.Contains("OEM") && item.Contains("DK"))
+            //    {
+            //        oem_i3_DK++;
+            //    }
+            //    if (item.Contains("i5") && item.Contains("OEM") && item.Contains("DK"))
+            //    {
+            //        oem_i5_DK++;
+            //    }
+            //    if (item.Contains("i7") && item.Contains("OEM") && item.Contains("DK"))
+            //    {
+            //        oem_i7_DK++;
+            //    }
+            //    if (item.Contains("i3") && !item.Contains("OEM") && item.Contains("LP"))
+            //    {
+            //        mar_i3_LP++;
+            //    }
+            //    if (item.Contains("i5") && !item.Contains("OEM") && item.Contains("LP"))
+            //    {
+            //        mar_i5_LP++;
+            //    }
+            //    if (item.Contains("i7") && !item.Contains("OEM") && item.Contains("LP"))
+            //    {
+            //        mar_i7_LP++;
+            //    }
+            //    if (item.Contains("i3") && !item.Contains("OEM") && item.Contains("DK"))
+            //    {
+            //        mar_i3_DK++;
+            //    }
+            //    if (item.Contains("i5") && !item.Contains("OEM") && item.Contains("DK"))
+            //    {
+            //        mar_i5_DK++;
+            //    }
+            //    if (item.Contains("i7") && !item.Contains("OEM") && item.Contains("DK"))
+            //    {
+            //        mar_i7_DK++;
+            //    }
+            //    if (item.Contains("c2d") && !item.Contains("OEM") && item.Contains("DK"))
+            //    {
+            //        mar_c2d_DK++;
+            //    }
+            //    if (item.Contains("c2d") && item.Contains("OEM") && item.Contains("DK"))
+            //    {
+            //        oem_c2d_DK++;
+            //    }
+            //    if (item.Contains("c2d") && !item.Contains("OEM") && item.Contains("LP"))
+            //    {
+            //        mar_c2d_LP++;
+            //    }
+            //    if (item.Contains("c2d") && item.Contains("OEM") && item.Contains("LP"))
+            //    {
+            //        oem_c2d_LP++;
+            //    }
+            //    if (item.Contains("AMD") && !item.Contains("OEM") && item.Contains("DK"))
+            //    {
+            //        mar_amd_DK++;
+            //    }
+            //    if (item.Contains("AMD") && item.Contains("OEM") && item.Contains("DK"))
+            //    {
+            //        oem_amd_DK++;
+            //    }
+            //    if (item.Contains("AMD") && !item.Contains("OEM") && item.Contains("LP"))
+            //    {
+            //        mar_amd_LP++;
+            //    }
+            //    if (item.Contains("AMD") && item.Contains("OEM") && item.Contains("LP"))
+            //    {
+            //        oem_amd_LP++;
+            //    }
+            //}
+
+            int[] cpu_total = { oem_i3_DK, oem_i3_LP, oem_i5_LP , oem_i5_DK , oem_i7_LP , oem_i7_DK , mar_i3_LP , mar_i3_DK , mar_i5_DK ,mar_i5_LP, mar_i7_DK , mar_i7_LP, mar_c2d_DK , mar_c2d_LP, oem_c2d_LP , oem_c2d_DK, oem_amd_DK , oem_amd_LP, mar_amd_DK , mar_amd_LP ,ngo_i3_DK,ngo_i3_LP,ngo_i5_DK,ngo_i5_LP,ngo_i7_DK,ngo_i7_LP};
+            string[] cpu_name = { "OEM i3 DK", "OEM i3 LP", "OEM i5 LP", "OEM i5 DK", "OEM i7 LP", "OEM i7 DK", "MAR i3 LP", "MAR i3 DK", "MAR i5 DK", "MAR i5 LP", "MAR i7 DK", "MAR i7 LP", "MAR C2D DK", "MAR C2D LP", "OEM C2D LP", "OEM C2D DK", "OEM AMD DK", "OEM AMD LP", "MAR AMD DK", "MAR AMD LP","NGO i3 DK", "NGO i3 LP", "NGO i5 DK", "NGO i5 LP", "NGO i7 DK", "NGO i7 LP" };
 
             //  return Json(new { oem_i3_DK = oem_i3_DK, oem_i3_LP  = oem_i3_LP , oem_i5_LP = oem_i5_LP , oem_i5_DK = oem_i5_DK, oem_i7_LP = oem_i7_LP , oem_i7_DK = oem_i7_DK , mar_i3_LP = mar_i3_LP , mar_i3_DK = mar_i3_DK , mar_i5_LP= mar_i5_LP, mar_i5_DK= mar_i5_DK, mar_i7_LP= mar_i7_LP, mar_i7_DK = mar_i7_DK, mar_c2d_DK = mar_c2d_DK, mar_c2d_LP= mar_c2d_LP, oem_c2d_LP = oem_c2d_LP, oem_c2d_DK = oem_c2d_DK, mar_amd_DK= mar_amd_DK, mar_amd_LP= mar_amd_LP,oem_amd_LP = oem_amd_LP, oem_amd_DK = oem_amd_DK },JsonRequestBehavior.AllowGet);
 
@@ -364,7 +481,7 @@ namespace ic_ef.Controllers
             if (mac == "true")
             {
 
-                using (var ctx = new db_a094d4_icdbEntities())
+                using (var ctx = new db_a094d4_icdbEntities1())
                 {
                     int temp_asset = int.Parse(asset);
                     mac_entry = ctx.mac_log.Where(s => s.ictags == temp_asset).FirstOrDefault<mac_log>();
@@ -373,7 +490,7 @@ namespace ic_ef.Controllers
                         mac_entry.status = "pulled";
                     }
                 }
-                using (var dbCtx = new db_a094d4_icdbEntities())
+                using (var dbCtx = new db_a094d4_icdbEntities1())
                 {
                     //3. Mark entity as modified
                     dbCtx.Entry(mac_entry).State = System.Data.Entity.EntityState.Modified;
@@ -385,7 +502,7 @@ namespace ic_ef.Controllers
             }
             else
             {
-                using (var ctx = new db_a094d4_icdbEntities())
+                using (var ctx = new db_a094d4_icdbEntities1())
                 {
                     entry = ctx.production_log.Where(s => s.ictags == asset).FirstOrDefault<production_log>();
                     if (entry != null)
@@ -393,7 +510,7 @@ namespace ic_ef.Controllers
                         entry.status = "pulled";
                     }
                 }
-                using (var dbCtx = new db_a094d4_icdbEntities())
+                using (var dbCtx = new db_a094d4_icdbEntities1())
                 {
                     //3. Mark entity as modified
                     dbCtx.Entry(entry).State = System.Data.Entity.EntityState.Modified;
@@ -841,7 +958,7 @@ namespace ic_ef.Controllers
             production_log.channel = asset_detail.pallet;
             production_log.pre_coa = "00999-999-000-999";
 
-            using (var dbCtx = new db_a094d4_icdbEntities())
+            using (var dbCtx = new db_a094d4_icdbEntities1())
             {
                 //Add Student object into Students DBseta
                 dbCtx.production_log.Add(production_log);
@@ -883,7 +1000,7 @@ namespace ic_ef.Controllers
             production_log.channel = asset_detail.pallet;
             production_log.pre_coa = "00999-999-000-999";
 
-            using (var dbCtx = new db_a094d4_icdbEntities())
+            using (var dbCtx = new db_a094d4_icdbEntities1())
             {
                 //Add Student object into Students DBseta
                 dbCtx.production_log.Add(production_log);
@@ -937,7 +1054,7 @@ namespace ic_ef.Controllers
                 int asset_int = int.Parse(asset);
 
                 var entry = new mac_log();
-                using (var ctx = new db_a094d4_icdbEntities())
+                using (var ctx = new db_a094d4_icdbEntities1())
                 {
                     entry = ctx.mac_log.Where(s => s.ictags == asset_int).FirstOrDefault<mac_log>();
                         sku = entry.pallet;
@@ -946,7 +1063,7 @@ namespace ic_ef.Controllers
                         entry.bin_location = id;
                     }
                 }
-                using (var dbCtx = new db_a094d4_icdbEntities())
+                using (var dbCtx = new db_a094d4_icdbEntities1())
                 {
                     //3. Mark entity as modified
                     dbCtx.Entry(entry).State = System.Data.Entity.EntityState.Modified;
@@ -1176,7 +1293,7 @@ namespace ic_ef.Controllers
                         continue;
                     }
 
-                    db_a094d4_icdbEntities dbb = new db_a094d4_icdbEntities();
+                    db_a094d4_icdbEntities1 dbb = new db_a094d4_icdbEntities1();
 
 
                     bool contain = result.Contains(item.sku);
@@ -1192,7 +1309,7 @@ namespace ic_ef.Controllers
                             //update qty
                             var result_code = mage.update_qty(item.sku, bin_qty.ToString(), item.product_id);
                             //enable product
-                            var db = new db_a094d4_icdbEntities();
+                            var db = new db_a094d4_icdbEntities1();
                             var insert = new magento_validation_log();
                             insert.time = DateTime.Today.Date;
                             insert.SKU = item.sku;
@@ -1207,7 +1324,7 @@ namespace ic_ef.Controllers
 
                         db.Dispose();
 
-                        using (var db2 = new db_a094d4_icdbEntities())
+                        using (var db2 = new db_a094d4_icdbEntities1())
                         {
                             db2.Database.ExecuteSqlCommand(
                          "insert into process_run_time (process) values ('Magento')");
@@ -1374,7 +1491,7 @@ namespace ic_ef.Controllers
                     int temp_asset = int.Parse(asset);
                     
                     var mac_entry = new mac_log();
-                    using (var ctx = new db_a094d4_icdbEntities())
+                    using (var ctx = new db_a094d4_icdbEntities1())
                     {
                         
                         mac_entry = ctx.mac_log.Where(s => s.ictags == temp_asset).FirstOrDefault<mac_log>();
@@ -1384,7 +1501,7 @@ namespace ic_ef.Controllers
                             
                         }
                     }
-                    using (var dbCtx = new db_a094d4_icdbEntities())
+                    using (var dbCtx = new db_a094d4_icdbEntities1())
                     {
                         //3. Mark entity as modified
                         dbCtx.Entry(mac_entry).State = System.Data.Entity.EntityState.Modified;
@@ -1398,7 +1515,7 @@ namespace ic_ef.Controllers
                 {
                     
                     var entry = new production_log();
-                    using (var ctx = new db_a094d4_icdbEntities())
+                    using (var ctx = new db_a094d4_icdbEntities1())
                     {
                       
                         entry = ctx.production_log.Where(s => s.ictags == asset).FirstOrDefault<production_log>();
@@ -1408,7 +1525,7 @@ namespace ic_ef.Controllers
                            
                         }
                     }
-                    using (var dbCtx = new db_a094d4_icdbEntities())
+                    using (var dbCtx = new db_a094d4_icdbEntities1())
                     {
                         
                         //3. Mark entity as modified
@@ -1426,7 +1543,7 @@ namespace ic_ef.Controllers
     catch(Exception e)
             {
                 pull_logging(asset, sku, e.ToString(), DateTime.Now, "error");
-                using (var dbCtx = new db_a094d4_icdbEntities())
+                using (var dbCtx = new db_a094d4_icdbEntities1())
                 {
                     
                     //4. call SaveChanges
@@ -1442,7 +1559,7 @@ namespace ic_ef.Controllers
         public void pull_logging (string ictag, string sku, string action, DateTime time, string channel)
         {
             var pull_log = new pull_log();
-            using (var ctx = new db_a094d4_icdbEntities())
+            using (var ctx = new db_a094d4_icdbEntities1())
             {
                 
                 pull_log.time = DateTime.Now;
@@ -1453,7 +1570,7 @@ namespace ic_ef.Controllers
                 
 
             }
-            using (var dbCtx = new db_a094d4_icdbEntities())
+            using (var dbCtx = new db_a094d4_icdbEntities1())
             {
                 //3. Mark entity as modified
                

@@ -16,7 +16,7 @@ namespace ic_ef
     {
        
       
-        private db_a094d4_icdbEntities db = new db_a094d4_icdbEntities();
+        private db_a094d4_icdbEntities1 db = new db_a094d4_icdbEntities1();
        
         public mage()
         {
@@ -201,17 +201,23 @@ namespace ic_ef
             MagentoService mservice = new MagentoService();
             String mlogin = mservice.login("admin", "Interconnection123!");
             catalogInventoryStockItemUpdateEntity qty_update = new catalogInventoryStockItemUpdateEntity();
-
+            
             qty_update.manage_stockSpecified = true;
-
+            qty_update.is_in_stockSpecified = true;
+            qty_update.use_config_manage_stockSpecified = true;
             qty_update.manage_stock = 1;
             qty_update.qty = qty;
-            //if (qty == "0")
-            //{
-            //    qty_update.is_in_stock = 0;
-            //}
-            //qty_update.is_in_stock = 1;
-            //qty_update.is_in_stockSpecified = true;
+            if (qty == "0")
+            {
+                qty_update.is_in_stock = 0;
+            }
+            else {
+                qty_update.is_in_stock = 1;
+            }
+            
+            
+            qty_update.use_config_manage_stock = 1;
+           
             mservice.catalogInventoryStockItemUpdate(
  mlogin, sku, qty_update);
             //catalogProductAttributeMediaCreateEntity photo = new catalogProductAttributeMediaCreateEntity();

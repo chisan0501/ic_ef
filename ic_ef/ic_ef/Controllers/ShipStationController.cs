@@ -33,7 +33,7 @@ namespace ic_ef.Controllers
         {
             
             
-            using (var db = new db_a094d4_icdbEntities())
+            using (var db = new db_a094d4_icdbEntities1())
             {
                 
                 
@@ -171,7 +171,7 @@ namespace ic_ef.Controllers
                         lines = lines.Where(x => !string.IsNullOrEmpty(x)).ToArray();
                         foreach (var item in lines)
                         {
-                            using (db_a094d4_icdbEntities db = new db_a094d4_icdbEntities())
+                            using (db_a094d4_icdbEntities1 db = new db_a094d4_icdbEntities1())
                             {
                                 var exisit = (from t in db.ship_log where t.ictag == item select t).SingleOrDefault();
                                 if (exisit == null)
@@ -191,7 +191,7 @@ namespace ic_ef.Controllers
                                 if (update != null) {
                                     update.status = "Shipped";
                                     update.update_time = DateTime.Now;
-                                    using (var dbCtx = new db_a094d4_icdbEntities())
+                                    using (var dbCtx = new db_a094d4_icdbEntities1())
                                     {
                                         //Mark entity as modified
                                         dbCtx.Entry(update).State = System.Data.Entity.EntityState.Modified;
@@ -330,7 +330,7 @@ namespace ic_ef.Controllers
             Thread.Sleep(1700);
             //try { 
             var baseAddress = new Uri("https://ssapi.shipstation.com/");
-            db_a094d4_icdbEntities db = new db_a094d4_icdbEntities();   
+            db_a094d4_icdbEntities1 db = new db_a094d4_icdbEntities1();   
             using (var httpClient = new HttpClient { BaseAddress = baseAddress })
             {
 
@@ -427,7 +427,7 @@ namespace ic_ef.Controllers
         public JsonResult search_json(string item)
         {
             List<shipstation_log> result;
-            using (var db = new db_a094d4_icdbEntities())
+            using (var db = new db_a094d4_icdbEntities1())
             {
                 result = db.shipstation_log.SqlQuery("SELECT * FROM `db_a094d4_icdb`.`shipstation_log` WHERE LOWER(CONVERT(`row_id` USING utf8mb4)) LIKE '%"+item+"%' OR LOWER(CONVERT(`shipment_date` USING utf8mb4)) LIKE '%"+item+"%' OR LOWER(CONVERT(`order_id` USING utf8mb4)) LIKE '%"+item+"%' OR LOWER(CONVERT(`order_num` USING utf8mb4)) LIKE '%"+item+"%' OR LOWER(CONVERT(`item_name` USING utf8mb4)) LIKE '%"+item+"%' OR LOWER(CONVERT(`item_qty` USING utf8mb4)) LIKE '%"+item+"%' OR LOWER(CONVERT(`item_url` USING utf8mb4)) LIKE '%"+item+"%' OR LOWER(CONVERT(`custom_field_1` USING utf8mb4)) LIKE '%"+item+"%' OR LOWER(CONVERT(`custom_field_2` USING utf8mb4)) LIKE '%"+item+"%' OR LOWER(CONVERT(`custom_field_3` USING utf8mb4)) LIKE '%"+item+"%' OR LOWER(CONVERT(`status` USING utf8mb4)) LIKE '%"+item+"%' ;").ToList();
         
@@ -473,7 +473,7 @@ namespace ic_ef.Controllers
         [AllowAnonymous]
         public async Task<ActionResult> get_shipment(string id)
         {
-            db_a094d4_icdbEntities db = new db_a094d4_icdbEntities();
+            db_a094d4_icdbEntities1 db = new db_a094d4_icdbEntities1();
             var baseAddress = new Uri("https://ssapi.shipstation.com/");
             if (id=="interconnection123")
             {
@@ -532,7 +532,7 @@ namespace ic_ef.Controllers
                     
                     db.Dispose();
 
-                    using (var db2 = new db_a094d4_icdbEntities())
+                    using (var db2 = new db_a094d4_icdbEntities1())
                     {
                         db2.Database.ExecuteSqlCommand(
                      "insert into process_run_time (process) values ('ShipStation')");

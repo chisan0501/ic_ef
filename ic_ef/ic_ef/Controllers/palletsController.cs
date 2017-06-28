@@ -11,7 +11,7 @@ namespace ic_ef.Controllers
     [Authorize]
     public class palletsController : Controller
     {
-        private db_a094d4_icdbEntities db = new db_a094d4_icdbEntities();
+        private db_a094d4_icdbEntities1 db = new db_a094d4_icdbEntities1();
 
         // GET: pallets
         

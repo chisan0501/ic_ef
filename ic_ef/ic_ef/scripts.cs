@@ -12,11 +12,10 @@ namespace ic_ef
     using System;
     using System.Collections.Generic;
     
-    public partial class label_menu
+    public partial class scripts
     {
+        public int row_id { get; set; }
+        public string content { get; set; }
         public string name { get; set; }
-        public string product { get; set; }
-        public string special_sku { get; set; }
-        public string disable_grade { get; set; }
     }
 }

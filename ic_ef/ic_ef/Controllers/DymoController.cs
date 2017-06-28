@@ -15,7 +15,7 @@ namespace ic_ef.Controllers
     public class DymoController : Controller
     {
         // GET: 
-        db_a094d4_icdbEntities db = new db_a094d4_icdbEntities();
+        db_a094d4_icdbEntities1 db = new db_a094d4_icdbEntities1();
 
         [HttpPost]
         public ActionResult Index(int? asset,string pre_coa,string product, DymoViewModel model,string myList)

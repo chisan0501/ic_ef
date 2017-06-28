@@ -474,6 +474,9 @@
     <Compile Include="rma.cs">
       <DependentUpon>Model.tt</DependentUpon>
     </Compile>
+    <Compile Include="scripts.cs">
+      <DependentUpon>Model.tt</DependentUpon>
+    </Compile>
     <Compile Include="setting.cs">
       <DependentUpon>Model.tt</DependentUpon>
     </Compile>

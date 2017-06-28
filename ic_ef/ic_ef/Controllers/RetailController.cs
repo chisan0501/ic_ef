@@ -8,7 +8,7 @@ namespace ic_ef.Controllers
 {
     public class RetailController : Controller
     {
-        db_a094d4_icdbEntities db = new db_a094d4_icdbEntities();
+        db_a094d4_icdbEntities1 db = new db_a094d4_icdbEntities1();
         public ActionResult Home()
         {
             return View();
@@ -33,7 +33,7 @@ namespace ic_ef.Controllers
         public JsonResult get_yTd_report (string start, string end)
         {
 
-            using (var db = new db_a094d4_icdbEntities())
+            using (var db = new db_a094d4_icdbEntities1())
             {
                 int avg_return = 0;
                 int avg_alltime = 0;

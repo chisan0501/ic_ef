@@ -15,7 +15,7 @@ namespace ic_ef.Controllers
 {
     public class ManualDataEntryController : Controller
     {
-        db_a094d4_icdbEntities db = new db_a094d4_icdbEntities();
+        db_a094d4_icdbEntities1 db = new db_a094d4_icdbEntities1();
         public JsonResult get_setting()
         {
            
@@ -103,12 +103,12 @@ namespace ic_ef.Controllers
            var xml = mrm_xml(asset.ToString(),brand,model,hdd,ram,serial,cpu);
 
 
-            var db = new db_a094d4_icdbEntities();
+            var db = new db_a094d4_icdbEntities1();
            
             var exisit = (from t in db.discovery where t.ictag == asset select t).ToList();
             if (exisit.Count == 0)
             {
-                using (db as db_a094d4_icdbEntities) {
+                using (db as db_a094d4_icdbEntities1) {
 
                     var new_entry = new discovery();
                     new_entry.brand = brand;
@@ -129,7 +129,7 @@ namespace ic_ef.Controllers
                 }
                 if (refrub == "on")
                 {
-                    using (var db2 = new db_a094d4_icdbEntities())
+                    using (var db2 = new db_a094d4_icdbEntities1())
                     {
 
                         var new_entry = new rediscovery();
@@ -266,7 +266,7 @@ namespace ic_ef.Controllers
 
         public JsonResult get_asset_data(int asset)
         {
-            var db = new db_a094d4_icdbEntities();
+            var db = new db_a094d4_icdbEntities1();
             var rediscovery = (from t in db.rediscovery where t.ictag == asset select t).FirstOrDefault();
             var discovery = (from t in db.discovery where t.ictag == asset select t).FirstOrDefault();
             var img = (from t in db.production_log where t.ictags == asset.ToString() select t).FirstOrDefault();

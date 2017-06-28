@@ -192,7 +192,7 @@ namespace ic_ef.Controllers
             string message = "";
 
 
-            using (var remove = new db_a094d4_icdbEntities()) {
+            using (var remove = new db_a094d4_icdbEntities1()) {
 
 
                 remove.Database.ExecuteSqlCommand(
@@ -310,7 +310,7 @@ namespace ic_ef.Controllers
       // [HttpPost]
         public ActionResult createPallet()
         {
-            db_a094d4_icdbEntities db = new db_a094d4_icdbEntities();
+            db_a094d4_icdbEntities1 db = new db_a094d4_icdbEntities1();
 
             var data = (from p in db.pallet_master
                         select new Models.inventoryManageViewModel
@@ -467,7 +467,7 @@ namespace ic_ef.Controllers
             return View();
 
         }
-        private db_a094d4_icdbEntities db = new db_a094d4_icdbEntities();
+        private db_a094d4_icdbEntities1 db = new db_a094d4_icdbEntities1();
         private string countpallet()
         {
             string pallet_total = "";

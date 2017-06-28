@@ -14,7 +14,7 @@ namespace ic_ef.Controllers
 {
     public class ts_stockController : Controller
     {
-        private db_a094d4_icdbEntities db = new db_a094d4_icdbEntities();
+        private db_a094d4_icdbEntities1 db = new db_a094d4_icdbEntities1();
 
         // GET: ts_stock
 
@@ -286,7 +286,7 @@ namespace ic_ef.Controllers
                 for (int i = 0; i < asset.Length; i++)
                 {
                         string temp_asset  = asset[i];
-                var db = new db_a094d4_icdbEntities();
+                var db = new db_a094d4_icdbEntities1();
                 var exisit = (from t in db.ts_stock where t.ictag == temp_asset select t).FirstOrDefault();
 
                 if (exisit == null)

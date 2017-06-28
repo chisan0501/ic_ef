@@ -13,10 +13,10 @@ namespace ic_ef
     using System.Data.Entity;
     using System.Data.Entity.Infrastructure;
     
-    public partial class db_a094d4_icdbEntities : DbContext
+    public partial class db_a094d4_icdbEntities1 : DbContext
     {
-        public db_a094d4_icdbEntities()
-            : base("name=db_a094d4_icdbEntities")
+        public db_a094d4_icdbEntities1()
+            : base("name=db_a094d4_icdbEntities1")
         {
         }
     
@@ -52,6 +52,7 @@ namespace ic_ef
         public virtual DbSet<retail> retail { get; set; }
         public virtual DbSet<retail_report> retail_report { get; set; }
         public virtual DbSet<rma> rma { get; set; }
+        public virtual DbSet<scripts> scripts { get; set; }
         public virtual DbSet<setting> setting { get; set; }
         public virtual DbSet<setting_bol> setting_bol { get; set; }
         public virtual DbSet<ship_log> ship_log { get; set; }

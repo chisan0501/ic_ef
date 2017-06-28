@@ -13,7 +13,7 @@ namespace ic_ef.Controllers
 {
     public class discoveriesController : Controller
     {
-        private db_a094d4_icdbEntities db = new db_a094d4_icdbEntities();
+        private db_a094d4_icdbEntities1 db = new db_a094d4_icdbEntities1();
 
 
         public ActionResult asset_detail ()

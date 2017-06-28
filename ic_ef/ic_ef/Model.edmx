@@ -122,6 +122,7 @@
           <Property Name="ram" Type="varchar" MaxLength="45" />
           <Property Name="optical_drive" Type="varchar" MaxLength="100" />
           <Property Name="location" Type="varchar" MaxLength="45" />
+          <Property Name="has_SSD" Type="char" MaxLength="50" />
         </EntityType>
         <EntityType Name="ebay">
           <Key>
@@ -148,7 +149,8 @@
           </Key>
           <Property Name="name" Type="char" MaxLength="50" />
           <Property Name="product" Type="char" MaxLength="50" Nullable="false" />
-          <Property Name="rowID" Type="int" />
+          <Property Name="special_sku" Type="char" MaxLength="50" />
+          <Property Name="disable_grade" Type="char" MaxLength="50" />
         </EntityType>
         <EntityType Name="mac_log">
           <Key>
@@ -269,7 +271,7 @@ warning 6013: The table/view 'def.db_a094d4_icdb.misc_setting' does not have a p
           <Property Name="RAM" Type="char" MaxLength="100" />
           <Property Name="HDD" Type="char" MaxLength="100" />
           <Property Name="serial" Type="char" MaxLength="100" />
-          <Property Name="channel" Type="char" MaxLength="100" />
+          <Property Name="channel" Type="char" MaxLength="150" />
           <Property Name="pre_coa" Type="char" MaxLength="100" />
           <Property Name="location" Type="char" MaxLength="100" />
           <Property Name="video_card" Type="char" MaxLength="100" />
@@ -308,6 +310,7 @@ warning 6013: The table/view 'def.db_a094d4_icdb.misc_setting' does not have a p
           <Property Name="refurbisher" Type="char" MaxLength="100" />
           <Property Name="status" Type="char" MaxLength="50" />
           <Property Name="orderNum" Type="char" MaxLength="100" />
+          <Property Name="has_SSD" Type="char" MaxLength="50" />
         </EntityType>
         <EntityType Name="retail">
           <Key>
@@ -350,6 +353,14 @@ warning 6013: The table/view 'def.db_a094d4_icdb.misc_setting' does not have a p
           <Property Name="resolution_code" Type="text" />
           <Property Name="ictag" Type="char" MaxLength="50" />
           <Property Name="description" Type="text" />
+        </EntityType>
+        <EntityType Name="scripts">
+          <Key>
+            <PropertyRef Name="row_id" />
+          </Key>
+          <Property Name="row_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="content" Type="text" />
+          <Property Name="name" Type="char" MaxLength="50" Nullable="false" />
         </EntityType>
         <EntityType Name="setting">
           <Key>
@@ -525,6 +536,7 @@ warning 6013: The table/view 'def.db_a094d4_icdb.misc_setting' does not have a p
           <EntitySet Name="retail" EntityType="Self.retail" Schema="db_a094d4_icdb" store:Type="Tables" />
           <EntitySet Name="retail_report" EntityType="Self.retail_report" Schema="db_a094d4_icdb" store:Type="Tables" />
           <EntitySet Name="rma" EntityType="Self.rma" Schema="db_a094d4_icdb" store:Type="Tables" />
+          <EntitySet Name="scripts" EntityType="Self.scripts" Schema="db_a094d4_icdb" store:Type="Tables" />
           <EntitySet Name="setting" EntityType="Self.setting" Schema="db_a094d4_icdb" store:Type="Tables" />
           <EntitySet Name="setting_bol" EntityType="Self.setting_bol" Schema="db_a094d4_icdb" store:Type="Tables" />
           <EntitySet Name="ship_log" EntityType="Self.ship_log" Schema="db_a094d4_icdb" store:Type="Tables" />
@@ -670,6 +682,7 @@ warning 6013: The table/view 'def.db_a094d4_icdb.misc_setting' does not have a p
           <Property Name="ram" Type="String" MaxLength="45" FixedLength="false" Unicode="false" />
           <Property Name="optical_drive" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
           <Property Name="location" Type="String" MaxLength="45" FixedLength="false" Unicode="false" />
+          <Property Name="has_SSD" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
         </EntityType>
         <EntityType Name="ebay">
           <Key>
@@ -696,7 +709,8 @@ warning 6013: The table/view 'def.db_a094d4_icdb.misc_setting' does not have a p
           </Key>
           <Property Name="name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="product" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="rowID" Type="Int32" />
+          <Property Name="special_sku" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="disable_grade" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
         </EntityType>
         <EntityType Name="mac_log">
           <Key>
@@ -811,7 +825,7 @@ warning 6013: The table/view 'def.db_a094d4_icdb.misc_setting' does not have a p
           <Property Name="RAM" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
           <Property Name="HDD" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
           <Property Name="serial" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
-          <Property Name="channel" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="channel" Type="String" MaxLength="150" FixedLength="false" Unicode="false" />
           <Property Name="pre_coa" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
           <Property Name="location" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
           <Property Name="video_card" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
@@ -850,6 +864,7 @@ warning 6013: The table/view 'def.db_a094d4_icdb.misc_setting' does not have a p
           <Property Name="refurbisher" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
           <Property Name="status" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="orderNum" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="has_SSD" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
         </EntityType>
         <EntityType Name="retail">
           <Key>
@@ -892,6 +907,14 @@ warning 6013: The table/view 'def.db_a094d4_icdb.misc_setting' does not have a p
           <Property Name="resolution_code" Type="String" MaxLength="65535" FixedLength="false" Unicode="false" />
           <Property Name="ictag" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="description" Type="String" MaxLength="65535" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="scripts">
+          <Key>
+            <PropertyRef Name="row_id" />
+          </Key>
+          <Property Name="row_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="content" Type="String" MaxLength="65535" FixedLength="false" Unicode="false" />
+          <Property Name="name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
         </EntityType>
         <EntityType Name="setting">
           <Key>
@@ -1014,7 +1037,7 @@ warning 6013: The table/view 'def.db_a094d4_icdb.misc_setting' does not have a p
           <End Role="aspnetusers" Type="Self.aspnetusers" Multiplicity="*" />
           <End Role="aspnetroles" Type="Self.aspnetroles" Multiplicity="*" />
         </Association>
-        <EntityContainer Name="db_a094d4_icdbEntities" annotation:LazyLoadingEnabled="true">
+        <EntityContainer Name="db_a094d4_icdbEntities1" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="aspnetroles" EntityType="Self.aspnetroles" />
           <EntitySet Name="aspnetuserclaims" EntityType="Self.aspnetuserclaims" />
           <EntitySet Name="aspnetuserlogins" EntityType="Self.aspnetuserlogins" />
@@ -1042,6 +1065,7 @@ warning 6013: The table/view 'def.db_a094d4_icdb.misc_setting' does not have a p
           <EntitySet Name="retail" EntityType="Self.retail" />
           <EntitySet Name="retail_report" EntityType="Self.retail_report" />
           <EntitySet Name="rma" EntityType="Self.rma" />
+          <EntitySet Name="scripts" EntityType="Self.scripts" />
           <EntitySet Name="setting" EntityType="Self.setting" />
           <EntitySet Name="setting_bol" EntityType="Self.setting_bol" />
           <EntitySet Name="ship_log" EntityType="Self.ship_log" />
@@ -1068,7 +1092,7 @@ warning 6013: The table/view 'def.db_a094d4_icdb.misc_setting' does not have a p
     <!-- C-S mapping content -->
     <edmx:Mappings>
       <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
-        <EntityContainerMapping StorageEntityContainer="db_a094d4_icdbModelStoreContainer" CdmEntityContainer="db_a094d4_icdbEntities">
+        <EntityContainerMapping StorageEntityContainer="db_a094d4_icdbModelStoreContainer" CdmEntityContainer="db_a094d4_icdbEntities1">
           <EntitySetMapping Name="aspnetroles">
             <EntityTypeMapping TypeName="db_a094d4_icdbModel.aspnetroles">
               <MappingFragment StoreEntitySet="aspnetroles">
@@ -1183,6 +1207,7 @@ warning 6013: The table/view 'def.db_a094d4_icdb.misc_setting' does not have a p
                 <ScalarProperty Name="ram" ColumnName="ram" />
                 <ScalarProperty Name="optical_drive" ColumnName="optical_drive" />
                 <ScalarProperty Name="location" ColumnName="location" />
+                <ScalarProperty Name="has_SSD" ColumnName="has_SSD" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -1211,7 +1236,8 @@ warning 6013: The table/view 'def.db_a094d4_icdb.misc_setting' does not have a p
               <MappingFragment StoreEntitySet="label_menu">
                 <ScalarProperty Name="name" ColumnName="name" />
                 <ScalarProperty Name="product" ColumnName="product" />
-                <ScalarProperty Name="rowID" ColumnName="rowID" />
+                <ScalarProperty Name="special_sku" ColumnName="special_sku" />
+                <ScalarProperty Name="disable_grade" ColumnName="disable_grade" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -1378,6 +1404,7 @@ warning 6013: The table/view 'def.db_a094d4_icdb.misc_setting' does not have a p
                 <ScalarProperty Name="refurbisher" ColumnName="refurbisher" />
                 <ScalarProperty Name="status" ColumnName="status" />
                 <ScalarProperty Name="orderNum" ColumnName="orderNum" />
+                <ScalarProperty Name="has_SSD" ColumnName="has_SSD" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -1423,6 +1450,15 @@ warning 6013: The table/view 'def.db_a094d4_icdb.misc_setting' does not have a p
                 <ScalarProperty Name="resolution_code" ColumnName="resolution_code" />
                 <ScalarProperty Name="ictag" ColumnName="ictag" />
                 <ScalarProperty Name="description" ColumnName="description" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="scripts">
+            <EntityTypeMapping TypeName="db_a094d4_icdbModel.scripts">
+              <MappingFragment StoreEntitySet="scripts">
+                <ScalarProperty Name="row_id" ColumnName="row_id" />
+                <ScalarProperty Name="content" ColumnName="content" />
+                <ScalarProperty Name="name" ColumnName="name" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
