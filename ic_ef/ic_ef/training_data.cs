@@ -12,12 +12,16 @@ namespace ic_ef
     using System;
     using System.Collections.Generic;
     
-    public partial class aspnetuserclaims
+    public partial class training_data
     {
-        public int Id { get; set; }
-        public string ClaimType { get; set; }
-        public string ClaimValue { get; set; }
-    
-        public virtual aspnetusers aspnetusers { get; set; }
+        public int row_id { get; set; }
+        public string cpu { get; set; }
+        public string ram { get; set; }
+        public string hdd { get; set; }
+        public string grade { get; set; }
+        public string type { get; set; }
+        public string channel { get; set; }
+        public string price { get; set; }
+        public string SSD { get; set; }
     }
 }

@@ -59,6 +59,7 @@ namespace ic_ef
         public virtual DbSet<shipstation_log> shipstation_log { get; set; }
         public virtual DbSet<station_setting> station_setting { get; set; }
         public virtual DbSet<temp_label> temp_label { get; set; }
+        public virtual DbSet<training_data> training_data { get; set; }
         public virtual DbSet<ts_stock> ts_stock { get; set; }
         public virtual DbSet<users> users { get; set; }
     }

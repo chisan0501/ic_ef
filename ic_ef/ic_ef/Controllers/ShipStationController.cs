@@ -152,6 +152,7 @@ namespace ic_ef.Controllers
 
                     
         }
+        //process the item in custom fields
         public void count_item(shipstation_log entry)
         {
 
@@ -214,6 +215,8 @@ namespace ic_ef.Controllers
                     }
                    
                 }
+
+
             }
             catch (System.Data.Entity.Validation.DbEntityValidationException dbEx)
             {
@@ -239,9 +242,9 @@ namespace ic_ef.Controllers
         }
 
 
-        public async Task<ss_order.Order_num_to_orderID.Rootobject> get_orderID(int orderNumber)
+        public async Task<ss_order.Order_num_to_orderID.RootObject> get_orderID(int orderNumber)
         {
-            var result = new ss_order.Order_num_to_orderID.Rootobject();
+            var result = new ss_order.Order_num_to_orderID.RootObject();
             int orderID = 0;
             var baseAddress = new Uri("https://ssapi.shipstation.com/");
 
@@ -254,7 +257,7 @@ namespace ic_ef.Controllers
                 {
 
                     string responseData = await response.Content.ReadAsStringAsync();
-                    result = JsonConvert.DeserializeObject<ss_order.Order_num_to_orderID.Rootobject>(responseData);
+                    result = JsonConvert.DeserializeObject<ss_order.Order_num_to_orderID.RootObject>(responseData);
                    // orderID = result.orders[0].orderId;
                 }
 
@@ -455,7 +458,7 @@ namespace ic_ef.Controllers
 
         public async Task<JsonResult> mark_ship(int order_num)
         {
-            var result = new ss_order.Order_num_to_orderID.Rootobject();
+            var result = new ss_order.Order_num_to_orderID.RootObject();
           
             try
             {

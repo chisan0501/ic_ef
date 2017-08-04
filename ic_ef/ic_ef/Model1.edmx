@@ -261,7 +261,7 @@ warning 6013: The table/view 'def.db_a094d4_icdb.misc_setting' does not have a p
           <Key>
             <PropertyRef Name="wcoa" />
           </Key>
-          <Property Name="time" Type="datetime" Precision="0" Nullable="false" />
+          <Property Name="time" Type="datetime" Precision="0" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="ictags" Type="char" MaxLength="100" />
           <Property Name="wcoa" Type="char" MaxLength="100" Nullable="false" />
           <Property Name="ocoa" Type="char" MaxLength="100" />
@@ -271,7 +271,7 @@ warning 6013: The table/view 'def.db_a094d4_icdb.misc_setting' does not have a p
           <Property Name="RAM" Type="char" MaxLength="100" />
           <Property Name="HDD" Type="char" MaxLength="100" />
           <Property Name="serial" Type="char" MaxLength="100" />
-          <Property Name="channel" Type="char" MaxLength="150" />
+          <Property Name="channel" Type="char" MaxLength="255" />
           <Property Name="pre_coa" Type="char" MaxLength="100" />
           <Property Name="location" Type="char" MaxLength="100" />
           <Property Name="video_card" Type="char" MaxLength="100" />
@@ -305,7 +305,7 @@ warning 6013: The table/view 'def.db_a094d4_icdb.misc_setting' does not have a p
           <Property Name="ram" Type="varchar" MaxLength="45" />
           <Property Name="optical_drive" Type="varchar" MaxLength="45" />
           <Property Name="location" Type="varchar" MaxLength="45" />
-          <Property Name="pallet" Type="varchar" MaxLength="45" />
+          <Property Name="pallet" Type="varchar" MaxLength="255" />
           <Property Name="pre_coa" Type="varchar" MaxLength="75" />
           <Property Name="refurbisher" Type="char" MaxLength="100" />
           <Property Name="status" Type="char" MaxLength="50" />
@@ -431,6 +431,20 @@ warning 6013: The table/view 'def.db_a094d4_icdb.misc_setting' does not have a p
           <Property Name="Model" Type="char" MaxLength="50" />
           <Property Name="pre_coa" Type="char" MaxLength="50" />
         </EntityType>
+        <EntityType Name="training_data">
+          <Key>
+            <PropertyRef Name="row_id" />
+          </Key>
+          <Property Name="row_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="cpu" Type="char" MaxLength="50" Nullable="false" />
+          <Property Name="ram" Type="char" MaxLength="50" Nullable="false" />
+          <Property Name="hdd" Type="char" MaxLength="50" Nullable="false" />
+          <Property Name="grade" Type="char" MaxLength="50" Nullable="false" />
+          <Property Name="type" Type="char" MaxLength="50" Nullable="false" />
+          <Property Name="channel" Type="char" MaxLength="50" Nullable="false" />
+          <Property Name="price" Type="char" MaxLength="50" Nullable="false" />
+          <Property Name="SSD" Type="char" MaxLength="50" />
+        </EntityType>
         <EntityType Name="ts_stock">
           <Key>
             <PropertyRef Name="ictag" />
@@ -543,6 +557,7 @@ warning 6013: The table/view 'def.db_a094d4_icdb.misc_setting' does not have a p
           <EntitySet Name="shipstation_log" EntityType="Self.shipstation_log" Schema="db_a094d4_icdb" store:Type="Tables" />
           <EntitySet Name="station_setting" EntityType="Self.station_setting" Schema="db_a094d4_icdb" store:Type="Tables" />
           <EntitySet Name="temp_label" EntityType="Self.temp_label" Schema="db_a094d4_icdb" store:Type="Tables" />
+          <EntitySet Name="training_data" EntityType="Self.training_data" Schema="db_a094d4_icdb" store:Type="Tables" />
           <EntitySet Name="ts_stock" EntityType="Self.ts_stock" Schema="db_a094d4_icdb" store:Type="Tables" />
           <EntitySet Name="users" EntityType="Self.users" Schema="db_a094d4_icdb" store:Type="Tables" />
           <AssociationSet Name="ApplicationUser_Claims" Association="Self.ApplicationUser_Claims">
@@ -580,7 +595,6 @@ warning 6013: The table/view 'def.db_a094d4_icdb.misc_setting' does not have a p
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="UserId" Type="String" MaxLength="128" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="ClaimType" Type="String" MaxLength="1073741823" FixedLength="false" Unicode="false" />
           <Property Name="ClaimValue" Type="String" MaxLength="1073741823" FixedLength="false" Unicode="false" />
           <NavigationProperty Name="aspnetusers" Relationship="Self.ApplicationUser_Claims" FromRole="aspnetuserclaims" ToRole="aspnetusers" />
@@ -815,7 +829,7 @@ warning 6013: The table/view 'def.db_a094d4_icdb.misc_setting' does not have a p
           <Key>
             <PropertyRef Name="wcoa" />
           </Key>
-          <Property Name="time" Type="DateTime" Nullable="false" />
+          <Property Name="time" Type="DateTime" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="ictags" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
           <Property Name="wcoa" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="ocoa" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
@@ -825,7 +839,7 @@ warning 6013: The table/view 'def.db_a094d4_icdb.misc_setting' does not have a p
           <Property Name="RAM" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
           <Property Name="HDD" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
           <Property Name="serial" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
-          <Property Name="channel" Type="String" MaxLength="150" FixedLength="false" Unicode="false" />
+          <Property Name="channel" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
           <Property Name="pre_coa" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
           <Property Name="location" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
           <Property Name="video_card" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
@@ -859,7 +873,7 @@ warning 6013: The table/view 'def.db_a094d4_icdb.misc_setting' does not have a p
           <Property Name="ram" Type="String" MaxLength="45" FixedLength="false" Unicode="false" />
           <Property Name="optical_drive" Type="String" MaxLength="45" FixedLength="false" Unicode="false" />
           <Property Name="location" Type="String" MaxLength="45" FixedLength="false" Unicode="false" />
-          <Property Name="pallet" Type="String" MaxLength="45" FixedLength="false" Unicode="false" />
+          <Property Name="pallet" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
           <Property Name="pre_coa" Type="String" MaxLength="75" FixedLength="false" Unicode="false" />
           <Property Name="refurbisher" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
           <Property Name="status" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
@@ -985,6 +999,20 @@ warning 6013: The table/view 'def.db_a094d4_icdb.misc_setting' does not have a p
           <Property Name="Model" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="pre_coa" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
         </EntityType>
+        <EntityType Name="training_data">
+          <Key>
+            <PropertyRef Name="row_id" />
+          </Key>
+          <Property Name="row_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="cpu" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="ram" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="hdd" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="grade" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="type" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="channel" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="price" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="SSD" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+        </EntityType>
         <EntityType Name="ts_stock">
           <Key>
             <PropertyRef Name="ictag" />
@@ -1010,14 +1038,6 @@ warning 6013: The table/view 'def.db_a094d4_icdb.misc_setting' does not have a p
             <OnDelete Action="Cascade" />
           </End>
           <End Role="aspnetuserclaims" Type="Self.aspnetuserclaims" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="aspnetusers">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="aspnetuserclaims">
-              <PropertyRef Name="UserId" />
-            </Dependent>
-          </ReferentialConstraint>
         </Association>
         <Association Name="ApplicationUser_Logins">
           <End Role="aspnetusers" Type="Self.aspnetusers" Multiplicity="1">
@@ -1072,6 +1092,7 @@ warning 6013: The table/view 'def.db_a094d4_icdb.misc_setting' does not have a p
           <EntitySet Name="shipstation_log" EntityType="Self.shipstation_log" />
           <EntitySet Name="station_setting" EntityType="Self.station_setting" />
           <EntitySet Name="temp_label" EntityType="Self.temp_label" />
+          <EntitySet Name="training_data" EntityType="Self.training_data" />
           <EntitySet Name="ts_stock" EntityType="Self.ts_stock" />
           <EntitySet Name="users" EntityType="Self.users" />
           <AssociationSet Name="ApplicationUser_Claims" Association="Self.ApplicationUser_Claims">
@@ -1105,7 +1126,6 @@ warning 6013: The table/view 'def.db_a094d4_icdb.misc_setting' does not have a p
             <EntityTypeMapping TypeName="db_a094d4_icdbModel.aspnetuserclaims">
               <MappingFragment StoreEntitySet="aspnetuserclaims">
                 <ScalarProperty Name="Id" ColumnName="Id" />
-                <ScalarProperty Name="UserId" ColumnName="UserId" />
                 <ScalarProperty Name="ClaimType" ColumnName="ClaimType" />
                 <ScalarProperty Name="ClaimValue" ColumnName="ClaimValue" />
               </MappingFragment>
@@ -1537,6 +1557,21 @@ warning 6013: The table/view 'def.db_a094d4_icdb.misc_setting' does not have a p
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <EntitySetMapping Name="training_data">
+            <EntityTypeMapping TypeName="db_a094d4_icdbModel.training_data">
+              <MappingFragment StoreEntitySet="training_data">
+                <ScalarProperty Name="row_id" ColumnName="row_id" />
+                <ScalarProperty Name="cpu" ColumnName="cpu" />
+                <ScalarProperty Name="ram" ColumnName="ram" />
+                <ScalarProperty Name="hdd" ColumnName="hdd" />
+                <ScalarProperty Name="grade" ColumnName="grade" />
+                <ScalarProperty Name="type" ColumnName="type" />
+                <ScalarProperty Name="channel" ColumnName="channel" />
+                <ScalarProperty Name="price" ColumnName="price" />
+                <ScalarProperty Name="SSD" ColumnName="SSD" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           <EntitySetMapping Name="ts_stock">
             <EntityTypeMapping TypeName="db_a094d4_icdbModel.ts_stock">
               <MappingFragment StoreEntitySet="ts_stock">
@@ -1559,6 +1594,14 @@ warning 6013: The table/view 'def.db_a094d4_icdb.misc_setting' does not have a p
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <AssociationSetMapping Name="ApplicationUser_Claims" TypeName="db_a094d4_icdbModel.ApplicationUser_Claims" StoreEntitySet="aspnetuserclaims">
+            <EndProperty Name="aspnetusers">
+              <ScalarProperty Name="Id" ColumnName="UserId" />
+            </EndProperty>
+            <EndProperty Name="aspnetuserclaims">
+              <ScalarProperty Name="Id" ColumnName="Id" />
+            </EndProperty>
+          </AssociationSetMapping>
           <AssociationSetMapping Name="aspnetuserroles" TypeName="db_a094d4_icdbModel.aspnetuserroles" StoreEntitySet="aspnetuserroles">
             <EndProperty Name="aspnetusers">
               <ScalarProperty Name="Id" ColumnName="UserId" />
@@ -1582,7 +1625,7 @@ warning 6013: The table/view 'def.db_a094d4_icdb.misc_setting' does not have a p
       <DesignerInfoPropertySet>
         <DesignerProperty Name="ValidateOnBuild" Value="true" />
         <DesignerProperty Name="EnablePluralization" Value="false" />
-        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="false" />
         <DesignerProperty Name="UseLegacyProvider" Value="false" />
         <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
       </DesignerInfoPropertySet>

@@ -483,7 +483,7 @@
 		<Bounds X="336" Y="2578.68896484375" Width="363.644439697266" Height="551.200012207031" />\
 	</ObjectInfo>\
 </DieCutLabel>';
-                var labelUri = "http://ic.icdb.name/mac.label";
+                var labelUri = "http://ic.myicdb.org/mac.label";
                 var label = dymo.label.framework.openLabelFile(labelUri);
                 //var label = dymo.label.framework.openLabelXml(labelXml);
                 

@@ -261,6 +261,7 @@ namespace ic_ef.Controllers
             return Json(message, JsonRequestBehavior.AllowGet);
         }
 
+        
         public JsonResult get_channel_dropdown()
         {
 
@@ -332,7 +333,44 @@ namespace ic_ef.Controllers
 
             return Json(message,JsonRequestBehavior.AllowGet);
         }
+        public JsonResult ts_ship_stock(string[] asset)
+        {
 
+            string message = "";
+            
+            //format the tsg sku to the ss format
+
+
+
+            // channel = channel.Replace("TSG_", "HW-");
+
+
+
+            for (int i = 0; i < asset.Length; i++)
+            {
+                try
+                {
+                    string temp_asset = asset[i];
+                    var db = new db_a094d4_icdbEntities1();
+                    var update_asset = db.ts_stock.Where(s => s.ictag == temp_asset).First();
+                    update_asset.status = "Shipped";
+                    db.SaveChanges();
+                    message += "<p style='color:green'>" + asset[i] + " Sucessfully Marked as Shipped</p>";
+                }
+
+                catch (Exception e) {
+
+                    message += "<p style='color:red'>" + asset[i] + e.InnerException.InnerException.Message+"</p>";
+                }
+
+
+
+            }
+
+            db.Dispose();
+
+            return Json(message, JsonRequestBehavior.AllowGet);
+        }
         //techSoup stock Recon
         public JsonResult ts_stock_recon(string channel, string[] asset) {
              
@@ -359,6 +397,25 @@ namespace ic_ef.Controllers
             return View();
         }
 
+        public JsonResult get_shippedstcok()
+        {
+            var today = DateTime.Today.AddDays(1);
+            var ytd = DateTime.Today;
+            var result = (from t in db.ts_stock where t.status == "Shipped" && t.update_time < today && t.update_time > ytd select t).ToList();
+
+
+
+            return Json(result, JsonRequestBehavior.AllowGet);
+        }
+
+        public ActionResult shipped_stock()
+        {
+
+
+
+
+            return View();
+        }
         public ActionResult stock_recon ()
         {
 
